@@ -8,6 +8,7 @@ namespace KTTM.Controllers
 {
     public class LoginsController : Controller
     {
+
         public IActionResult Index()
         {
             return View();
