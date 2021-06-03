@@ -20,7 +20,7 @@ namespace KTTM.Models
         public string Email { get; set; }
         public string Maphong { get; set; }
         public string Macn { get; set; }
-        public int RoleId { get; set; }
+        public string RoleId { get; set; }
         public bool Trangthai { get; set; }
         public DateTime? Ngaydoimk { get; set; }
         public bool? Doimk { get; set; }

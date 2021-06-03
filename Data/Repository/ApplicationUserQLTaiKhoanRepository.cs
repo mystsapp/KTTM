@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface IApplicationUserQLTaiKhoanRepository
     {
         Task<ApplicationUser> GetByIdTwoKeyAsync(string username, string mct);
+        IEnumerable<ApplicationUser> GetAll();
     }
     public class ApplicationUserQLTaiKhoanRepository : IApplicationUserQLTaiKhoanRepository
     {
@@ -18,6 +19,12 @@ namespace Data.Repository
         {
             _qltaikhoanContext = qltaikhoanContext;
         }
+
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return _qltaikhoanContext.ApplicationUsers;
+        }
+
         public async Task<ApplicationUser> GetByIdTwoKeyAsync(string username, string mct)
         {
             return await _qltaikhoanContext.ApplicationUsers.FindAsync(username, mct);
