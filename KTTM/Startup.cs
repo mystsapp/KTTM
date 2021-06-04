@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +31,7 @@ namespace KTTM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<qltaikhoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTaiKhoanConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<KTTMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
 
             // qltaikhoan
             services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
