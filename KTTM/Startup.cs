@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Repository;
+using Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,15 @@ namespace KTTM
             services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
 
+            // KTTM
+            services.AddTransient<IKVPCTRepository, KVPCTRepository>();
+            services.AddTransient<IKVCTPCTRepository, KVCTPCTRepository>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            // Services
+            services.AddTransient<IKVPTCService, KVPTCService>();
+            services.AddTransient<IKVCTPTCService, KVCTPTCService>();
 
             // FOR session
             services.AddSession(options =>
