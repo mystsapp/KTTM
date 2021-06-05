@@ -1,4 +1,15 @@
-﻿@{
+﻿@model HomeViewModel
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -79,6 +90,102 @@
                     </div>
                 </div>
             </form>
+            <br />
+            <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; height: 300px">
+                <table class="table mytable text-nowrap" id="tourTbl">
+                    <thead>
+                        <tr class="table-info">
+
+                            <th>#</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().SoCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().NgayCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().MFieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().NgoaiTe)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().HoTen)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().Phong)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().DonVi)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVPCTs.FirstOrDefault().LapPhieu)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.KVPCTs != null)
+                        {
+                            @foreach (var item in Model.KVPCTs)
+                            {
+
+                                <tr class="cursor-pointer " @*data-huy="@item.HuyTour"*@ onclick="Tabs_KeToan_TourInfo()">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+
+                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+
+                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <!-- ko cho xóa -->
+                                            <span class="text-dark"> | </span>
+                                            <span SoCT="confirmDeleteSpan_@item.SoCT" style="display: none">
+                                                <!--ajax check invoices-->
+                                                <span class="text-dark invoiceTrue">Hủy?</span>
+                                                <button type="button" class="btn btn-danger btn-xs btnHuyTour" data-SoCT="@item.SoCT" data-url="@Model.StrUrl">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.SoCT', false)">No</button>
+                                            </span>
+
+                                            @*<span SoCT="deleteSpan_@item.SoCT">
+
+                                                    <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                                </span>*@
+
+                                            <!-- hidden form khoiphuc-->
+                                            <form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
+                                                <input type="hidden" id="hidTourId" name="id" />
+                                                <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
+                                            </form>
+
+                                        </div>
+                                    </td>
+
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.Raw(item.NgayCT.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.MFieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.NgoaiTe)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.HoTen)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.LapPhieu)</td>
+
+                                </tr>
+
+                                @* } *@
+
+                            }
+                        }
+                    </tbody>
+                </table>
+                <!--hiden field for status click-->
+                @*<input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />*@
+                <!--hiden field for status click-->
+            </div>
+
+            @if (Model.KVPCTs != null)
+            {
+                @Html.PagedListPager((IPagedList)Model.KVPCTs, page => Url.Action("Index", new
+           {
+               page = page,
+               option = Context.Request.Query["option"],
+               searchString = @ViewBag.searchString,
+               searchFromDate = ViewBag.searchFromDate,
+               searchToDate = ViewBag.searchToDate
+           }),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" },
+                        MaximumPageNumbersToDisplay = 5,
+                        UlElementClasses = new[] { "pagination" },
+                        ContainerDivClasses = new[] { "pagination-container" }
+                    }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+            }
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
