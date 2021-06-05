@@ -16,15 +16,25 @@ namespace KTTM.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IKVPTCService _kVPTCService;
 
+        [BindProperty]
+        public HomeViewModel HomeVM { get; set; }
+
         public HomeController(IUnitOfWork unitOfWork, IKVPTCService kVPTCService)
         {
             _unitOfWork = unitOfWork;
             _kVPTCService = kVPTCService;
+
+            HomeVM = new HomeViewModel()
+            {
+                KVPCT = new Data.Models_KTTM.KVPCT(),
+
+            };
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeVM.KVPCTs = _kVPTCService.GetAll();
+            return View(HomeVM);
         }
 
         public IActionResult Privacy()
