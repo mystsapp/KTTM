@@ -31,10 +31,16 @@ namespace KTTM.Controllers
             };
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, string searchFromDate, string searchToDate, int page = 1)
         {
-            HomeVM.KVPCTs = _kVPTCService.GetAll();
+            HomeVM.KVPTCDtos = _kVPTCService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
             return View(HomeVM);
+        }
+
+        [HttpPost]
+        public IActionResult KhongTC141()
+        {
+            return View();
         }
 
         public IActionResult Privacy()
