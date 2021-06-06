@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
+using Data.Models_QLTour;
 using Data.Repository;
 using Data.Services;
 using Microsoft.AspNetCore.Builder;
@@ -32,12 +33,17 @@ namespace KTTM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<qltaikhoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTaiKhoanConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<qltourContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTourConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<KTTMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
 
             // qltaikhoan
             services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
+
+            // qltour
+            services.AddTransient<INgoaiTeRepository, NgoaiTeRepository>();
+            services.AddTransient<IPhongBanRepository, PhongBanRepository>();
 
             // KTTM
             services.AddTransient<IKVPCTRepository, KVPCTRepository>();

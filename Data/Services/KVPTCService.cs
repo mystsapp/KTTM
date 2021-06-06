@@ -1,5 +1,6 @@
 ﻿using Data.Dtos;
 using Data.Models_KTTM;
+using Data.Models_QLTour;
 using Data.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace Data.Services
     public interface IKVPTCService
     {
         IEnumerable<KVPCT> GetAll();
+        IEnumerable<Ngoaite> GetAllNgoaiTe();
+        IEnumerable<Phongban> GetAllPhongBan();
         IPagedList<KVPTCDto> ListKVPTC(string searchString, string searchFromDate, string searchToDate, int? page);
     }
     public class KVPTCService : IKVPTCService
@@ -26,6 +29,16 @@ namespace Data.Services
         public IEnumerable<KVPCT> GetAll()
         {
             return _unitOfWork.kVPCTRepository.GetAll();
+        }
+
+        public IEnumerable<Ngoaite> GetAllNgoaiTe()
+        {
+            return _unitOfWork.ngoaiTeRepository.GetAll();
+        }
+
+        public IEnumerable<Phongban> GetAllPhongBan()
+        {
+            return _unitOfWork.phongBanRepository.GetAll();
         }
 
         public IPagedList<KVPTCDto> ListKVPTC(string searchString,  string searchFromDate, string searchToDate, int? page)

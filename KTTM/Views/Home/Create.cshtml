@@ -1,0 +1,373 @@
+﻿@model HomeViewModel
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Create";
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm Mới</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh sách phiếu</a></li>
+                    <li class="breadcrumb-item active">Thêm phiếu</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm phiếu</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form method="post" autocomplete="off" id="frmTourCreate" enctype="multipart/form-data">
+                <div class="p-4 border rounded ">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KVPCT.NgayCT" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                            <input type="text" asp-for="KVPCT.NgayCT" class="form-control maskInput" id="txtNgayDen" />
+                            <span asp-validation-for="KVPCT.NgayCT" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label asp-for="KVPCT.MFieu" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                            <input type="text" asp-for="KVPCT.MFieu" class="form-control " id="txtNgayDen" />
+                            <span asp-validation-for="KVPCT.MFieu" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <!-- qltour -->
+                            <label asp-for="KVPCT.NgoaiTe" class="control-label"></label>
+                            <select asp-for="KVPCT.NgoaiTe" class="form-control select2"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
+                            </select>
+                            <span asp-validation-for="KVPCT.NgoaiTe" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                   
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KVPCT.HoTen" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                            <input type="text" asp-for="KVPCT.HoTen" class="form-control " id="txtNgayDen" />
+                            <span asp-validation-for="KVPCT.HoTen" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KVPCT.DonVi" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                            <input type="text" asp-for="KVPCT.DonVi" class="form-control " id="txtNgayDen" />
+                            <span asp-validation-for="KVPCT.DonVi" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <!-- qltour -->
+                            <label asp-for="KVPCT.Phong" class="control-label"></label>
+                            <select asp-for="KVPCT.Phong" class="form-control select2"
+                                    asp-items="@(new SelectList(Model.Phongbans, "Maphong", "Maphong"))" id="ddlPhongBan">
+                            </select>
+                            <span asp-validation-for="KVPCT.Phong" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KVPCT.LapPhieu" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                            <input readonly asp-for="KVPCT.LapPhieu" class="form-control " id="txtNgayDen" />
+                            <span asp-validation-for="KVPCT.LapPhieu" class="text-danger"></span>
+                        </div>
+
+                        @*
+        <div class="col-md-2 ">
+            <label asp-for="Tour.TyGia" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia" />
+            <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
+        </div>
+                        *@
+                    </div>
+
+        @*<div class="form-group row">
+
+            <div class="col-md-6">
+                <label class="control-label">Upload DS khách</label>
+                <input type="file" class="form-control" id="fUpload" name="files">
+                <div id="dvData"></div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="control-label">Download file mẫu</label>
+                <br />
+                <a title="File mẫu" class="btn btn-success" asp-controller="Tours" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
+            </div>
+
+        </div>*@
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i> Save</button>
+                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward "></i> Back</a>
+                        </div>
+                    </div>
+            </form>
+
+
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+
+    <script src="~/js/Admin/Tours/createController.js"></script>
+
+    <!-- select2 and multi select2 (bootstrap4)-->
+
+    <script>
+        //$('#txtMaKH').select2()
+        $('.select2').select2()
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+        $('.tuyenTQ').select2({
+            theme: 'bootstrap4'
+        })
+
+    </script>
+
+    <!-- Validation -->
+    <script>
+
+        $('#frmTourCreate').validate({
+            //rules: {
+            //    email: {
+            //        required: true,
+            //        email: true,
+            //    },
+            //    NgayDen: {
+            //        required: true
+            //    },
+            //    chuDetour1: {
+            //        required: true
+            //    },
+            //},
+            //messages: {
+            //    email: {
+            //        required: "Please enter a email address",
+            //        email: "Please enter a vaild email address"
+            //    },
+            //    NgayDen: {
+            //        required: "Please provide a date"
+            //    },
+            //    chuDetour1: "Please enter value"
+            //},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                // add error text
+
+                //error.addClass('invalid-feedback').removeClass('error');
+                //element.closest('.chuDeTourGroup').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#txtChuDeTour').rules('add', {
+            required: true,
+            messages: {
+                //required: "Chủ đề không được để trống"
+            }
+        });
+
+        $('#txtNgayDen').rules('add', {
+            required: true,
+            dateFormat: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtNgayDi').rules('add', {
+            required: true,
+            dateFormat: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#ddlTuyenTQ').rules('add', {
+            required: true,
+            messages: {
+                // required: "Chủ đề không được để trống"
+            }
+        });
+
+        $('#txtSoKhachDK').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtDoanhThuDK').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtMaKH').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtTenKH').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#ddlLoaiTour').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#ddlChiNhanhDH').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#ddlPhongDH').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#ddlPhongBanMaCode').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        //$('#fUpload').rules('add', {
+        //    required: true,
+        //    messages: {
+        //        // required: "Ngày đến không được để trống"
+        //    }
+        //});
+
+        $('#ddlLoaiTien').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtTyGia').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#ddlLoaiTour').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtNgayKyHD').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtNgayDamPhan').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtHanXuatVe').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtNgayThanhLyHD').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtNgayNhanDuTien').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+    </script>
+
+}

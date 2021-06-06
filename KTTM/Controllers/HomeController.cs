@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using KTTM.Models;
 using Data.Repository;
 using Data.Services;
+using Data.Utilities;
+using Data.Models_QLTaiKhoan;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace KTTM.Controllers
 {
@@ -33,8 +36,44 @@ namespace KTTM.Controllers
 
         public IActionResult Index(string searchString, string searchFromDate, string searchToDate, int page = 1)
         {
+            HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+
+            ViewBag.searchString = searchString;
+            ViewBag.searchFromDate = searchFromDate; 
+            ViewBag.searchToDate = searchToDate; 
+
             HomeVM.KVPTCDtos = _kVPTCService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
             return View(HomeVM);
+        }
+
+        public IActionResult Create(string strUrl)
+        {
+
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            //if (user.Role.RoleName == "KeToans")
+            //{
+            //    return View("~/Views/Shared/AccessDenied.cshtml");
+            //}
+
+            HomeVM.StrUrl = strUrl;
+            HomeVM.KVPCT.NgayCT = DateTime.Now;
+            HomeVM.KVPCT.LapPhieu = user.Username;
+
+            HomeVM.Ngoaites = _kVPTCService.GetAllNgoaiTe();
+            HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
+            
+            return View(HomeVM);
+        }
+
+        public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
+        {
+            //if (!string.IsNullOrEmpty(tabActive))
+            //{
+            //    strUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            //}
+            return Redirect(strUrl);
         }
 
         [HttpPost]
