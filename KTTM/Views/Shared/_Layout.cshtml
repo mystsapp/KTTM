@@ -14,6 +14,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="~/lib/AdminLTE-3.1.0/plugins/fontawesome-free/css/all.min.css">
+    <!-- Select2 -->
+    <link href="~/lib/AdminLTE-3.1.0/plugins/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/AdminLTE-3.1.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
     <!-- Theme style -->
     <link rel="stylesheet" href="~/lib/AdminLTE-3.1.0/dist/css/adminlte.css">
 
@@ -42,8 +45,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <a href="/" class="nav-link">Home</a>
                         </li>
                         @*<li class="nav-item">
-                            <a href="#" class="nav-link">Contact</a>
-                        </li>*@
+                                <a href="#" class="nav-link">Contact</a>
+                            </li>*@
                         <li class="nav-item dropdown">
                             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Báo cáo</a>
                             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
@@ -60,24 +63,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <li><a href="#" class="dropdown-item">In CTGS do thanh toán tạm ứng</a></li>
                                 <!-- Level two dropdown-->
                                 @*<li class="dropdown-submenu dropdown-hover">
-                                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
-                                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                        <li>
-                                            <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
-                                        </li>
+                                        <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
+                                        <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                                            <li>
+                                                <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
+                                            </li>
 
-                                        <li class="dropdown-submenu">
-                                            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-                                            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                                <li><a href="#" class="dropdown-item">3rd level</a></li>
-                                                <li><a href="#" class="dropdown-item">3rd level</a></li>
-                                            </ul>
-                                        </li>
-                                        
-                                        <li><a href="#" class="dropdown-item">level 2</a></li>
-                                        <li><a href="#" class="dropdown-item">level 2</a></li>
-                                    </ul>
-                                </li>*@
+                                            <li class="dropdown-submenu">
+                                                <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
+                                                <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                                                    <li><a href="#" class="dropdown-item">3rd level</a></li>
+                                                    <li><a href="#" class="dropdown-item">3rd level</a></li>
+                                                </ul>
+                                            </li>
+
+                                            <li><a href="#" class="dropdown-item">level 2</a></li>
+                                            <li><a href="#" class="dropdown-item">level 2</a></li>
+                                        </ul>
+                                    </li>*@
                                 <!-- End Level two -->
                             </ul>
                         </li>
@@ -216,8 +219,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="~/lib/AdminLTE-3.1.0/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/AdminLTE-3.1.0/plugins/bootbox.js/bootbox.js"></script>
+    <script src="~/lib/numeral.js/numeral.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="~/lib/AdminLTE-3.1.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2-->
+    @*<script src="~/lib/AdminLTE-3.1.0/plugins/select2/js/select2.js"></script>*@
+    <script src="~/lib/AdminLTE-3.1.0/plugins/select2/js/select2.full.js"></script>
     <!-- AdminLTE App -->
     <script src="~/lib/jquery.maskedinput/jquery.maskedinput.js"></script>
     <script src="~/lib/AdminLTE-3.1.0/dist/js/adminlte.min.js"></script>
@@ -231,9 +242,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             $('#AlertBox').removeClass('hide');
             $('#AlertBox').delay(1000).slideUp(1000);
+
+
         });
 
     </script>
+
     <style>
         .error {
             color: red;
@@ -259,6 +273,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        /*select2 small input and small text*/
+        .select2-search input {
+            height: calc(1.8125rem + 2px);
+        }
+        .select2-results li {
+            font-size: 0.875rem !important;
+        }
+
         }
     </style>
 

@@ -213,7 +213,8 @@ namespace Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("NgayCT")
+                    b.Property<DateTime?>("NgayCT")
+                        .IsRequired()
                         .HasColumnType("datetime");
 
                     b.Property<string>("NgoaiTe")

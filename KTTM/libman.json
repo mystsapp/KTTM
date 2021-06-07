@@ -9,6 +9,18 @@
     {
       "library": "jquery.maskedinput@1.4.1",
       "destination": "wwwroot/lib/jquery.maskedinput/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.12",
+      "destination": "wwwroot/lib/AdminLTE-3.1.0/plugins/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "bootbox.js@5.5.2",
+      "destination": "wwwroot/lib/AdminLTE-3.1.0/plugins/bootbox.js/"
+    },
+    {
+      "library": "numeral.js@2.0.6",
+      "destination": "wwwroot/lib/numeral.js/"
     }
   ]
 }

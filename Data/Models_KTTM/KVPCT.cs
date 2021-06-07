@@ -17,7 +17,7 @@ namespace Data.Models_KTTM
         [DisplayName("Ngày lập phiếu")]
         [Column(TypeName = "datetime")]
         [Required(ErrorMessage = "Ngày không được để trống")]
-        public DateTime NgayCT { get; set; }
+        public DateTime? NgayCT { get; set; }
 
         [DisplayName("Loại phiếu")]
         [MaxLength(1, ErrorMessage = "Chiều dài tối đa 1 ký tự"), Column(TypeName = "varchar(1)")]

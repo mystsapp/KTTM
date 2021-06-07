@@ -75,7 +75,7 @@ namespace Data.Services
                 var kVPTCDto = new KVPTCDto();
 
                 kVPTCDto.SoCT = item.SoCT;
-                kVPTCDto.NgayCT = item.NgayCT;
+                kVPTCDto.NgayCT = item.NgayCT.Value;
                 kVPTCDto.MFieu = item.MFieu;
                 kVPTCDto.NgoaiTe = item.NgoaiTe;
                 kVPTCDto.HoTen = item.HoTen;
