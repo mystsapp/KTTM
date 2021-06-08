@@ -63,15 +63,18 @@
 
                         <div class="col-md-1">
                             <label asp-for="KVPCT.MFieu" class="control-label"></label>
-                            <input asp-for="KVPCT.MFieu" class="form-control form-control-sm" id="txtMFieu" />
+                            <select asp-for="KVPCT.MFieu" class="form-control form-control-sm "
+                                    asp-items="@(new SelectList(Model.LoaiPhieus, "Name", "Name"))" id="ddlMFieu">
+
+                            </select>
                             <span asp-validation-for="KVPCT.MFieu" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <!-- qltour -->
                             <label asp-for="KVPCT.NgoaiTe" class="control-label"></label>
-                            <select asp-for="KVPCT.NgoaiTe" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
+                            <select asp-for="KVPCT.NgoaiTe" class="form-control form-control-sm "
+                                    asp-items="@(new SelectList(Model.LoaiTiens, "Name", "Name"))" id="ddlNgoaiTe">
                             </select>
                             <span asp-validation-for="KVPCT.NgoaiTe" class="text-danger"></span>
                         </div>
@@ -234,140 +237,6 @@
                 // required: "Ngày đến không được để trống"
             }
         });
-
-        //$('#txtNgayDi').rules('add', {
-        //    required: true,
-        //    dateFormat: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#ddlTuyenTQ').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Chủ đề không được để trống"
-        //    }
-        //});
-
-        //$('#txtSoKhachDK').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#txtDoanhThuDK').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#txtMaKH').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#txtTenKH').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#ddlLoaiTour').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#ddlChiNhanhDH').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#ddlPhongDH').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#ddlPhongBanMaCode').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        ////$('#fUpload').rules('add', {
-        ////    required: true,
-        ////    messages: {
-        ////        // required: "Ngày đến không được để trống"
-        ////    }
-        ////});
-
-        //$('#ddlLoaiTien').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#txtTyGia').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#ddlLoaiTour').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        // required: "Ngày đến không được để trống"
-        //    }
-        //});
-
-        //$('#txtNgayKyHD').rules('add', {
-        //    dateFormat: true,
-        //    messages: {
-        //        //date: "(***)"
-        //    }
-        //});
-
-        //$('#txtNgayDamPhan').rules('add', {
-        //    dateFormat: true,
-        //    messages: {
-        //        //date: "(***)"
-        //    }
-        //});
-
-        //$('#txtHanXuatVe').rules('add', {
-        //    dateFormat: true,
-        //    messages: {
-        //        //date: "(***)"
-        //    }
-        //});
-
-        //$('#txtNgayThanhLyHD').rules('add', {
-        //    dateFormat: true,
-        //    messages: {
-        //        //date: "(***)"
-        //    }
-        //});
-
-        //$('#txtNgayNhanDuTien').rules('add', {
-        //    dateFormat: true,
-        //    messages: {
-        //        //date: "(***)"
-        //    }
-        //});
 
     </script>
 

@@ -35,7 +35,7 @@ namespace Data.Dtos
 
         public string MayTinh { get; set; }
 
-        public DateTime Lock { get; set; }
+        public DateTime? Lock { get; set; }
 
         public string Locker { get; set; }
 

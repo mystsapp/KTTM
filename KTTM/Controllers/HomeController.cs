@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using KTTM.Models;
+﻿using Data.Models_KTTM;
+using Data.Models_QLTaiKhoan;
 using Data.Repository;
 using Data.Services;
 using Data.Utilities;
-using Data.Models_QLTaiKhoan;
+using KTTM.Models;
 using Microsoft.AspNetCore.Http.Extensions;
-using Data.Models_KTTM;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace KTTM.Controllers
 {
@@ -31,7 +31,6 @@ namespace KTTM.Controllers
             HomeVM = new HomeViewModel()
             {
                 KVPCT = new Data.Models_KTTM.KVPCT(),
-
             };
         }
 
@@ -40,8 +39,8 @@ namespace KTTM.Controllers
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
             ViewBag.searchString = searchString;
-            ViewBag.searchFromDate = searchFromDate; 
-            ViewBag.searchToDate = searchToDate; 
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
 
             HomeVM.KVPTCDtos = _kVPTCService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
             return View(HomeVM);
@@ -49,7 +48,6 @@ namespace KTTM.Controllers
 
         public IActionResult Create(string strUrl)
         {
-
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -60,16 +58,18 @@ namespace KTTM.Controllers
 
             HomeVM.StrUrl = strUrl;
             HomeVM.KVPCT.NgayCT = DateTime.Now;
+            HomeVM.KVPCT.Create = DateTime.Now;
             HomeVM.KVPCT.LapPhieu = user.Username;
 
-            HomeVM.Ngoaites = _kVPTCService.GetAllNgoaiTe();
+            HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
+            HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
             HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
-            
+
             return View(HomeVM);
         }
 
-        [HttpPost]
-        public IActionResult Create(string strUrl)
+        [HttpPost, ActionName("Create")]
+        public async Task<IActionResult> CreatePost(string strUrl)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -78,8 +78,9 @@ namespace KTTM.Controllers
             {
                 HomeVM = new HomeViewModel()
                 {
-                    KVPCT = new KVPCT(),                    
-                    Ngoaites = _kVPTCService.GetAllNgoaiTe(),
+                    KVPCT = new KVPCT(),
+                    LoaiTiens = _kVPTCService.ListLoaiTien(),
+                    LoaiPhieus = _kVPTCService.ListLoaiPhieu(),
                     Phongbans = _kVPTCService.GetAllPhongBan(),
                     StrUrl = strUrl
                 };
@@ -91,173 +92,167 @@ namespace KTTM.Controllers
             HomeVM.KVPCT.LapPhieu = user.Username;
 
             // next SoCT --> bat buoc phai co'
-            if (TourVM.Tour.NgayKyHopDong != null)
+            switch (HomeVM.KVPCT.MFieu)
             {
-                DateTime dateTime;
-                //dateTime = DateTime.Now;
-                dateTime = TourVM.Tour.NgayKyHopDong.Value;
-
-                var currentYear = dateTime.Year;
-                var subfix = "/IB/" + currentYear.ToString();
-                var tour = _unitOfWork.tourRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoHopDong).ToList().FirstOrDefault();
-                if (string.IsNullOrEmpty(tour.SoHopDong))
-                {
-                    TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
-                }
-                else
-                {
-                    var oldYear = tour.SoHopDong.Substring(10, 4);
-                    // cung nam
-                    if (oldYear == currentYear.ToString())
+                case "T": // thu
+                    switch (HomeVM.KVPCT.NgoaiTe)
                     {
-                        var oldSoHopdong = tour.SoHopDong.Substring(0, 6);
-                        TourVM.Tour.SoHopDong = GetNextId.NextID(oldSoHopdong, "") + subfix;
+                        case "VN":
+                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("QT"); // thu VND
+                            break;
+                        default:
+                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("NT"); // thu NgoaiTe
+                            break;
                     }
-                    else
+                    break;
+                default: // chi
+                    switch (HomeVM.KVPCT.NgoaiTe)
                     {
-                        // sang nam khac' chay lai tu dau
-                        TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
+                        case "VN":
+                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("QC"); // chi VND
+                            break;
+                        default:
+                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("NC"); // chi NgoaiTe
+                            break;
                     }
+                    break;
+            }            
+            // next SoCT
 
-                }
-            }
-            else
-            {
-                TourVM.Tour.SoHopDong = "";
-            }
+            HomeVM.KVPCT.LapPhieu = user.Username;
 
-            // next SoHopdong
+            // May tinh
+            var computerName = Environment.MachineName;
+            var userName = Environment.UserName;
+            var osVersion = Environment.OSVersion;
+            var domainName = Environment.UserDomainName;
 
-            //if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong))
-            //{
-            //    TourVM.Tour.SoHopDong = "";
-            //}
-            TourVM.Tour.NguoiTao = user.Username;
+            string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
+            // Get the IP  
+            //var info = Dns.GetHostByName(hostName).AddressList;//.ToList();
+            var info = Dns.GetHostEntry(hostName).AddressList;
+            //string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+            string myIP = Dns.GetHostEntry(hostName).AddressList[3].ToString();
 
-            // create sgtcode
-            var companies = await _unitOfWork.khachHangRepository.FindAsync(x => x.CompanyId == TourVM.Tour.MaKH); // find company by MaKH(companyId)
-            var quocgias = await _unitOfWork.quocGiaRepository.FindAsync(x => x.Nation == companies.FirstOrDefault().Nation); // find by nation(vn)
-            string sgtCode = "";
-            //if (user.PhongBanId == "TF") // FRONT DESK
-            if (quocgias.FirstOrDefault().Telcode == "000") // FRONT DESK
-            {
-                sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, "000"); // 000 --> macode cua front desk
-            }
+            HomeVM.KVPCT.MayTinh = computerName + "|" + userName + "|" + myIP + "|" + domainName;
 
-            // KDOB
-            if (user.PhongBanId == "KDOB")
-            {
-                sgtCode = _tourService.newSgtcodeKDOB(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
-            }
-            else // nhung thi truong khac' lay theo telcode cua quocgia
-            {
-                sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
-            }
-
-            TourVM.Tour.Sgtcode = sgtCode;
-            // create sgtcode
 
             // ghi log
-            TourVM.Tour.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-
-            // insert tourinf
-            Tourinf tourinf = new Tourinf();
-            tourinf.Sgtcode = TourVM.Tour.Sgtcode;
-            tourinf.Khachle = false;
-            tourinf.CompanyId = TourVM.Tour.MaKH;
-            tourinf.TourkindId = TourVM.Tour.LoaiTourId;
-            tourinf.Arr = TourVM.Tour.NgayDen;
-            tourinf.Dep = TourVM.Tour.NgayDi;
-            tourinf.Pax = TourVM.Tour.SoKhachTT;
-            tourinf.Childern = TourVM.Tour.SKTreEm;
-            tourinf.Reference = TourVM.Tour.ChuDeTour;
-            tourinf.Concernto = user.Username; // nguoi tao tour
-            tourinf.Operators = ""; // nguoi dieu hanh
-            tourinf.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour / phong dh
-            tourinf.Departcreate = user.PhongBanId; // phong ban tao
-            tourinf.Routing = "";
-            //tourinf.Rate = TourVM.Tour.TyGia;
-            tourinf.Rate = TourVM.Tour.TyGia;
-            tourinf.Revenue = (TourVM.Tour.DoanhThuTT > 0) ? TourVM.Tour.DoanhThuTT : TourVM.Tour.DoanhThuDK;
-            tourinf.PasstypeId = TourVM.Tour.LoaiKhach; // Inbound or tau bien
-            //tourinf.Currency = TourVM.Tour.LoaiTien;
-            tourinf.Currency = TourVM.Tour.LoaiTien;
-            tourinf.Chinhanh = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // chinhanh dieu hanh
-            tourinf.Chinhanhtao = user.MaCN; // user login
-            tourinf.Createtour = TourVM.Tour.NgayTao;
-            tourinf.Logfile = TourVM.Tour.LogFile;
-            // insert tourinf
+            HomeVM.KVPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
             try
             {
+                await _kVPTCService.CreateAsync(HomeVM.KVPCT); // save
 
-                _unitOfWork.tourRepository.Create(TourVM.Tour);
-                // insert tourinf
-                _unitOfWork.tourInfRepository.Create(tourinf);
-
-                // insert tourlewi
-                if (quocgias.FirstOrDefault().Telcode == "000") // FRONT DESK
-                {
-                    // insert 
-                    Data.Models_Tourlewi.Tour tourlewi = new Data.Models_Tourlewi.Tour();
-                    tourlewi.Sgtcode = TourVM.Tour.Sgtcode;
-                    tourlewi.Khachle = false;
-                    tourlewi.Makh = TourVM.Tour.MaKH;
-                    tourlewi.Loaitour = TourVM.Tour.LoaiTourId.ToString();
-                    tourlewi.Batdau = TourVM.Tour.NgayDen;
-                    tourlewi.Ketthuc = TourVM.Tour.NgayDi;
-                    tourlewi.Socho = TourVM.Tour.SoKhachTT;
-                    tourlewi.Chudetour = TourVM.Tour.ChuDeTour;
-                    tourlewi.Tuyentq = TourVM.Tour.TuyenTQ;
-                    tourlewi.Nguoitaotour = user.Username; // nguoi tao tour
-                                                           //tourlewi.Operators = ""; // nguoi dieu hanh
-                                                           //tourlewi.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour / phong dh
-                                                           //tourlewi.Departcreate = user.PhongBanId; // phong ban tao
-                                                           //tourlewi.Routing = "";
-                                                           //tourlewi.Rate = TourVM.Tour.TyGia;
-                                                           //tourlewi.Revenue = (TourVM.Tour.DoanhThuTT > 0) ? TourVM.Tour.DoanhThuTT : TourVM.Tour.DoanhThuDK;
-                                                           //tourlewi.PasstypeId = TourVM.Tour.LoaiKhach; // Inbound or tau bien
-                                                           //tourlewi.Currency = TourVM.Tour.LoaiTien;
-                    tourlewi.Chinhanh = user.MaCN; // chinhanh tao
-                                                   //tourlewi.Chinhanhtao = user.MaCN; // user login
-                    tourlewi.Ngaytao = TourVM.Tour.NgayTao;
-                    tourlewi.Logfile = TourVM.Tour.LogFile;
-                    // insert tourlewi
-
-                    _unitOfWork.tourWIRepository.Create(tourlewi);
-                }
-                //else
-                //{
-                //    //_unitOfWork.tourInfRepository.Create(tourinf);
-                //    //// insert tourinf
-                //    ////await _unitOfWork.Complete();
-
-                //}
-                // insert tourlewi
-                await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
-
-
-                var fileCheck = Request.Form.Files;
-                if (fileCheck.Count > 0)
-                {
-
-                    // upload excel
-                    UploadExcelAsync(TourVM.Tour.Sgtcode);
-                    // upload excel
-
-                }
 
                 return Redirect(strUrl);
             }
             catch (Exception ex)
             {
                 SetAlert(ex.Message, "error");
-                return View(TourVM);
+                return View(HomeVM);
             }
-
         }
 
+        public async Task<IActionResult> Edit(string soCT, string strUrl)
+        {
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+            
+            HomeVM.StrUrl = strUrl;
+            if (string.IsNullOrEmpty(soCT))
+            {
+                ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            HomeVM.KVPCT = await _kVPTCService.GetBySoCT(soCT);
+            
+            if (HomeVM.KVPCT == null)
+            {
+                ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
+            HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
+            HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
+
+            return View(HomeVM);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(string soCT, string strUrl)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            string temp = "", log = "";
+
+            if (soCT != HomeVM.KVPCT.SoCT)
+            {
+                ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            if (ModelState.IsValid)
+            {
+                HomeVM.KVPCT.NgaySua = DateTime.Now;
+                HomeVM.KVPCT.NguoiSua = user.Username;
+
+                // kiem tra thay doi : trong getbyid() va ngoai view
+                #region log file
+                //var t = _unitOfWork.tourRepository.GetById(id);
+                var t = _kVPTCService.GetBySoCTAsNoTracking(soCT);
+
+                if (t.HoTen != HomeVM.KVPCT.HoTen)
+                {
+                    temp += String.Format("- Họ tên thay đổi: {0}->{1}", t.HoTen, HomeVM.KVPCT.HoTen);
+                }
+
+                if (t.Phong != HomeVM.KVPCT.Phong)
+                {
+                    temp += String.Format("- Phòng thay đổi: {0}->{1}", t.Phong, HomeVM.KVPCT.Phong);
+                }
+                
+                if (t.DonVi != HomeVM.KVPCT.DonVi)
+                {
+                    temp += String.Format("- Đơn vị thay đổi: {0}->{1}", t.DonVi, HomeVM.KVPCT.DonVi);
+                }
+
+                #endregion
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+
+                    log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    t.LogFile = t.LogFile + log;
+                    HomeVM.KVPCT.LogFile = t.LogFile;
+                }
+
+                try
+                {
+                    await _kVPTCService.UpdateAsync(HomeVM.KVPCT);
+                    SetAlert("Cập nhật thành công", "success");
+
+                    return Redirect(strUrl);
+                }
+                catch (Exception ex)
+                {
+                    SetAlert(ex.Message, "error");
+                    
+                    return View(HomeVM);
+                }
+            }
+            // not valid
+
+            return View(HomeVM);
+        }
         public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
         {
             //if (!string.IsNullOrEmpty(tabActive))

@@ -198,12 +198,15 @@ namespace Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("Lock")
+                    b.Property<DateTime?>("Lock")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Locker")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LogFile")
+                        .HasColumnType("nvarchar(MAX)");
 
                     b.Property<string>("MFieu")
                         .HasMaxLength(1)
@@ -217,9 +220,16 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("datetime");
 
+                    b.Property<DateTime?>("NgaySua")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("NgoaiTe")
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
+
+                    b.Property<string>("NguoiSua")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Phong")
                         .HasMaxLength(50)

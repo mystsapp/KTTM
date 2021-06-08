@@ -2,10 +2,13 @@
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.Repository;
+using Data.Utilities;
+using Data.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using X.PagedList;
 
 namespace Data.Services
@@ -16,6 +19,14 @@ namespace Data.Services
         IEnumerable<Ngoaite> GetAllNgoaiTe();
         IEnumerable<Phongban> GetAllPhongBan();
         IPagedList<KVPTCDto> ListKVPTC(string searchString, string searchFromDate, string searchToDate, int? page);
+
+        IEnumerable<ListViewModel> ListLoaiPhieu();
+        IEnumerable<ListViewModel> ListLoaiTien();
+        string GetSoCT(string param);
+        Task CreateAsync(KVPCT kVPCT);
+        Task<KVPCT> GetBySoCT(string soCT);
+        KVPCT GetBySoCTAsNoTracking(string soCT);
+        Task UpdateAsync(KVPCT kVPCT);
     }
     public class KVPTCService : IKVPTCService
     {
@@ -41,7 +52,47 @@ namespace Data.Services
             return _unitOfWork.phongBanRepository.GetAll();
         }
 
-        public IPagedList<KVPTCDto> ListKVPTC(string searchString,  string searchFromDate, string searchToDate, int? page)
+        public async Task<KVPCT> GetBySoCT(string soCT)
+        {
+            return await _unitOfWork.kVPCTRepository.GetByIdAsync(soCT);
+        }
+
+        public KVPCT GetBySoCTAsNoTracking(string soCT)
+        {
+            return _unitOfWork.kVPCTRepository.GetByIdAsNoTracking(x => x.SoCT == soCT);
+        }
+
+        public string GetSoCT(string param)
+        {
+            //DateTime dateTime;
+            //dateTime = DateTime.Now;
+            //dateTime = TourVM.Tour.NgayKyHopDong.Value;
+
+            var currentYear = DateTime.Now.Year; // ngay hien tai
+            var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
+            var kVPCT = _unitOfWork.kVPCTRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            if (kVPCT == null || string.IsNullOrEmpty(kVPCT.SoCT))
+            {
+                return GetNextId.NextID("", "") + subfix; // 0001
+            }
+            else
+            {
+                var oldYear = kVPCT.SoCT.Substring(5, 4);
+                // cung nam
+                if (oldYear == currentYear.ToString())
+                {
+                    var oldSoCT = kVPCT.SoCT.Substring(0, 4);
+                    return GetNextId.NextID(oldSoCT, "") + subfix;
+                }
+                else
+                {
+                    // sang nam khac' chay lai tu dau
+                    return GetNextId.NextID("", "") + subfix; // 0001
+                }
+            }
+        }
+
+        public IPagedList<KVPTCDto> ListKVPTC(string searchString, string searchFromDate, string searchToDate, int? page)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -51,7 +102,7 @@ namespace Data.Services
 
             var list = new List<KVPTCDto>();
             var kVPCTs = GetAll();
-            
+
             if (kVPCTs == null)
             {
                 return null;
@@ -60,14 +111,14 @@ namespace Data.Services
             if (!string.IsNullOrEmpty(searchString))
             {
                 kVPCTs = kVPCTs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
-                                       (!string.IsNullOrEmpty(x.MFieu.ToLower()) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.NgoaiTe.ToLower()) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.HoTen.ToLower()) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.DonVi.ToLower()) && x.DonVi.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.Phong.ToLower()) && x.Phong.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.LapPhieu.ToLower()) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.MayTinh.ToLower()) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.Locker.ToLower()) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
+                                       (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.DonVi) && x.DonVi.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Phong) && x.Phong.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
             }
 
             foreach (var item in kVPCTs)
@@ -86,7 +137,7 @@ namespace Data.Services
                 kVPTCDto.MayTinh = item.MayTinh;
                 kVPTCDto.Lock = item.Lock;
                 kVPTCDto.Locker = item.Locker;
-                
+
                 list.Add(kVPTCDto);
             }
 
@@ -107,7 +158,7 @@ namespace Data.Services
                     {
                         return null; //
                     }
-                    
+
                     list = list.Where(x => x.NgayCT >= fromDate &&
                                        x.NgayCT < toDate.AddDays(1)).ToList();
                 }
@@ -176,6 +227,36 @@ namespace Data.Services
 
             return listPaged;
 
+        }
+
+        public IEnumerable<ListViewModel> ListLoaiPhieu()
+        {
+            return new List<ListViewModel>()
+            {
+                new ListViewModel() { Name = "T" },
+                new ListViewModel() { Name = "C" }
+            };
+        }
+
+        public IEnumerable<ListViewModel> ListLoaiTien()
+        {
+            return new List<ListViewModel>()
+            {
+                new ListViewModel() { Name = "VN" },
+                new ListViewModel() { Name = "NT" }
+            };
+        }
+
+        public async Task CreateAsync(KVPCT kVPCT)
+        {
+            _unitOfWork.kVPCTRepository.Create(kVPCT);
+           await _unitOfWork.Complete();
+        }
+
+        public async Task UpdateAsync(KVPCT kVPCT)
+        {
+            _unitOfWork.kVPCTRepository.Update(kVPCT);
+            await _unitOfWork.Complete();
         }
     }
 }

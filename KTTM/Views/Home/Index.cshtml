@@ -55,18 +55,18 @@
                     <div class="col-md-12">
                         <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 text-sm">
                                 Nhập thông tin
                                 @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
                                 <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" />
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 text-sm">
                                 Từ ngày
                                 <input class="form-control form-control-sm maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
                             </div>
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 text-sm">
                                 Đến ngày
                                 <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
                             </div>
@@ -88,7 +88,7 @@
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
                                     <button type="submit" class="btn btn-outline-secondary btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Cashier">Cashier</button>
                                     <button type="submit" class="btn btn-outline-danger btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Tạm ứng">Tạm ứng</button>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -97,9 +97,9 @@
             </form>
             @*<br />*@
             <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; height: 300px">
-                <table class="table mytable text-nowrap" id="tourTbl">
+                <table class="table mytable text-nowrap text-sm" id="phieuTbl">
                     <thead>
-                        <tr class="table-info text-sm">
+                        <tr class="table-info">
 
                             <th>#</th>
                             <th>@Html.DisplayNameFor(m => m.KVPTCDtos.FirstOrDefault().SoCT)</th>
@@ -123,7 +123,7 @@
                                     <td>
                                         <div class="btn-group text-white" role="group">
 
-                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-soCT="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             <span class="text-dark"> | </span>
 
                                             <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
@@ -157,6 +157,7 @@
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.NgoaiTe)</td>
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.HoTen)</td>
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.DonVi)</td>
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.LapPhieu)</td>
 
                                 </tr>
@@ -203,3 +204,39 @@
 
 </section>
 <!-- /.content -->
+
+
+@section Scripts{
+
+    <script src="~/js/Admin/Home/indexController.js"></script>
+    <script>
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+        function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteInvoiceSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+        
+        function Tabs_KeToan_TourInfo() { // tab href
+            location.href = "#tabs_KeToan_TourInfo";
+    }
+    </script>
+}

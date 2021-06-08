@@ -19,6 +19,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="~/lib/AdminLTE-3.1.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
     <!-- Theme style -->
     <link rel="stylesheet" href="~/lib/AdminLTE-3.1.0/dist/css/adminlte.css">
+    <!-- jqueryui-->
+    <link href="~/lib/AdminLTE-3.1.0/plugins/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    <!-- Toastr -->
+    <link rel="stylesheet" href="~/lib/AdminLTE-3.1.0/plugins/toastr/toastr.min.css">
+    <!-- pace-progress -->
+    <link href="~/lib/AdminLTE-3.1.0/plugins/pace-progress/themes/orange/pace-theme-flat-top.css" rel="stylesheet" />
 
     <link href="~/images/LogoLeft.ico" rel="shortcut icon" />
     <link href="~/css/MyCss.css" rel="stylesheet" />
@@ -197,6 +203,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- /.navbar -->
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" style="min-height: 1602px;">
+            @if (TempData["AlertMessage"] != null)
+            {
+                <div id="AlertBox" class="alert @TempData["AlertType"] hide">
+                    @TempData["AlertMessage"]
+                </div>
+            }
             @RenderBody()
         </div>
         <!-- /.content-wrapper -->
@@ -232,8 +244,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="~/lib/jquery.maskedinput/jquery.maskedinput.js"></script>
     <script src="~/lib/AdminLTE-3.1.0/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    @*<script src="~/lib/AdminLTE-3.1.0/dist/js/demo.js"></script>*@
+    <!-- Toastr -->
+    <script src="~/lib/AdminLTE-3.1.0/plugins/toastr/toastr.min.js"></script>
+    <!-- pace-progress -->
+    <script src="~/lib/AdminLTE-3.1.0/plugins/pace-progress/pace.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 
     <script>
@@ -279,10 +294,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         .select2-search input {
             height: calc(1.8125rem + 2px);
         }
+
         .select2-results li {
             font-size: 0.875rem !important;
         }
-
         }
     </style>
 

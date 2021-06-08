@@ -54,11 +54,22 @@ namespace Data.Models_KTTM
 
         //[DisplayName("Ngày khoá")]
         [Column(TypeName = "datetime")]
-        public DateTime Lock { get; set; }
+        public DateTime? Lock { get; set; }
 
         //[DisplayName("Người khoá")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "nvarchar(50)")]
         public string Locker { get; set; }
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
+
+        [DisplayName("Người sửa")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        public string NguoiSua { get; set; }
+
+        //[DisplayName("Ngày khoá")]
+        [Column(TypeName = "datetime")]
+        public DateTime? NgaySua { get; set; }
 
     }
 }
