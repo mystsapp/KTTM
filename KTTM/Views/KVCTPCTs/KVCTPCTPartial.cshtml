@@ -1,0 +1,127 @@
+﻿
+@model KVCTPCTViewModel
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<User>("loginUser");
+}
+
+<div class="pr-2 pl-2" @*style="overflow-x:auto; overflow-y:auto; height: 300px"*@>
+    <table class="table mytable text-nowrap text-sm" id="CTPhieuTbl">
+        <thead>
+            <tr class="table-info">
+
+                <th><button type="button" class="btn btn-outline-info btn-sm text-bold btn-block" id="btn_New_KVCTPCT" data-kvpctid="@Model.KVPCT.SoCT" title="Thêm mới KVCTPCT" ><i class="fas fa-plus"></i></button></th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().DienGiaiP)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().SoXe)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().HTTC)</th> <!--?-->
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().SoTienNT)</th> <!--?-->
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().LoaiTien)</th> <!--NgoaiTe-->
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TyGia)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().SoTien)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TKNo)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MaKhNo)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TKCo)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().DienGiai)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MaKhCo)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().Sgtcode)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().NoQuay)</th><!--?-->
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.KVCTPCTs != null)
+            {
+                @foreach (var item in Model.KVCTPCTs)
+                {
+
+                    <tr class="cursor-pointer " >
+
+                        <td>
+                            <div class="btn-group text-white" role="group">
+
+                                <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" ><i class="fas fa-edit"></i></a>
+                                @*<span class="text-dark"> | </span>
+
+                                <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" ><i class="fas fa-list"></i></a>*@
+                
+                                <!-- ko cho xóa -->
+                                <!--<span class="text-dark"> | </span>
+                                <span SoCT="confirmDeleteSpan_item.SoCT" style="display: none">-->
+                                    <!--ajax check invoices-->
+                                    <!--<span class="text-dark invoiceTrue">Hủy?</span>
+                                    <button type="button" class="btn btn-danger btn-xs btnHuyTour" data-SoCT="item.SoCT" data-url="Model.StrUrl">Yes</button>
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('item.SoCT', false)">No</button>
+                                </span>-->
+
+                                @*<span SoCT="deleteSpan_@item.SoCT">
+
+                                        <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                    </span>*@
+
+                                <!-- hidden form khoiphuc-->
+                                <!--<form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
+                                    <input type="hidden" id="hidTourId" name="id" />
+                                    <input type="hidden" id="hidStrUrl" name="strUrl" value="Model.StrUrl" />
+                                </form>-->
+
+                            </div>
+                        </td>
+
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoXe)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.HTTC)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTienNT)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTien)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKNo)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKCo)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.NoQuay)</td>
+
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+    <!--hiden field for status click-->
+    @*<input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />*@
+    <!--hiden field for status click-->
+</div>
+
+<script src="~/js/Admin/Home/indexController.js"></script>
+<script>
+    //function CTInvoiceCTVATDiv() {
+    //    location.href = "#cTInVoiceCTVAT";
+    //}
+
+//    // DSKhachHang
+
+//    $('#tab_DsKhachHang').off('click').on('click', function () {
+//        debugger
+//        tourid = $(this).data('tourid');
+
+//        $('#khachHangCreatePartial').hide(500);
+//        //$('#createInvoicePartial').hide(500);
+
+//        var url = '/DSKhachHangs/DSKhachHangPartial';
+//        $.get(url, { tourid: tourid }, function (response) {
+
+//            $('#sDSKhach').html(response);
+
+//            $('#sDSKhach').show(500);
+
+//        });
+//    });
+
+//// DSKhachHang
+</script>

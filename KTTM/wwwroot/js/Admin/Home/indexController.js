@@ -1,4 +1,9 @@
-﻿
+﻿function addCommas(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
+
 var indexController = {
     init: function () {
 
@@ -24,6 +29,18 @@ var indexController = {
     },
 
     registerEvent: function () {
+
+        // format .numbers
+        $('input.numbers').keyup(function (event) {
+
+            // Chỉ cho nhập số
+            if (event.which >= 37 && event.which <= 40) return;
+
+            $(this).val(function (index, value) {
+                return addCommas(value);
+            });
+        });
+
         //$.each($('.cursor-pointer'), function (i, item) {
 
         //    var huy = $(item).data('huy');
@@ -117,26 +134,25 @@ var indexController = {
         //    });
         //});
 
-        //// tour click --> load tourpro in qltour
-        //$('tr .tdVal').click(function () {
+        // phieu click --> load kvctpct
+        $('tr .tdVal').click(function () {
             
-        //    //$('#createInvoicePartial').hide();
-        //    //$('#createCTInvoicePartial').hide();
-        //    $('#editInvoicePartial').hide(500);
+            $('#KVCTPCT_Create_Partial').hide(500);
+            $('#KVCTPCT_Edit_Partial').hide(500);
 
-        //    tourId = $(this).data('id');
-        //    var url = '/Tours/KeToan_TourInfoByTourPartial';
-        //    $.get(url, { tourId: tourId }, function (response) {
+            soCT = $(this).data('id');
+            var url = '/KVCTPCTs/KVCTPCTPartial';
+            $.get(url, { soCT: soCT }, function (response) {
 
-        //        $('#tabs_KeToan_TourInfo').html(response);
-        //        $('#tabs_KeToan_TourInfo').show(500);
+                $('#KVCTPCT_Tbl').html(response);
+                $('#KVCTPCT_Tbl').show(500);
 
-        //    });
+            });
 
-        //});
-        //// tour click --> load tourpro in qltour
+        });
+        // phieu click --> load kvctpct
 
-        // giu trang thai tour click
+        // giu trang thai phieu click
         $('#phieuTbl .cursor-pointer').off('click').on('click', function () {
             if ($(this).hasClass("hoverClass"))
                 $(this).removeClass("hoverClass");
@@ -145,7 +161,7 @@ var indexController = {
                 $(this).addClass("hoverClass");
             }
         });
-        // giu trang thai tour click
+        // giu trang thai phieu click
 
         //// invoice click --> CTInvoices & CTVAT
         //$('.tdInvoiceVal').click(function () {
@@ -164,23 +180,23 @@ var indexController = {
 
         //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
 
-        // create new
-        //$('#btnNewKhachHang').off('click').on('click', function () {
+        // create new KVCTPCT
+        $('#btn_New_KVCTPCT').off('click').on('click', function () {
 
-        //    tourid = $(this).data('tourid');
+            kvpctid = $(this).data('kvpctid');
 
-        //    $('#sDSKhach').hide(500);
+            $('#KVCTPCT_Tbl').hide(500);
+            $('#KVCTPCT_Edit_Partial').hide(500);
 
-        //    var url = '/DSKhachHangs/KhachHangCreatePartial';
-        //    $.get(url, { tourid: tourid }, function (response) {
+            var url = '/KVCTPCTs/KVCTPCT_Create_Partial';
+            $.get(url, { kvpctid: kvpctid }, function (response) {
 
-        //        $('#khachHangCreatePartial').show(500);
+                $('#KVCTPCT_Create_Partial').show(500);
+                $('#KVCTPCT_Create_Partial').html(response);
 
-        //        $('#khachHangCreatePartial').html(response);
-
-        //    });
-        //});
-        // create new
+            });
+        });
+        // create new KVCTPCT
 
         //// close create partial
         //$('#btnCloseKhachCreatePartial').off('click').on('click', function () {

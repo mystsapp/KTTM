@@ -27,12 +27,13 @@ namespace Data.Services
         Task<KVPCT> GetBySoCT(string soCT);
         KVPCT GetBySoCTAsNoTracking(string soCT);
         Task UpdateAsync(KVPCT kVPCT);
+        
     }
-    public class KVPTCService : IKVPTCService
+    public class KVPCTService : IKVPTCService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public KVPTCService(IUnitOfWork unitOfWork)
+        public KVPCTService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -258,5 +259,6 @@ namespace Data.Services
             _unitOfWork.kVPCTRepository.Update(kVPCT);
             await _unitOfWork.Complete();
         }
+
     }
 }

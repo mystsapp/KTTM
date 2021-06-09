@@ -52,8 +52,8 @@ namespace KTTM
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // Services
-            services.AddTransient<IKVPTCService, KVPTCService>();
-            services.AddTransient<IKVCTPTCService, KVCTPTCService>();
+            services.AddTransient<IKVPTCService, KVPCTService>();
+            services.AddTransient<IKVCTPCTService, KVCTPCTService>();
 
             // FOR session
             services.AddSession(options =>

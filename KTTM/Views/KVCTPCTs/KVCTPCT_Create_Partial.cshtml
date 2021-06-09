@@ -1,0 +1,158 @@
+﻿@model KVCTPCTViewModel
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm CT phiếu</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+
+            <form method="post" autocomplete="off" id="frmHomeCreate" enctype="multipart/form-data">
+                <div class="pr-4 pl-4 text-sm">
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <input type="hidden" asp-for="@Model.KVPCT" />
+
+                    <div class="form-group row">
+
+                        <div class="col-md-9">
+                            <label asp-for="KVCTPCT.DienGiaiP" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
+                            <input asp-for="KVCTPCT.DienGiaiP" class="form-control form-control-sm " id="txtDienGiaiP" />
+                            <span asp-validation-for="KVCTPCT.DienGiaiP" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.SoXe" class="control-label"></label>
+                            <input asp-for="KVCTPCT.SoXe" class="form-control form-control-sm" id="txtSoXe" />
+                            <span asp-validation-for="KVCTPCT.SoXe" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="KVCTPCT.HTTC" class="control-label"></label>
+                            <input asp-for="KVCTPCT.HTTC" class="form-control form-control-sm" id="txtHTTC" />
+                            <span asp-validation-for="KVCTPCT.HTTC" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KVCTPCT.SoTienNT" class="control-label"></label>
+                            <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm" id="txtSoTienNT" />
+                            <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.LoaiTien" class="control-label "></label>
+                            <select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
+                            </select>
+                            <span asp-validation-for="KVCTPCT.LoaiTien" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="KVCTPCT.TyGia" class="control-label "></label>
+                            <input asp-for="KVCTPCT.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" />
+                            <span asp-validation-for="KVCTPCT.TyGia" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KVCTPCT.SoTien" class="control-label"></label>
+                            <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm" id="txtSoTien" />
+                            <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
+                            <input asp-for="KVCTPCT.TKNo" class="form-control form-control-sm" id="txtTKNo" />
+                            <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KVCTPCT.SoTienNT" class="control-label"></label>
+                            <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm" id="txtSoTienNT" />
+                            <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
+                            @*<select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm"
+                                        asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
+                                </select>*@
+                            <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" />
+                            <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
+                            <input asp-for="KVCTPCT.TKCo" class="form-control form-control-sm" id="txtTKCo" />
+                            <span asp-validation-for="KVCTPCT.TKCo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
+                            <input asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="txtDienGiai" />
+                            <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
+                            @*<select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm"
+                                        asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
+                                </select>*@
+                            <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" />
+                            <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KVCTPCT.Sgtcode" class="control-label"></label>
+                            <input asp-for="KVCTPCT.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
+                            <span asp-validation-for="KVCTPCT.Sgtcode" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.NoQuay" class="control-label"></label>
+                            <input asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm" id="txtNoQuay" />
+                            <span asp-validation-for="KVCTPCT.NoQuay" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-sm" id="btnKVCTPCTCreatePartial_Save"><i class="fas fa-save"></i> Save</button>
+                        <button type="button" class="btn btn-success btn-sm" id="btnKVCTPCTCreatePartial_Back"><i class="fas fa-backward "></i> Back</button>
+                    </div>
+                </div>
+            </form>
+
+
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

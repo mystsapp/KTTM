@@ -37,11 +37,11 @@ namespace Data.Models_KTTM
         [MaxLength(17, ErrorMessage = "Chiều dài tối đa 17 ký tự"), Column(TypeName = "varchar(17)")]
         public string Sgtcode { get; set; } 
         
-        [DisplayName("MaKhNo")]
+        [DisplayName("Mã KH nợ") ]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhNo { get; set; } //
         
-        [DisplayName("MaKhCo")]
+        [DisplayName("Mã KH có")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhCo { get; set; } //
 
@@ -112,7 +112,7 @@ namespace Data.Models_KTTM
         [MaxLength(13, ErrorMessage = "Chiều dài tối đa 13 ký tự"), Column(TypeName = "varchar(13)")]
         public string STT { get; set; } // HD ?
 
-        //[DisplayName("Loại tiền")]
+        [DisplayName("Nợ quầy")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string NoQuay { get; set; } //
         

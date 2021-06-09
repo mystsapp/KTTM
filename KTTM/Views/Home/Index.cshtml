@@ -13,23 +13,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!-- Content Header (Page header) -->
-@*<section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Blank Page</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Blank Page</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </section>*@
-
 <!-- Main content -->
 <section class="content" style="padding: 15px 0.5rem">
 
@@ -118,7 +101,7 @@
                             @foreach (var item in Model.KVPTCDtos)
                             {
 
-                                <tr class="cursor-pointer " @*data-huy="@item.HuyTour"*@ onclick="Tabs_KeToan_TourInfo()">
+                                <tr class="cursor-pointer " @*data-huy="@item.HuyTour"*@ onclick="KVCTPCT_Tbl()">
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
@@ -138,9 +121,9 @@
 
                                             @*<span SoCT="deleteSpan_@item.SoCT">
 
-                                                    <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
+                                            <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
 
-                                                </span>*@
+                                        </span>*@
 
                                             <!-- hidden form khoiphuc-->
                                             <form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
@@ -172,7 +155,7 @@
                 @*<input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />*@
                 <!--hiden field for status click-->
             </div>
-            <div class="pr-2 pl-2">
+            <div class="pr-2 pl-2 pb-2">
                 @if (Model.KVPTCDtos != null)
                 {
                     @Html.PagedListPager((IPagedList)Model.KVPTCDtos, page => Url.Action("Index", new
@@ -193,18 +176,27 @@
                         }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
                 }
             </div>
+            <!-- KVCTPCT-->
+            <div id="KVCTPCT_Tbl">
+            </div>
+            <div id="KVCTPCT_Create_Partial">
+            </div>
+            <div id="KVCTPCT_Edit_Partial">
+            </div>
+
+            <!-- KVCTPCT-->
+
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-            Footer
-        </div>
+        @*<div class="card-footer">
+                Footer
+            </div>*@
         <!-- /.card-footer-->
     </div>
     <!-- /.card -->
 
 </section>
 <!-- /.content -->
-
 
 @section Scripts{
 
@@ -234,9 +226,9 @@
                 $('#' + confirmDeleteSpan).hide();
             }
         }
-        
-        function Tabs_KeToan_TourInfo() { // tab href
-            location.href = "#tabs_KeToan_TourInfo";
-    }
+
+        function KVCTPCT_Tbl() { // tab href
+            location.href = "#KVCTPCT_Tbl";
+        }
     </script>
 }
