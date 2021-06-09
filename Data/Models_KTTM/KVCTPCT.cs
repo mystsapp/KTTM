@@ -160,5 +160,27 @@ namespace Data.Models_KTTM
         [MaxLength(120, ErrorMessage = "Chiều dài tối đa 120 ký tự"), Column(TypeName = "nvarchar(120)")]
         public string HoaDonDT { get; set; } //
 
+
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
+
+        [DisplayName("Người tạo")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        public string NguoiTao { get; set; }
+
+        //[DisplayName("Ngày khoá")]
+        [Column(TypeName = "datetime")]
+        public DateTime? NgayTao { get; set; }
+
+        [DisplayName("Người sửa")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        public string NguoiSua { get; set; }
+
+        //[DisplayName("Ngày khoá")]
+        [Column(TypeName = "datetime")]
+        public DateTime? NgaySua { get; set; }
+
+
     }
 }

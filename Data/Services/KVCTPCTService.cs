@@ -12,6 +12,7 @@ namespace Data.Services
     {
         Task<IEnumerable<KVCTPCT>> List_KVCTPCT_By_SoCT(string soCT);
         IEnumerable<Ngoaite> GetAll_NgoaiTes();
+        Task Create(KVCTPCT kVCTPCT);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -30,6 +31,12 @@ namespace Data.Services
         public IEnumerable<Ngoaite> GetAll_NgoaiTes()
         {
             return _unitOfWork.ngoaiTeRepository.GetAll();
+        }
+
+        public async Task Create(KVCTPCT kVCTPCT)
+        {
+            _unitOfWork.kVCTPCTRepository.Create(kVCTPCT);
+            await _unitOfWork.Complete();
         }
     }
 }

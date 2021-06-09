@@ -52,7 +52,7 @@ namespace KTTM
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // Services
-            services.AddTransient<IKVPTCService, KVPCTService>();
+            services.AddTransient<IKVPCTService, KVPCTService>();
             services.AddTransient<IKVCTPCTService, KVCTPCTService>();
 
             // FOR session

@@ -1,4 +1,6 @@
-﻿using Data.Services;
+﻿using Data.Models_QLTaiKhoan;
+using Data.Services;
+using Data.Utilities;
 using KTTM.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,9 +45,51 @@ namespace KTTM.Controllers
         {
             // KVPCT
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(kvpctid);
-            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes();
+            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
 
             return PartialView(KVCTPCTVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> KVCTPCT_Create_Partial_Post()
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
+
+            // ghi log
+            KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            try
+            {
+                await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+
+        }
+
+        public JsonResult TinhSoTien(string soTienNT, decimal tyGia)
+        {
+            var soTien = decimal.Parse(soTienNT) * tyGia;
+            return Json(new
+            {
+                status = true,
+                soTien = soTien
+            });
         }
     }
 }

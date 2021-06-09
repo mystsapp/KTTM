@@ -18,15 +18,15 @@ namespace KTTM.Controllers
     public class HomeController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IKVPTCService _kVPTCService;
+        private readonly IKVPCTService _kVPCTService;
 
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
-        public HomeController(IUnitOfWork unitOfWork, IKVPTCService kVPTCService)
+        public HomeController(IUnitOfWork unitOfWork, IKVPCTService kVPCTService)
         {
             _unitOfWork = unitOfWork;
-            _kVPTCService = kVPTCService;
+            _kVPCTService = kVPCTService;
 
             HomeVM = new HomeViewModel()
             {
@@ -42,7 +42,7 @@ namespace KTTM.Controllers
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
 
-            HomeVM.KVPTCDtos = _kVPTCService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
+            HomeVM.KVPTCDtos = _kVPCTService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
             return View(HomeVM);
         }
 
@@ -61,9 +61,9 @@ namespace KTTM.Controllers
             HomeVM.KVPCT.Create = DateTime.Now;
             HomeVM.KVPCT.LapPhieu = user.Username;
 
-            HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
-            HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
-            HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
+            HomeVM.LoaiTiens = _kVPCTService.ListLoaiTien();
+            HomeVM.LoaiPhieus = _kVPCTService.ListLoaiPhieu();
+            HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
 
             return View(HomeVM);
         }
@@ -79,9 +79,9 @@ namespace KTTM.Controllers
                 HomeVM = new HomeViewModel()
                 {
                     KVPCT = new KVPCT(),
-                    LoaiTiens = _kVPTCService.ListLoaiTien(),
-                    LoaiPhieus = _kVPTCService.ListLoaiPhieu(),
-                    Phongbans = _kVPTCService.GetAllPhongBan(),
+                    LoaiTiens = _kVPCTService.ListLoaiTien(),
+                    LoaiPhieus = _kVPCTService.ListLoaiPhieu(),
+                    Phongbans = _kVPCTService.GetAllPhongBan(),
                     StrUrl = strUrl
                 };
 
@@ -98,10 +98,10 @@ namespace KTTM.Controllers
                     switch (HomeVM.KVPCT.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("QT"); // thu VND
+                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("QT"); // thu VND
                             break;
                         default:
-                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("NT"); // thu NgoaiTe
+                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("NT"); // thu NgoaiTe
                             break;
                     }
                     break;
@@ -109,10 +109,10 @@ namespace KTTM.Controllers
                     switch (HomeVM.KVPCT.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("QC"); // chi VND
+                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("QC"); // chi VND
                             break;
                         default:
-                            HomeVM.KVPCT.SoCT = _kVPTCService.GetSoCT("NC"); // chi NgoaiTe
+                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("NC"); // chi NgoaiTe
                             break;
                     }
                     break;
@@ -142,7 +142,7 @@ namespace KTTM.Controllers
 
             try
             {
-                await _kVPTCService.CreateAsync(HomeVM.KVPCT); // save
+                await _kVPCTService.CreateAsync(HomeVM.KVPCT); // save
 
                 SetAlert("Thêm mới thành công.", "success");
 
@@ -167,7 +167,7 @@ namespace KTTM.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            HomeVM.KVPCT = await _kVPTCService.GetBySoCT(soCT);
+            HomeVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
             
             if (HomeVM.KVPCT == null)
             {
@@ -175,9 +175,9 @@ namespace KTTM.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
-            HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
-            HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
+            HomeVM.LoaiTiens = _kVPCTService.ListLoaiTien();
+            HomeVM.LoaiPhieus = _kVPCTService.ListLoaiPhieu();
+            HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
 
             return View(HomeVM);
         }
@@ -205,7 +205,7 @@ namespace KTTM.Controllers
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
-                var t = _kVPTCService.GetBySoCTAsNoTracking(soCT);
+                var t = _kVPCTService.GetBySoCTAsNoTracking(soCT);
 
                 if (t.HoTen != HomeVM.KVPCT.HoTen)
                 {
@@ -237,7 +237,7 @@ namespace KTTM.Controllers
 
                 try
                 {
-                    await _kVPTCService.UpdateAsync(HomeVM.KVPCT);
+                    await _kVPCTService.UpdateAsync(HomeVM.KVPCT);
                     SetAlert("Cập nhật thành công", "success");
 
                     return Redirect(strUrl);

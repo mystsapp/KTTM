@@ -13,7 +13,7 @@ using X.PagedList;
 
 namespace Data.Services
 {
-    public interface IKVPTCService
+    public interface IKVPCTService
     {
         IEnumerable<KVPCT> GetAll();
         IEnumerable<Ngoaite> GetAllNgoaiTe();
@@ -29,7 +29,7 @@ namespace Data.Services
         Task UpdateAsync(KVPCT kVPCT);
         
     }
-    public class KVPCTService : IKVPTCService
+    public class KVPCTService : IKVPCTService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -78,7 +78,7 @@ namespace Data.Services
             }
             else
             {
-                var oldYear = kVPCT.SoCT.Substring(5, 4);
+                var oldYear = kVPCT.SoCT.Substring(6, 4);
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {

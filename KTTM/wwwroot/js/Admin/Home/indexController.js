@@ -141,13 +141,8 @@ var indexController = {
             $('#KVCTPCT_Edit_Partial').hide(500);
 
             soCT = $(this).data('id');
-            var url = '/KVCTPCTs/KVCTPCTPartial';
-            $.get(url, { soCT: soCT }, function (response) {
 
-                $('#KVCTPCT_Tbl').html(response);
-                $('#KVCTPCT_Tbl').show(500);
-
-            });
+            indexController.Load_KVCTPCTPartial(soCT);
 
         });
         // phieu click --> load kvctpct
@@ -415,17 +410,18 @@ var indexController = {
 
         //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
 
-    }
-    //Load_KeToan_TourInfoByTourPartial: function (tourId) {
-    //    var url = '/Tours/KeToan_TourInfoByTourPartial';
-    //    $.get(url, { tourId: tourId }, function (response) {
+    },
+    Load_KVCTPCTPartial: function (soCT) {
 
-    //        $('#tabs_KeToan_TourInfo').html(response);
-    //        $('#tabs_KeToan_TourInfo').show();
+        var url = '/KVCTPCTs/KVCTPCTPartial';
+        $.get(url, { soCT: soCT }, function (response) {
 
-    //    });
+            $('#KVCTPCT_Tbl').html(response);
+            $('#KVCTPCT_Tbl').show(500);
 
-    //},
+        });
+
+    },
     //Load_CTInvoice_CTVAT_Partial: function (invoiceId) {
 
     //    var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
