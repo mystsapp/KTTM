@@ -22,7 +22,7 @@
             <div class="pr-4 pl-4 text-sm">
 
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <input type="hidden" asp-for="@Model.KVPCT" />
+                <input type="hidden" asp-for="KVCTPCT.KVPCTId" />
 
                 <div class="form-group row">
 
@@ -71,7 +71,7 @@
 
                     <div class="col-md-3">
                         <label asp-for="KVCTPCT.SoTien" class="control-label"></label>
-                        <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm" id="txtSoTien" />
+                        <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " readonly id="txtSoTien" />
                         <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
                     </div>
 
@@ -85,7 +85,13 @@
 
                 <div class="form-group row">
 
-                    <div class="col-md-2">
+                    <div class="col-md-9">
+                        <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
+                        <input asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="txtDienGiai" />
+                        <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
                         <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
                         @*<select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm"
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
@@ -94,23 +100,17 @@
                         <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                     </div>
 
+                </div>
+
+                <div class="form-group row">
+
                     <div class="col-md-3">
                         <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
                         <input asp-for="KVCTPCT.TKCo" class="form-control form-control-sm" id="txtTKCo" />
                         <span asp-validation-for="KVCTPCT.TKCo" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-7">
-                        <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
-                        <input asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="txtDienGiai" />
-                        <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-group row">
-
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
                         @*<select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm"
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
@@ -125,7 +125,7 @@
                         <span asp-validation-for="KVCTPCT.Sgtcode" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label asp-for="KVCTPCT.NoQuay" class="control-label"></label>
                         <input asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm" id="txtNoQuay" />
                         <span asp-validation-for="KVCTPCT.NoQuay" class="text-danger"></span>
@@ -176,6 +176,7 @@
     </script>*@
 
 <!-- Validation -->
+
 <script>
 
     $('#frm_KVCTPCT_Create').validate({
@@ -216,29 +217,38 @@
         }
     });
 
-    //$('#txtChuDeTour').rules('add', {
-    //    required: true,
-    //    messages: {
-    //        //required: "Chủ đề không được để trống"
-    //    }
-    //});
-
-    $('#txtDienGiaiP').rules('add', {
+    $('#txtSgtcode').rules('add', {
         required: true,
+        minlength: 17,
         messages: {
-            // required: "Ngày đến không được để trống"
+            //required: "Chủ đề không được để trống"
         }
     });
 
     // sotien
 
     $('#txtSoTienNT').blur(function () {
-        debugger
+
         soTienNT = $('#txtSoTienNT').val();
         tyGia = $('#txtTyGia').val();
 
-        soTien = TinhSoTien(soTienNT, tyGia);
-        $('#txtSoTien').val(soTien);
+        $.ajax({
+            type: "GET",
+            url: "/KVCTPCTs/TinhSoTien",
+            data: { soTienNT: soTienNT, tyGia: tyGia },
+            dataType: "json",
+            success: function (response) {
+                if (response.status) {
+                    soTien = response.soTien;
+                    $('#txtSoTien').val(numeral(soTien).format('0,0'));
+                }
+                else {
+                    toastr.error(response.message);
+
+                }
+            }
+        });
+
     })
 
     $('#txtTyGia').blur(function () {
@@ -246,8 +256,23 @@
         soTienNT = $('#txtSoTienNT').val();
         tyGia = $('#txtTyGia').val();
 
-        soTien = TinhSoTien(soTienNT, tyGia);
-        $('#txtSoTien').val(soTien);
+        $.ajax({
+            type: "GET",
+            url: "/KVCTPCTs/TinhSoTien",
+            data: { soTienNT: soTienNT, tyGia: tyGia },
+            dataType: "json",
+            success: function (response) {
+                if (response.status) {
+                    soTien = response.soTien;
+                    $('#txtSoTien').val(numeral(soTien).format('0,0'));
+                }
+                else {
+                    toastr.error(response.message);
+
+                }
+            }
+        });
+
     })
 
     // sotien
@@ -268,8 +293,8 @@
                         toastr.success('Tạo mới chi tiết thành công!'); // toastr in admin/tour/indexController.js
 
                         $('#KVCTPCT_Create_Partial').hide(500);
-
-                        soCT = '@Model.KVPCT.SoCT';
+                        debugger
+                        soCT = '@Model.KVCTPCT.KVPCTId';
 
                             indexController.Load_KVCTPCTPartial(soCT);
                     }
@@ -283,25 +308,11 @@
 
     });
 
-    // function tinh sotien
-    function TinhSoTien(soTienNT, tyGia) {
-        $.ajax({
-            type: "GET",
-            url: "/KVCTPCTs/TinhSoTien",
-            data: { soTienNT: soTienNT, tyGia: tyGia},
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
+    // btnKVCTPCTCreatePartial_Back
+    $('#btnKVCTPCTCreatePartial_Back').off('click').on('click', function () {
+        $('#KVCTPCT_Create_Partial').hide(500);
+        
+        $('#KVCTPCT_Tbl').show(500);
 
-                        return response.soTien;
-                    }
-                    else {
-                        toastr.error(response.message);
-
-                    }
-                }
-            });
-
-    }
-    // function tinh sotien
+        });
 </script>

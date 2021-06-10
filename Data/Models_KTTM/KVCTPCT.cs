@@ -13,6 +13,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("KVPCT")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
+        [Required(ErrorMessage = "Trường này không được để trống")]
         public string KVPCTId { get; set; }
 
         [ForeignKey("KVPCTId")]
@@ -34,7 +35,7 @@ namespace Data.Models_KTTM
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string TKCo { get; set; } 
         
-        [MaxLength(17, ErrorMessage = "Chiều dài tối đa 17 ký tự"), Column(TypeName = "varchar(17)")]
+        [MaxLength(17, ErrorMessage = "Chiều dài tối đa 17 ký tự"), MinLength(17, ErrorMessage = "Chiều dài tối thiểu 17 ký tự"), Column(TypeName = "varchar(17)")]
         public string Sgtcode { get; set; } 
         
         [DisplayName("Mã KH nợ") ]
@@ -96,7 +97,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("Ngày CT Gốc")]
         [Column(TypeName = "datetime")]
-        public DateTime NgayCTGoc { get; set; } //
+        public DateTime? NgayCTGoc { get; set; } //?
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal VAT { get; set; }
@@ -145,7 +146,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("KC141")]
         [Column(TypeName = "datetime")]
-        public DateTime KC141 { get; set; } //
+        public DateTime? KC141 { get; set; } //?
 
 
         [DisplayName("Tạm ứng")]

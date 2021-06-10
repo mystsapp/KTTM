@@ -10,8 +10,8 @@
     var user = HttpContextAccessor.HttpContext.Session.GetSingle<User>("loginUser");
 }
 
-<div class="pr-2 pl-2" @*style="overflow-x:auto; overflow-y:auto; height: 300px"*@>
-    <table class="table mytable text-nowrap text-sm" id="CTPhieuTbl">
+<div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto">
+    <table class="table mytable text-nowrap text-sm" id="cTPhieuTbl">
         <thead>
             <tr class="table-info">
 
@@ -38,7 +38,7 @@
                 @foreach (var item in Model.KVCTPCTs)
                 {
 
-                    <tr class="cursor-pointer " >
+                    <tr class="ctphieu-cursor-pointer " >
 
                         <td>
                             <div class="btn-group text-white" role="group">
@@ -75,10 +75,10 @@
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoXe)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.HTTC)</td>
-                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTienNT)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTienNT.ToString("N0"))</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
-                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTien)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKNo)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKCo)</td>
@@ -100,6 +100,7 @@
 
 <script src="~/js/Admin/Home/indexController.js"></script>
 <script>
+
     //function CTInvoiceCTVATDiv() {
     //    location.href = "#cTInVoiceCTVAT";
     //}

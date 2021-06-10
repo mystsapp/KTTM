@@ -158,6 +158,17 @@ var indexController = {
         });
         // giu trang thai phieu click
 
+        // giu trang thai CT phieu click
+        $('#cTPhieuTbl .ctphieu-cursor-pointer').off('click').on('click', function () {
+            if ($(this).hasClass("hoverClass"))
+                $(this).removeClass("hoverClass");
+            else {
+                $('.ctphieu-cursor-pointer').removeClass("hoverClass");
+                $(this).addClass("hoverClass");
+            }
+        });
+        // giu trang thai CT phieu click
+
         //// invoice click --> CTInvoices & CTVAT
         //$('.tdInvoiceVal').click(function () {
 

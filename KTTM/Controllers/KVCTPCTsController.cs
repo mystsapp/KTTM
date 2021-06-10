@@ -41,16 +41,16 @@ namespace KTTM.Controllers
 
             return PartialView(KVCTPCTVM);
         }
-        public async Task<IActionResult> KVCTPCT_Create_Partial(string kvpctid)
+        public IActionResult KVCTPCT_Create_Partial(string kvpctid)
         {
-            // KVPCT
-            KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(kvpctid);
+            
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.KVCTPCT.KVPCTId = kvpctid;
 
             return PartialView(KVCTPCTVM);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("KVCTPCT_Create_Partial")]
         public async Task<IActionResult> KVCTPCT_Create_Partial_Post()
         {
             // from login session
@@ -63,7 +63,16 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             try
             {
-                await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+                try
+                {
+                    await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+                
 
                 return Json(new
                 {
@@ -82,14 +91,14 @@ namespace KTTM.Controllers
 
         }
 
-        public JsonResult TinhSoTien(string soTienNT, decimal tyGia)
+        public JsonResult TinhSoTien(decimal soTienNT, decimal tyGia)
         {
-            var soTien = decimal.Parse(soTienNT) * tyGia;
+            var soTien = soTienNT * tyGia;
             return Json(new
             {
                 status = true,
-                soTien = soTien
-            });
+                soTien = soTien.ToString()
+            }) ;
         }
     }
 }
