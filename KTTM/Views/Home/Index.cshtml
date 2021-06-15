@@ -155,7 +155,7 @@
                 @*<input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />*@
                 <!--hiden field for status click-->
             </div>
-            <div class="pr-2 pl-2 pb-2">
+            <div class="p-2" style="background-color: aliceblue;">
                 @if (Model.KVPTCDtos != null)
                 {
                     @Html.PagedListPager((IPagedList)Model.KVPTCDtos, page => Url.Action("Index", new
@@ -229,6 +229,9 @@
 
         function KVCTPCT_Tbl() { // tab href
             location.href = "#KVCTPCT_Tbl";
+        }
+        function KVCTPCT_Tbl1() { // tab href
+            alert('abc');
         }
     </script>
 }
