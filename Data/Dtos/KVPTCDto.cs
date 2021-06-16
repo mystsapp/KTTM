@@ -11,7 +11,7 @@ namespace Data.Dtos
         public string SoCT { get; set; }
 
         [DisplayName("Ngày lập phiếu")]
-        public DateTime NgayCT { get; set; }
+        public DateTime? NgayCT { get; set; }
 
         [DisplayName("Loại phiếu")]
         public string MFieu { get; set; }

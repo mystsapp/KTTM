@@ -9,44 +9,26 @@
 
     <div class="form-group row text-sm">
 
-        <div class="col-md-3 ">
-            <label asp-for="Tour.NgayHuyTour" class="control-labels"></label>
-            <input type="text" asp-for="Tour.NgayHuyTour" class="form-control maskInput" id="txtNgayHuyTour" />
-            <span asp-validation-for="Tour.NgayHuyTour" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-3">
-            <label asp-for="Tour.NDHuyTourId" class="control-label"></label>
-            <select asp-for="Tour.NDHuyTourId" class="form-control select2"
-                    asp-items="@(new SelectList(Model.CacNoiDungHuyTours, "Id", "NoiDung"))" id="ddlNDHuyTour">
-            </select>
-            <span asp-validation-for="Tour.NDHuyTourId" class="text-danger"></span>
+        <div class="col-md-6 ">
+            <label class="control-labels">Báo cao số</label>
+            <input name="baoCaoSo" class="form-control form-control-sm" id="txtBaoCaoSo" />
         </div>
 
         <div class="col-md-6">
-            <label asp-for="Tour.GhiChu" class="control-label"></label>
-            <input asp-for="Tour.GhiChu" class="form-control " />
-            <span asp-validation-for="Tour.GhiChu" class="text-danger"></span>
+            <label class="control-label">Tk cong nơ</label>
+            <select name="tkCongNo" class="form-control select2 form-control-sm"
+                    asp-items="@(new SelectList(Model.TkCongNos, "Tkhoan", "Tkhoan"))" id="ddlTkCongNo">
+            </select>
+            
         </div>
 
     </div>
     <div class="modal-footer ">
         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
         <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
-        <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
     </div>
 </form>
 <!-- /.modal-content -->
-
-
-<script src="~/lib/AdminLTE-3.0.5/plugins/jquery.maskedinput/jquery.maskedinput.min.js"></script>
-<script>
-    $(function () {
-        $(".maskInput").mask("99/99/9999");
-
-    });
-
-</script>
 
 <!-- Validation -->
 <script>

@@ -29,7 +29,7 @@ var indexController = {
     },
 
     registerEvent: function () {
-
+        
         // format .numbers
         $('input.numbers').keyup(function (event) {
 
@@ -112,8 +112,8 @@ var indexController = {
             soCT = $(this).data('id');
 
             // gang' soCT cho btnCashier
-            $('#btnCashier').prop('disabled', false);
-            $('#btnCashier').attr('data-id', soCT);
+            $('.btnCashier').attr('disabled', false);
+            $('.btnCashier').attr('data-id', soCT);
             
             $('#KVCTPCT_Create_Partial').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);

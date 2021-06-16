@@ -88,7 +88,7 @@
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" asp-route-strUrl="@Model.StrUrl" asp-route-id="" disabled title="Cashier">Cashier</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" data-id="" title="Cashier">Cashier</button>
                                     <button type="submit" class="btn btn-outline-danger btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Tạm ứng">Tạm ứng</button>
 
                                 </div>
@@ -154,7 +154,7 @@
                                     </td>
 
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.Raw(item.NgayCT.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.MFieu)</td>
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.NgoaiTe)</td>
                                     <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.HoTen)</td>
