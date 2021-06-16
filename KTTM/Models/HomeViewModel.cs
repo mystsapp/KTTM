@@ -1,4 +1,5 @@
 ﻿using Data.Dtos;
+using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.ViewModels;
@@ -15,6 +16,8 @@ namespace KTTM.Models
         public IEnumerable<ListViewModel> LoaiTiens { get; set; }
         public IEnumerable<Phongban> Phongbans { get; set; }
         public IEnumerable<ListViewModel> LoaiPhieus { get; set; }
+
+        public IEnumerable<TkCongNo> TkCongNos { get; set; }
         public string StrUrl { get; set; }
     }
 }

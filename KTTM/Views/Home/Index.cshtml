@@ -13,6 +13,25 @@
     ViewData["Title"] = "Home Page";
 }
 
+<!-- huy tour modal-->
+<div class="modal fade" id="layDataCashier" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông tin hủy tour</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body layDataCashier_Body">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- huy tour modal-->
 <!-- Main content -->
 <section class="content" style="padding: 15px 0.5rem">
 
@@ -69,7 +88,7 @@
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Cashier">Cashier</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" asp-route-strUrl="@Model.StrUrl" asp-route-id="" disabled title="Cashier">Cashier</button>
                                     <button type="submit" class="btn btn-outline-danger btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Tạm ứng">Tạm ứng</button>
 
                                 </div>
@@ -121,9 +140,9 @@
 
                                             @*<span SoCT="deleteSpan_@item.SoCT">
 
-                                            <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
 
-                                        </span>*@
+                                                </span>*@
 
                                             <!-- hidden form khoiphuc-->
                                             <form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">

@@ -15,7 +15,7 @@
         <thead>
             <tr class="table-info">
 
-                <th><button type="button" class="btn btn-outline-info btn-sm text-bold btn-block" id="btn_New_KVCTPCT" data-kvpctid="@Model.KVPCT.SoCT" title="Right click to full" ><i class="fas fa-plus"></i></button></th>
+                <th><button type="button" class="btn btn-outline-info btn-sm text-bold btn-block" id="btn_New_KVCTPCT" data-kvpctid="@Model.KVPCT.SoCT" title="Right click to full"><i class="fas fa-plus"></i></button></th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().DienGiaiP)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().SoXe)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().HTTC)</th> <!--?-->
@@ -30,6 +30,23 @@
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MaKhCo)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().Sgtcode)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().NoQuay)</th><!--?-->
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().CoQuay)</th><!--?-->
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().CardNumber)</th><!--?-->
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().SalesSlip)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().SoCTGoc)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().KyHieu)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().LoaiHDGoc)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().NgayCTGoc)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MauSoHD)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MsThue)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().VAT)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().DSKhongVAT)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().BoPhan)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().STT)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TenKH)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().DiaChi)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MatHang)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().DieuChinh)</th>
             </tr>
         </thead>
         <tbody>
@@ -38,25 +55,24 @@
                 @foreach (var item in Model.KVCTPCTs)
                 {
 
-                    <tr class="ctphieu-cursor-pointer " >
+                    <tr class="ctphieu-cursor-pointer ">
 
                         <td>
                             <div class="btn-group text-white" role="group">
 
-                                <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" ><i class="fas fa-edit"></i></a>
+                                <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit"></i></a>
                                 @*<span class="text-dark"> | </span>
 
-                                <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" ><i class="fas fa-list"></i></a>*@
-                
+                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" ><i class="fas fa-list"></i></a>*@
+
                                 <!-- ko cho xóa -->
                                 <!--<span class="text-dark"> | </span>
                                 <span SoCT="confirmDeleteSpan_item.SoCT" style="display: none">-->
-                                    <!--ajax check invoices-->
-                                    <!--<span class="text-dark invoiceTrue">Hủy?</span>
+                                <!--ajax check invoices-->
+                                <!--<span class="text-dark invoiceTrue">Hủy?</span>
                                     <button type="button" class="btn btn-danger btn-xs btnHuyTour" data-SoCT="item.SoCT" data-url="Model.StrUrl">Yes</button>
                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('item.SoCT', false)">No</button>
                                 </span>-->
-
                                 @*<span SoCT="deleteSpan_@item.SoCT">
 
                                         <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
@@ -86,6 +102,23 @@
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.NoQuay)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CoQuay)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SalesSlip)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoCTGoc)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.KyHieu)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.NgayCTGoc.Value.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MauSoHD)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MsThue)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.VAT)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.BoPhan)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.STT)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TenKH)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DiaChi)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MatHang)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DieuChinh)</td>
 
                     </tr>
 

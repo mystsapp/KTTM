@@ -106,46 +106,51 @@ var indexController = {
         //    });
         //});
 
-        //$('.btnHuyTour').off('click').on('click', function () {
-        //    //return $.ajax({
-        //    //    url: '/Tours/HuyTourPartial',
-        //    //    data: {
-        //    //        id: $(this).data('id')
-        //    //    },
-        //    //    dataType: 'json',
-        //    //    type: 'GET',
-        //    //    success: function (response) {
-        //    //        console.log(response);
-        //    //        //if (response.status) {
-        //    //        //    console.log(response.toursCount);
-        //    //        //    return response.toursCount;
-        //    //        //}
-
-        //    //        //else
-        //    //        //    return 10;
-        //    //    }
-        //    //});
-        //    strUrl = $('.btnHuyTour').data('url');
-        //    $.get('/Tours/HuyTourPartial', { id: $(this).data('id'), strUrl: strUrl }, function (data) {
-
-        //        $('#huyTourModal').modal('show');
-        //        $('.huyTourPartial').html(data);
-        //        $('#huyTourModal').draggable();
-        //    });
-        //});
-
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
+
+            soCT = $(this).data('id');
+
+            // gang' soCT cho btnCashier
+            $('#btnCashier').prop('disabled', false);
+            $('#btnCashier').attr('data-id', soCT);
             
             $('#KVCTPCT_Create_Partial').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);
-
-            soCT = $(this).data('id');
 
             indexController.Load_KVCTPCTPartial(soCT);
 
         });
         // phieu click --> load kvctpct
+
+        // show cashier modal
+        $('.btnCashier').off('click').on('click', function () {
+            //return $.ajax({
+            //    url: '/Tours/HuyTourPartial',
+            //    data: {
+            //        id: $(this).data('id')
+            //    },
+            //    dataType: 'json',
+            //    type: 'GET',
+            //    success: function (response) {
+            //        console.log(response);
+            //        //if (response.status) {
+            //        //    console.log(response.toursCount);
+            //        //    return response.toursCount;
+            //        //}
+
+            //        //else
+            //        //    return 10;
+            //    }
+            //});
+            strUrl = $('.layDataCashier').data('url');
+            $.get('/Home/LayDataCashierPartial', { id: $(this).data('id'), strUrl: strUrl }, function (data) {
+
+                $('#layDataCashier').modal('show');
+                $('.layDataCashier_Body').html(data);
+                $('#layDataCashier').draggable();
+            });
+        });
 
         // giu trang thai phieu click
         $('#phieuTbl .cursor-pointer').off('click').on('click', function () {

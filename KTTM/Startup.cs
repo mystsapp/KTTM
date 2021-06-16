@@ -49,6 +49,9 @@ namespace KTTM
             services.AddTransient<IKVPCTRepository, KVPCTRepository>();
             services.AddTransient<IKVCTPCTRepository, KVCTPCTRepository>();
 
+            // DanhMucKT
+            services.AddTransient<ITkCongNoRepository, TkCongNoRepository>();
+
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // Services

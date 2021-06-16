@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
 using System;
@@ -23,6 +24,9 @@ namespace Data.Repository
         // KTTM
         IKVPCTRepository kVPCTRepository { get; }
         IKVCTPCTRepository kVCTPCTRepository { get; }
+
+        // DanhMucKT
+        ITkCongNoRepository tkCongNoRepository { get; }
         Task<int> Complete();
 
     }
@@ -31,12 +35,14 @@ namespace Data.Repository
         private readonly qltaikhoanContext _qltaikhoanContext;
         private readonly KTTMDbContext _kTTMDbContext;
         private readonly qltourContext _qltourContext;
+        private readonly DanhMucKTContext _danhMucKTContext;
 
-        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext)
+        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext, DanhMucKTContext danhMucKTContext)
         {
             _qltaikhoanContext = qltaikhoanContext;
             _kTTMDbContext = kTTMDbContext;
             _qltourContext = qltourContext;
+            _danhMucKTContext = danhMucKTContext;
 
             // qltaikhoan
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -50,6 +56,9 @@ namespace Data.Repository
             // kttm
             kVPCTRepository = new KVPCTRepository(_kTTMDbContext);
             kVCTPCTRepository = new KVCTPCTRepository(_kTTMDbContext);
+
+            // DanhMucKT
+            tkCongNoRepository = new TkCongNoRepository(_danhMucKTContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -66,6 +75,8 @@ namespace Data.Repository
 
         public IPhongBanRepository phongBanRepository { get; }
 
+        public ITkCongNoRepository tkCongNoRepository { get; }
+
         public async Task<int> Complete()
         {
             await _qltaikhoanContext.SaveChangesAsync();
@@ -79,6 +90,7 @@ namespace Data.Repository
             _qltaikhoanContext.Dispose();
             _kTTMDbContext.Dispose();
             _qltourContext.Dispose();
+            _danhMucKTContext.Dispose();
             GC.Collect();
         }
     }

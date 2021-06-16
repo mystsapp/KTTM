@@ -1,4 +1,5 @@
 ﻿using Data.Dtos;
+using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.Repository;
@@ -27,6 +28,8 @@ namespace Data.Services
         Task<KVPCT> GetBySoCT(string soCT);
         KVPCT GetBySoCTAsNoTracking(string soCT);
         Task UpdateAsync(KVPCT kVPCT);
+
+        IEnumerable<TkCongNo> GetAllTkCongNo();
         
     }
     public class KVPCTService : IKVPCTService
@@ -260,5 +263,9 @@ namespace Data.Services
             await _unitOfWork.Complete();
         }
 
+        public IEnumerable<TkCongNo> GetAllTkCongNo()
+        {
+            return _unitOfWork.tkCongNoRepository.GetAll();
+        }
     }
 }
