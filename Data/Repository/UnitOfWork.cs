@@ -27,6 +27,7 @@ namespace Data.Repository
 
         // DanhMucKT
         ITkCongNoRepository tkCongNoRepository { get; }
+        IDmHttcRepository dmHttcRepository { get; }
         Task<int> Complete();
 
     }
@@ -59,6 +60,7 @@ namespace Data.Repository
 
             // DanhMucKT
             tkCongNoRepository = new TkCongNoRepository(_danhMucKTContext);
+            dmHttcRepository = new DmHttcRepository(_danhMucKTContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -76,6 +78,8 @@ namespace Data.Repository
         public IPhongBanRepository phongBanRepository { get; }
 
         public ITkCongNoRepository tkCongNoRepository { get; }
+
+        public IDmHttcRepository dmHttcRepository { get; }
 
         public async Task<int> Complete()
         {

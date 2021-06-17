@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Models_QLTour;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,8 @@ namespace KTTM.Models
         public KVCTPCT KVCTPCT { get; set; }
         public IEnumerable<KVCTPCT> KVCTPCTs { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; }
+        public IEnumerable<DmHttc> DmHttcs { get; set; }
+        public IEnumerable<list> DmHttcs { get; set; }
+        public IEnumerable<DmHttc> DmHttcs { get; set; }
     }
 }

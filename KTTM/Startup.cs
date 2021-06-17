@@ -53,6 +53,7 @@ namespace KTTM
 
             // DanhMucKT
             services.AddTransient<ITkCongNoRepository, TkCongNoRepository>();
+            services.AddTransient<IDmHttcRepository, DmHttcRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

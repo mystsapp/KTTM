@@ -13,7 +13,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!-- huy tour modal-->
+<!-- layDataCashier modal-->
 <div class="modal fade" id="layDataCashier" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
 
@@ -31,7 +31,26 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- huy tour modal-->
+<!-- layDataCashier modal-->
+<!-- ThemDong modal-->
+<div class="modal fade" id="ThemDongModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Lấy data cashier</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ThemDongModal_Body">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- ThemDong modal-->
 <!-- Main content -->
 <section class="content" style="padding: 15px 0.5rem">
 
@@ -85,7 +104,7 @@
                                     </button>
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
-                                    <button type="button" class="btn btn-outline-dark btn-sm btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng" "><i class="fas fa-plus"></i> Thêm dòng</button>
+                                    <button type="button" class="btn btn-outline-dark btn-sm btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</button>
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
@@ -154,14 +173,14 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.MFieu)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.NgoaiTe)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.HoTen)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.Phong)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.DonVi)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.LapPhieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.MFieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.NgoaiTe)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.HoTen)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.DonVi)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.LapPhieu)</td>
 
                                 </tr>
 
@@ -250,6 +269,6 @@
         function KVCTPCT_Tbl() { // tab href
             location.href = "#KVCTPCT_Tbl";
         }
-       
+
     </script>
 }

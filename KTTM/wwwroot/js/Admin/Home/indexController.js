@@ -29,7 +29,7 @@ var indexController = {
     },
 
     registerEvent: function () {
-        
+
         // format .numbers
         $('input.numbers').keyup(function (event) {
 
@@ -114,7 +114,7 @@ var indexController = {
             // gang' soCT cho btnCashier
             $('.btnCashier').attr('disabled', false);
             $('.btnCashier').attr('data-id', soCT);
-            
+
             // gang' soCT cho btnThemDong
             $('.btnThemDong').attr('disabled', false);
             $('.btnThemDong').attr('data-id', soCT);
@@ -156,6 +156,7 @@ var indexController = {
             });
         });
 
+        // contextmenu for themdong
         $(".btnThemDong").contextmenu(function (e) {
             e.preventDefault();
             kvpctid = $(this).data('id');
@@ -172,6 +173,24 @@ var indexController = {
             });
         });
         // contextmenu for themdong
+
+        // themdong click
+        $(".btnThemDong").off('click').on('click', function () {
+
+            soCT = $(this).data('id');
+            strUrl = $(this).data('url');
+
+            var url = '/KVCTPCTs/KVCTPCT_Model_Partial';
+            $.get(url, { soCT: soCT, strUrl: strUrl }, function (response) {
+
+                $('#ThemDongModal').modal('show');
+                $('.ThemDongModal_Body').html(data);
+                $('#ThemDongModal').draggable();
+            });
+
+        });
+
+        // themdong click
 
         // giu trang thai phieu click
         $('#phieuTbl .cursor-pointer').off('click').on('click', function () {
@@ -241,12 +260,12 @@ var indexController = {
         //// close create invoice partial
 
         //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
-        
+
         //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
 
         //$('.btnEditKhachHang').off('click').on('click', function (e) {
         //    e.preventDefault();
-            
+
         //    idKhachTour = $(this).data('id');
 
         //    $('#sDSKhach').hide(500);
@@ -276,11 +295,11 @@ var indexController = {
         //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
 
         //////////////////////////////////////////////////////////////////////////////// XoaKhachPartial
-        
+
         //$('.btnXoaKhachHangPartial').off('click').on('click', function () {
 
         //    id = $(this).data('id');
-            
+
         //    $.ajax({
         //        url: '/DSKhachHangs/Delete',
         //        data: {
@@ -305,7 +324,7 @@ var indexController = {
         //    });
 
         //});
-        
+
         //////////////////////////////////////////////////////////////////////////////// Xoa1KhachPartial
 
         //////////////////////////////////////////////////////////////////////////////// CreateInvoicePartial finish post

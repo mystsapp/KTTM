@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.Repository;
 using System;
@@ -12,6 +13,7 @@ namespace Data.Services
     {
         Task<IEnumerable<KVCTPCT>> List_KVCTPCT_By_SoCT(string soCT);
         IEnumerable<Ngoaite> GetAll_NgoaiTes();
+        IEnumerable<DmHttc> GetAll_DmHttc();
         Task Create(KVCTPCT kVCTPCT);
     }
     public class KVCTPCTService : IKVCTPCTService
@@ -37,6 +39,11 @@ namespace Data.Services
         {
             _unitOfWork.kVCTPCTRepository.Create(kVCTPCT);
             await _unitOfWork.Complete();
+        }
+
+        public IEnumerable<DmHttc> GetAll_DmHttc()
+        {
+            return _unitOfWork.dmHttcRepository.GetAll();
         }
     }
 }

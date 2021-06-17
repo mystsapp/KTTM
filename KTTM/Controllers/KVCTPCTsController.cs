@@ -41,14 +41,6 @@ namespace KTTM.Controllers
 
             return PartialView(KVCTPCTVM);
         }
-        public IActionResult KVCTPCT_Create_Partial(string kvpctid)
-        {
-            
-            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVCTPCT.KVPCTId = kvpctid;
-
-            return PartialView(KVCTPCTVM);
-        }
 
         [HttpPost, ActionName("KVCTPCT_Create_Partial")]
         public async Task<IActionResult> KVCTPCT_Create_Partial_Post()
@@ -72,7 +64,7 @@ namespace KTTM.Controllers
 
                     throw;
                 }
-                
+
 
                 return Json(new
                 {
@@ -91,6 +83,16 @@ namespace KTTM.Controllers
 
         }
 
+        public IActionResult KVCTPCT_Model_Partial(string soCT, string strUrl)
+        {
+
+            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
+            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc();
+
+            return PartialView(KVCTPCTVM);
+        }
+
         public JsonResult TinhSoTien(decimal soTienNT, decimal tyGia)
         {
             var soTien = soTienNT * tyGia;
@@ -98,7 +100,7 @@ namespace KTTM.Controllers
             {
                 status = true,
                 soTien = soTien.ToString()
-            }) ;
+            });
         }
     }
 }
