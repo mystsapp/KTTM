@@ -115,6 +115,10 @@ var indexController = {
             $('.btnCashier').attr('disabled', false);
             $('.btnCashier').attr('data-id', soCT);
             
+            // gang' soCT cho btnThemDong
+            $('.btnThemDong').attr('disabled', false);
+            $('.btnThemDong').attr('data-id', soCT);
+            
             $('#KVCTPCT_Create_Partial').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);
 
@@ -151,6 +155,23 @@ var indexController = {
                 $('#layDataCashier').draggable();
             });
         });
+
+        $(".btnThemDong").contextmenu(function (e) {
+            e.preventDefault();
+            kvpctid = $(this).data('id');
+
+            $('#KVCTPCT_Tbl').hide(500);
+            $('#KVCTPCT_Edit_Partial').hide(500);
+
+            var url = '/KVCTPCTs/KVCTPCT_Create_Partial';
+            $.get(url, { kvpctid: kvpctid }, function (response) {
+
+                $('#KVCTPCT_Create_Partial').show(500);
+                $('#KVCTPCT_Create_Partial').html(response);
+
+            });
+        });
+        // contextmenu for themdong
 
         // giu trang thai phieu click
         $('#phieuTbl .cursor-pointer').off('click').on('click', function () {

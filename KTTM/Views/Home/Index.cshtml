@@ -19,7 +19,7 @@
 
         <div class="modal-content ">
             <div class="modal-header">
-                <h4 class="modal-title">Thông tin hủy tour</h4>
+                <h4 class="modal-title">Lấy data cashier</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -57,7 +57,7 @@
                     <div class="col-md-12">
                         <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
 
-                            <div class="col-md-3 text-sm">
+                            <div class="col-md-2 text-sm">
                                 Nhập thông tin
                                 @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
                                 <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" />
@@ -77,7 +77,7 @@
                             <input type="hidden" name="id" id="hidId" />
                             <input type="hidden" name="page" id="hidPage" />
 
-                            <div class="col-md-5 text-sm">
+                            <div class="col-md-6 text-sm">
                                 &nbsp;
                                 <div class=" btn-block ">
                                     <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
@@ -85,10 +85,11 @@
                                     </button>
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                                    <button type="button" class="btn btn-outline-dark btn-sm btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng" "><i class="fas fa-plus"></i> Thêm dòng</button>
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" data-id="" title="Cashier">Cashier</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
                                     <button type="submit" class="btn btn-outline-danger btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Tạm ứng">Tạm ứng</button>
 
                                 </div>
@@ -249,8 +250,6 @@
         function KVCTPCT_Tbl() { // tab href
             location.href = "#KVCTPCT_Tbl";
         }
-        function KVCTPCT_Tbl1() { // tab href
-            alert('abc');
-        }
+       
     </script>
 }
