@@ -40,7 +40,7 @@
 
                     <div class="col-md-1">
                         <label asp-for="KVCTPCT.HTTC" class="control-label"></label>
-                        <select asp-for="KVCTPCT.HTTC" class="form-control form-control-sm"
+                        <select asp-for="KVCTPCT.HTTC" class="form-control form-control-sm select2"
                                 asp-items="@(new SelectList(Model.DmHttcs, "Httc", "Httc"))" id="ddlHttc">
                         </select>
                         <span asp-validation-for="KVCTPCT.HTTC" class="text-danger"></span>
@@ -80,9 +80,25 @@
 
                 <div class="form-group row">
 
-                    <div class="col-md-3">
+                    <div class="col-md-12">
                         <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
                         <input asp-for="KVCTPCT.TKNo" class="form-control form-control-sm" id="txtTKNo" />
+                        <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm"
+                                asp-items="@(new SelectList(Model.GetAll_TkCongNo_With_TenTK, "StringId", "Name"))" id="ddlTkNo">
+                        </select>
+                        <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
+                    </div>
+
+                </div>
+                
+                <div class="form-group row">
+
+                    <div class="col-md-12">
+                        <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
+                        <input asp-for="KVCTPCT.TKCo" class="form-control form-control-sm" id="txtTKCo" />
+                        <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm"
+                                asp-items="@(new SelectList(Model.GetAll_TaiKhoan_Except_TkConngNo, "StringId", "Name"))" id="ddlTkCo">
+                        </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
 
@@ -92,7 +108,9 @@
 
                     <div class="col-md-9">
                         <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
-                        <input asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="txtDienGiai" />
+                        <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm"
+                                asp-items="@(new SelectList(Model.GetAll_TaiKhoan_Except_TkConngNo, "StringId", "Name"))" id="ddlDienGiai">
+                        </select>
                         <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
                     </div>
 
@@ -166,7 +184,7 @@
 <script src="~/js/Admin/Home/indexController.js"></script>
 
 <!-- select2 and multi select2 (bootstrap4)-->
-@*<script>
+<script>
         //$('#txtMaKH').select2()
         $('.select2').select2({
         })
@@ -178,7 +196,7 @@
         //    theme: 'bootstrap4'
         //})
 
-    </script>*@
+    </script>
 
 <!-- Validation -->
 
@@ -282,6 +300,17 @@
 
     // sotien
 
+    // get dien giai by tkno tkco
+    $('#ddlTkNo').change(function () {
+        tkNo = $(this).val();
+        tkCo = $('#ddlTkCo').val();
+
+        Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+    })
+    // get dien giai by tkno tkco
+
+    // save
     $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {
         debugger
 
@@ -319,5 +348,9 @@
         
         $('#KVCTPCT_Tbl').show(500);
 
-        });
+    });
+
+    function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
+
+    }
 </script>

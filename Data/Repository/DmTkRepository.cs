@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public interface IDmHttcRepository
+    public interface IDmTkRepository
     {
-        IEnumerable<DmHttc> GetAll();
+        IEnumerable<DmTk> GetAll();
     }
-    public class DmHttcRepository : IDmHttcRepository
+    public class DmTkRepository : IDmTkRepository
     {
         private readonly DanhMucKTContext _context;
 
-        public DmHttcRepository(DanhMucKTContext context)
+        public DmTkRepository(DanhMucKTContext context)
         {
             _context = context;
         }
-        public IEnumerable<DmHttc> GetAll()
+        public IEnumerable<DmTk> GetAll()
         {
-            return _context.DmHttcs;
+            return _context.DmTks;
             
         }
     }

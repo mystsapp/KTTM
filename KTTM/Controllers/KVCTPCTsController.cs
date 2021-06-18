@@ -89,6 +89,8 @@ namespace KTTM.Controllers
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc();
+            KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
+            KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
 
             return PartialView(KVCTPCTVM);
         }
