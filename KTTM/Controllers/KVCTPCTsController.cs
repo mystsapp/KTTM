@@ -91,8 +91,19 @@ namespace KTTM.Controllers
             KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc();
             KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
             KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_With_Name();
+            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay();
 
             return PartialView(KVCTPCTVM);
+        }
+
+        public JsonResult Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
+        {
+            var listViewModels = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+            return Json(new
+            {
+                data = listViewModels
+            });
         }
 
         public JsonResult TinhSoTien(decimal soTienNT, decimal tyGia)

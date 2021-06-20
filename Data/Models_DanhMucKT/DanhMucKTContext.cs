@@ -19,11 +19,12 @@ namespace Data.Models_DanhMucKT
 
         public virtual DbSet<Dgiai> Dgiais { get; set; }
         public virtual DbSet<DmHttc> DmHttcs { get; set; }
-        public virtual DbSet<DmQuay> DmQuays { get; set; }
         public virtual DbSet<DmTk> DmTks { get; set; }
         public virtual DbSet<DvPhi> DvPhis { get; set; }
         public virtual DbSet<MatHang> MatHangs { get; set; }
+        public virtual DbSet<PhongBan> PhongBans { get; set; }
         public virtual DbSet<Quay> Quays { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<TkCongNo> TkCongNos { get; set; }
         public virtual DbSet<Tknh> Tknhs { get; set; }
 
@@ -79,17 +80,6 @@ namespace Data.Models_DanhMucKT
                     .HasColumnName("HTTC");
 
                 entity.Property(e => e.MaIn).HasColumnName("Ma_In");
-            });
-
-            modelBuilder.Entity<DmQuay>(entity =>
-            {
-                entity.HasKey(e => e.Quay);
-
-                entity.Property(e => e.Quay)
-                    .HasMaxLength(3)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TenQuay).HasMaxLength(100);
             });
 
             modelBuilder.Entity<DmTk>(entity =>
@@ -151,6 +141,15 @@ namespace Data.Models_DanhMucKT
                     .HasColumnName("MATHANG");
             });
 
+            modelBuilder.Entity<PhongBan>(entity =>
+            {
+                entity.Property(e => e.BoPhan)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TenBoPhan).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<Quay>(entity =>
             {
                 entity.Property(e => e.Quay1)
@@ -159,6 +158,71 @@ namespace Data.Models_DanhMucKT
                     .HasColumnName("QUAY");
 
                 entity.Property(e => e.TenQuay).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+                entity.Property(e => e.Address).HasMaxLength(200);
+
+                entity.Property(e => e.City).HasMaxLength(20);
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Contact).HasMaxLength(25);
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(45)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Field).HasMaxLength(25);
+
+                entity.Property(e => e.Httt)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("HTTT");
+
+                entity.Property(e => e.Name).HasMaxLength(200);
+
+                entity.Property(e => e.Nation).HasMaxLength(15);
+
+                entity.Property(e => e.PaymentCod)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RealName).HasMaxLength(200);
+
+                entity.Property(e => e.Supplier1)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("SUPPLIER");
+
+                entity.Property(e => e.TaxCode)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TaxForm)
+                    .HasMaxLength(11)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TaxSign)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Telephone)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Website)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<TkCongNo>(entity =>

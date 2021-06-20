@@ -20,6 +20,9 @@ namespace Data.Services
         Task Create(KVCTPCT kVCTPCT);
         IEnumerable<ListViewModel> GetAll_TkCongNo_With_TenTK();
         IEnumerable<ListViewModel> GetAll_TaiKhoan_Except_TkConngNo();
+        IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
+        IEnumerable<Quay> GetAll_Quay();
+        IEnumerable<ListViewModel> GetAll_KhachHangs_With_Name();
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -61,7 +64,7 @@ namespace Data.Services
 
             var dmTks = GetAll_Tk_By_TkCongNo();
 
-           var  listTkCongNoWithTenTK = Convert_DmTk_To_ListViewModel(dmTks);
+            var listTkCongNoWithTenTK = Convert_DmTk_To_ListViewModel(dmTks);
 
             return listTkCongNoWithTenTK;
 
@@ -93,7 +96,31 @@ namespace Data.Services
             // var result = peopleList2.Where(p => !peopleList1.Any(p2 => p2.ID == p.ID)); c2
             // var result = peopleList2.Where(p => peopleList1.All(p2 => p2.ID != p.ID)); c3
             var dmTks2 = dmTks1.Except(dmTks); // 
-           var listViewModels = Convert_DmTk_To_ListViewModel(dmTks2);
+            var listViewModels = Convert_DmTk_To_ListViewModel(dmTks2);
+
+            return listViewModels;
+        }
+
+        public IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
+        {
+            var dgiais = _unitOfWork.dGiaiRepository.GetAll();
+            var dgiais1 = dgiais.Where(x => x.Tkno == tkNo && x.Tkco == tkCo);
+            return dgiais1;
+        }
+
+        public IEnumerable<Quay> GetAll_Quay()
+        {
+            return _unitOfWork.quayRepository.GetAll();
+        }
+
+        public IEnumerable<ListViewModel> GetAll_KhachHangs_With_Name()
+        {
+            var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            List<ListViewModel> listViewModels = new List<ListViewModel>();
+            foreach(var item in suppliers)
+            {
+                listViewModels.Add(new ListViewModel() { Name = item.Code + " - " + item.Name });
+            }
 
             return listViewModels;
         }

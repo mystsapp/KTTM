@@ -29,6 +29,9 @@ namespace Data.Repository
         IDmTkRepository dmTkRepository { get; }
         ITkCongNoRepository tkCongNoRepository { get; }
         IDmHttcRepository dmHttcRepository { get; }
+        IDGiaiRepository dGiaiRepository { get; }
+        IQuayRepository quayRepository { get; }
+        ISupplier_DanhMucKT_Repository supplier_DanhMucKT_Repository { get; }
         Task<int> Complete();
 
     }
@@ -63,6 +66,9 @@ namespace Data.Repository
             dmTkRepository = new DmTkRepository(_danhMucKTContext);
             tkCongNoRepository = new TkCongNoRepository(_danhMucKTContext);
             dmHttcRepository = new DmHttcRepository(_danhMucKTContext);
+            dGiaiRepository = new DGiaiRepository(_danhMucKTContext);
+            quayRepository = new QuayRepository(_danhMucKTContext);
+            supplier_DanhMucKT_Repository = new Supplier_DanhMucKT_Repository(_danhMucKTContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -84,6 +90,12 @@ namespace Data.Repository
         public IDmHttcRepository dmHttcRepository { get; }
 
         public IDmTkRepository dmTkRepository { get; }
+
+        public IDGiaiRepository dGiaiRepository { get; }
+
+        public IQuayRepository quayRepository { get; }
+
+        public ISupplier_DanhMucKT_Repository supplier_DanhMucKT_Repository { get; }
 
         public async Task<int> Complete()
         {
