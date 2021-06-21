@@ -18,9 +18,9 @@ namespace KTTM.Models
         public IEnumerable<DmHttc> DmHttcs { get; set; }
         public IEnumerable<DmTk> DmTks { get; set; }
         public IEnumerable<Quay> Quays { get; set; }
-        public IEnumerable<ListViewModel> GetAll_TkCongNo_With_TenTK { get; set; }
-        public IEnumerable<ListViewModel> GetAll_TaiKhoan_Except_TkConngNo { get; set; }
-        public IEnumerable<ListViewModel> KhachHangs { get; set; }
+        public IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK { get; set; }
+        public IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo { get; set; }
+        public IEnumerable<ViewSupplier> KhachHangs { get; set; }
         public IEnumerable<MatHang> MatHangs { get; set; }
         public string StrUrl { get; set; }
         //public string KhachHangJsons { get; set; }

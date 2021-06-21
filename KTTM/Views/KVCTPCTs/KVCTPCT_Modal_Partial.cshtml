@@ -1,4 +1,7 @@
 ﻿@model KVCTPCTViewModel
+@{ 
+    var khachHangs = Model.KhachHangs;
+}
 <!-- Main content -->
 @*<section class="content">*@
 
@@ -62,7 +65,7 @@
 
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.LoaiTien" class="control-label "></label>
-                        <select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm"
+                        <select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm select2"
                                 asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
                         </select>
                         <span asp-validation-for="KVCTPCT.LoaiTien" class="text-danger"></span>
@@ -83,24 +86,34 @@
 
                 <div class=" row">
 
-                    <div class="col-md-12">
+                    <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
-                        <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm"
-                                asp-items="@(new SelectList(Model.GetAll_TkCongNo_With_TenTK, "StringId", "Name"))" id="ddlTkNo">
+                        <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
+                                asp-items="@(new SelectList(Model.GetAll_TkCongNo_With_TenTK, "TKhoan", "TKhoan"))" id="ddlTkNo">
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="col-md-10">
+                        <label class="control-label">Tên tài khoãn</label>
+                        <input class="form-control form-control-sm " id="txtTenTkNo" />
                     </div>
 
                 </div>
 
                 <div class=" row">
 
-                    <div class="col-md-12">
+                    <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
-                        <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm"
-                                asp-items="@(new SelectList(Model.GetAll_TaiKhoan_Except_TkConngNo, "StringId", "Name"))" id="ddlTkCo">
+                        <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm select2"
+                                asp-items="@(new SelectList(Model.GetAll_TaiKhoan_Except_TkConngNo, "TKhoan", "TKhoan"))" id="ddlTkCo">
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-10">
+                        <label class="control-label">Tên tài khoãn</label>
+                        <input class="form-control form-control-sm " id="txtTenTkCo" />
                     </div>
 
                 </div>
@@ -122,20 +135,31 @@
                 <legend class="groupbox-border">Thông tin về công nợ đoàn </legend>
 
                 <div class=" row">
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                        @*<input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" />*@
                         <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm"
-                                asp-items="@(new SelectList(Model.KhachHangs, "Name", "Name"))" id="ddlMaKhNo">
+                                asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
                         </select>
                         <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                     </div>
+                    <div class="col-md-4">
+                        <label class="control-label ">Tên KH nợ</label>
+                        <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+                    </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
-                        <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" />
+                        <select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm"
+                                asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
+                        </select>
                         <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                     </div>
+
+                    <div class="col-md-4">
+                        <label class="control-label ">Tên KH có</label>
+                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" />
+                    </div>
+
                 </div>
 
                 <div class=" row">
@@ -319,22 +343,6 @@
     //    theme: 'bootstrap4'
     //})
 
-    $('#txtMaKhNo').bind('input', function () {
-
-        $.ajax({
-            url: '/KVCTPCTs/GetKhachHangs',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                console.log(response);
-                //var data = JSON.parse(response.data);
-                //console.log(data);
-                $(this).autocomplete({
-                    source: response
-                })
-            }
-        });
-    })
 
 </script>
 
@@ -449,6 +457,37 @@
 
     })
     // get dien giai by tkno tkco
+
+    // makh => tenkh
+    $('#ddlMaKhNo').off('change').on('change', function () {
+        
+        var code = $(this).val();
+        $.ajax({
+            url: '/KVCTPCTs/GetKhachHangs_By_Code',
+            type: 'GET',
+            data: { code: code },
+            dataType: 'json',
+            success: function (response) {
+                var data = response.data;
+                $('#txtTenKhNo').val(data.name);
+            }
+        })
+    })
+    $('#ddlMaKhCo').off('change').on('change', function () {
+        
+        var code = $(this).val();
+        $.ajax({
+            url: '/KVCTPCTs/GetKhachHangs_By_Code',
+            type: 'GET',
+            data: { code: code },
+            dataType: 'json',
+            success: function (response) {
+                var data = response.data;
+                $('#txtTenKhCo').val(data.name);
+            }
+        })
+    })
+    // makh => tenkh
 
     // save
     $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {

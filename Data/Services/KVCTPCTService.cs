@@ -18,11 +18,11 @@ namespace Data.Services
         IEnumerable<DmHttc> GetAll_DmHttc();
         DmTk Get_DmTk_By_TaiKhoan(string tk);
         Task Create(KVCTPCT kVCTPCT);
-        IEnumerable<ListViewModel> GetAll_TkCongNo_With_TenTK();
-        IEnumerable<ListViewModel> GetAll_TaiKhoan_Except_TkConngNo();
+        IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK();
+        IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
-        IEnumerable<ListViewModel> GetAll_KhachHangs_With_Name();
+        IEnumerable<ViewSupplier> GetAll_KhachHangs_View();
         IEnumerable<MatHang> GetAll_MatHangs();
     }
     public class KVCTPCTService : IKVCTPCTService
@@ -60,14 +60,10 @@ namespace Data.Services
             return dmTks.Where(x => x.Tkhoan == tk).FirstOrDefault();
         }
 
-        public IEnumerable<ListViewModel> GetAll_TkCongNo_With_TenTK()
+        public IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK()
         {
 
-            var dmTks = GetAll_Tk_By_TkCongNo();
-
-            var listTkCongNoWithTenTK = Convert_DmTk_To_ListViewModel(dmTks);
-
-            return listTkCongNoWithTenTK;
+            return GetAll_Tk_By_TkCongNo();
 
         }
         public IEnumerable<DmTk> GetAll_Tk_By_TkCongNo()
@@ -78,29 +74,26 @@ namespace Data.Services
             return dmTks1;
         }
 
-        public IEnumerable<ListViewModel> Convert_DmTk_To_ListViewModel(IEnumerable<DmTk> dmTks)
-        {
+        //public IEnumerable<ListViewModel> Convert_DmTk_To_ListViewModel(IEnumerable<DmTk> dmTks)
+        //{
 
-            List<ListViewModel> listTkCongNoWithTenTK = new List<ListViewModel>();
-            foreach (var item in dmTks)
-            {
-                listTkCongNoWithTenTK.Add(new ListViewModel() { StringId = item.Tkhoan.Trim(), Name = item.Tkhoan + " - " + item.TenTk });
-            }
+        //    List<ListViewModel> listTkCongNoWithTenTK = new List<ListViewModel>();
+        //    foreach (var item in dmTks)
+        //    {
+        //        listTkCongNoWithTenTK.Add(new ListViewModel() { StringId = item.Tkhoan.Trim(), Name = item.Tkhoan + " - " + item.TenTk });
+        //    }
 
-            return listTkCongNoWithTenTK;
-        }
-        public IEnumerable<ListViewModel> GetAll_TaiKhoan_Except_TkConngNo()
+        //    return listTkCongNoWithTenTK;
+        //}
+        public IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo()
         {
             var dmTks = _unitOfWork.dmTkRepository.GetAll();
             var dmTks1 = GetAll_Tk_By_TkCongNo();
             // peopleList2.Except(peopleList1) c1 
             // var result = peopleList2.Where(p => !peopleList1.Any(p2 => p2.ID == p.ID)); c2
             // var result = peopleList2.Where(p => peopleList1.All(p2 => p2.ID != p.ID)); c3
-            var dmTks2 = dmTks.Except(dmTks1);
+            return dmTks.Except(dmTks1);
 
-            var listViewModels = Convert_DmTk_To_ListViewModel(dmTks2);
-
-            return listViewModels;
         }
 
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
@@ -115,17 +108,11 @@ namespace Data.Services
             return _unitOfWork.quayRepository.GetAll();
         }
 
-        public IEnumerable<ListViewModel> GetAll_KhachHangs_With_Name()
+        public IEnumerable<ViewSupplier> GetAll_KhachHangs_View()
         {
             //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-            var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
-            List<ListViewModel> listViewModels = new List<ListViewModel>();
-            foreach(var item in suppliers)
-            {
-                listViewModels.Add(new ListViewModel() { Name = item.Code + " - " + item.Name });
-            }
-
-            return listViewModels;
+            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
+            
         }
 
         public IEnumerable<MatHang> GetAll_MatHangs()

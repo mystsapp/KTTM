@@ -136,7 +136,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
             KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay();
-            //KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_With_Name();
+            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_View();
             //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
             KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs();
             KVCTPCTVM.StrUrl = strUrl;
@@ -154,7 +154,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
             KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay();
-            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_With_Name().Take(100);
+            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_View();
             //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
             KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs();
             KVCTPCTVM.StrUrl = strUrl;
@@ -162,9 +162,18 @@ namespace KTTM.Controllers
             return View(KVCTPCTVM);
         }
 
+        public JsonResult GetKhachHangs_By_Code(string code)
+        {
+            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
+            return Json(new
+            {
+                data = viewSupplier
+                //data = listViewModels.Select(x => x.Name.Trim()).Take(10)
+            }); ;
+        }
         public JsonResult GetKhachHangs()
         {
-            var listViewModels = _kVCTPCTService.GetAll_KhachHangs_With_Name();
+            var listViewModels = _kVCTPCTService.GetAll_KhachHangs_View();
             return Json(new
             {
                 data = JsonConvert.SerializeObject(listViewModels.Take(100))
