@@ -21,6 +21,8 @@ namespace KTTM.Models
         public IEnumerable<ListViewModel> GetAll_TkCongNo_With_TenTK { get; set; }
         public IEnumerable<ListViewModel> GetAll_TaiKhoan_Except_TkConngNo { get; set; }
         public IEnumerable<ListViewModel> KhachHangs { get; set; }
-
+        public IEnumerable<MatHang> MatHangs { get; set; }
+        public string StrUrl { get; set; }
+        //public string KhachHangJsons { get; set; }
     }
 }

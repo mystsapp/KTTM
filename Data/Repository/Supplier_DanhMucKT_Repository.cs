@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface ISupplier_DanhMucKT_Repository
     {
         IEnumerable<Supplier> GetAll();
+        IEnumerable<ViewSupplier> GetAll_ViewSupplier();
     }
     public class Supplier_DanhMucKT_Repository : ISupplier_DanhMucKT_Repository
     {
@@ -22,6 +23,11 @@ namespace Data.Repository
         {
             return _context.Suppliers;
             
+        }
+
+        public IEnumerable<ViewSupplier> GetAll_ViewSupplier()
+        {
+            return _context.ViewSuppliers;
         }
     }
 }

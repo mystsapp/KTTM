@@ -23,6 +23,7 @@ namespace Data.Services
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
         IEnumerable<ListViewModel> GetAll_KhachHangs_With_Name();
+        IEnumerable<MatHang> GetAll_MatHangs();
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -83,7 +84,7 @@ namespace Data.Services
             List<ListViewModel> listTkCongNoWithTenTK = new List<ListViewModel>();
             foreach (var item in dmTks)
             {
-                listTkCongNoWithTenTK.Add(new ListViewModel() { StringId = item.Tkhoan, Name = item.Tkhoan + " - " + item.TenTk });
+                listTkCongNoWithTenTK.Add(new ListViewModel() { StringId = item.Tkhoan.Trim(), Name = item.Tkhoan + " - " + item.TenTk });
             }
 
             return listTkCongNoWithTenTK;
@@ -92,10 +93,11 @@ namespace Data.Services
         {
             var dmTks = _unitOfWork.dmTkRepository.GetAll();
             var dmTks1 = GetAll_Tk_By_TkCongNo();
-            // peopleList2.Except(peopleList1) c1
+            // peopleList2.Except(peopleList1) c1 
             // var result = peopleList2.Where(p => !peopleList1.Any(p2 => p2.ID == p.ID)); c2
             // var result = peopleList2.Where(p => peopleList1.All(p2 => p2.ID != p.ID)); c3
-            var dmTks2 = dmTks1.Except(dmTks); // 
+            var dmTks2 = dmTks.Except(dmTks1);
+
             var listViewModels = Convert_DmTk_To_ListViewModel(dmTks2);
 
             return listViewModels;
@@ -115,7 +117,8 @@ namespace Data.Services
 
         public IEnumerable<ListViewModel> GetAll_KhachHangs_With_Name()
         {
-            var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
             List<ListViewModel> listViewModels = new List<ListViewModel>();
             foreach(var item in suppliers)
             {
@@ -123,6 +126,11 @@ namespace Data.Services
             }
 
             return listViewModels;
+        }
+
+        public IEnumerable<MatHang> GetAll_MatHangs()
+        {
+            return _unitOfWork.matHangRepository.GetAll();
         }
     }
 }

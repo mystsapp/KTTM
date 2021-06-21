@@ -11,6 +11,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    
 }
 
 <!-- layDataCashier modal-->
@@ -24,7 +25,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body layDataCashier_Body">
+            <div class="modal-body layDataCashier_Body m-0">
             </div>
         </div>
         <!-- /.modal-content -->
@@ -37,13 +38,13 @@
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
-            <div class="modal-header">
-                <h4 class="modal-title">Lấy data cashier</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title">Thêm chi tiết phiếu</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body ThemDongModal_Body">
+            <div class="modal-body ThemDongModal_Body p-0">
             </div>
         </div>
         <!-- /.modal-content -->
@@ -79,7 +80,7 @@
                             <div class="col-md-2 text-sm">
                                 Nhập thông tin
                                 @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
-                                <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" />
+                                <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch"/>
                             </div>
 
                             <div class="col-md-2 text-sm">
@@ -104,7 +105,8 @@
                                     </button>
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
-                                    <button type="button" class="btn btn-outline-dark btn-sm btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</button>
+                                    <button type="button" class="btn btn-outline-dark btn-sm btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng 1</button>
+                                    <a asp-action="ThemChiTietPhieu" asp-controller="KVCTPCTs" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-dark btn-sm " disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</a>
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
@@ -241,6 +243,17 @@
 
     <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
+        
+        var tr_click = $('#phieuTbl .cursor-pointer')
+        if ('@Model.KVPCT.SoCT' !== '') {
+            if (tr_click.hasClass("hoverClass")) {
+                tr_click.removeClass("hoverClass");
+            }
+            else {
+                tr_click.removeClass("hoverClass");
+                tr_click.addClass("hoverClass");
+            }
+        }
         function confirmDelete(uniqueId, isDeleteClicked) {
             var deleteSpan = 'deleteSpan_' + uniqueId;
             var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;

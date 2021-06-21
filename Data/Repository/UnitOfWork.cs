@@ -32,6 +32,7 @@ namespace Data.Repository
         IDGiaiRepository dGiaiRepository { get; }
         IQuayRepository quayRepository { get; }
         ISupplier_DanhMucKT_Repository supplier_DanhMucKT_Repository { get; }
+        IMatHangRepository matHangRepository { get; }
         Task<int> Complete();
 
     }
@@ -69,6 +70,7 @@ namespace Data.Repository
             dGiaiRepository = new DGiaiRepository(_danhMucKTContext);
             quayRepository = new QuayRepository(_danhMucKTContext);
             supplier_DanhMucKT_Repository = new Supplier_DanhMucKT_Repository(_danhMucKTContext);
+            matHangRepository = new MatHangRepository(_danhMucKTContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -96,6 +98,8 @@ namespace Data.Repository
         public IQuayRepository quayRepository { get; }
 
         public ISupplier_DanhMucKT_Repository supplier_DanhMucKT_Repository { get; }
+
+        public IMatHangRepository matHangRepository { get; }
 
         public async Task<int> Complete()
         {

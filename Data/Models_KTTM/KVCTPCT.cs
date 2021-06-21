@@ -87,7 +87,7 @@ namespace Data.Models_KTTM
         [MaxLength(16, ErrorMessage = "Chiều dài tối đa 16 ký tự"), Column(TypeName = "varchar(16)")]
         public string MsThue { get; set; }
         
-        [DisplayName("Loại HD Gốc")]
+        [DisplayName("Loại CT Gốc")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string LoaiHDGoc { get; set; } //
         
@@ -102,7 +102,7 @@ namespace Data.Models_KTTM
         [Column(TypeName = "decimal(18,2)")]
         public decimal VAT { get; set; }
         
-        [DisplayName("DSKhongVAT")]
+        [DisplayName("Doanh số chưa thuế")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal DSKhongVAT { get; set; } //
 

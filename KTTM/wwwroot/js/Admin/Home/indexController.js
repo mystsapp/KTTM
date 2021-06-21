@@ -40,7 +40,7 @@ var indexController = {
                 return addCommas(value);
             });
         });
-
+        
         //$.each($('.cursor-pointer'), function (i, item) {
 
         //    var huy = $(item).data('huy');
@@ -180,8 +180,8 @@ var indexController = {
             soCT = $(this).data('id');
             strUrl = $(this).data('url');
 
-            var url = '/KVCTPCTs/KVCTPCT_Model_Partial';
-            $.get(url, { soCT: soCT, strUrl: strUrl }, function (response) {
+            var url = '/KVCTPCTs/KVCTPCT_Modal_Partial';
+            $.get(url, { soCT: soCT, strUrl: strUrl }, function (data) {
 
                 $('#ThemDongModal').modal('show');
                 $('.ThemDongModal_Body').html(data);

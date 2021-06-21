@@ -58,6 +58,7 @@ namespace KTTM
             services.AddTransient<IDGiaiRepository, DGiaiRepository>();
             services.AddTransient<IQuayRepository, QuayRepository>();
             services.AddTransient<ISupplier_DanhMucKT_Repository, Supplier_DanhMucKT_Repository>();
+            services.AddTransient<IMatHangRepository, MatHangRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
