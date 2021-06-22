@@ -108,7 +108,7 @@ var indexController = {
 
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
-
+            debugger
             soCT = $(this).data('id');
 
             // gang' soCT cho btnCashier

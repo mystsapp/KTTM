@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface IQuayRepository
     {
         IEnumerable<Quay> GetAll();
+        IEnumerable<ViewQuay> GetAll_View();
     }
     public class QuayRepository : IQuayRepository
     {
@@ -22,6 +23,11 @@ namespace Data.Repository
         {
             return _context.Quays;
             
+        }
+
+        public IEnumerable<ViewQuay> GetAll_View()
+        {
+            return _context.ViewQuays;
         }
     }
 }

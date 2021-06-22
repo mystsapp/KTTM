@@ -27,7 +27,13 @@ namespace Data.Models_DanhMucKT
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<TkCongNo> TkCongNos { get; set; }
         public virtual DbSet<Tknh> Tknhs { get; set; }
+        public virtual DbSet<ViewDmHttc> ViewDmHttcs { get; set; }
+        public virtual DbSet<ViewDmTk> ViewDmTks { get; set; }
+        public virtual DbSet<ViewMatHang> ViewMatHangs { get; set; }
+        public virtual DbSet<ViewPhongBan> ViewPhongBans { get; set; }
+        public virtual DbSet<ViewQuay> ViewQuays { get; set; }
         public virtual DbSet<ViewSupplier> ViewSuppliers { get; set; }
+        public virtual DbSet<ViewSupplierCode> ViewSupplierCodes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -269,6 +275,104 @@ namespace Data.Models_DanhMucKT
                 entity.Property(e => e.ThanhPho).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<ViewDmHttc>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_DmHTTC");
+
+                entity.Property(e => e.DienGiai).HasMaxLength(100);
+
+                entity.Property(e => e.Httc)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("HTTC");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.MaIn).HasColumnName("Ma_In");
+            });
+
+            modelBuilder.Entity<ViewDmTk>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_DmTk");
+
+                entity.Property(e => e.GhiChu).HasMaxLength(100);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.TenTk)
+                    .HasMaxLength(150)
+                    .HasColumnName("TenTK");
+
+                entity.Property(e => e.Tkhoan)
+                    .IsRequired()
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasColumnName("TKhoan");
+
+                entity.Property(e => e.Tkhoan1)
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasColumnName("TKhoan1");
+
+                entity.Property(e => e.Tkhoan2)
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasColumnName("TKhoan2");
+
+                entity.Property(e => e.TkhoanCu)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("TKhoanCu");
+            });
+
+            modelBuilder.Entity<ViewMatHang>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_MatHang");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Mathang)
+                    .HasMaxLength(100)
+                    .HasColumnName("MATHANG");
+            });
+
+            modelBuilder.Entity<ViewPhongBan>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_PhongBan");
+
+                entity.Property(e => e.BoPhan)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.TenBoPhan).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ViewQuay>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_Quay");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Quay)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("QUAY");
+
+                entity.Property(e => e.TenQuay).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<ViewSupplier>(entity =>
             {
                 entity.HasNoKey();
@@ -337,6 +441,17 @@ namespace Data.Models_DanhMucKT
 
                 entity.Property(e => e.Website)
                     .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ViewSupplierCode>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_SupplierCode");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(5)
                     .IsUnicode(false);
             });
 

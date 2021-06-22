@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface IMatHangRepository
     {
         IEnumerable<MatHang> GetAll();
+        IEnumerable<ViewMatHang> GetAll_View();
     }
     public class MatHangRepository : IMatHangRepository
     {
@@ -22,6 +23,11 @@ namespace Data.Repository
         {
             return _context.MatHangs;
             
+        }
+
+        public IEnumerable<ViewMatHang> GetAll_View()
+        {
+            return _context.ViewMatHangs;
         }
     }
 }

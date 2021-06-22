@@ -1,4 +1,5 @@
-﻿using Data.Models_QLTaiKhoan;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_QLTaiKhoan;
 using Data.Services;
 using Data.Utilities;
 using KTTM.Models;
@@ -128,35 +129,43 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> KVCTPCT_Modal_Partial(string soCT, string strUrl)
         {
-
+            DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
+            var viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = ""};
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
-            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc();
+            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
+            var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
+            dmTks.Insert(0, dmTkTmp);
+            KVCTPCTVM.DmTks = dmTks;
             KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
             KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
-            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay();
-            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_View();
-            //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
-            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs();
+            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
+            var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
+            viewSupplierCodes.Insert(0, viewSupplierCode);
+            KVCTPCTVM.KhachHangs = viewSupplierCodes;
+            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View();
+            KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
             KVCTPCTVM.StrUrl = strUrl;
 
             return PartialView(KVCTPCTVM);
         }
-        
+
         public async Task<IActionResult> ThemChiTietPhieu(string soCT, string strUrl)
         {
 
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
-            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc();
-            KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
-            KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
-            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay();
-            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_View();
+            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
+            //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
+            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+            KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk();
+            KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_DmTk();
+            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
+            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_ViewCode();
             //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
-            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs();
+            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View();
             KVCTPCTVM.StrUrl = strUrl;
 
             return View(KVCTPCTVM);
@@ -164,7 +173,8 @@ namespace KTTM.Controllers
 
         public JsonResult GetKhachHangs_By_Code(string code)
         {
-            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
+            //var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
+            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View_CodeName().Where(x => x.Code == code).FirstOrDefault();
             return Json(new
             {
                 data = viewSupplier
@@ -179,6 +189,14 @@ namespace KTTM.Controllers
                 data = JsonConvert.SerializeObject(listViewModels.Take(100))
                 //data = listViewModels.Select(x => x.Name.Trim()).Take(10)
             }); ;
+        }
+        public JsonResult Get_TenTk_By_Tk(string tk)
+        {
+            var dmTk = _kVCTPCTService.GetAll_DmTk().Where(x => x.Tkhoan.Trim() == tk.Trim()).FirstOrDefault();
+            return Json(new
+            {
+                data = dmTk.TenTk.Trim()
+            });
         }
         public JsonResult Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {

@@ -16,14 +16,24 @@ namespace Data.Services
         Task<IEnumerable<KVCTPCT>> List_KVCTPCT_By_SoCT(string soCT);
         IEnumerable<Ngoaite> GetAll_NgoaiTes();
         IEnumerable<DmHttc> GetAll_DmHttc();
+        IEnumerable<ViewDmHttc> GetAll_DmHttc_View();
         DmTk Get_DmTk_By_TaiKhoan(string tk);
         Task Create(KVCTPCT kVCTPCT);
         IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK();
         IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo();
+        IEnumerable<DmTk> GetAll_DmTk();
+        IEnumerable<ViewDmTk> GetAll_DmTk_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
+        IEnumerable<ViewQuay> GetAll_Quay_View();
+        IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs();
         IEnumerable<ViewSupplier> GetAll_KhachHangs_View();
+        IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode();
+        IEnumerable<ListViewModel> GetAll_KhachHangs_View_CodeName();
         IEnumerable<MatHang> GetAll_MatHangs();
+        IEnumerable<ViewMatHang> GetAll_MatHangs_View();
+        IEnumerable<PhongBan> GetAll_PhongBans();
+        IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -54,6 +64,12 @@ namespace Data.Services
         {
             return _unitOfWork.dmHttcRepository.GetAll();
         }
+
+        public IEnumerable<ViewDmHttc> GetAll_DmHttc_View()
+        {
+            return _unitOfWork.dmHttcRepository.GetAll_View();
+        }
+
         public DmTk Get_DmTk_By_TaiKhoan(string tk)
         {
             var dmTks = _unitOfWork.dmTkRepository.GetAll();
@@ -108,16 +124,61 @@ namespace Data.Services
             return _unitOfWork.quayRepository.GetAll();
         }
 
+        public IEnumerable<ViewQuay> GetAll_Quay_View()
+        {
+            return _unitOfWork.quayRepository.GetAll_View();
+        }
         public IEnumerable<ViewSupplier> GetAll_KhachHangs_View()
         {
             //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
             return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
             
         }
+        
+        public IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs()
+        {
+            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            
+        }
+        
+        public IEnumerable<ListViewModel> GetAll_KhachHangs_View_CodeName()
+        {
+            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_View_CodeName();
+            
+        }
 
         public IEnumerable<MatHang> GetAll_MatHangs()
         {
             return _unitOfWork.matHangRepository.GetAll();
+        }
+        public IEnumerable<ViewMatHang> GetAll_MatHangs_View()
+        {
+            return _unitOfWork.matHangRepository.GetAll_View();
+        }
+
+        public IEnumerable<PhongBan> GetAll_PhongBans()
+        {
+            return _unitOfWork.phongBan_DanhMucKT_Repository.GetAll();
+        }
+        public IEnumerable<ViewPhongBan> GetAll_PhongBans_View()
+        {
+            return _unitOfWork.phongBan_DanhMucKT_Repository.GetAll_View();
+        }
+
+        public IEnumerable<DmTk> GetAll_DmTk()
+        {
+            return _unitOfWork.dmTkRepository.GetAll();
+        }
+        public IEnumerable<ViewDmTk> GetAll_DmTk_View()
+        {
+            return _unitOfWork.dmTkRepository.GetAll_View();
+        }
+
+        public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode()
+        {
+            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode();
         }
     }
 }

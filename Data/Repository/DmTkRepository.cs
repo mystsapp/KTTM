@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface IDmTkRepository
     {
         IEnumerable<DmTk> GetAll();
+        IEnumerable<ViewDmTk> GetAll_View();
     }
     public class DmTkRepository : IDmTkRepository
     {
@@ -22,6 +23,11 @@ namespace Data.Repository
         {
             return _context.DmTks;
             
+        }
+
+        public IEnumerable<ViewDmTk> GetAll_View()
+        {
+            return _context.ViewDmTks;
         }
     }
 }

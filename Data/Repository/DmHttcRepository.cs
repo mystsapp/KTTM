@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface IDmHttcRepository
     {
         IEnumerable<DmHttc> GetAll();
+        IEnumerable<ViewDmHttc> GetAll_View();
     }
     public class DmHttcRepository : IDmHttcRepository
     {
@@ -22,6 +23,11 @@ namespace Data.Repository
         {
             return _context.DmHttcs;
             
+        }
+
+        public IEnumerable<ViewDmHttc> GetAll_View()
+        {
+            return _context.ViewDmHttcs;
         }
     }
 }

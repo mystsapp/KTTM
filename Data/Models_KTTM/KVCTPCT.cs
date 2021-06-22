@@ -72,6 +72,7 @@ namespace Data.Models_KTTM
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "nvarchar(2)")]
         public string HTTT { get; set; }
 
+        [DisplayName("Số thẻ tín dụng")]
         [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string CardNumber { get; set; }
 
