@@ -108,16 +108,18 @@ var indexController = {
 
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
-            debugger
+            
             soCT = $(this).data('id');
 
             // gang' soCT cho btnCashier
             $('.btnCashier').attr('disabled', false);
-            $('.btnCashier').attr('data-id', soCT);
+            //$('.btnCashier').attr('data-id', soCT);
+            $('#hidCashier').val(soCT);
 
             // gang' soCT cho btnThemDong
-            $('.btnThemDong').attr('disabled', false);
-            $('.btnThemDong').attr('data-id', soCT);
+            $('#btnThemDong').attr('disabled', false);
+            //$('#btnThemDong').attr('data-id', soCT);
+            $('#hidThemDong').val(soCT);
             
             $('#KVCTPCT_Create_Partial').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);
@@ -147,8 +149,10 @@ var indexController = {
             //        //    return 10;
             //    }
             //});
+
+            soCT = $('#hidThemDong').val();
             strUrl = $('.layDataCashier').data('url');
-            $.get('/Home/LayDataCashierPartial', { id: $(this).data('id'), strUrl: strUrl }, function (data) {
+            $.get('/Home/LayDataCashierPartial', { id: soCT, strUrl: strUrl }, function (data) {
 
                 $('#layDataCashier').modal('show');
                 $('.layDataCashier_Body').html(data);
@@ -157,7 +161,7 @@ var indexController = {
         });
 
         // contextmenu for themdong
-        $(".btnThemDong").contextmenu(function (e) {
+        $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
             kvpctid = $(this).data('id');
 
@@ -175,11 +179,12 @@ var indexController = {
         // contextmenu for themdong
 
         // themdong click
-        $(".btnThemDong").off('click').on('click', function () {
-
-            soCT = $(this).data('id');
+        $('#btnThemDong').off('click').on('click', function () {
+            
+            //soCT = $(this).data('id');
+            soCT = $('#hidThemDong').val();
             strUrl = $(this).data('url');
-
+            
             var url = '/KVCTPCTs/KVCTPCT_Modal_Partial';
             $.get(url, { soCT: soCT, strUrl: strUrl }, function (data) {
 

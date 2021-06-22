@@ -11,7 +11,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    
+
 }
 
 <!-- layDataCashier modal-->
@@ -80,7 +80,7 @@
                             <div class="col-md-2 text-sm">
                                 Nhập thông tin
                                 @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
-                                <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch"/>
+                                <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch" />
                             </div>
 
                             <div class="col-md-2 text-sm">
@@ -94,8 +94,8 @@
                             </div>
 
                             <!-- click row and submit to index -->
-                            <input type="hidden" name="id" id="hidId" />
-                            <input type="hidden" name="page" id="hidPage" />
+                            @*<input type="hidden" name="id" id="hidId" />
+                            <input type="hidden" name="page" id="hidPage" />*@
 
                             <div class="col-md-6 text-sm">
                                 &nbsp;
@@ -105,12 +105,14 @@
                                     </button>
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
-                                    <button type="button" class="btn btn-outline-dark btn-sm btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
+                                    <button type="button" class="btn btn-outline-dark btn-sm " id="btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
+                                    <input type="hidden" id="hidThemDong" />
                                     @*<a asp-action="ThemChiTietPhieu" asp-controller="KVCTPCTs" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-dark btn-sm " disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</a>*@
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
+                                    <input type="hidden" id="hidCashier" />
                                     <button type="submit" class="btn btn-outline-danger btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Tạm ứng">Tạm ứng</button>
 
                                 </div>
@@ -175,14 +177,14 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.MFieu)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.NgoaiTe)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.HoTen)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.Phong)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.DonVi)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" >@Html.DisplayFor(m => item.LapPhieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.MFieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.NgoaiTe)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.HoTen)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.DonVi)</td>
+                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.LapPhieu)</td>
 
                                 </tr>
 
@@ -243,7 +245,7 @@
 
     <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
-        
+
         var tr_click = $('#phieuTbl .cursor-pointer')
         if ('@Model.KVPCT.SoCT' !== '') {
             if (tr_click.hasClass("hoverClass")) {

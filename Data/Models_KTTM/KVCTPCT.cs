@@ -118,7 +118,7 @@ namespace Data.Models_KTTM
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string NoQuay { get; set; } //
         
-        //[DisplayName("Loại tiền")]
+        [DisplayName("Có quầy")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string CoQuay { get; set; } //
 
