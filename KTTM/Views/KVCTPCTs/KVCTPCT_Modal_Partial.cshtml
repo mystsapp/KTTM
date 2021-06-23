@@ -21,7 +21,7 @@
      </div>*@
 <div class="card-body p-0">
 
-    <form method="post" asp-action="" autocomplete="off" id="frm_KVCTPCT_Create" enctype="multipart/form-data">
+    <form method="post" asp-action="KVCTPCT_Modal_Partial" autocomplete="off" id="frm_KVCTPCT_Create" enctype="multipart/form-data">
         <div class="pr-4 pl-4 text-sm">
 
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -60,7 +60,7 @@
 
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.LoaiTien" class="control-label "></label>
-                        <select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm select2"
+                        <select asp-for="KVCTPCT.LoaiTien" class="form-control form-control-sm "
                                 asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
                         </select>
                         <span asp-validation-for="KVCTPCT.LoaiTien" class="text-danger"></span>
@@ -162,7 +162,7 @@
                     {
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                            <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm "
+                            <select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
                                     asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
                             </select>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
@@ -362,7 +362,7 @@
 <script>
     //$('#txtMaKH').select2()
     $('.select2').select2()
-    $('#ddlMaKhNo').select2()
+    //$('#ddlMaKhNo').select2()
     //Initialize Select2 Elements
     $('.select2bs4').select2({
         theme: 'bootstrap4'
@@ -416,13 +416,13 @@
         }
     });
 
-    $('#txtSgtcode').rules('add', {
-        required: true,
-        minlength: 17,
-        messages: {
-            //required: "Chủ đề không được để trống"
-        }
-    });
+    //$('#txtSgtcode').rules('add', {
+    //    required: true,
+    //    minlength: 17,
+    //    messages: {
+    //        //required: "Chủ đề không được để trống"
+    //    }
+    //});
 
     // sotien
 
@@ -523,7 +523,7 @@
     // get dien giai by tkno tkco
 
     // makh => tenkh
-    $('#ddlMaKhNo').off('change').on('change', function () {
+    $('#ddlMaKhNo').change(function () {
 
         var code = $(this).val();
         $.ajax({

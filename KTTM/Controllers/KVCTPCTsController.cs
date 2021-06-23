@@ -130,7 +130,9 @@ namespace KTTM.Controllers
         public async Task<IActionResult> KVCTPCT_Modal_Partial(string soCT, string strUrl)
         {
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
-            var viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+            ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
@@ -144,7 +146,9 @@ namespace KTTM.Controllers
             var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
             viewSupplierCodes.Insert(0, viewSupplierCode);
             KVCTPCTVM.KhachHangs = viewSupplierCodes;
-            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View();
+            var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
+            viewMatHangs.Insert(0, viewMatHang);
+            KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
             KVCTPCTVM.StrUrl = strUrl;
 
@@ -152,8 +156,9 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("KVCTPCT_Modal_Partial")]
-        public async Task<IActionResult> KVCTPCT_Modal_Partial_Post(string soCT) // soCT lay tu tren Get xuong
+        public async Task<IActionResult> KVCTPCT_Modal_Partial_Post() // soCT lay tu tren Get xuong
         {
+            var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
