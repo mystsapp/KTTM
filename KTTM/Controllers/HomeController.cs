@@ -34,7 +34,7 @@ namespace KTTM.Controllers
             };
         }
 
-        public IActionResult Index(string searchString, string searchFromDate, string searchToDate, int page = 1)
+        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string soCT, int page = 1)
         {
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
@@ -42,6 +42,10 @@ namespace KTTM.Controllers
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
 
+            if (!string.IsNullOrEmpty(soCT)) // for redirect with soct
+            {
+                HomeVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
+            }
             HomeVM.KVPTCDtos = _kVPCTService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
             return View(HomeVM);
         }

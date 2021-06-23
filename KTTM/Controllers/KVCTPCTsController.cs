@@ -130,7 +130,7 @@ namespace KTTM.Controllers
         public async Task<IActionResult> KVCTPCT_Modal_Partial(string soCT, string strUrl)
         {
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
-            var viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = ""};
+            var viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
@@ -149,6 +149,45 @@ namespace KTTM.Controllers
             KVCTPCTVM.StrUrl = strUrl;
 
             return PartialView(KVCTPCTVM);
+        }
+
+        [HttpPost, ActionName("KVCTPCT_Modal_Partial")]
+        public async Task<IActionResult> KVCTPCT_Modal_Partial_Post(string soCT) // soCT lay tu tren Get xuong
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (!ModelState.IsValid)
+            {
+                
+                return View(KVCTPCTVM);
+            }
+
+            KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
+
+            // ghi log
+            KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            try
+            {
+                await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+
+                SetAlert("Thêm mới thành công.", "success");
+                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT }); // redirect to Home/Index/?soCT
+            }
+            catch (Exception ex)
+            {
+
+                SetAlert(ex.Message, "error");
+                return View(KVCTPCTVM);
+            }
+
+        }
+
+        public async Task<IActionResult> BackIndexTest(string soCT)
+        {
+            return RedirectToAction(nameof(Index), "Home", new { soCT = soCT });
         }
 
         public async Task<IActionResult> ThemChiTietPhieu(string soCT, string strUrl)

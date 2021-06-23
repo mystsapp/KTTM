@@ -110,21 +110,23 @@ var indexController = {
         $('tr .tdVal').click(function () {
             
             soCT = $(this).data('id');
+            loaiPhieu = $(this).data('loaiphieu');
+            indexController.TdVal_Click(soCT, loaiPhieu);
 
-            // gang' soCT cho btnCashier
-            $('.btnCashier').attr('disabled', false);
-            //$('.btnCashier').attr('data-id', soCT);
-            $('#hidCashier').val(soCT);
+            //// gang' soCT cho btnCashier
+            //$('.btnCashier').attr('disabled', false);
+            ////$('.btnCashier').attr('data-id', soCT);
+            //$('#hidCashier').val(soCT);
 
-            // gang' soCT cho btnThemDong
-            $('#btnThemDong').attr('disabled', false);
-            //$('#btnThemDong').attr('data-id', soCT);
-            $('#hidThemDong').val(soCT);
+            //// gang' soCT cho btnThemDong
+            //$('#btnThemDong').attr('disabled', false);
+            ////$('#btnThemDong').attr('data-id', soCT);
+            //$('#hidThemDong').val(soCT);
             
-            $('#KVCTPCT_Create_Partial').hide(500);
-            $('#KVCTPCT_Edit_Partial').hide(500);
+            //$('#KVCTPCT_Create_Partial').hide(500);
+            //$('#KVCTPCT_Edit_Partial').hide(500);
 
-            indexController.Load_KVCTPCTPartial(soCT);
+            //indexController.Load_KVCTPCTPartial(soCT);
 
         });
         // phieu click --> load kvctpct
@@ -179,10 +181,11 @@ var indexController = {
         // contextmenu for themdong
 
         // themdong click
-        $('#btnThemDong').off('click').on('click', function () {
+        $('#btnThemDong').click(function () {
             
             //soCT = $(this).data('id');
             soCT = $('#hidThemDong').val();
+            
             strUrl = $(this).data('url');
             
             var url = '/KVCTPCTs/KVCTPCT_Modal_Partial';
@@ -483,6 +486,29 @@ var indexController = {
         });
 
     },
+    TdVal_Click: function (soCT, loaiPhieu) {
+
+        //soCT = $(this).data('id');
+
+        // gang' soCT cho btnCashier
+        $('.btnCashier').attr('disabled', false);
+        //$('.btnCashier').attr('data-id', soCT);
+        $('#hidCashier').val(soCT);
+
+        // gang' soCT cho btnThemDong
+        $('#btnThemDong').attr('disabled', false);
+        //$('#btnThemDong').attr('data-id', soCT);
+        $('#hidThemDong').val(soCT);
+
+        // gang' loaiphieu
+        $('#hidLoaiPhieu').text(loaiPhieu)
+
+        $('#KVCTPCT_Create_Partial').hide(500);
+        $('#KVCTPCT_Edit_Partial').hide(500);
+
+        indexController.Load_KVCTPCTPartial(soCT);
+
+    }
     //Load_CTInvoice_CTVAT_Partial: function (invoiceId) {
 
     //    var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';

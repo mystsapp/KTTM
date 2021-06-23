@@ -11,7 +11,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
-
+    
 }
 
 <!-- layDataCashier modal-->
@@ -39,7 +39,7 @@
 
         <div class="modal-content ">
             <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title">Thêm chi tiết phiếu</h4>
+                <h4 class="modal-title">Thêm chi tiết phiếu - <span id="hidLoaiPhieu"></span></h4> 
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -144,7 +144,7 @@
                             @foreach (var item in Model.KVPTCDtos)
                             {
 
-                                <tr class="cursor-pointer " @*data-huy="@item.HuyTour"*@ onclick="KVCTPCT_Tbl()">
+                                <tr class="cursor-pointer @item.SoCT" @*data-huy="@item.HuyTour"*@ onclick="KVCTPCT_Tbl()">
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
@@ -177,14 +177,14 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.MFieu)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.NgoaiTe)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.HoTen)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.Phong)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.DonVi)</td>
-                                    <td class="tdVal" data-id="@item.SoCT">@Html.DisplayFor(m => item.LapPhieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.MFieu)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.NgoaiTe)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.HoTen)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.DonVi)</td>
+                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.LapPhieu)</td>
 
                                 </tr>
 
@@ -245,17 +245,24 @@
 
     <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
-
-        var tr_click = $('#phieuTbl .cursor-pointer')
-        if ('@Model.KVPCT.SoCT' !== '') {
-            if (tr_click.hasClass("hoverClass")) {
-                tr_click.removeClass("hoverClass");
+        var soCT_Redirect = '@Model.KVPCT.SoCT'; //soct sau khi redirect ve //////////////////////////////////////////////
+        
+        //var tr_click = $('#phieuTbl ' + soCT);
+        if (soCT_Redirect !== '') {
+            
+            var soCT_Redirect_Class = $('.' + soCT_Redirect);
+            
+            if (soCT_Redirect_Class.hasClass("hoverClass")) {
+                soCT_Redirect_Class.removeClass("hoverClass");
             }
             else {
-                tr_click.removeClass("hoverClass");
-                tr_click.addClass("hoverClass");
+                soCT_Redirect_Class.removeClass("hoverClass");
+                soCT_Redirect_Class.addClass("hoverClass");
             }
+
+            indexController.TdVal_Click(soCT_Redirect);
         }
+
         function confirmDelete(uniqueId, isDeleteClicked) {
             var deleteSpan = 'deleteSpan_' + uniqueId;
             var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
