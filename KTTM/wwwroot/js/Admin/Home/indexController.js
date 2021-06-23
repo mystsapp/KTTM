@@ -165,18 +165,20 @@ var indexController = {
         // contextmenu for themdong
         $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
-            kvpctid = $(this).data('id');
 
+            soCT = $('#hidThemDong').val();
+            strUrl = $(this).data('url');
             $('#KVCTPCT_Tbl').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);
 
-            var url = '/KVCTPCTs/KVCTPCT_Create_Partial';
-            $.get(url, { kvpctid: kvpctid }, function (response) {
+            var url = '/KVCTPCTs/KVCTPCT_Modal_Full_Partial';
+            $.get(url, { soCT: soCT }, function (data) {
 
-                $('#KVCTPCT_Create_Partial').show(500);
-                $('#KVCTPCT_Create_Partial').html(response);
-
+                $('#ThemDongModal_Full').modal('show');
+                $('.ThemDongModal_Full_Body').html(data);
+                $('#ThemDongModal_Full').draggable();
             });
+
         });
         // contextmenu for themdong
 
@@ -184,8 +186,7 @@ var indexController = {
         $('#btnThemDong').click(function () {
             
             //soCT = $(this).data('id');
-            soCT = $('#hidThemDong').val();
-            
+            soCT = $('#hidThemDong').val();            
             strUrl = $(this).data('url');
             
             var url = '/KVCTPCTs/KVCTPCT_Modal_Partial';

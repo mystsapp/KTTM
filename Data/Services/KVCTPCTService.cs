@@ -34,6 +34,7 @@ namespace Data.Services
         IEnumerable<ViewMatHang> GetAll_MatHangs_View();
         IEnumerable<PhongBan> GetAll_PhongBans();
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
+        IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -179,6 +180,13 @@ namespace Data.Services
         public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode()
         {
             return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode();
+        }
+
+        public IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo)
+        {
+            var dgiais = _unitOfWork.dGiaiRepository.GetAll();
+            var dgiais1 = dgiais.Where(x => x.Tkno == tkNo);
+            return dgiais1;
         }
     }
 }

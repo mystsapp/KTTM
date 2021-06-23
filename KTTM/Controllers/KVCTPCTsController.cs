@@ -155,6 +155,35 @@ namespace KTTM.Controllers
             return PartialView(KVCTPCTVM);
         }
 
+        // KVCTPCT_Modal_Full_Partial
+        public async Task<IActionResult> KVCTPCT_Modal_Full_Partial(string soCT)
+        {
+            DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
+            ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+
+            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
+            KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
+            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
+            var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
+            dmTks.Insert(0, dmTkTmp);
+            KVCTPCTVM.DmTks = dmTks;
+            KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
+            KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
+            var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
+            viewSupplierCodes.Insert(0, viewSupplierCode);
+            KVCTPCTVM.KhachHangs = viewSupplierCodes;
+            var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
+            viewMatHangs.Insert(0, viewMatHang);
+            KVCTPCTVM.MatHangs = viewMatHangs;
+            KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
+            //KVCTPCTVM.StrUrl = strUrl;
+
+            return PartialView(KVCTPCTVM);
+        }
+
         [HttpPost, ActionName("KVCTPCT_Modal_Partial")]
         public async Task<IActionResult> KVCTPCT_Modal_Partial_Post() // soCT lay tu tren Get xuong
         {
@@ -245,6 +274,14 @@ namespace KTTM.Controllers
         public JsonResult Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {
             var listViewModels = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+            return Json(new
+            {
+                data = listViewModels
+            });
+        }
+        public JsonResult Get_DienGiai_By_TkNo(string tkNo)
+        {
+            var listViewModels = _kVCTPCTService.Get_DienGiai_By_TkNo(tkNo);
             return Json(new
             {
                 data = listViewModels
