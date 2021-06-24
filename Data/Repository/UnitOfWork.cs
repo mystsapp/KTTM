@@ -1,4 +1,5 @@
-﻿using Data.Models_DanhMucKT;
+﻿using Data.Models_Cashier;
+using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
@@ -34,6 +35,11 @@ namespace Data.Repository
         ISupplier_DanhMucKT_Repository supplier_DanhMucKT_Repository { get; }
         IMatHangRepository matHangRepository { get; }
         IPhongBan_DanhMucKT_Repository phongBan_DanhMucKT_Repository { get; }
+
+        // Cashier
+        INopTienRepository nopTienRepository { get; }
+        INtbillRepository ntbillRepository { get; }
+        ICtbillRepository ctbillRepository { get; }
         Task<int> Complete();
 
     }
@@ -43,13 +49,15 @@ namespace Data.Repository
         private readonly KTTMDbContext _kTTMDbContext;
         private readonly qltourContext _qltourContext;
         private readonly DanhMucKTContext _danhMucKTContext;
+        private readonly qlcashierContext _qlcashierContext;
 
-        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext, DanhMucKTContext danhMucKTContext)
+        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext, DanhMucKTContext danhMucKTContext, qlcashierContext qlcashierContext)
         {
             _qltaikhoanContext = qltaikhoanContext;
             _kTTMDbContext = kTTMDbContext;
             _qltourContext = qltourContext;
             _danhMucKTContext = danhMucKTContext;
+            _qlcashierContext = qlcashierContext;
 
             // qltaikhoan
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -73,6 +81,11 @@ namespace Data.Repository
             supplier_DanhMucKT_Repository = new Supplier_DanhMucKT_Repository(_danhMucKTContext);
             matHangRepository = new MatHangRepository(_danhMucKTContext);
             phongBan_DanhMucKT_Repository = new PhongBan_DanhMucKT_Repository(_danhMucKTContext);
+
+            // Cashier
+            nopTienRepository = new NopTienRepository(_qlcashierContext);
+            ntbillRepository = new NtbillRepository(_qlcashierContext);
+            ctbillRepository = new CtbillRepository(_qlcashierContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -105,6 +118,12 @@ namespace Data.Repository
 
         public IPhongBan_DanhMucKT_Repository phongBan_DanhMucKT_Repository { get; }
 
+        public INopTienRepository nopTienRepository { get; }
+
+        public INtbillRepository ntbillRepository { get; }
+
+        public ICtbillRepository ctbillRepository { get; }
+
         public async Task<int> Complete()
         {
             await _qltaikhoanContext.SaveChangesAsync();
@@ -119,6 +138,7 @@ namespace Data.Repository
             _kTTMDbContext.Dispose();
             _qltourContext.Dispose();
             _danhMucKTContext.Dispose();
+            _qlcashierContext.Dispose();
             GC.Collect();
         }
     }

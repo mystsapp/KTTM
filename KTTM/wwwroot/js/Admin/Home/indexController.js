@@ -154,7 +154,7 @@ var indexController = {
 
             soCT = $('#hidThemDong').val();
             strUrl = $('.layDataCashier').data('url');
-            $.get('/Home/LayDataCashierPartial', { id: soCT, strUrl: strUrl }, function (data) {
+            $.get('/KVCTPCTs/LayDataCashierPartial', { id: soCT, strUrl: strUrl }, function (data) {
 
                 $('#layDataCashier').modal('show');
                 $('.layDataCashier_Body').html(data);

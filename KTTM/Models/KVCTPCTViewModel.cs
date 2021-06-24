@@ -23,6 +23,7 @@ namespace KTTM.Models
         public IEnumerable<Data.Models_DanhMucKT.ViewSupplierCode> KhachHangs { get; set; }
         public IEnumerable<ViewMatHang> MatHangs { get; set; }
         public IEnumerable<ViewPhongBan> PhongBans { get; set; }
+        public LayDataCashierModel LayDataCashierModel { get; set; }
         public string StrUrl { get; set; }
         //public string KhachHangJsons { get; set; }
     }

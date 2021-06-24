@@ -1,25 +1,48 @@
-﻿@model HomeViewModel
+﻿@model KVCTPCTViewModel
 
 
-<form id="frmLayDataCashierPartial" asp-action="HuyTour" method="post" autocomplete="off">
+<form id="frmLayDataCashierPartial" asp-action="LayDataCashierPartial" method="post" autocomplete="off">
 
     <input type="hidden" asp-for="KVPCT.SoCT" />
+    <input type="hidden" asp-for="KVPCT.MFieu" />
     <input type="hidden" asp-for="StrUrl" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group row text-sm">
+    <div class=" row text-sm">
 
-        <div class="col-md-6 ">
+        <div class="col-md-12 ">
             <label class="control-labels">Báo cao số</label>
-            <input name="baoCaoSo" class="form-control form-control-sm" id="txtBaoCaoSo" />
+            <input asp-for="LayDataCashierModel.BaoCaoSo" class="form-control form-control-sm" id="txtBaoCaoSo" />
         </div>
+    </div>
 
-        <div class="col-md-6">
-            <label class="control-label">Tk cong nơ</label>
-            <select name="tkCongNo" class="form-control select2 form-control-sm"
-                    asp-items="@(new SelectList(Model.TkCongNos, "Tkhoan", "Tkhoan"))" id="ddlTkCongNo">
+    <div class=" row text-sm">
+
+        <div class="col-md-4 ">
+            <label class="control-labels">tiền mặt</label>
+            <input asp-for="LayDataCashierModel.TienMat" type="checkbox" id="ckTienMat" checked/>
+        </div>
+    
+        <div class="col-md-4 ">
+            <label class="control-labels">SEC</label>
+            <input asp-for="LayDataCashierModel.SEC" type="checkbox" id="ckSEC" />
+        </div>
+    
+        <div class="col-md-4 ">
+            <label class="control-labels">Ngân phiếu</label>
+            <input asp-for="LayDataCashierModel.NganPhieu" type="checkbox" id="ckNganPhieu" />
+        </div>
+    
+    </div>
+
+    <div class=" row text-sm">
+
+        <div class="col-md-12">
+            <label class="control-label">Tk có</label>
+            <select asp-for="LayDataCashierModel.TkCo" class="form-control form-control-sm select2"
+                    asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
             </select>
-            
+
         </div>
 
     </div>
@@ -32,7 +55,7 @@
 
 <!-- Validation -->
 <script>
-
+    $('.select2').select2();
     $('#frmHuyTourPartial').validate({
         //rules: {
         //    email: {

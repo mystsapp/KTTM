@@ -258,19 +258,6 @@ namespace KTTM.Controllers
             return View(HomeVM);
         }
 
-        //-----------LayDataCashierPartial------------
-        public async Task<IActionResult> LayDataCashierPartial(string id, string strUrl)
-        {
-            if (string.IsNullOrEmpty(id))
-                return NotFound();
-
-            HomeVM.StrUrl = strUrl;
-            HomeVM.KVPCT = await _kVPCTService.GetBySoCT(id);
-            HomeVM.TkCongNos = _kVPCTService.GetAllTkCongNo();
-
-            return PartialView(HomeVM);
-        }
-
         public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
         {
             //if (!string.IsNullOrEmpty(tabActive))

@@ -35,6 +35,7 @@ namespace Data.Services
         IEnumerable<PhongBan> GetAll_PhongBans();
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
+
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -133,21 +134,21 @@ namespace Data.Services
         {
             //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
             return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
-            
+
         }
-        
+
         public IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs()
         {
             //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
             return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-            
+
         }
-        
+
         public IEnumerable<ListViewModel> GetAll_KhachHangs_View_CodeName()
         {
             //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
             return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_View_CodeName();
-            
+
         }
 
         public IEnumerable<MatHang> GetAll_MatHangs()
@@ -187,6 +188,54 @@ namespace Data.Services
             var dgiais = _unitOfWork.dGiaiRepository.GetAll();
             var dgiais1 = dgiais.Where(x => x.Tkno == tkNo);
             return dgiais1;
+        }
+
+        public async Task<IEnumerable<KVCTPCT>> GetKVCTPCT(string baoCaoSo, string maCN, string loaiPhieu, string tkCo) // noptien => two keys
+        {
+            var noptien = await _unitOfWork.nopTienRepository.GetById(baoCaoSo, maCN);
+            var ntbill = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN).FirstOrDefault();
+            var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == ntbill.Idntbill);
+
+            string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + baoCaoSo : "CHI BILL " + baoCaoSo; // ??
+            string dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tkCo).FirstOrDefault().DienGiai;
+            string boPhan = ntbill.Bophan;
+            string maKh = ntbill.Coquan;
+
+                List<KVCTPCT> kVCTPCTs = new List<KVCTPCT>();
+            if (ctbills != null)
+            {
+
+                foreach (var item in ctbills)
+                {
+                    KVCTPCT kVCTPCT = new KVCTPCT();
+
+                    kVCTPCT.DienGiaiP = dienGiaiP;
+                    kVCTPCT.SoTienNT = item.Sotiennt;
+                    kVCTPCT.LoaiTien = item.Loaitien;
+                    kVCTPCT.TyGia = item.Tygia;
+                    kVCTPCT.SoTien = item.Sotien;
+                    kVCTPCT.TKNo = "1111000000";
+                    kVCTPCT.TKCo = tkCo;
+                    kVCTPCT.DienGiai = dienGiai;
+                    if (loaiPhieu == "T")
+                    {
+                        kVCTPCT.MaKhCo = maKh;
+                        kVCTPCT.CoQuay = boPhan;
+                    }
+                    else
+                    {
+                        kVCTPCT.MaKhNo = maKh;
+                        kVCTPCT.NoQuay = boPhan;
+                    }
+                    
+                    kVCTPCT.BoPhan = boPhan;
+                    kVCTPCT.Sgtcode = item.Sgtcode;
+
+                    kVCTPCTs.Add(kVCTPCT);
+                }
+
+            }
+            return kVCTPCTs;
         }
     }
 }

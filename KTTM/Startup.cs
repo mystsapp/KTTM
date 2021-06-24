@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Models_Cashier;
 using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
@@ -37,6 +38,7 @@ namespace KTTM
             services.AddDbContext<qltourContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTourConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<KTTMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<DanhMucKTContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DanhMucKTConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<qlcashierContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLCashierConnection"))/*.EnableSensitiveDataLogging()*/);
 
             // qltaikhoan
             services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
@@ -60,6 +62,11 @@ namespace KTTM
             services.AddTransient<ISupplier_DanhMucKT_Repository, Supplier_DanhMucKT_Repository>();
             services.AddTransient<IMatHangRepository, MatHangRepository>();
             services.AddTransient<IPhongBan_DanhMucKT_Repository, PhongBan_DanhMucKT_Repository>();
+
+            // Cashier
+            services.AddTransient<INopTienRepository, NopTienRepository>();
+            services.AddTransient<INtbillRepository, NtbillRepository>();
+            services.AddTransient<ICtbillRepository, CtbillRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

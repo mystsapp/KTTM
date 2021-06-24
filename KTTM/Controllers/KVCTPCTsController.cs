@@ -185,7 +185,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("KVCTPCT_Modal_Partial")]
-        public async Task<IActionResult> KVCTPCT_Modal_Partial_Post() // soCT lay tu tren Get xuong
+        public async Task<IActionResult> KVCTPCT_Modal_Partial_Post()
         {
             var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
             // from login session
@@ -202,6 +202,57 @@ namespace KTTM.Controllers
 
             // ghi log
             KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            try
+            {
+                await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+
+                SetAlert("Thêm mới thành công.", "success");
+                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT }); // redirect to Home/Index/?soCT
+            }
+            catch (Exception ex)
+            {
+
+                SetAlert(ex.Message, "error");
+                return View(KVCTPCTVM);
+            }
+
+        }
+
+        //-----------LayDataCashierPartial------------
+        public async Task<IActionResult> LayDataCashierPartial(string id, string strUrl)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            KVCTPCTVM.StrUrl = strUrl;
+            KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(id);
+            KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk();
+
+            return PartialView(KVCTPCTVM);
+        }
+
+        [HttpPost, ActionName("LayDataCashierPartial")]
+        public async Task<IActionResult> LayDataCashierPartial_Post()
+        {
+            var soCT = KVCTPCTVM.KVPCT.SoCT;
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (!ModelState.IsValid)
+            {
+
+                return View(KVCTPCTVM);
+            }
+
+            // data tu cashier
+
+
+            KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
+
+            // ghi log
+            KVCTPCTVM.KVCTPCT.LogFile = "-User kéo từ cashier: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
             try
             {
