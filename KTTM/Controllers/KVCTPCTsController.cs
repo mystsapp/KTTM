@@ -64,7 +64,7 @@ namespace KTTM.Controllers
                 catch (Exception ex)
                 {
 
-                    throw;
+                    throw ex;
                 }
 
 
@@ -132,11 +132,14 @@ namespace KTTM.Controllers
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
             ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
-            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
+            var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
+            viewDmHttcs.Insert(0, viewDmHttc);
+            KVCTPCTVM.DmHttcs = viewDmHttcs;
             var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
             dmTks.Insert(0, dmTkTmp);
             KVCTPCTVM.DmTks = dmTks;
@@ -161,11 +164,14 @@ namespace KTTM.Controllers
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
             ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
-            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
+            var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
+            viewDmHttcs.Insert(0, viewDmHttc);
+            KVCTPCTVM.DmHttcs = viewDmHttcs;
             var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
             dmTks.Insert(0, dmTkTmp);
             KVCTPCTVM.DmTks = dmTks;
@@ -208,7 +214,7 @@ namespace KTTM.Controllers
                 await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT }); // redirect to Home/Index/?soCT
+                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT, page = KVCTPCTVM.Page }); // redirect to Home/Index/?soCT
             }
             catch (Exception ex)
             {
@@ -220,12 +226,13 @@ namespace KTTM.Controllers
         }
 
         //-----------LayDataCashierPartial------------
-        public async Task<IActionResult> LayDataCashierPartial(string id, string strUrl)
+        public async Task<IActionResult> LayDataCashierPartial(string id, string strUrl, string page)
         {
             if (string.IsNullOrEmpty(id))
                 return NotFound();
 
             KVCTPCTVM.StrUrl = strUrl;
+            KVCTPCTVM.Page = page;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(id);
             KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk();
 
@@ -246,20 +253,15 @@ namespace KTTM.Controllers
             }
 
             // data tu cashier
-
-
-            KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
-            KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
-
-            // ghi log
-            KVCTPCTVM.KVCTPCT.LogFile = "-User kéo từ cashier: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+             var kVCTPCTs = await _kVCTPCTService.GetKVCTPCTs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPCT.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
+            // ghi log ben service
 
             try
             {
-                await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+                await _kVCTPCTService.CreateRange(kVCTPCTs);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT }); // redirect to Home/Index/?soCT
+                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT,  page = KVCTPCTVM.Page }); // redirect to Home/Index/?soCT
             }
             catch (Exception ex)
             {
@@ -270,7 +272,7 @@ namespace KTTM.Controllers
 
         }
 
-        public async Task<IActionResult> BackIndexTest(string soCT)
+        public IActionResult BackIndexTest(string soCT)
         {
             return RedirectToAction(nameof(Index), "Home", new { soCT = soCT });
         }

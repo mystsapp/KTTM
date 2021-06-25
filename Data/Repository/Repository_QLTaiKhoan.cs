@@ -28,6 +28,11 @@ namespace Data.Repository
             _context.Add(entity);
         }
 
+        public async Task CreateRange(IEnumerable<T> entities)
+        {
+            await _context.Set<T>().AddRangeAsync(entities);
+        }
+
         public void Delete(T entity)
         {
             _context.Remove(entity);

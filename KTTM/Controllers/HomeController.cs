@@ -62,6 +62,7 @@ namespace KTTM.Controllers
 
             HomeVM.StrUrl = strUrl;
             HomeVM.KVPCT.NgayCT = DateTime.Now;
+            HomeVM.KVPCT.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
             HomeVM.KVPCT.Create = DateTime.Now;
             HomeVM.KVPCT.LapPhieu = user.Username;
 

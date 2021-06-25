@@ -40,7 +40,7 @@ var indexController = {
                 return addCommas(value);
             });
         });
-        
+
         //$.each($('.cursor-pointer'), function (i, item) {
 
         //    var huy = $(item).data('huy');
@@ -108,9 +108,10 @@ var indexController = {
 
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
-            
+
             soCT = $(this).data('id');
             loaiPhieu = $(this).data('loaiphieu');
+            
             indexController.TdVal_Click(soCT, loaiPhieu);
 
             //// gang' soCT cho btnCashier
@@ -122,7 +123,7 @@ var indexController = {
             //$('#btnThemDong').attr('disabled', false);
             ////$('#btnThemDong').attr('data-id', soCT);
             //$('#hidThemDong').val(soCT);
-            
+
             //$('#KVCTPCT_Create_Partial').hide(500);
             //$('#KVCTPCT_Edit_Partial').hide(500);
 
@@ -133,28 +134,12 @@ var indexController = {
 
         // show cashier modal
         $('.btnCashier').off('click').on('click', function () {
-            //return $.ajax({
-            //    url: '/Tours/HuyTourPartial',
-            //    data: {
-            //        id: $(this).data('id')
-            //    },
-            //    dataType: 'json',
-            //    type: 'GET',
-            //    success: function (response) {
-            //        console.log(response);
-            //        //if (response.status) {
-            //        //    console.log(response.toursCount);
-            //        //    return response.toursCount;
-            //        //}
-
-            //        //else
-            //        //    return 10;
-            //    }
-            //});
+            var a = 1;
+            var page = $('.active span').text();
 
             soCT = $('#hidThemDong').val();
             strUrl = $('.layDataCashier').data('url');
-            $.get('/KVCTPCTs/LayDataCashierPartial', { id: soCT, strUrl: strUrl }, function (data) {
+            $.get('/KVCTPCTs/LayDataCashierPartial', { id: soCT, strUrl: strUrl, page: page }, function (data) {
 
                 $('#layDataCashier').modal('show');
                 $('.layDataCashier_Body').html(data);
@@ -166,13 +151,15 @@ var indexController = {
         $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
 
+            var page = $('.active span').text();
+
             soCT = $('#hidThemDong').val();
             strUrl = $(this).data('url');
             $('#KVCTPCT_Tbl').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);
 
             var url = '/KVCTPCTs/KVCTPCT_Modal_Full_Partial';
-            $.get(url, { soCT: soCT }, function (data) {
+            $.get(url, { soCT: soCT, page: page }, function (data) {
 
                 $('#ThemDongModal_Full').modal('show');
                 $('.ThemDongModal_Full_Body').html(data);
@@ -184,13 +171,14 @@ var indexController = {
 
         // themdong click
         $('#btnThemDong').click(function () {
-            
-            //soCT = $(this).data('id');
-            soCT = $('#hidThemDong').val();            
+
+            var page = $('.active span').text();
+
+            soCT = $('#hidThemDong').val();
             strUrl = $(this).data('url');
-            
+
             var url = '/KVCTPCTs/KVCTPCT_Modal_Partial';
-            $.get(url, { soCT: soCT, strUrl: strUrl }, function (data) {
+            $.get(url, { soCT: soCT, strUrl: strUrl, page: page }, function (data) {
 
                 $('#ThemDongModal').modal('show');
                 $('.ThemDongModal_Body').html(data);
@@ -487,22 +475,24 @@ var indexController = {
         });
 
     },
-    TdVal_Click: function (soCT, loaiPhieu) {
+    TdVal_Click: function (soCT, loaiPhieu, page) {
 
         //soCT = $(this).data('id');
 
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
-        //$('.btnCashier').attr('data-id', soCT);
         $('#hidCashier').val(soCT);
 
         // gang' soCT cho btnThemDong
         $('#btnThemDong').attr('disabled', false);
-        //$('#btnThemDong').attr('data-id', soCT);
         $('#hidThemDong').val(soCT);
 
+        // page
+        $('#hidPage').val(page);
+
         // gang' loaiphieu
-        $('#hidLoaiPhieu').text(loaiPhieu)
+        $('#hidLoaiPhieu').text(loaiPhieu);
+        $('#hidLoaiPhieuFull').text(loaiPhieu);
 
         $('#KVCTPCT_Create_Partial').hide(500);
         $('#KVCTPCT_Edit_Partial').hide(500);

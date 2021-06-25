@@ -35,7 +35,8 @@ namespace Data.Services
         IEnumerable<PhongBan> GetAll_PhongBans();
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
-
+        Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
+        Task CreateRange(IEnumerable<KVCTPCT> kVCTPCTs);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -190,18 +191,23 @@ namespace Data.Services
             return dgiais1;
         }
 
-        public async Task<IEnumerable<KVCTPCT>> GetKVCTPCT(string baoCaoSo, string maCN, string loaiPhieu, string tkCo) // noptien => two keys
+        public async Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
             var noptien = await _unitOfWork.nopTienRepository.GetById(baoCaoSo, maCN);
             var ntbill = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN).FirstOrDefault();
             var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == ntbill.Idntbill);
 
             string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + baoCaoSo : "CHI BILL " + baoCaoSo; // ??
-            string dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tkCo).FirstOrDefault().DienGiai;
             string boPhan = ntbill.Bophan;
             string maKh = ntbill.Coquan;
+            string nguoiTao = username;
+            DateTime ngayTao = DateTime.Now;
 
-                List<KVCTPCT> kVCTPCTs = new List<KVCTPCT>();
+            // ghi log
+            string logFile = "-User kéo từ cashier: " + username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            List<KVCTPCT> kVCTPCTs = new List<KVCTPCT>();
+
             if (ctbills != null)
             {
 
@@ -209,33 +215,51 @@ namespace Data.Services
                 {
                     KVCTPCT kVCTPCT = new KVCTPCT();
 
+                    kVCTPCT.KVPCTId = soCT;
                     kVCTPCT.DienGiaiP = dienGiaiP;
                     kVCTPCT.SoTienNT = item.Sotiennt;
                     kVCTPCT.LoaiTien = item.Loaitien;
                     kVCTPCT.TyGia = item.Tygia;
-                    kVCTPCT.SoTien = item.Sotien;
-                    kVCTPCT.TKNo = "1111000000";
-                    kVCTPCT.TKCo = tkCo;
-                    kVCTPCT.DienGiai = dienGiai;
+                    kVCTPCT.SoTien = item.Sotien; 
+
                     if (loaiPhieu == "T")
                     {
+                        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault();
+                        kVCTPCT.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                        kVCTPCT.TKNo = "1111000000";
+                        kVCTPCT.TKCo = tk;
                         kVCTPCT.MaKhCo = maKh;
                         kVCTPCT.CoQuay = boPhan;
                     }
                     else
                     {
+                        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                        kVCTPCT.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                        kVCTPCT.TKNo = tk;
+                        kVCTPCT.TKCo = "1111000000";                        
                         kVCTPCT.MaKhNo = maKh;
                         kVCTPCT.NoQuay = boPhan;
                     }
                     
                     kVCTPCT.BoPhan = boPhan;
                     kVCTPCT.Sgtcode = item.Sgtcode;
+                    kVCTPCT.CardNumber = item.Cardnumber;
+                    kVCTPCT.SalesSlip = item.Saleslip;
+                    kVCTPCT.NguoiTao = nguoiTao;
+                    kVCTPCT.NgayTao = ngayTao;
+                    kVCTPCT.LogFile = logFile;
 
                     kVCTPCTs.Add(kVCTPCT);
                 }
 
             }
             return kVCTPCTs;
+        }
+
+        public async Task CreateRange(IEnumerable<KVCTPCT> kVCTPCTs)
+        {
+            await _unitOfWork.kVCTPCTRepository.CreateRange(kVCTPCTs);
+            await _unitOfWork.Complete();
         }
     }
 }

@@ -95,25 +95,44 @@
 
                     <div class="col-md-4">
                         <label class="control-label">Thuế GTGT</label>
-                        <input class="form-control form-control-sm " readonly id="txtThueGTGT" />
+                        <input class="form-control form-control-sm " id="txtThueGTGT" />
                         <span @*asp-validation-for="KVCTPCT.SoTien"*@ class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class=" row">
+                    @if (Model.KVPCT.MFieu == "C")
+                    {
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
+                            <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
+                            </select>
+                            <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
+                        </div>
 
-                    <div class="col-md-2">
-                        <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
-                        <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
-                        </select>
-                        <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
-                    </div>
+                        <div class="col-md-10">
+                            <label class="control-label">Tên tài khoãn</label>
+                            <input class="form-control form-control-sm " id="txtTenTkNo" />
+                        </div>
 
-                    <div class="col-md-10">
-                        <label class="control-label">Tên tài khoãn</label>
-                        <input class="form-control form-control-sm " id="txtTenTkNo" />
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
+                            <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                            </select>
+                            <span asp-validation-for="KVCTPCT.TKCo" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-10">
+                            <label class="control-label">Tên tài khoãn</label>
+                            <input class="form-control form-control-sm " id="txtTenTkNo" />
+                        </div>
+
+                    }
 
                 </div>
 
@@ -132,22 +151,44 @@
             <!--Thông tin về công nợ đoàn-->
             <fieldset class="groupbox-border ">
                 <legend class="groupbox-border">Thông tin về công nợ đoàn </legend>
+                @if (Model.KVPCT.MFieu == "C")
+                {
+                    <div class=" row">
 
-                <div class=" row">
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
+                            <select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
+                            </select>
+                            <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-10">
+                            <label class="control-label ">Tên KH nợ</label>
+                            <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+                        </div>
 
-                    <div class="col-md-2">
-                        <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                        <select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
-                        </select>
-                        <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                     </div>
-                    <div class="col-md-10">
-                        <label class="control-label ">Tên KH nợ</label>
-                        <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+
+                }
+                else // Thu
+                {
+                    <div class=" row">
+
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
+                            <select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
+                            </select>
+                            <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-10">
+                            <label class="control-label ">Tên KH nợ</label>
+                            <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+                        </div>
+
                     </div>
 
-                </div>
+                }
 
                 <div class=" row">
 

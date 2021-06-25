@@ -13,7 +13,7 @@ namespace Data.Repository
 {
     public class Repository_KTTM<T> : IRepository<T> where T : class
     {
-        private readonly KTTMDbContext _context;
+        protected readonly KTTMDbContext _context;
 
         public Repository_KTTM(KTTMDbContext context)
         {
@@ -27,6 +27,11 @@ namespace Data.Repository
         public void Create(T entity)
         {
             _context.Add(entity);
+        }
+
+        public async Task CreateRange(IEnumerable<T> entities)
+        {
+            await _context.Set<T>().AddRangeAsync(entities);
         }
 
         public void Delete(T entity)

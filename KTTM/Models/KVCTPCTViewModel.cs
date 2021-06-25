@@ -25,6 +25,7 @@ namespace KTTM.Models
         public IEnumerable<ViewPhongBan> PhongBans { get; set; }
         public LayDataCashierModel LayDataCashierModel { get; set; }
         public string StrUrl { get; set; }
+        public string Page { get; set; }
         //public string KhachHangJsons { get; set; }
     }
 }

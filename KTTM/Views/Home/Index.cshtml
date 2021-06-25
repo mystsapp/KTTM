@@ -19,13 +19,13 @@
     <div class="modal-dialog modal-sm">
 
         <div class="modal-content ">
-            <div class="modal-header">
+            <div class="modal-header p-0 pl-2">
                 <h4 class="modal-title">Lấy data cashier</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body layDataCashier_Body m-0">
+            <div class="modal-body layDataCashier_Body p-2">
             </div>
         </div>
         <!-- /.modal-content -->
@@ -39,7 +39,7 @@
 
         <div class="modal-content ">
             <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title">Thêm chi tiết phiếu - <span id="hidLoaiPhieu"></span></h4> 
+                <h4 class="modal-title">Thêm chi tiết phiếu - <span id="hidLoaiPhieuFull"></span></h4> 
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -126,6 +126,7 @@
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                                     <button type="button" class="btn btn-outline-dark btn-sm " id="btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
                                     <input type="hidden" id="hidThemDong" />
+                                    <input type="hidden" id="hidPage" />
                                     @*<a asp-action="ThemChiTietPhieu" asp-controller="KVCTPCTs" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-dark btn-sm " disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</a>*@
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
@@ -169,11 +170,11 @@
                                         <div class="btn-group text-white" role="group">
 
                                             <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-soCT="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                            <span class="text-dark"> | </span>
+                                            @*<span class="text-dark"> | </span>
 
-                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <!-- ko cho xóa -->
-                                            <span class="text-dark"> | </span>
+                                            @*<span class="text-dark"> | </span>*@
                                             <span SoCT="confirmDeleteSpan_@item.SoCT" style="display: none">
                                                 <!--ajax check invoices-->
                                                 <span class="text-dark invoiceTrue">Hủy?</span>

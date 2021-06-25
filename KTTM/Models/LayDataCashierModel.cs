@@ -11,6 +11,6 @@ namespace KTTM.Models
         public bool TienMat { get; set; }
         public bool SEC { get; set; }
         public bool NganPhieu { get; set; }
-        public string TkCo { get; set; }
+        public string Tk { get; set; }
     }
 }
