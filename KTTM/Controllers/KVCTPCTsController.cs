@@ -234,7 +234,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(id);
-            KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk();
+            KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk_Cashier();
 
             return PartialView(KVCTPCTVM);
         }
@@ -348,6 +348,15 @@ namespace KTTM.Controllers
             {
                 status = true,
                 soTien = soTien.ToString()
+            });
+        }
+        public JsonResult TinhDsKhongVat(decimal vat, decimal soTien)
+        {
+            var dsKhongVat = soTien - ((vat / 100) * soTien);
+            return Json(new
+            {
+                status = true,
+                soTien = dsKhongVat.ToString()
             });
         }
     }

@@ -13,7 +13,7 @@ namespace Data.Repository
         IEnumerable<Supplier> GetAll();
         IEnumerable<ViewSupplier> GetAll_ViewSupplier();
         IEnumerable<ViewSupplierCode> GetAll_ViewCode();
-        IEnumerable<ListViewModel> GetAll_View_CodeName();
+        IEnumerable<ViewSupplier> GetAll_View_CodeName_Tax();
     }
     public class Supplier_DanhMucKT_Repository : ISupplier_DanhMucKT_Repository
     {
@@ -38,10 +38,18 @@ namespace Data.Repository
         {
             return _context.ViewSuppliers;
         }
-        public IEnumerable<ListViewModel> GetAll_View_CodeName()
+        public IEnumerable<ViewSupplier> GetAll_View_CodeName_Tax()
         {
             var listViewModels = (from s in _context.ViewSuppliers
-                                 select new ListViewModel() { Code = s.Code, Name = s.Name } ).ToList();
+                                  select new ViewSupplier()
+                                  {
+                                      Code = s.Code,
+                                      TaxCode = s.TaxCode,
+                                      Name = s.Name,
+                                      TaxSign = s.TaxSign,
+                                      TaxForm = s.TaxForm,
+                                      
+                                  }).ToList();
             return listViewModels;
         }
     }

@@ -119,5 +119,29 @@ namespace Data.Dtos
         [DisplayName("Hoá đơn DT")]
         public string HoaDonDT { get; set; } //
 
+
+        public DateTime? NgayTao { get; set; }
+
+        [DisplayName("Người sửa")]
+        public string NguoiSua { get; set; }
+
+        public DateTime? NgaySua { get; set; }
+
+
+
+        [DisplayName("Link HDDT")]
+        public string LinkHDDT { get; set; }
+
+
+        [DisplayName("Mã tra cứu")]
+        public string MaTraCuu { get; set; }
+
+        [DisplayName("Tk truy cập")]
+        public string TkTruyCap { get; set; }
+
+
+        [DisplayName("Password")]
+        public string Password { get; set; }
+
     }
 }

@@ -9,6 +9,7 @@ namespace Data.ViewModels
         public int Id { get; set; }
         public string StringId { get; set; }
         public string Code { get; set; }
+        public string TaxCode { get; set; }
         public string Name { get; set; }
     }
 }
