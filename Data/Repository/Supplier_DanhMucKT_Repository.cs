@@ -48,6 +48,7 @@ namespace Data.Repository
                                       Name = s.Name,
                                       TaxSign = s.TaxSign,
                                       TaxForm = s.TaxForm,
+                                      Address = s.Address
                                       
                                   }).ToList();
             return listViewModels;

@@ -35,9 +35,10 @@ namespace KTTM.Controllers
             return View();
         }
 
-        public async Task<IActionResult> KVCTPCTPartial(string soCT)
+        public async Task<IActionResult> KVCTPCTPartial(string soCT, string page)
         {
             // KVCTPCT
+            KVCTPCTVM.Page = page;
             KVCTPCTVM.KVCTPCTs = await _kVCTPCTService.List_KVCTPCT_By_SoCT(soCT);
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
 
@@ -270,6 +271,11 @@ namespace KTTM.Controllers
                 return View(KVCTPCTVM);
             }
 
+        }
+
+        public IActionResult KVCTPCT_Edit_Modal_Partial(long id, int page)
+        {
+            return PartialView();
         }
 
         public IActionResult BackIndexTest(string soCT)

@@ -464,10 +464,10 @@ var indexController = {
         //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
 
     },
-    Load_KVCTPCTPartial: function (soCT) {
+    Load_KVCTPCTPartial: function (soCT, page) {
 
         var url = '/KVCTPCTs/KVCTPCTPartial';
-        $.get(url, { soCT: soCT }, function (response) {
+        $.get(url, { soCT: soCT, page: page }, function (response) {
 
             $('#KVCTPCT_Tbl').html(response);
             $('#KVCTPCT_Tbl').show(500);
@@ -475,7 +475,7 @@ var indexController = {
         });
 
     },
-    TdVal_Click: function (soCT, loaiPhieu, page) {
+    TdVal_Click: function (soCT, loaiPhieu) {
 
         //soCT = $(this).data('id');
 
@@ -488,7 +488,8 @@ var indexController = {
         $('#hidThemDong').val(soCT);
 
         // page
-        $('#hidPage').val(page);
+        var page = $('.active span').text();
+       // $('#hidPage').val(page);
 
         // gang' loaiphieu
         $('#hidLoaiPhieu').text(loaiPhieu);
@@ -497,7 +498,7 @@ var indexController = {
         $('#KVCTPCT_Create_Partial').hide(500);
         $('#KVCTPCT_Edit_Partial').hide(500);
 
-        indexController.Load_KVCTPCTPartial(soCT);
+        indexController.Load_KVCTPCTPartial(soCT, page);
 
     }
     //Load_CTInvoice_CTVAT_Partial: function (invoiceId) {

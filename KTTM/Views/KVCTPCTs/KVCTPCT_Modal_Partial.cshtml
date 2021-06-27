@@ -364,9 +364,35 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="KVCTPCT.HoaDonDT" class="control-label "></label>
-                        <input asp-for="KVCTPCT.HoaDonDT" class="form-control form-control-sm" id="txtHDDT" />
-                        <span asp-validation-for="KVCTPCT.HoaDonDT" class="text-danger"></span>
+                        <label asp-for="KVCTPCT.MaTraCuu" class="control-label "></label>
+                        <input asp-for="KVCTPCT.MaTraCuu" class="form-control form-control-sm" id="txtMaTraCuu" />
+                        <span asp-validation-for="KVCTPCT.MaTraCuu" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class=" row">
+
+                    <div class="col-md-12">
+                        <label asp-for="KVCTPCT.LinkHDDT" class="control-label "></label>
+                        <input asp-for="KVCTPCT.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                        <span asp-validation-for="KVCTPCT.LinkHDDT" class="text-danger"></span>
+                    </div>
+
+                </div>
+                
+                <div class=" row">
+
+                    <div class="col-md-6">
+                        <label asp-for="KVCTPCT.TkTruyCap" class="control-label "></label>
+                        <input asp-for="KVCTPCT.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                        <span asp-validation-for="KVCTPCT.LinkHDDT" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label asp-for="KVCTPCT.Password" class="control-label "></label>
+                        <input asp-for="KVCTPCT.Password" class="form-control form-control-sm" id="txtPassword" />
+                        <span asp-validation-for="KVCTPCT.Password" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -408,7 +434,7 @@
 <!-- Validation -->
 
 <script>
-
+    $(".maskInput").mask("99/99/9999");
     $('#frm_KVCTPCT_Create').validate({
         //rules: {
         //    email: {
@@ -586,7 +612,7 @@
             dataType: 'json',
             success: function (response) {
                 var data = response.data;
-                console.log(data);
+                //console.log(data);
 
                 $('#txtTenKhCo').val(data.name.trim());
                 $('#txtKyHieu').val(data.taxSign.trim());

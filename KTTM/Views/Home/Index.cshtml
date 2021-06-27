@@ -126,7 +126,7 @@
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                                     <button type="button" class="btn btn-outline-dark btn-sm " id="btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
                                     <input type="hidden" id="hidThemDong" />
-                                    <input type="hidden" id="hidPage" />
+                                    @*<input type="hidden" id="hidPage" />*@
                                     @*<a asp-action="ThemChiTietPhieu" asp-controller="KVCTPCTs" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-dark btn-sm " disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</a>*@
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>

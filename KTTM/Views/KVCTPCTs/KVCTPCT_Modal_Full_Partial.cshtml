@@ -182,8 +182,8 @@
                             <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                         </div>
                         <div class="col-md-10">
-                            <label class="control-label ">Tên KH nợ</label>
-                            <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+                            <label class="control-label ">Tên KH có</label>
+                            <input type="text" class="form-control form-control-sm" id="txtTenKhCo" />
                         </div>
 
                     </div>
@@ -370,7 +370,7 @@
     //    theme: 'bootstrap4'
     //})
 
-
+    $(".maskInput").mask("99/99/9999");
 </script>
 
 <!-- Validation -->
@@ -532,24 +532,43 @@
             dataType: 'json',
             success: function (response) {
                 var data = response.data;
-                $('#txtTenKhNo').val(data.name);
+                $('#txtTenKhNo').val(data.name.trim());
+
+                $('#txtKyHieu').val(data.taxSign.trim());
+                $('#txtMauSoHD').val(data.taxForm.trim());
+                $('#txtMsThue').val(data.taxCode.trim());
+                $('#txtTenKH').val(data.name.trim());
+                if (data.address !== null) {
+                    $('#txtDiaChi').val(data.address.trim());
+                }
+
             }
         })
     })
-    //$('#ddlMaKhCo').off('change').on('change', function () {
+    $('#ddlMaKhCo').change(function () { // ko duoc off change , on change
 
-    //    var code = $(this).val();
-    //    $.ajax({
-    //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
-    //        type: 'GET',
-    //        data: { code: code },
-    //        dataType: 'json',
-    //        success: function (response) {
-    //            var data = response.data;
-    //            $('#txtTenKhCo').val(data.name);
-    //        }
-    //    })
-    //})
+        var code = $(this).val();
+        $.ajax({
+            url: '/KVCTPCTs/GetKhachHangs_By_Code',
+            type: 'GET',
+            data: { code: code },
+            dataType: 'json',
+            success: function (response) {
+                var data = response.data;
+                //console.log(data);
+
+                $('#txtTenKhCo').val(data.name.trim());
+                $('#txtKyHieu').val(data.taxSign.trim());
+                $('#txtMauSoHD').val(data.taxForm.trim());
+                $('#txtMsThue').val(data.taxCode.trim());
+                $('#txtTenKH').val(data.name.trim());
+                if (data.address !== null) {
+                    $('#txtDiaChi').val(data.address.trim());
+                }
+
+            }
+        })
+    })
     // makh => tenkh
 
     function Get_DienGiai_By_TkNo(tkNo) {
