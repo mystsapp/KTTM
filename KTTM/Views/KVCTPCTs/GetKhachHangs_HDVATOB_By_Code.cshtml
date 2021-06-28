@@ -1,163 +1,51 @@
 ﻿@model IEnumerable<Data.Models_HDVATOB.Supplier>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Realname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telephone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fax)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Contact)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Field)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Suppliercode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Paymentcode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Room)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Level)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Website)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Taxcode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Taxsign)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Taxform)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Httt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Muave)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Daily)
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Realname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telephone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fax)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Contact)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Field)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Suppliercode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Paymentcode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Level)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Website)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Taxcode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Taxsign)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Taxform)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Httt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Muave)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Daily)
-            </td>
-            
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="card-body p-1">
+    <div class="pr-4 pl-4 text-sm">
+        <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; height: 300px">
+            <table class="table mytable text-nowrap text-sm" id="cTPhieuTbl">
+                <thead>
+                    <tr class="table-info">
+
+                        <th>Mã KH</th>
+                        <th>Tên KH</th>
+                        <th>Thành phố</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>Email</th>
+                        <th>Ms Thuế</th>
+                        <th>Ký hiệu </th>
+                        <th>Mẫu số</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+
+                            <tr class="ctphieu-cursor-pointer ">
+
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Name)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.City)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Address)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Telephone)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Email)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxcode)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxsign)</td>
+                                <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxform)</td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+        <div class=" pt-1 pb-1">
+            <button type="button" class="btn btn-success btn-sm" @*id="btnKVCTPCTCreatePartial_Back"*@ data-dismiss="modal"><i class="fas fa-backward "></i> Back</button>
+        </div>
+    </div>
+</div>
