@@ -27,6 +27,7 @@ namespace Data.Services
         IEnumerable<Quay> GetAll_Quay();
         IEnumerable<ViewQuay> GetAll_Quay_View();
         IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs();
+        IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code();
         IEnumerable<ViewSupplier> GetAll_KhachHangs_View();
         IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode();
         IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName();
@@ -38,6 +39,8 @@ namespace Data.Services
         Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
         Task CreateRange(IEnumerable<KVCTPCT> kVCTPCTs);
         IEnumerable<DmTk> GetAll_DmTk_Cashier();
+        Task<KVCTPCT> GetById(long id);
+        IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -144,6 +147,14 @@ namespace Data.Services
             //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
             return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
 
+        }
+        
+        public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code()
+        {
+            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+            var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode().Distinct();
+            
+            return suppliers;
         }
 
         public IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName()
@@ -305,6 +316,16 @@ namespace Data.Services
                 dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan, TenTk = item.Tkhoan + " - " + item.TenTk });
             }
             return dmTks1;
+        }
+
+        public async Task<KVCTPCT> GetById(long id)
+        {
+            return await _unitOfWork.kVCTPCTRepository.GetByLongIdAsync(id);
+        }
+
+        public IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB()
+        {
+            return _unitOfWork.supplier_Hdvatob_Repository.GetAll();
         }
     }
 }

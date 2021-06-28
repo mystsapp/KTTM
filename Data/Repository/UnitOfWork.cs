@@ -1,5 +1,6 @@
 ﻿using Data.Models_Cashier;
 using Data.Models_DanhMucKT;
+using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
@@ -17,6 +18,7 @@ namespace Data.Repository
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
         IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
+        ISupplier_QLTaiKhoan_Repository supplier_QLTaiKhoan_Repository { get; }
 
         // qltour
         INgoaiTeRepository ngoaiTeRepository { get; }
@@ -40,6 +42,9 @@ namespace Data.Repository
         INopTienRepository nopTienRepository { get; }
         INtbillRepository ntbillRepository { get; }
         ICtbillRepository ctbillRepository { get; }
+
+        // hdvatob
+        ISupplier_hdvatob_Repository supplier_Hdvatob_Repository { get; }
         Task<int> Complete();
 
     }
@@ -50,19 +55,22 @@ namespace Data.Repository
         private readonly qltourContext _qltourContext;
         private readonly DanhMucKTContext _danhMucKTContext;
         private readonly qlcashierContext _qlcashierContext;
+        private readonly hdvatobContext _hdvatobContext;
 
-        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext, DanhMucKTContext danhMucKTContext, qlcashierContext qlcashierContext)
+        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext, DanhMucKTContext danhMucKTContext, qlcashierContext qlcashierContext, hdvatobContext hdvatobContext)
         {
             _qltaikhoanContext = qltaikhoanContext;
             _kTTMDbContext = kTTMDbContext;
             _qltourContext = qltourContext;
             _danhMucKTContext = danhMucKTContext;
             _qlcashierContext = qlcashierContext;
+            _hdvatobContext = hdvatobContext;
 
             // qltaikhoan
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
             applicationUserQLTaiKhoanRepository = new ApplicationUserQLTaiKhoanRepository(_qltaikhoanContext);
             applicationQLTaiKhoanRepository = new ApplicationQLTaiKhoanRepository(_qltaikhoanContext);
+            supplier_QLTaiKhoan_Repository = new Supplier_QLTaiKhoan_Repository(_qltaikhoanContext);
 
             // qltour
             ngoaiTeRepository = new NgoaiTeRepository(_qltourContext);
@@ -86,6 +94,9 @@ namespace Data.Repository
             nopTienRepository = new NopTienRepository(_qlcashierContext);
             ntbillRepository = new NtbillRepository(_qlcashierContext);
             ctbillRepository = new CtbillRepository(_qlcashierContext);
+
+            // hdvatob
+            supplier_Hdvatob_Repository = new Supplier_hdvatob_Repository(_hdvatobContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -123,6 +134,10 @@ namespace Data.Repository
         public INtbillRepository ntbillRepository { get; }
 
         public ICtbillRepository ctbillRepository { get; }
+
+        public ISupplier_QLTaiKhoan_Repository supplier_QLTaiKhoan_Repository { get; }
+
+        public ISupplier_hdvatob_Repository supplier_Hdvatob_Repository { get; }
 
         public async Task<int> Complete()
         {

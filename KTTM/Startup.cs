@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data.Models_Cashier;
 using Data.Models_DanhMucKT;
+using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
@@ -39,11 +40,13 @@ namespace KTTM
             services.AddDbContext<KTTMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<DanhMucKTContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DanhMucKTConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qlcashierContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLCashierConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HdVATObConnection"))/*.EnableSensitiveDataLogging()*/);
 
             // qltaikhoan
             services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
+            services.AddTransient<ISupplier_QLTaiKhoan_Repository, Supplier_QLTaiKhoan_Repository>();
 
             // qltour
             services.AddTransient<INgoaiTeRepository, NgoaiTeRepository>();
@@ -67,6 +70,9 @@ namespace KTTM
             services.AddTransient<INopTienRepository, NopTienRepository>();
             services.AddTransient<INtbillRepository, NtbillRepository>();
             services.AddTransient<ICtbillRepository, CtbillRepository>();
+
+            // hdvatob
+            services.AddTransient<ISupplier_hdvatob_Repository, Supplier_hdvatob_Repository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

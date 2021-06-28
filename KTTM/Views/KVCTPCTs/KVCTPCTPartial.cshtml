@@ -10,8 +10,8 @@
     var user = HttpContextAccessor.HttpContext.Session.GetSingle<User>("loginUser");
 }
 
-<!-- ThemDong modal-->
-<div class="modal fade" id="Edit_KVCTPCT_Modal" aria-hidden="true" style="display: none;">
+<!-- Edit_KVCTPCT_Modal modal-->
+<!--<div class="modal fade" id="Edit_KVCTPCT_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
@@ -23,12 +23,12 @@
             </div>
             <div class="modal-body Edit_KVCTPCT_Modal_Body p-0">
             </div>
-        </div>
+        </div>-->
         <!-- /.modal-content -->
-    </div>
+    <!--</div>-->
     <!-- /.modal-dialog -->
-</div>
-<!-- ThemDong modal-->
+<!--</div>-->
+<!-- Edit_KVCTPCT_Modal modal-->
 
 <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto">
     <table class="table mytable text-nowrap text-sm" id="cTPhieuTbl">
@@ -85,7 +85,7 @@
                         <td>
                             <div class="btn-group text-white" role="group">
 
-                                <a class="text-primary btnEditKVCTPCT" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPCT" asp-controller="KVCTPCTs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
                                 @*<span class="text-dark"> | </span>
 
                                     <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" ><i class="fas fa-list"></i></a>*@
@@ -163,9 +163,10 @@
 
 <script src="~/js/Admin/Home/indexController.js"></script>
 <script>
-    // themdong click
-    $('#btnEditKVCTPCT').click(function () {
-
+    // btnEditKVCTPCT
+    $('.btnEditKVCTPCT').click(function (e) {
+        //e.preventDefault();
+        debugger
         var page = @Model.Page;
 
         id = $(this).data('id');
@@ -179,7 +180,7 @@
         });
 
     });
-        // themdong click
+        // btnEditKVCTPCT
 
     //$("#btn_New_KVCTPCT").contextmenu(function (e) {
     //    e.preventDefault();
