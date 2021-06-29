@@ -1,6 +1,6 @@
 ﻿@model KVCTPCTViewModel
 @{
-    var khachHangs = Model.KhachHangs;
+//var khachHangs = Model.KhachHangs;
 }
 <!-- Main content -->
 @*<section class="content">*@
@@ -134,9 +134,15 @@
                     {
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                            <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo" disabled>
-                            </select>
+                            @*<select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
+                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo" disabled>
+                                </select>*@
+                            <div class="input-group">
+                                <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                </span>
+                            </div>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
@@ -146,9 +152,15 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
-                            <select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
-                            </select>
+                            @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
+                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
+                                </select>*@
+                            <div class="input-group">
+                                <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                </span>
+                            </div>
                             <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                         </div>
 
@@ -162,9 +174,15 @@
                     {
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                            <select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
-                            </select>
+                            @*<select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
+                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
+                                </select>*@
+                            <div class="input-group">
+                                <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                </span>
+                            </div>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
@@ -174,9 +192,15 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
-                            <select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
-                            </select>
+                            @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm "
+                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
+                                </select>*@
+                            <div class="input-group">
+                                <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                </span>
+                            </div>
                             <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                         </div>
 
@@ -380,7 +404,7 @@
                     </div>
 
                 </div>
-                
+
                 <div class=" row">
 
                     <div class="col-md-6">
@@ -388,7 +412,7 @@
                         <input asp-for="KVCTPCT.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
                         <span asp-validation-for="KVCTPCT.LinkHDDT" class="text-danger"></span>
                     </div>
-                    
+
                     <div class="col-md-6">
                         <label asp-for="KVCTPCT.Password" class="control-label "></label>
                         <input asp-for="KVCTPCT.Password" class="form-control form-control-sm" id="txtPassword" />

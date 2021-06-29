@@ -133,7 +133,7 @@ namespace KTTM.Controllers
         public async Task<IActionResult> KVCTPCT_Modal_Partial(string soCT, string strUrl)
         {
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
-            ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
@@ -149,9 +149,9 @@ namespace KTTM.Controllers
             //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
             //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
-            viewSupplierCodes.Insert(0, viewSupplierCode);
-            KVCTPCTVM.KhachHangs = viewSupplierCodes;
+            //var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
+            //viewSupplierCodes.Insert(0, supplier);
+            //KVCTPCTVM.KhachHangs = viewSupplierCodes;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
@@ -183,7 +183,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
             var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
             viewSupplierCodes.Insert(0, viewSupplierCode);
-            KVCTPCTVM.KhachHangs = viewSupplierCodes;
+            //KVCTPCTVM.KhachHangs = viewSupplierCodes;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
@@ -313,7 +313,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
             var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
             viewSupplierCodes.Insert(0, viewSupplierCode);
-            KVCTPCTVM.KhachHangs = viewSupplierCodes;
+            //KVCTPCTVM.KhachHangs = viewSupplierCodes;
             KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB();
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
@@ -340,7 +340,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk();
             KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_DmTk();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_ViewCode();
+            //KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_ViewCode();
             //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
             KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View();
             KVCTPCTVM.StrUrl = strUrl;
@@ -351,7 +351,7 @@ namespace KTTM.Controllers
         public JsonResult GetKhachHangs_By_Code(string code)
         {
             //var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
-            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View_CodeName().Where(x => x.Code == code).FirstOrDefault();
+            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View_CodeName().Where(x => x.Code.ToLower() == code.ToLower()).FirstOrDefault();
             return Json(new
             {
                 data = viewSupplier
@@ -360,8 +360,9 @@ namespace KTTM.Controllers
         }
         public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
         {
-            var suppliers = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code == code);
-            return PartialView(suppliers);
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code == code);
+            KVCTPCTVM.MaKhText = code;
+            return PartialView(KVCTPCTVM);
         }
         public JsonResult Get_TenTk_By_Tk(string tk)
         {

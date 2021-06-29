@@ -163,7 +163,7 @@
                             <div class="input-group">
                                 <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
                                 <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                 </span>
                             </div>
 
@@ -405,13 +405,17 @@
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
-            <div class="modal-header p-0 pl-1" style="background-color: #ECF0F5">
-                <h6 class="modal-title" >Chọn khách hàng</h6>
+            <div class="modal-header bg-secondary">
+                <h6 class="modal-title"><i class="fas fa-file text-info"></i> Chọn khách hàng</h6>
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body khachHang_Modal_Body p-0">
+            <div class="modal-body khachHang_Modal_Body ">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
+                @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
             </div>
         </div>
         <!-- /.modal-content -->
@@ -437,258 +441,76 @@
     <!-- Validation -->
 
     <script>
-    $(".maskInput").mask("99/99/9999");
+        $(".maskInput").mask("99/99/9999");
 
-    $('#btnKhSearch').click(function () {
-        var maKhtext = $('#txtMaKhNo').val();
-        $.get('/KVCTPCTs/GetKhachHangs_HDVATOB_By_Code', { code: maKhtext }, function (data) {
+        $('#btnKhSearch').click(function () {
+            var maKhtext = $('#txtMaKhNo').val();
 
-            $('#khachHang_Modal').modal('show');
-            $('.khachHang_Modal_Body').html(data);
-            $('#khachHang_Modal').draggable();
-        });
-    })
-
-    $('#frm_KVCTPCT_Edit').validate({
-        //rules: {
-        //    email: {
-        //        required: true,
-        //        email: true,
-        //    },
-        //    NgayDen: {
-        //        required: true
-        //    },
-        //    chuDetour1: {
-        //        required: true
-        //    },
-        //},
-        //messages: {
-        //    email: {
-        //        required: "Please enter a email address",
-        //        email: "Please enter a vaild email address"
-        //    },
-        //    NgayDen: {
-        //        required: "Please provide a date"
-        //    },
-        //    chuDetour1: "Please enter value"
-        //},
-        errorElement: 'span',
-        errorPlacement: function (error, element) {
-            // add error text
-
-            //error.addClass('invalid-feedback').removeClass('error');
-            //element.closest('.chuDeTourGroup').append(error);
-        },
-        highlight: function (element, errorClass, validClass) {
-            $(element).addClass('is-invalid');
-        },
-        unhighlight: function (element, errorClass, validClass) {
-            $(element).removeClass('is-invalid');
-        }
-    });
-
-    //$('#txtSgtcode').rules('add', {
-    //    required: true,
-    //    minlength: 17,
-    //    messages: {
-    //        //required: "Chủ đề không được để trống"
-    //    }
-    //});
-
-    // sotien
-
-    $('#txtSoTienNT').blur(function () {
-
-        soTienNT = $('#txtSoTienNT').val();
-        tyGia = $('#txtTyGia').val();
-
-        $.ajax({
-            type: "GET",
-            url: "/KVCTPCTs/TinhSoTien",
-            data: { soTienNT: soTienNT, tyGia: tyGia },
-            dataType: "json",
-            success: function (response) {
-                if (response.status) {
-                    soTien = response.soTien;
-                    $('#txtSoTien').val(numeral(soTien).format('0,0'));
-                }
-                else {
-                    toastr.error(response.message);
-
-                }
-            }
-        });
-
-    })
-
-    $('#txtTyGia').blur(function () {
-
-        soTienNT = $('#txtSoTienNT').val();
-        tyGia = $('#txtTyGia').val();
-
-        $.ajax({
-            type: "GET",
-            url: "/KVCTPCTs/TinhSoTien",
-            data: { soTienNT: soTienNT, tyGia: tyGia },
-            dataType: "json",
-            success: function (response) {
-                if (response.status) {
-                    soTien = response.soTien;
-                    $('#txtSoTien').val(numeral(soTien).format('0,0'));
-                }
-                else {
-                    toastr.error(response.message);
-
-                }
-            }
-        });
-
-    })
-
-    // sotien
-
-    // get dien giai by tkno tkco
-    $('#ddlTkNo').change(function () {
-
-        tkNo = $(this).val();
-        tkCo = $('#ddlTkCo').val();
-
-        $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
-            type: 'GET',
-            data: {
-                tk: tkNo
-            },
-            dataType: 'json',
-            success: function (response) {
-                //var data = JSON.parse(response.data);
-               // console.log(data);
-                $('#txtTenTkNo').val(response.data);
-            }
-        });
-
-        Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-    })
-    $('#ddlTkCo').change(function () {
-        tkCo = $(this).val();
-        tkNo = $('#ddlTkNo').val();
-
-        $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
-            type: 'GET',
-            data: {
-                tk: tkCo
-            },
-            dataType: 'json',
-            success: function (response) {
-                //var data = JSON.parse(response.data);
-                //console.log(data);
-                $('#txtTenTkCo').val(response.data);
-            }
-        });
-
-        Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-    })
-    // get dien giai by tkno tkco
-
-    //// makh => tenkh
-    //$('#ddlMaKhNo').change(function () {
-
-    //    var code = $(this).val();
-    //    $.ajax({
-    //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
-    //        type: 'GET',
-    //        data: { code: code },
-    //        dataType: 'json',
-    //        success: function (response) {
-    //            var data = response.data;
-    //            console.log(data);
-    //            $('#txtTenKhNo').val(data.name.trim());
-    //            $('#txtKyHieu').val(data.taxSign.trim());
-    //            $('#txtMauSoHD').val(data.taxForm.trim());
-    //            $('#txtMsThue').val(data.taxCode.trim());
-    //            $('#txtTenKH').val(data.name.trim());
-    //            if (data.address !== null) {
-    //                $('#txtDiaChi').val(data.address.trim());
-    //            }
-    //        }
-    //    })
-    //})
-
-    $('#ddlMaKhCo').change(function () { // ko duoc off change , on change
-
-        var code = $(this).val();
-        $.ajax({
-            url: '/KVCTPCTs/GetKhachHangs_By_Code',
-            type: 'GET',
-            data: { code: code },
-            dataType: 'json',
-            success: function (response) {
-                var data = response.data;
-                //console.log(data);
-
-                $('#txtTenKhCo').val(data.name.trim());
-                $('#txtKyHieu').val(data.taxSign.trim());
-                $('#txtMauSoHD').val(data.taxForm.trim());
-                $('#txtMsThue').val(data.taxCode.trim());
-                $('#txtTenKH').val(data.name.trim());
-                if (data.address !== null) {
-                    $('#txtDiaChi').val(data.address.trim());
-                }
-
-            }
+            KhachHangSearch(maKhtext);
         })
-    })
-    // makh => tenkh
+        
+        $('#frm_KVCTPCT_Edit').validate({
+            //rules: {
+            //    email: {
+            //        required: true,
+            //        email: true,
+            //    },
+            //    NgayDen: {
+            //        required: true
+            //    },
+            //    chuDetour1: {
+            //        required: true
+            //    },
+            //},
+            //messages: {
+            //    email: {
+            //        required: "Please enter a email address",
+            //        email: "Please enter a vaild email address"
+            //    },
+            //    NgayDen: {
+            //        required: "Please provide a date"
+            //    },
+            //    chuDetour1: "Please enter value"
+            //},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                // add error text
 
-    // VAT ==> DSKhongVAT
-    $('#txtVAT').blur(function () {
-        vat = $(this).val();
-        soTien = $('#txtSoTien').val();
-
-        $.ajax({
-            type: "GET",
-            url: "/KVCTPCTs/TinhDsKhongVat",
-            data: { vat: vat, soTien: soTien },
-            dataType: "json",
-            success: function (response) {
-                if (response.status) {
-                    soTien = response.soTien;
-                    $('#txtDSKhongVAT').val(numeral(soTien).format('0,0'));
-                }
-                else {
-                    toastr.error(response.message);
-
-                }
+                //error.addClass('invalid-feedback').removeClass('error');
+                //element.closest('.chuDeTourGroup').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
             }
         });
 
-    })
-    // VAT ==> DSKhongVAT
+        //$('#txtSgtcode').rules('add', {
+        //    required: true,
+        //    minlength: 17,
+        //    messages: {
+        //        //required: "Chủ đề không được để trống"
+        //    }
+        //});
 
-    @*// save
-    $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {
-        debugger
+        // sotien
 
-        if ($('#frm_KVCTPCT_Create').valid()) {
-            var kVCTPCT = $('#frm_KVCTPCT_Create').serialize();
+        $('#txtSoTienNT').blur(function () {
+
+            soTienNT = $('#txtSoTienNT').val();
+            tyGia = $('#txtTyGia').val();
+
             $.ajax({
-                type: "POST",
-                url: "/KVCTPCTs/KVCTPCT_Create_Partial",
-                data: kVCTPCT,
+                type: "GET",
+                url: "/KVCTPCTs/TinhSoTien",
+                data: { soTienNT: soTienNT, tyGia: tyGia },
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
-
-                        toastr.success('Tạo mới chi tiết thành công!'); // toastr in admin/tour/indexController.js
-
-                        $('#KVCTPCT_Create_Partial').hide(500);
-                        debugger
-                        soCT = '@Model.KVCTPCT.KVPCTId';
-
-                            indexController.Load_KVCTPCTPartial(soCT);
+                        soTien = response.soTien;
+                        $('#txtSoTien').val(numeral(soTien).format('0,0'));
                     }
                     else {
                         toastr.error(response.message);
@@ -696,41 +518,188 @@
                     }
                 }
             });
+
+        })
+
+        $('#txtTyGia').blur(function () {
+
+            soTienNT = $('#txtSoTienNT').val();
+            tyGia = $('#txtTyGia').val();
+
+            $.ajax({
+                type: "GET",
+                url: "/KVCTPCTs/TinhSoTien",
+                data: { soTienNT: soTienNT, tyGia: tyGia },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+                        soTien = response.soTien;
+                        $('#txtSoTien').val(numeral(soTien).format('0,0'));
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
+
+        })
+
+        // sotien
+
+        // get dien giai by tkno tkco
+        $('#ddlTkNo').change(function () {
+
+            tkNo = $(this).val();
+            tkCo = $('#ddlTkCo').val();
+
+            $.ajax({
+                url: '/KVCTPCTs/Get_TenTk_By_Tk',
+                type: 'GET',
+                data: {
+                    tk: tkNo
+                },
+                dataType: 'json',
+                success: function (response) {
+                    //var data = JSON.parse(response.data);
+                    // console.log(data);
+                    $('#txtTenTkNo').val(response.data);
+                }
+            });
+
+            Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+        })
+        $('#ddlTkCo').change(function () {
+            tkCo = $(this).val();
+            tkNo = $('#ddlTkNo').val();
+
+            $.ajax({
+                url: '/KVCTPCTs/Get_TenTk_By_Tk',
+                type: 'GET',
+                data: {
+                    tk: tkCo
+                },
+                dataType: 'json',
+                success: function (response) {
+                    //var data = JSON.parse(response.data);
+                    //console.log(data);
+                    $('#txtTenTkCo').val(response.data);
+                }
+            });
+
+            Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+        })
+        // get dien giai by tkno tkco
+
+        //// makh => tenkh
+        //$('#ddlMaKhNo').change(function () {
+
+        //    var code = $(this).val();
+        //    $.ajax({
+        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
+        //        type: 'GET',
+        //        data: { code: code },
+        //        dataType: 'json',
+        //        success: function (response) {
+        //            var data = response.data;
+        //            console.log(data);
+        //            $('#txtTenKhNo').val(data.name.trim());
+        //            $('#txtKyHieu').val(data.taxSign.trim());
+        //            $('#txtMauSoHD').val(data.taxForm.trim());
+        //            $('#txtMsThue').val(data.taxCode.trim());
+        //            $('#txtTenKH').val(data.name.trim());
+        //            if (data.address !== null) {
+        //                $('#txtDiaChi').val(data.address.trim());
+        //            }
+        //        }
+        //    })
+        //})
+
+        $('#ddlMaKhCo').change(function () { // ko duoc off change , on change
+
+            var code = $(this).val();
+            $.ajax({
+                url: '/KVCTPCTs/GetKhachHangs_By_Code',
+                type: 'GET',
+                data: { code: code },
+                dataType: 'json',
+                success: function (response) {
+                    var data = response.data;
+                    //console.log(data);
+
+                    $('#txtTenKhCo').val(data.name.trim());
+                    $('#txtKyHieu').val(data.taxSign.trim());
+                    $('#txtMauSoHD').val(data.taxForm.trim());
+                    $('#txtMsThue').val(data.taxCode.trim());
+                    $('#txtTenKH').val(data.name.trim());
+                    if (data.address !== null) {
+                        $('#txtDiaChi').val(data.address.trim());
+                    }
+
+                }
+            })
+        })
+        // makh => tenkh
+
+        // VAT ==> DSKhongVAT
+        $('#txtVAT').blur(function () {
+            vat = $(this).val();
+            soTien = $('#txtSoTien').val();
+
+            $.ajax({
+                type: "GET",
+                url: "/KVCTPCTs/TinhDsKhongVat",
+                data: { vat: vat, soTien: soTien },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+                        soTien = response.soTien;
+                        $('#txtDSKhongVAT').val(numeral(soTien).format('0,0'));
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
+
+        })
+        // VAT ==> DSKhongVAT
+
+        function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
+            $('#ddlDienGiai').html('');
+            var option = '';
+
+            $.ajax({
+                url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
+                type: 'GET',
+                data: {
+                    tkNo: tkNo,
+                    tkCo: tkCo
+                },
+                dataType: 'json',
+                success: function (response) {
+                    var data = response.data;
+                    console.log(data);
+                    $.each(data, function (i, item) {
+                        option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
+
+                    });
+
+                    $('#ddlDienGiai').html(option);
+                }
+            });
         }
 
-    });
+        function KhachHangSearch(code) {
+            $.get('/KVCTPCTs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
 
-    // btnKVCTPCTCreatePartial_Back
-    $('#btnKVCTPCTCreatePartial_Back').off('click').on('click', function () {
-        $('#KVCTPCT_Create_Partial').hide(500);
-
-        $('#KVCTPCT_Tbl').show(500);
-
-    });*@
-
-    function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
-        $('#ddlDienGiai').html('');
-        var option = '';
-
-        $.ajax({
-            url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
-            type: 'GET',
-            data: {
-                tkNo: tkNo,
-                tkCo: tkCo
-            },
-            dataType: 'json',
-            success: function (response) {
-                var data = response.data;
-                console.log(data);
-                $.each(data, function (i, item) {
-                    option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
-
-                });
-
-                $('#ddlDienGiai').html(option);
-            }
-        });
-    }
+                $('#khachHang_Modal').modal('show');
+                $('.khachHang_Modal_Body').html(data);
+                $('#khachHang_Modal').draggable();
+            });
+        }
     </script>
 }
