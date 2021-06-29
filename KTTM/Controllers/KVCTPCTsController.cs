@@ -305,7 +305,7 @@ namespace KTTM.Controllers
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
-            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
+            //Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(KVCTPCTVM.KVCTPCT.KVPCTId);
@@ -320,9 +320,9 @@ namespace KTTM.Controllers
             ViewBag.tkCos = new SelectList(dmTks, "Tkhoan", "Tkhoan", KVCTPCTVM.KVCTPCT.TKCo);
 
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            var suppliers = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().ToList();
-            suppliers.Insert(0, supplier);
-            KVCTPCTVM.KhachHangs_HDVATOB = suppliers;
+            //var suppliers = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().ToList();
+            //suppliers.Insert(0, supplier);
+            //KVCTPCTVM.KhachHangs_HDVATOB = suppliers;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
@@ -330,6 +330,80 @@ namespace KTTM.Controllers
 
             return View(KVCTPCTVM);
         }
+
+
+        [HttpPost, ActionName("Edit_KVCTPCT")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_KVCTPCT_Post(long id)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            string temp = "", log = "";
+
+            if (id == 0)
+            {
+                ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            if (ModelState.IsValid)
+            {
+                KVCTPCTVM.KVCTPCT.NgaySua = DateTime.Now;
+                KVCTPCTVM.KVCTPCT.NguoiSua = user.Username;
+
+                // kiem tra thay doi : trong getbyid() va ngoai view
+                #region log file
+                //var t = _unitOfWork.tourRepository.GetById(id);
+                var t = _kVPCTService.GetBySoCTAsNoTracking(soCT);
+
+                if (t.HoTen != HomeVM.KVPCT.HoTen)
+                {
+                    temp += String.Format("- Họ tên thay đổi: {0}->{1}", t.HoTen, HomeVM.KVPCT.HoTen);
+                }
+
+                if (t.Phong != HomeVM.KVPCT.Phong)
+                {
+                    temp += String.Format("- Phòng thay đổi: {0}->{1}", t.Phong, HomeVM.KVPCT.Phong);
+                }
+
+                if (t.DonVi != HomeVM.KVPCT.DonVi)
+                {
+                    temp += String.Format("- Đơn vị thay đổi: {0}->{1}", t.DonVi, HomeVM.KVPCT.DonVi);
+                }
+
+                #endregion
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+
+                    log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    t.LogFile = t.LogFile + log;
+                    HomeVM.KVPCT.LogFile = t.LogFile;
+                }
+
+                try
+                {
+                    await _kVPCTService.UpdateAsync(HomeVM.KVPCT);
+                    SetAlert("Cập nhật thành công", "success");
+
+                    return Redirect(strUrl);
+                }
+                catch (Exception ex)
+                {
+                    SetAlert(ex.Message, "error");
+
+                    return View(HomeVM);
+                }
+            }
+            // not valid
+
+            return View(HomeVM);
+        }
+
 
         public IActionResult BackIndex(string soCT, int page)
         {

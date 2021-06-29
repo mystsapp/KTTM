@@ -26,11 +26,11 @@ namespace Data.Services
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
         IEnumerable<ViewQuay> GetAll_Quay_View();
-        IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs();
-        IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code();
-        IEnumerable<ViewSupplier> GetAll_KhachHangs_View();
-        IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode();
-        IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName();
+        //IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs();
+        //IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code();
+        //IEnumerable<ViewSupplier> GetAll_KhachHangs_View();
+        //IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode();
+        //IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName();
         IEnumerable<MatHang> GetAll_MatHangs();
         IEnumerable<ViewMatHang> GetAll_MatHangs_View();
         IEnumerable<PhongBan> GetAll_PhongBans();
@@ -43,6 +43,7 @@ namespace Data.Services
         IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
 
         IEnumerable<Dgiai> GetAll_DienGiai();
+        KVCTPCT GetBySoCTAsNoTracking(long id);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -99,17 +100,6 @@ namespace Data.Services
             return dmTks1;
         }
 
-        //public IEnumerable<ListViewModel> Convert_DmTk_To_ListViewModel(IEnumerable<DmTk> dmTks)
-        //{
-
-        //    List<ListViewModel> listTkCongNoWithTenTK = new List<ListViewModel>();
-        //    foreach (var item in dmTks)
-        //    {
-        //        listTkCongNoWithTenTK.Add(new ListViewModel() { StringId = item.Tkhoan.Trim(), Name = item.Tkhoan + " - " + item.TenTk });
-        //    }
-
-        //    return listTkCongNoWithTenTK;
-        //}
         public IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo()
         {
             var dmTks = _unitOfWork.dmTkRepository.GetAll();
@@ -137,34 +127,34 @@ namespace Data.Services
         {
             return _unitOfWork.quayRepository.GetAll_View();
         }
-        public IEnumerable<ViewSupplier> GetAll_KhachHangs_View()
-        {
-            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
+        //public IEnumerable<ViewSupplier> GetAll_KhachHangs_View()
+        //{
+        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
 
-        }
+        //}
 
-        public IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs()
-        {
-            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+        //public IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs()
+        //{
+        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
 
-        }
+        //}
         
-        public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code()
-        {
-            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-            var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode().Distinct();
+        //public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code()
+        //{
+        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+        //    var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode().Distinct();
             
-            return suppliers;
-        }
+        //    return suppliers;
+        //}
 
-        public IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName()
-        {
-            //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_View_CodeName_Tax();
+        //public IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName()
+        //{
+        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
+        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_View_CodeName_Tax();
 
-        }
+        //}
 
         public IEnumerable<MatHang> GetAll_MatHangs()
         {
@@ -193,10 +183,10 @@ namespace Data.Services
             return _unitOfWork.dmTkRepository.GetAll_View();
         }
 
-        public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode()
-        {
-            return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode();
-        }
+        //public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode()
+        //{
+        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode();
+        //}
 
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo)
         {
@@ -333,6 +323,11 @@ namespace Data.Services
         public IEnumerable<Dgiai> GetAll_DienGiai()
         {
             return _unitOfWork.dGiaiRepository.GetAll();
+        }
+
+        public KVCTPCT GetBySoCTAsNoTracking(long id)
+        {
+            return _unitOfWork.kVCTPCTRepository.GetByIdAsNoTracking(x => x.Id == id);
         }
     }
 }

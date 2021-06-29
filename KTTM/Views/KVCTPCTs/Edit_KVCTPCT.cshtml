@@ -118,7 +118,7 @@
                     <div class="col-md-12">
                         <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
                         <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm"
-                                asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))"id="ddlDienGiai">
+                                asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))" id="ddlDienGiai">
                         </select>
 
                         <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
