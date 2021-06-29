@@ -30,5 +30,10 @@ namespace KTTM.Models
         public string StrUrl { get; set; }
         public int Page { get; set; }
         public string MaKhText { get; set; }
+        public string TenTkNo { get; set; }
+        public string TenTkCo { get; set; }
+        public IEnumerable<Dgiai> Dgiais { get; set; }
+
+
     }
 }

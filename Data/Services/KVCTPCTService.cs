@@ -41,6 +41,8 @@ namespace Data.Services
         IEnumerable<DmTk> GetAll_DmTk_Cashier();
         Task<KVCTPCT> GetById(long id);
         IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
+
+        IEnumerable<Dgiai> GetAll_DienGiai();
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -122,7 +124,7 @@ namespace Data.Services
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {
             var dgiais = _unitOfWork.dGiaiRepository.GetAll();
-            var dgiais1 = dgiais.Where(x => x.Tkno == tkNo && x.Tkco == tkCo);
+            var dgiais1 = dgiais.Where(x => x.Tkno.Trim() == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
             return dgiais1;
         }
 
@@ -326,6 +328,11 @@ namespace Data.Services
         public IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB()
         {
             return _unitOfWork.supplier_Hdvatob_Repository.GetAll();
+        }
+
+        public IEnumerable<Dgiai> GetAll_DienGiai()
+        {
+            return _unitOfWork.dGiaiRepository.GetAll();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Data.Models_DanhMucKT;
 using Data.Models_QLTaiKhoan;
+using Data.Repository;
 using Data.Services;
 using Data.Utilities;
 using Data.ViewModels;
@@ -18,14 +19,15 @@ namespace KTTM.Controllers
     {
         private readonly IKVCTPCTService _kVCTPCTService;
         private readonly IKVPCTService _kVPCTService;
+        private readonly IUnitOfWork _unitOfWork;
 
         [BindProperty]
         public KVCTPCTViewModel KVCTPCTVM { get; set; }
-        public KVCTPCTsController(IKVCTPCTService kVCTPCTService, IKVPCTService kVPCTService)
+        public KVCTPCTsController(IKVCTPCTService kVCTPCTService, IKVPCTService kVPCTService, IUnitOfWork unitOfWork)
         {
             _kVCTPCTService = kVCTPCTService;
             _kVPCTService = kVPCTService;
-
+            _unitOfWork = unitOfWork;
             KVCTPCTVM = new KVCTPCTViewModel()
             {
                 KVPCT = new Data.Models_KTTM.KVPCT(),
@@ -202,7 +204,7 @@ namespace KTTM.Controllers
 
             if (!ModelState.IsValid)
             {
-                
+
                 return View(KVCTPCTVM);
             }
 
@@ -256,7 +258,7 @@ namespace KTTM.Controllers
             }
 
             // data tu cashier
-             var kVCTPCTs = await _kVCTPCTService.GetKVCTPCTs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPCT.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
+            var kVCTPCTs = await _kVCTPCTService.GetKVCTPCTs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPCT.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
             // ghi log ben service
 
             try
@@ -264,7 +266,7 @@ namespace KTTM.Controllers
                 await _kVCTPCTService.CreateRange(kVCTPCTs);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT,  page = KVCTPCTVM.Page }); // redirect to Home/Index/?soCT
+                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT, page = KVCTPCTVM.Page }); // redirect to Home/Index/?soCT
             }
             catch (Exception ex)
             {
@@ -280,7 +282,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.Page = page;
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-            
+
             if (id == 0)
             {
                 ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
@@ -289,6 +291,11 @@ namespace KTTM.Controllers
 
             KVCTPCTVM.KVCTPCT = await _kVCTPCTService.GetById(id);
 
+            // tentk
+            KVCTPCTVM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKNo).TenTk;
+            KVCTPCTVM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKCo).TenTk;
+            KVCTPCTVM.Dgiais = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPCT.TKNo, KVCTPCTVM.KVCTPCT.TKCo);
+
             if (KVCTPCTVM.KVCTPCT == null)
             {
                 ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
@@ -296,9 +303,9 @@ namespace KTTM.Controllers
             }
 
             DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
-            ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(KVCTPCTVM.KVCTPCT.KVPCTId);
@@ -308,13 +315,14 @@ namespace KTTM.Controllers
             var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
             dmTks.Insert(0, dmTkTmp);
             KVCTPCTVM.DmTks = dmTks;
-            //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
-            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+            
+            ViewBag.tkNos = new SelectList(dmTks, "Tkhoan", "Tkhoan", KVCTPCTVM.KVCTPCT.TKNo);
+            ViewBag.tkCos = new SelectList(dmTks, "Tkhoan", "Tkhoan", KVCTPCTVM.KVCTPCT.TKCo);
+
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
-            viewSupplierCodes.Insert(0, viewSupplierCode);
-            //KVCTPCTVM.KhachHangs = viewSupplierCodes;
-            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB();
+            var suppliers = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().ToList();
+            suppliers.Insert(0, supplier);
+            KVCTPCTVM.KhachHangs_HDVATOB = suppliers;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;

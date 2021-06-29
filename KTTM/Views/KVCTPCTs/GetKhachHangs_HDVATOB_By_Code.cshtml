@@ -75,8 +75,15 @@
         var taxSign = $(this).children().eq(7).html();
         var taxForm = $(this).children().eq(8).html();
 
-        $('#txtMaKhNo').val(code);
-        $('#txtTenKhNo').val(name);
+        if ($('#btnKhSearch').data('name') === 'maKhNo') { // search off no
+            $('#txtMaKhNo').val(code);
+            $('#txtTenKhNo').val(name);
+        }
+        if ($('#btnKhSearch').data('name') === 'maKhCo') { // search off co
+            $('#txtMaKhCo').val(code);
+            $('#txtTenKhCo').val(name);
+        }
+        
         $('#txtKyHieu').val(taxSign);
         $('#txtMauSoHD').val(taxForm);
         $('#txtMsThue').val(taxCode);

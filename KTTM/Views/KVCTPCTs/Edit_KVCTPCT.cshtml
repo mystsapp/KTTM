@@ -56,7 +56,7 @@
 
                     <div class="col-md-4">
                         <label class="control-label">Tổng tiền NT</label>
-                        <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm numbers" id="txtSoTienNT" />
+                        <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" />
                         <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
                     </div>
 
@@ -70,13 +70,13 @@
 
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TyGia" class="control-label "></label>
-                        <input asp-for="KVCTPCT.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" />
+                        <input asp-for="KVCTPCT.TyGia" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtTyGia" />
                         <span asp-validation-for="KVCTPCT.TyGia" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-4">
                         <label class="control-label">Quy ra VND</label>
-                        <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " readonly id="txtSoTien" />
+                        <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" readonly id="txtSoTien" />
                         <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
                     </div>
                 </div>
@@ -86,14 +86,14 @@
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
                         <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
+                                asp-items="@ViewBag.tkNos" id="ddlTkNo">@*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">*@
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-10">
                         <label class="control-label">Tên tài khoãn</label>
-                        <input class="form-control form-control-sm " id="txtTenTkNo" />
+                        <input class="form-control form-control-sm " value="@Model.TenTkNo" id="txtTenTkNo" />
                     </div>
                 </div>
 
@@ -102,14 +102,14 @@
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
                         <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                                asp-items="@ViewBag.tkCos" id="ddlTkCo">@*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">*@
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-10">
                         <label class="control-label">Tên tài khoãn</label>
-                        <input class="form-control form-control-sm " id="txtTenTkCo" />
+                        <input class="form-control form-control-sm " value="@Model.TenTkCo" id="txtTenTkCo" />
                     </div>
                 </div>
 
@@ -117,7 +117,8 @@
 
                     <div class="col-md-12">
                         <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
-                        <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="ddlDienGiai">
+                        <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm"
+                                asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))"id="ddlDienGiai">
                         </select>
 
                         <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
@@ -143,10 +144,12 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
-                            <select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.KhachHangs_HDVATOB, "Code", "Code"))" id="ddlMaKhCo">
-                            </select>
-                            @*<input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="ddlMaKhCo" />*@
+                            <div class="input-group">
+                                <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                </span>
+                            </div>
                             <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                         </div>
 
@@ -444,7 +447,14 @@
         $(".maskInput").mask("99/99/9999");
 
         $('#btnKhSearch').click(function () {
-            var maKhtext = $('#txtMaKhNo').val();
+            var maKhtext = '';
+
+            if ($(this).data('name') === 'maKhNo') { // search off no
+                maKhtext = $('#txtMaKhNo').val();
+            }
+            if ($(this).data('name') === 'maKhCo') { // search off co
+                maKhtext = $('#txtMaKhCo').val();
+            }
 
             KhachHangSearch(maKhtext);
         })

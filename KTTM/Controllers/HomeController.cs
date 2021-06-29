@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Repository;
 using Data.Services;
@@ -27,7 +28,6 @@ namespace KTTM.Controllers
         {
             _unitOfWork = unitOfWork;
             _kVPCTService = kVPCTService;
-
             HomeVM = new HomeViewModel()
             {
                 KVPCT = new Data.Models_KTTM.KVPCT(),
@@ -36,6 +36,7 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string soCT, int page = 1)
         {
+            
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
             ViewBag.searchString = searchString;
