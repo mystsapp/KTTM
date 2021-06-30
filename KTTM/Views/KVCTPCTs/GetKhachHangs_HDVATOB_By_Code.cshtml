@@ -12,7 +12,7 @@
 </div>
 
 <div style="overflow-x:auto; overflow-y:auto; height: 300px">
-    <table class="table mytable text-nowrap text-sm" id="cTPhieuTbl">
+    <table class="table mytable text-nowrap text-sm" id="khachHangTbl">
         <thead>
             <tr class="table-info">
 
@@ -33,7 +33,7 @@
                 @foreach (var item in Model.KhachHangs_HDVATOB)
                 {
 
-                    <tr class="ctphieu-cursor-pointer ">
+                    <tr class="khachhangs-cursor-pointer ">
 
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Name)</td>
@@ -61,9 +61,18 @@
     $('#btSearch').click(function () {
         debugger
         var maKhText = $('#txtTimkh').val();
+        
         KhachHangSearch(maKhText); // ben Edit_KVCTPCT
     })
-    $('.ctphieu-cursor-pointer').click(function () {
+    $('.khachhangs-cursor-pointer').click(function () {
+
+        // giu trang thai
+        if ($(this).hasClass("hoverClass"))
+            $(this).removeClass("hoverClass");
+        else {
+            $('.khachhangs-cursor-pointer').removeClass("hoverClass");
+            $(this).addClass("hoverClass");
+        }
         
         var code = $(this).children().eq(0).html();
         var name = $(this).children().eq(1).html();

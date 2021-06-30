@@ -22,7 +22,7 @@
      </div>*@
 <div class="card-body p-0">
 
-    <form method="post" asp-action="KVCTPCT_Modal_Partial" autocomplete="off" id="frm_KVCTPCT_Edit" enctype="multipart/form-data">
+    <form method="post" autocomplete="off" id="frm_KVCTPCT_Edit" enctype="multipart/form-data">
         <div class="pr-4 pl-4 text-sm">
 
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -86,7 +86,7 @@
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
                         <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                asp-items="@ViewBag.tkNos" id="ddlTkNo">@*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">*@
+                                asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">@*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">*@
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
@@ -102,7 +102,7 @@
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
                         <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm select2"
-                                asp-items="@ViewBag.tkCos" id="ddlTkCo">@*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">*@
+                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">@*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">*@
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
@@ -302,7 +302,7 @@
 
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.NgayCTGoc" class="control-label "></label>
-                        <input type="text" value="" asp-for="KVCTPCT.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
+                        <input type="text" asp-for="KVCTPCT.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
                         <span asp-validation-for="KVCTPCT.NgayCTGoc" class="text-danger"></span>
                     </div>
                 </div>
@@ -447,6 +447,7 @@
         $(".maskInput").mask("99/99/9999");
 
         $('#btnKhSearch').click(function () {
+            debugger
             var maKhtext = '';
 
             if ($(this).data('name') === 'maKhNo') { // search off no

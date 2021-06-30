@@ -39,7 +39,7 @@ namespace KTTM.Controllers
                 var result = (from a in applications
                               join au in applicationUsers on a.Mact equals au.Mact
                               join u in users on au.Username equals u.Username
-                              where au.Mact == "018" && u.Username.ToLower() == model.Username.ToLower()
+                              where au.Mact == "020" && u.Username.ToLower() == model.Username.ToLower()
                               select new LoginModel()
                               {
                                   Username = u.Username,

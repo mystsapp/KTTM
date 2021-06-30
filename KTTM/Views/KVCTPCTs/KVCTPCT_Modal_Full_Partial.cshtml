@@ -106,7 +106,7 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
                             <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
+                                    asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                             </select>
                             <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                         </div>
@@ -122,7 +122,7 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
                             <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                                    asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
                             </select>
                             <span asp-validation-for="KVCTPCT.TKCo" class="text-danger"></span>
                         </div>

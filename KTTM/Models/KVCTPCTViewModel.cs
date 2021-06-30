@@ -15,11 +15,13 @@ namespace KTTM.Models
         public KVCTPCT KVCTPCT { get; set; }
         public IEnumerable<KVCTPCT> KVCTPCTs { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; }
-        public IEnumerable<ViewDmHttc> DmHttcs { get; set; }
-        public IEnumerable<DmTk> DmTks { get; set; }
+        public IEnumerable<ViewDmHttc> DmHttcs { get; set; }        
+        public IEnumerable<DmTk> DmTks_TkNo { get; set; }
+        public IEnumerable<DmTk> DmTks_TkCo { get; set; }
+        public IEnumerable<DmTk> DmTks_Cashier { get; set; }
         public IEnumerable<ViewQuay> Quays { get; set; }
-        public IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK { get; set; }
-        public IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo { get; set; }
+        //public IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK { get; set; }
+        //public IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo { get; set; }
         //public IEnumerable<Data.Models_DanhMucKT.ViewSupplierCode> KhachHangs { get; set; }
         public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
         //public IEnumerable<Data.Models_DanhMucKT.ViewSupplierCode> KhachHang_Edits { get; set; }

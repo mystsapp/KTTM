@@ -1,6 +1,6 @@
 ﻿@model KVCTPCTViewModel
 @{
-//var khachHangs = Model.KhachHangs;
+    //var khachHangs = Model.KhachHangs;
 }
 <!-- Main content -->
 @*<section class="content">*@
@@ -84,7 +84,7 @@
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKNo" class="control-label"></label>
                         <select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
+                                asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
@@ -101,7 +101,7 @@
                     <div class="col-md-2">
                         <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
                         <select asp-for="KVCTPCT.TKCo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
                         </select>
                         <span asp-validation-for="KVCTPCT.TKNo" class="text-danger"></span>
                     </div>
@@ -134,14 +134,8 @@
                     {
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                            @*<select asp-for="KVCTPCT.TKNo" class="form-control form-control-sm select2"
-                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo" disabled>
-                                </select>*@
                             <div class="input-group">
-                                <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
-                                <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                </span>
+                                <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" disabled>
                             </div>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                         </div>
@@ -152,13 +146,10 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
-                            @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
-                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
-                                </select>*@
                             <div class="input-group">
                                 <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
                                 <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                 </span>
                             </div>
                             <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
@@ -174,13 +165,10 @@
                     {
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                            @*<select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
-                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
-                                </select>*@
                             <div class="input-group">
                                 <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
                                 <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                 </span>
                             </div>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
@@ -192,14 +180,8 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
-                            @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
-                                </select>*@
                             <div class="input-group">
-                                <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
-                                <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                </span>
+                                <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
                             </div>
                             <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                         </div>
@@ -435,7 +417,29 @@
 
 </div>
 <!-- /.card-body -->
+<!-- khachhang modal-->
+<div class="modal fade" id="khachHang_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
 
+        <div class="modal-content ">
+            <div class="modal-header bg-secondary">
+                <h6 class="modal-title"><i class="fas fa-file text-info"></i> Chọn khách hàng</h6>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body khachHang_Modal_Body ">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
+                @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- khachhang modal-->
 <script src="~/js/Admin/Home/indexController.js"></script>
 
 <!-- select2 and multi select2 (bootstrap4)-->
@@ -458,6 +462,21 @@
 
 <script>
     $(".maskInput").mask("99/99/9999");
+
+    $('#btnKhSearch').click(function () {
+        
+        var maKhtext = '';
+
+        if ($(this).data('name') === 'maKhNo') { // search off no
+            maKhtext = $('#txtMaKhNo').val();
+        }
+        if ($(this).data('name') === 'maKhCo') { // search off co
+            maKhtext = $('#txtMaKhCo').val();
+        }
+
+        KhachHangSearch(maKhtext);
+    })
+
     $('#frm_KVCTPCT_Create').validate({
         //rules: {
         //    email: {
@@ -731,7 +750,7 @@
             dataType: 'json',
             success: function (response) {
                 var data = response.data;
-                console.log(data);
+                //console.log(data);
                 $.each(data, function (i, item) {
                     option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
 
@@ -742,4 +761,13 @@
         });
     }
 
+    function KhachHangSearch(code) {
+        debugger
+        $.get('/KVCTPCTs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
+
+            $('#khachHang_Modal').modal('show');
+            $('.khachHang_Modal_Body').html(data);
+            $('#khachHang_Modal').draggable();
+        });
+    }
 </script>

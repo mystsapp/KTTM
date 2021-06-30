@@ -22,6 +22,7 @@ namespace Data.Services
         IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK();
         IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo();
         IEnumerable<DmTk> GetAll_DmTk();
+        IEnumerable<DmTk> GetAll_DmTk_TaiKhoan();
         IEnumerable<ViewDmTk> GetAll_DmTk_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
@@ -38,12 +39,13 @@ namespace Data.Services
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
         Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
         Task CreateRange(IEnumerable<KVCTPCT> kVCTPCTs);
-        IEnumerable<DmTk> GetAll_DmTk_Cashier();
+        IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         Task<KVCTPCT> GetById(long id);
         IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
 
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
+        Task UpdateAsync(KVCTPCT kVCTPCT);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -140,12 +142,12 @@ namespace Data.Services
         //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
 
         //}
-        
+
         //public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code()
         //{
         //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
         //    var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode().Distinct();
-            
+
         //    return suppliers;
         //}
 
@@ -198,8 +200,8 @@ namespace Data.Services
         public async Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
             var noptien = await _unitOfWork.nopTienRepository.GetById(baoCaoSo, maCN);
-            var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);            
-            
+            var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
+
             string nguoiTao = username;
             DateTime ngayTao = DateTime.Now;
 
@@ -215,13 +217,13 @@ namespace Data.Services
                 {
                     string boPhan = item.Bophan;
                     string maKh = item.Coquan;
-                    var viewSupplier = GetAll_KhachHangs_View_CodeName().Where(x => x.Code == maKh).FirstOrDefault();
+                    var viewSupplier = GetAll_KhachHangs_HDVATOB().Where(x => x.Code == maKh).FirstOrDefault();
                     string kyHieu = "", mauSo = "", msThue = "", tenKh = "", diaChi = "";
                     if (viewSupplier != null)
                     {
-                        kyHieu = viewSupplier.TaxSign;
-                        mauSo = viewSupplier.TaxForm;
-                        msThue = viewSupplier.TaxCode;
+                        kyHieu = viewSupplier.Taxsign;
+                        mauSo = viewSupplier.Taxform;
+                        msThue = viewSupplier.Taxcode;
                         tenKh = viewSupplier.Name;
                         diaChi = viewSupplier.Address;
                     }
@@ -243,7 +245,7 @@ namespace Data.Services
                         kVCTPCT.LoaiTien = item1.Loaitien;
                         kVCTPCT.TyGia = item1.Tygia;
                         kVCTPCT.SoTien = item1.Sotien;
-                        
+
                         // THONG TIN VE CONG NO DOAN
                         if (loaiPhieu == "T")
                         {
@@ -277,6 +279,7 @@ namespace Data.Services
                         kVCTPCT.KyHieu = kyHieu;
                         kVCTPCT.MauSoHD = mauSo;
                         kVCTPCT.MsThue = msThue;
+                        kVCTPCT.MaKh = maKh;
                         kVCTPCT.TenKH = tenKh;
                         kVCTPCT.DiaChi = diaChi;
 
@@ -303,9 +306,20 @@ namespace Data.Services
         {
             var dmTks = GetAll_DmTk().Where(x => x.Tkhoan.StartsWith("1311") || x.Tkhoan.StartsWith("1368"));
             List<DmTk> dmTks1 = new List<DmTk>();
-            foreach(var item in dmTks)
+            foreach (var item in dmTks)
             {
                 dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan, TenTk = item.Tkhoan + " - " + item.TenTk });
+            }
+            return dmTks1;
+        }
+
+        public IEnumerable<DmTk> GetAll_DmTk_TienMat()
+        {
+            var dmTks = GetAll_DmTk().Where(x => x.Tkhoan.StartsWith("111"));
+            List<DmTk> dmTks1 = new List<DmTk>();
+            foreach (var item in dmTks)
+            {
+                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan });
             }
             return dmTks1;
         }
@@ -328,6 +342,23 @@ namespace Data.Services
         public KVCTPCT GetBySoCTAsNoTracking(long id)
         {
             return _unitOfWork.kVCTPCTRepository.GetByIdAsNoTracking(x => x.Id == id);
+        }
+
+        public async Task UpdateAsync(KVCTPCT kVCTPCT)
+        {
+            _unitOfWork.kVCTPCTRepository.Update(kVCTPCT);
+            await _unitOfWork.Complete();
+        }
+
+        public IEnumerable<DmTk> GetAll_DmTk_TaiKhoan()
+        {
+            var dmTks = GetAll_DmTk();
+            List<DmTk> dmTks1 = new List<DmTk>();
+            foreach (var item in dmTks)
+            {
+                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan });
+            }
+            return dmTks1;
         }
     }
 }

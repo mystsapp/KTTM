@@ -49,92 +49,92 @@ namespace KTTM.Controllers
             return PartialView(KVCTPCTVM);
         }
 
-        [HttpPost, ActionName("KVCTPCT_Create_Partial")]
-        public async Task<IActionResult> KVCTPCT_Create_Partial_Post()
-        {
-            // from login session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
+        //[HttpPost, ActionName("KVCTPCT_Create_Partial")]
+        //public async Task<IActionResult> KVCTPCT_Create_Partial_Post()
+        //{
+        //    // from login session
+        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
-            KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
+        //    KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
+        //    KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
 
-            // ghi log
-            KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-            try
-            {
-                try
-                {
-                    await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
-                }
-                catch (Exception ex)
-                {
+        //    // ghi log
+        //    KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+        //    try
+        //    {
+        //        try
+        //        {
+        //            await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+        //        }
+        //        catch (Exception ex)
+        //        {
 
-                    throw ex;
-                }
+        //            throw ex;
+        //        }
 
 
-                return Json(new
-                {
-                    status = true
-                });
-            }
-            catch (Exception ex)
-            {
+        //        return Json(new
+        //        {
+        //            status = true
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return Json(new
-                {
-                    status = false,
-                    message = ex.Message
-                });
-            }
+        //        return Json(new
+        //        {
+        //            status = false,
+        //            message = ex.Message
+        //        });
+        //    }
 
-        }
+        //}
 
-        [HttpPost, ActionName("KVCTPCT_Modal_Create_Partial")]
-        public async Task<IActionResult> KVCTPCT_Modal_Create_Partial_Post(string strUrl)
-        {
-            // from login session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
+        //[HttpPost, ActionName("KVCTPCT_Modal_Create_Partial")]
+        //public async Task<IActionResult> KVCTPCT_Modal_Create_Partial_Post(string strUrl)
+        //{
+        //    // from login session
+        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            if (!ModelState.IsValid)
-            {
-                //HomeVM = new HomeViewModel()
-                //{
-                //    KVPCT = new KVPCT(),
-                //    LoaiTiens = _kVPCTService.ListLoaiTien(),
-                //    LoaiPhieus = _kVPCTService.ListLoaiPhieu(),
-                //    Phongbans = _kVPCTService.GetAllPhongBan(),
-                //    StrUrl = strUrl
-                //};
+        //    if (!ModelState.IsValid)
+        //    {
+        //        //HomeVM = new HomeViewModel()
+        //        //{
+        //        //    KVPCT = new KVPCT(),
+        //        //    LoaiTiens = _kVPCTService.ListLoaiTien(),
+        //        //    LoaiPhieus = _kVPCTService.ListLoaiPhieu(),
+        //        //    Phongbans = _kVPCTService.GetAllPhongBan(),
+        //        //    StrUrl = strUrl
+        //        //};
 
-                return View(KVCTPCTVM);
-            }
+        //        return View(KVCTPCTVM);
+        //    }
 
-            KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
-            KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
+        //    KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
+        //    KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
 
-            // ghi log
-            KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+        //    // ghi log
+        //    KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
-            try
-            {
-                await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
+        //    try
+        //    {
+        //        await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
 
-                SetAlert("Thêm mới thành công.", "success");
+        //        SetAlert("Thêm mới thành công.", "success");
 
-                return Redirect(KVCTPCTVM.StrUrl);
-            }
-            catch (Exception ex)
-            {
-                SetAlert(ex.Message, "error");
-                return View(KVCTPCTVM);
-            }
+        //        return Redirect(KVCTPCTVM.StrUrl);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SetAlert(ex.Message, "error");
+        //        return View(KVCTPCTVM);
+        //    }
 
-        }
+        //}
 
         public async Task<IActionResult> KVCTPCT_Modal_Partial(string soCT, string strUrl)
         {
-            DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
+            
             Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
@@ -145,15 +145,10 @@ namespace KTTM.Controllers
             var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
-            var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
-            dmTks.Insert(0, dmTkTmp);
-            KVCTPCTVM.DmTks = dmTks;
-            //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
-            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+
+            Get_TkNo_TkCo();
+            
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            //var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
-            //viewSupplierCodes.Insert(0, supplier);
-            //KVCTPCTVM.KhachHangs = viewSupplierCodes;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
@@ -163,10 +158,29 @@ namespace KTTM.Controllers
             return PartialView(KVCTPCTVM);
         }
 
+        private void Get_TkNo_TkCo()
+        {
+
+            DmTk dmTk = new DmTk() { Tkhoan = "" };
+            var dmTks_TienMat = _kVCTPCTService.GetAll_DmTk_TienMat().ToList();
+            var dmTks_TaiKhoan = _kVCTPCTService.GetAll_DmTk_TaiKhoan().ToList();
+            dmTks_TienMat.Insert(0, dmTk);
+            dmTks_TaiKhoan.Insert(0, dmTk);
+            if (KVCTPCTVM.KVPCT.MFieu == "T")
+            {
+                KVCTPCTVM.DmTks_TkNo = dmTks_TienMat;
+                KVCTPCTVM.DmTks_TkCo = dmTks_TaiKhoan;
+            }
+            else
+            {
+                KVCTPCTVM.DmTks_TkNo = dmTks_TaiKhoan;
+                KVCTPCTVM.DmTks_TkCo = dmTks_TienMat;
+            }
+        }
+
         // KVCTPCT_Modal_Full_Partial
         public async Task<IActionResult> KVCTPCT_Modal_Full_Partial(string soCT)
         {
-            DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
             ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
@@ -177,14 +191,13 @@ namespace KTTM.Controllers
             var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
-            var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
-            dmTks.Insert(0, dmTkTmp);
-            KVCTPCTVM.DmTks = dmTks;
-            KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
-            KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+
+            Get_TkNo_TkCo();
+
+            //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
+            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            var viewSupplierCodes = _kVCTPCTService.GetAll_KhachHangs_ViewCode().ToList();
-            viewSupplierCodes.Insert(0, viewSupplierCode);
+
             //KVCTPCTVM.KhachHangs = viewSupplierCodes;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
@@ -210,6 +223,7 @@ namespace KTTM.Controllers
 
             KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
+            KVCTPCTVM.KVCTPCT.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPCT.MaKhNo) ? KVCTPCTVM.KVCTPCT.MaKhCo : KVCTPCTVM.KVCTPCT.MaKhNo;
 
             // ghi log
             KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
@@ -239,7 +253,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page;
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(id);
-            KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk_Cashier();
+            KVCTPCTVM.DmTks_Cashier = _kVCTPCTService.GetAll_DmTk_Cashier();
 
             return PartialView(KVCTPCTVM);
         }
@@ -277,6 +291,7 @@ namespace KTTM.Controllers
 
         }
 
+        // Edit_KVCTPCT
         public async Task<IActionResult> Edit_KVCTPCT(long id, int page)
         {
             KVCTPCTVM.Page = page;
@@ -302,7 +317,6 @@ namespace KTTM.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            DmTk dmTkTmp = new DmTk() { Tkhoan = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
             //Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
@@ -312,12 +326,8 @@ namespace KTTM.Controllers
             var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
-            var dmTks = _kVCTPCTService.GetAll_DmTk().ToList();
-            dmTks.Insert(0, dmTkTmp);
-            KVCTPCTVM.DmTks = dmTks;
-            
-            ViewBag.tkNos = new SelectList(dmTks, "Tkhoan", "Tkhoan", KVCTPCTVM.KVCTPCT.TKNo);
-            ViewBag.tkCos = new SelectList(dmTks, "Tkhoan", "Tkhoan", KVCTPCTVM.KVCTPCT.TKCo);
+
+            Get_TkNo_TkCo();
 
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
             //var suppliers = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().ToList();
@@ -338,8 +348,7 @@ namespace KTTM.Controllers
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            string temp = "", log = "";
+            string temp = "";
 
             if (id == 0)
             {
@@ -355,53 +364,252 @@ namespace KTTM.Controllers
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
-                var t = _kVPCTService.GetBySoCTAsNoTracking(soCT);
+                var t = _kVCTPCTService.GetBySoCTAsNoTracking(id);
 
-                if (t.HoTen != HomeVM.KVPCT.HoTen)
+                if (t.HTTC != KVCTPCTVM.KVCTPCT.HTTC)
                 {
-                    temp += String.Format("- Họ tên thay đổi: {0}->{1}", t.HoTen, HomeVM.KVPCT.HoTen);
+                    temp += String.Format("- HTTC thay đổi: {0}->{1}", t.HTTC, KVCTPCTVM.KVCTPCT.HTTC);
                 }
 
-                if (t.Phong != HomeVM.KVPCT.Phong)
+                if (t.DienGiai != KVCTPCTVM.KVCTPCT.DienGiai)
                 {
-                    temp += String.Format("- Phòng thay đổi: {0}->{1}", t.Phong, HomeVM.KVPCT.Phong);
+                    temp += String.Format("- DienGiai thay đổi: {0}->{1}", t.DienGiai, KVCTPCTVM.KVCTPCT.DienGiai);
                 }
 
-                if (t.DonVi != HomeVM.KVPCT.DonVi)
+                if (t.TKNo != KVCTPCTVM.KVCTPCT.TKNo)
                 {
-                    temp += String.Format("- Đơn vị thay đổi: {0}->{1}", t.DonVi, HomeVM.KVPCT.DonVi);
+                    temp += String.Format("- TKNo thay đổi: {0}->{1}", t.TKNo, KVCTPCTVM.KVCTPCT.TKNo);
+                }
+                
+                if (t.TKCo != KVCTPCTVM.KVCTPCT.TKCo)
+                {
+                    temp += String.Format("- TKCo thay đổi: {0}->{1}", t.TKCo, KVCTPCTVM.KVCTPCT.TKCo);
+                }
+                
+                if (t.Sgtcode != KVCTPCTVM.KVCTPCT.Sgtcode)
+                {
+                    temp += String.Format("- Sgtcode thay đổi: {0}->{1}", t.Sgtcode, KVCTPCTVM.KVCTPCT.Sgtcode);
+                }
+                
+                if (t.MaKhNo != KVCTPCTVM.KVCTPCT.MaKhNo)
+                {
+                    temp += String.Format("- MaKhNo thay đổi: {0}->{1}", t.MaKhNo, KVCTPCTVM.KVCTPCT.MaKhNo);
+                }
+                
+                if (t.MaKhCo != KVCTPCTVM.KVCTPCT.MaKhCo)
+                {
+                    temp += String.Format("- MaKhCo thay đổi: {0}->{1}", t.MaKhCo, KVCTPCTVM.KVCTPCT.MaKhCo);
+                }
+                
+                if (t.SoTienNT != KVCTPCTVM.KVCTPCT.SoTienNT)
+                {
+                    temp += String.Format("- SoTienNT thay đổi: {0:N0}->{1:N0}", t.SoTienNT, KVCTPCTVM.KVCTPCT.SoTienNT);
+                }
+                
+                if (t.LoaiTien != KVCTPCTVM.KVCTPCT.LoaiTien)
+                {
+                    temp += String.Format("- LoaiTien thay đổi: {0}->{1}", t.LoaiTien, KVCTPCTVM.KVCTPCT.LoaiTien);
                 }
 
-                #endregion
+                if (t.TyGia != KVCTPCTVM.KVCTPCT.TyGia)
+                {
+                    temp += String.Format("- TyGia thay đổi: {0:N0}->{1:N0}", t.TyGia, KVCTPCTVM.KVCTPCT.TyGia);
+                }
+                
+                if (t.SoTien != KVCTPCTVM.KVCTPCT.SoTien)
+                {
+                    temp += String.Format("- SoTien thay đổi: {0:N0}->{1:N0}", t.SoTien, KVCTPCTVM.KVCTPCT.SoTien);
+                }
+                
+                if (t.MaKh != KVCTPCTVM.KVCTPCT.MaKh)
+                {
+                    temp += String.Format("- MaKh thay đổi: {0}->{1}", t.MaKh, KVCTPCTVM.KVCTPCT.MaKh);
+                }
+                
+                if (t.KhoangMuc != KVCTPCTVM.KVCTPCT.KhoangMuc)
+                {
+                    temp += String.Format("- KhoangMuc thay đổi: {0}->{1}", t.KhoangMuc, KVCTPCTVM.KVCTPCT.KhoangMuc);
+                }
+                
+                if (t.HTTT != KVCTPCTVM.KVCTPCT.HTTT)
+                {
+                    temp += String.Format("- HTTT thay đổi: {0}->{1}", t.HTTT, KVCTPCTVM.KVCTPCT.HTTT);
+                }
+                
+                if (t.CardNumber != KVCTPCTVM.KVCTPCT.CardNumber)
+                {
+                    temp += String.Format("- CardNumber thay đổi: {0}->{1}", t.CardNumber, KVCTPCTVM.KVCTPCT.CardNumber);
+                }
+                
+                if (t.SalesSlip != KVCTPCTVM.KVCTPCT.SalesSlip)
+                {
+                    temp += String.Format("- SalesSlip thay đổi: {0}->{1}", t.SalesSlip, KVCTPCTVM.KVCTPCT.SalesSlip);
+                }
+                
+                if (t.SoXe != KVCTPCTVM.KVCTPCT.SoXe)
+                {
+                    temp += String.Format("- SoXe thay đổi: {0}->{1}", t.SoXe, KVCTPCTVM.KVCTPCT.SoXe);
+                }
+                
+                if (t.MsThue != KVCTPCTVM.KVCTPCT.MsThue)
+                {
+                    temp += String.Format("- MsThue thay đổi: {0}->{1}", t.MsThue, KVCTPCTVM.KVCTPCT.MsThue);
+                }
+                
+                if (t.LoaiHDGoc != KVCTPCTVM.KVCTPCT.LoaiHDGoc)
+                {
+                    temp += String.Format("- LoaiHDGoc thay đổi: {0}->{1}", t.LoaiHDGoc, KVCTPCTVM.KVCTPCT.LoaiHDGoc);
+                }
+                
+                if (t.SoCTGoc != KVCTPCTVM.KVCTPCT.SoCTGoc)
+                {
+                    temp += String.Format("- SoCTGoc thay đổi: {0}->{1}", t.SoCTGoc, KVCTPCTVM.KVCTPCT.SoCTGoc);
+                }
+
+                if (t.NgayCTGoc != KVCTPCTVM.KVCTPCT.NgayCTGoc)
+                {
+                    temp += String.Format("- NgayCTGoc thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayCTGoc, KVCTPCTVM.KVCTPCT.NgayCTGoc);
+                }
+                
+                if (t.VAT != KVCTPCTVM.KVCTPCT.VAT)
+                {
+                    temp += String.Format("- VAT thay đổi: {0:N0}->{1:N0}", t.NgayCTGoc, KVCTPCTVM.KVCTPCT.VAT);
+                }
+                
+                if (t.DSKhongVAT != KVCTPCTVM.KVCTPCT.DSKhongVAT)
+                {
+                    temp += String.Format("- DSKhongVAT thay đổi: {0:N0}->{1:N0}", t.DSKhongVAT, KVCTPCTVM.KVCTPCT.DSKhongVAT);
+                }
+                
+                if (t.BoPhan != KVCTPCTVM.KVCTPCT.BoPhan)
+                {
+                    temp += String.Format("- DSKhongVAT thay đổi: {0}->{1}", t.BoPhan, KVCTPCTVM.KVCTPCT.BoPhan);
+                }
+                
+                if (t.STT != KVCTPCTVM.KVCTPCT.STT)
+                {
+                    temp += String.Format("- STT thay đổi: {0}->{1}", t.STT, KVCTPCTVM.KVCTPCT.STT);
+                }
+                
+                if (t.NoQuay != KVCTPCTVM.KVCTPCT.NoQuay)
+                {
+                    temp += String.Format("- NoQuay thay đổi: {0}->{1}", t.NoQuay, KVCTPCTVM.KVCTPCT.NoQuay);
+                }
+                
+                if (t.CoQuay != KVCTPCTVM.KVCTPCT.CoQuay)
+                {
+                    temp += String.Format("- CoQuay thay đổi: {0}->{1}", t.CoQuay, KVCTPCTVM.KVCTPCT.CoQuay);
+                }
+                
+                if (t.TenKH != KVCTPCTVM.KVCTPCT.TenKH)
+                {
+                    temp += String.Format("- TenKH thay đổi: {0}->{1}", t.TenKH, KVCTPCTVM.KVCTPCT.TenKH);
+                }
+                
+                if (t.DiaChi != KVCTPCTVM.KVCTPCT.DiaChi)
+                {
+                    temp += String.Format("- DiaChi thay đổi: {0}->{1}", t.DiaChi, KVCTPCTVM.KVCTPCT.DiaChi);
+                }
+                
+                if (t.MatHang != KVCTPCTVM.KVCTPCT.MatHang)
+                {
+                    temp += String.Format("- MatHang thay đổi: {0}->{1}", t.MatHang, KVCTPCTVM.KVCTPCT.MatHang);
+                }
+                
+                if (t.KyHieu != KVCTPCTVM.KVCTPCT.KyHieu)
+                {
+                    temp += String.Format("- MatHang thay đổi: {0}->{1}", t.KyHieu, KVCTPCTVM.KVCTPCT.KyHieu);
+                }
+                
+                if (t.MauSoHD != KVCTPCTVM.KVCTPCT.MauSoHD)
+                {
+                    temp += String.Format("- MauSoHD thay đổi: {0}->{1}", t.MauSoHD, KVCTPCTVM.KVCTPCT.MauSoHD);
+                }
+                
+                if (t.DieuChinh != KVCTPCTVM.KVCTPCT.DieuChinh)
+                {
+                    temp += String.Format("- DieuChinh thay đổi: {0}->{1}", t.DieuChinh, KVCTPCTVM.KVCTPCT.DieuChinh);
+                }
+                
+                if (t.KC141 != KVCTPCTVM.KVCTPCT.KC141)
+                {
+                    temp += String.Format("- KC141 thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.KC141, KVCTPCTVM.KVCTPCT.KC141);
+                }
+                
+                if (t.TamUng != KVCTPCTVM.KVCTPCT.TamUng)
+                {
+                    temp += String.Format("- TamUng thay đổi: {0}->{1}", t.TamUng, KVCTPCTVM.KVCTPCT.TamUng);
+                }
+                
+                if (t.DienGiaiP != KVCTPCTVM.KVCTPCT.DienGiaiP)
+                {
+                    temp += String.Format("- DienGiaiP thay đổi: {0}->{1}", t.DienGiaiP, KVCTPCTVM.KVCTPCT.DienGiaiP);
+                }
+                
+                if (t.HoaDonDT != KVCTPCTVM.KVCTPCT.HoaDonDT)
+                {
+                    temp += String.Format("- HoaDonDT thay đổi: {0}->{1}", t.HoaDonDT, KVCTPCTVM.KVCTPCT.HoaDonDT);
+                }
+                
+                if (t.NguoiSua != KVCTPCTVM.KVCTPCT.NguoiSua)
+                {
+                    temp += String.Format("- NguoiSua thay đổi: {0}->{1}", t.NguoiSua, KVCTPCTVM.KVCTPCT.NguoiSua);
+                }
+                
+                if (t.NgaySua != KVCTPCTVM.KVCTPCT.NgaySua)
+                {
+                    temp += String.Format("- NgaySua thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgaySua, KVCTPCTVM.KVCTPCT.NgaySua);
+                }
+                
+                if (t.LinkHDDT != KVCTPCTVM.KVCTPCT.LinkHDDT)
+                {
+                    temp += String.Format("- LinkHDDT thay đổi: {0}->{1}", t.LinkHDDT, KVCTPCTVM.KVCTPCT.LinkHDDT);
+                }
+                
+                if (t.MaTraCuu != KVCTPCTVM.KVCTPCT.MaTraCuu)
+                {
+                    temp += String.Format("- MaTraCuu thay đổi: {0}->{1}", t.MaTraCuu, KVCTPCTVM.KVCTPCT.MaTraCuu);
+                }
+                
+                if (t.TkTruyCap != KVCTPCTVM.KVCTPCT.TkTruyCap)
+                {
+                    temp += String.Format("- TkTruyCap thay đổi: {0}->{1}", t.TkTruyCap, KVCTPCTVM.KVCTPCT.TkTruyCap);
+                }
+                
+                if (t.Password != KVCTPCTVM.KVCTPCT.Password)
+                {
+                    temp += String.Format("- Password thay đổi: {0}->{1}", t.Password, KVCTPCTVM.KVCTPCT.Password);
+                }
+
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
 
-                    log = System.Environment.NewLine;
+                    string log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
                     log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
-                    HomeVM.KVPCT.LogFile = t.LogFile;
+                    KVCTPCTVM.KVCTPCT.LogFile = t.LogFile;
                 }
-
+                #endregion
                 try
                 {
-                    await _kVPCTService.UpdateAsync(HomeVM.KVPCT);
+                    await _kVCTPCTService.UpdateAsync(KVCTPCTVM.KVCTPCT);
                     SetAlert("Cập nhật thành công", "success");
 
-                    return Redirect(strUrl);
+                    return BackIndex(KVCTPCTVM.KVCTPCT.KVPCTId, KVCTPCTVM.Page);
                 }
                 catch (Exception ex)
                 {
                     SetAlert(ex.Message, "error");
 
-                    return View(HomeVM);
+                    return View(KVCTPCTVM);
                 }
             }
             // not valid
 
-            return View(HomeVM);
+            return View(KVCTPCTVM);
         }
 
 
@@ -419,8 +627,19 @@ namespace KTTM.Controllers
             KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
             //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
             //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
-            KVCTPCTVM.DmTks = _kVCTPCTService.GetAll_DmTk();
-            KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_DmTk();
+
+            if (KVCTPCTVM.KVPCT.MFieu == "T")
+            {
+                KVCTPCTVM.DmTks_TkNo = _kVCTPCTService.GetAll_DmTk_TienMat();
+                KVCTPCTVM.DmTks_TkCo = _kVCTPCTService.GetAll_DmTk_TaiKhoan();
+            }
+            else
+            {
+                KVCTPCTVM.DmTks_TkNo = _kVCTPCTService.GetAll_DmTk_TaiKhoan();
+                KVCTPCTVM.DmTks_TkCo = _kVCTPCTService.GetAll_DmTk_TienMat();
+            }
+
+            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_DmTk();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
             //KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_ViewCode();
             //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
@@ -433,7 +652,7 @@ namespace KTTM.Controllers
         public JsonResult GetKhachHangs_By_Code(string code)
         {
             //var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
-            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View_CodeName().Where(x => x.Code.ToLower() == code.ToLower()).FirstOrDefault();
+            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower() == code.ToLower()).FirstOrDefault();
             return Json(new
             {
                 data = viewSupplier
@@ -442,7 +661,8 @@ namespace KTTM.Controllers
         }
         public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
         {
-            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code == code);
+            code ??= "";
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
             KVCTPCTVM.MaKhText = code;
             return PartialView(KVCTPCTVM);
         }
