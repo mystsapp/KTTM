@@ -39,7 +39,6 @@ namespace Data.Services
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         Task<KVCTPCT> GetById(long id);
         IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
-
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
         Task UpdateAsync(KVCTPCT kVCTPCT);
@@ -333,5 +332,6 @@ namespace Data.Services
             await _unitOfWork.nopTienRepository.UpdateAsync(noptien);
             
         }
+
     }
 }

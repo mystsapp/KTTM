@@ -338,9 +338,7 @@ namespace KTTM.Controllers
             Get_TkNo_TkCo();
 
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            //var suppliers = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().ToList();
-            //suppliers.Insert(0, supplier);
-            //KVCTPCTVM.KhachHangs_HDVATOB = suppliers;
+
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;

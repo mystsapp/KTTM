@@ -46,7 +46,7 @@ var indexController = {
 
             soCT = $(this).data('id');
             loaiPhieu = $(this).data('loaiphieu');
-            
+
             indexController.TdVal_Click(soCT, loaiPhieu);
 
         });
@@ -54,10 +54,10 @@ var indexController = {
 
         // show cashier modal
         $('.btnCashier').off('click').on('click', function () {
-            var a = 1;
+
             var page = $('.active span').text();
 
-            soCT = $('#hidThemDong').val();
+            soCT = $('#hidCashier').val();
             strUrl = $('.layDataCashier').data('url');
             $.get('/KVCTPCTs/LayDataCashierPartial', { id: soCT, strUrl: strUrl, page: page }, function (data) {
 
@@ -70,7 +70,11 @@ var indexController = {
         // contextmenu for themdong
         $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
-            $('#frmThemDong_ContextMenu').submit();
+            var loaiPhieu = $('#hidLoaiPhieu').val();
+            if (loaiPhieu === 'C')
+                $('#frmThemDong_ContextMenu').submit();
+            else
+                return;
         });
         // contextmenu for themdong
 
@@ -135,7 +139,7 @@ var indexController = {
 
     },
     TdVal_Click: function (soCT, loaiPhieu) {
-        
+
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
         $('#hidCashier').val(soCT);
@@ -147,11 +151,11 @@ var indexController = {
 
         // page
         var page = $('.active span').text();
-       // $('#hidPage').val(page);
+        // $('#hidPage').val(page);
 
         // gang' loaiphieu
-        $('#hidLoaiPhieu').text(loaiPhieu);
-        $('#hidLoaiPhieuFull').text(loaiPhieu);
+        $('#hidLoaiPhieu').val(loaiPhieu);
+        //$('#hidLoaiPhieuFull').text(loaiPhieu);
 
         $('#KVCTPCT_Create_Partial').hide(500);
         $('#KVCTPCT_Edit_Partial').hide(500);
