@@ -196,7 +196,7 @@ namespace Data.Services
                     var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == item.Idntbill);
 
                     string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + item.Bill : "CHI BILL " + item.Bill; // ??
-                    var loaiHDGoc = item.Loaihd; // ??
+                    var loaiHDGoc = "VAT";// item.Loaihd; // ??
                     var soCTGoc = item.Bill; // ??
                     var ngayBill = item.Ngaybill; // ??
 

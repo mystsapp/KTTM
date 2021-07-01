@@ -21,7 +21,7 @@
     </div>
     <div class="card-body p-0">
 
-        <form method="post" asp-action="KVCTPCT_Modal_Partial" autocomplete="off" id="frm_KVCTPCT_Create" enctype="multipart/form-data">
+        <form method="post" autocomplete="off" id="frm_KVCTPCT_Create" enctype="multipart/form-data">
             <div class="pr-4 pl-4 text-sm">
 
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -84,13 +84,13 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Chi phí</label>
-                            <input class="form-control form-control-sm numbers" id="txtChiPhi" />
+                            <input asp-for="KVCTPCT.DSKhongVAT" class="form-control form-control-sm numbers" id="txtChiPhi" />
                             <span @*asp-validation-for="KVCTPCT.SoTienNT"*@ class="text-danger"></span>
                         </div>
 
                         <div class="col-md-4">
                             <label class="control-label ">Thuế suất % VAT</label>
-                            <input class="form-control form-control-sm numbers" id="txtThueSuat" />
+                            <input asp-for="KVCTPCT.VAT" class="form-control form-control-sm numbers" id="txtThueSuat" />
                             <span @*asp-validation-for="KVCTPCT.TyGia"*@ class="text-danger"></span>
                         </div>
 
