@@ -1,4 +1,5 @@
-﻿using Data.Models_DanhMucKT;
+﻿using Data.Models_Cashier;
+using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.Repository;
@@ -27,17 +28,13 @@ namespace Data.Services
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
         IEnumerable<ViewQuay> GetAll_Quay_View();
-        //IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs();
-        //IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code();
-        //IEnumerable<ViewSupplier> GetAll_KhachHangs_View();
-        //IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode();
-        //IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName();
+        
         IEnumerable<MatHang> GetAll_MatHangs();
         IEnumerable<ViewMatHang> GetAll_MatHangs_View();
         IEnumerable<PhongBan> GetAll_PhongBans();
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
-        Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
+        IEnumerable<KVCTPCT> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
         Task CreateRange(IEnumerable<KVCTPCT> kVCTPCTs);
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         Task<KVCTPCT> GetById(long id);
@@ -46,6 +43,7 @@ namespace Data.Services
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
         Task UpdateAsync(KVCTPCT kVCTPCT);
+        Task UpdateAsync_NopTien(Noptien noptien);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -116,6 +114,8 @@ namespace Data.Services
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {
             var dgiais = _unitOfWork.dGiaiRepository.GetAll();
+            tkNo ??= "";
+            tkCo ??= "";
             var dgiais1 = dgiais.Where(x => x.Tkno.Trim() == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
             return dgiais1;
         }
@@ -129,35 +129,7 @@ namespace Data.Services
         {
             return _unitOfWork.quayRepository.GetAll_View();
         }
-        //public IEnumerable<ViewSupplier> GetAll_KhachHangs_View()
-        //{
-        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewSupplier();
-
-        //}
-
-        //public IEnumerable<Models_DanhMucKT.Supplier> GetAll_KhachHangs()
-        //{
-        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-
-        //}
-
-        //public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_Code()
-        //{
-        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-        //    var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode().Distinct();
-
-        //    return suppliers;
-        //}
-
-        //public IEnumerable<ViewSupplier> GetAll_KhachHangs_View_CodeName()
-        //{
-        //    //var suppliers = _unitOfWork.supplier_DanhMucKT_Repository.GetAll();
-        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_View_CodeName_Tax();
-
-        //}
-
+        
         public IEnumerable<MatHang> GetAll_MatHangs()
         {
             return _unitOfWork.matHangRepository.GetAll();
@@ -185,11 +157,6 @@ namespace Data.Services
             return _unitOfWork.dmTkRepository.GetAll_View();
         }
 
-        //public IEnumerable<ViewSupplierCode> GetAll_KhachHangs_ViewCode()
-        //{
-        //    return _unitOfWork.supplier_DanhMucKT_Repository.GetAll_ViewCode();
-        //}
-
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo)
         {
             var dgiais = _unitOfWork.dGiaiRepository.GetAll();
@@ -197,9 +164,9 @@ namespace Data.Services
             return dgiais1;
         }
 
-        public async Task<IEnumerable<KVCTPCT>> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
+        public IEnumerable<KVCTPCT> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
-            var noptien = await _unitOfWork.nopTienRepository.GetById(baoCaoSo, maCN);
+            
             var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
 
             string nguoiTao = username;
@@ -359,6 +326,12 @@ namespace Data.Services
                 dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan });
             }
             return dmTks1;
+        }
+
+        public async Task UpdateAsync_NopTien(Noptien noptien)
+        {
+            await _unitOfWork.nopTienRepository.UpdateAsync(noptien);
+            
         }
     }
 }

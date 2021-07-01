@@ -41,71 +41,6 @@ var indexController = {
             });
         });
 
-        //$.each($('.cursor-pointer'), function (i, item) {
-
-        //    var huy = $(item).data('huy');
-        //    //console.log(huy);
-        //    if (huy === 'True') {
-        //        $(this).addClass('bg-secondary');
-        //    }
-
-        //});
-
-
-        //$.when(indexController.checkHuy(id)).done(function (response) {
-        //    if (response.status === true) { // check huy
-        //        console.log(response);
-        //        $('.cursor-pointer').addClass('bg-secondary');
-        //    }
-        //})
-        //var invoicesCount = indexController.checkInvoices(id);
-        //if (invoicesCount > 0) {
-        //    $('#btnHuy').prop('disabled', true);
-        //}
-        //});
-
-        //$('.btnKhoiPhucTour').off('click').on('click', function () {
-        //    //return $.ajax({
-        //    //    url: '/Tours/HuyTourPartial',
-        //    //    data: {
-        //    //        id: $(this).data('id')
-        //    //    },
-        //    //    dataType: 'json',
-        //    //    type: 'GET',
-        //    //    success: function (response) {
-        //    //        console.log(response);
-        //    //        //if (response.status) {
-        //    //        //    console.log(response.toursCount);
-        //    //        //    return response.toursCount;
-        //    //        //}
-
-        //    //        //else
-        //    //        //    return 10;
-        //    //    }
-        //    //});
-        //    id = $(this).data('id');
-        //    bootbox.confirm({
-        //        title: "Restore Confirm?",
-        //        message: "Bạn có muốn <b> khôi phục </b> Tour này không?",
-        //        buttons: {
-        //            cancel: {
-        //                label: '<i class="fa fa-times"></i> Cancel'
-        //            },
-        //            confirm: {
-        //                label: '<i class="fa fa-check"></i> Confirm'
-        //            }
-
-        //        },
-        //        callback: function (result) {
-        //            if (result) {
-        //                $('#hidTourId').val(id);
-        //                $('#frmKhoiPhucTour').submit();
-        //            }
-        //        }
-
-        //    });
-        //});
-
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
 
@@ -113,21 +48,6 @@ var indexController = {
             loaiPhieu = $(this).data('loaiphieu');
             
             indexController.TdVal_Click(soCT, loaiPhieu);
-
-            //// gang' soCT cho btnCashier
-            //$('.btnCashier').attr('disabled', false);
-            ////$('.btnCashier').attr('data-id', soCT);
-            //$('#hidCashier').val(soCT);
-
-            //// gang' soCT cho btnThemDong
-            //$('#btnThemDong').attr('disabled', false);
-            ////$('#btnThemDong').attr('data-id', soCT);
-            //$('#hidThemDong').val(soCT);
-
-            //$('#KVCTPCT_Create_Partial').hide(500);
-            //$('#KVCTPCT_Edit_Partial').hide(500);
-
-            //indexController.Load_KVCTPCTPartial(soCT);
 
         });
         // phieu click --> load kvctpct
@@ -150,41 +70,13 @@ var indexController = {
         // contextmenu for themdong
         $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
-
-            var page = $('.active span').text();
-
-            soCT = $('#hidThemDong').val();
-            strUrl = $(this).data('url');
-            $('#KVCTPCT_Tbl').hide(500);
-            $('#KVCTPCT_Edit_Partial').hide(500);
-
-            var url = '/KVCTPCTs/KVCTPCT_Modal_Full_Partial';
-            $.get(url, { soCT: soCT, page: page }, function (data) {
-
-                $('#ThemDongModal_Full').modal('show');
-                $('.ThemDongModal_Full_Body').html(data);
-                $('#ThemDongModal_Full').draggable();
-            });
-
+            $('#frmThemDong_ContextMenu').submit();
         });
         // contextmenu for themdong
 
         // themdong click
         $('#btnThemDong').click(function () {
-
-            var page = $('.active span').text();
-
-            soCT = $('#hidThemDong').val();
-            strUrl = $(this).data('url');
-
-            var url = '/KVCTPCTs/KVCTPCT_Modal_Partial';
-            $.get(url, { soCT: soCT, strUrl: strUrl, page: page }, function (data) {
-
-                $('#ThemDongModal').modal('show');
-                $('.ThemDongModal_Body').html(data);
-                $('#ThemDongModal').draggable();
-            });
-
+            $('#frmThemDong').submit();
         });
 
         // themdong click
@@ -211,23 +103,6 @@ var indexController = {
         });
         // giu trang thai CT phieu click
 
-        //// invoice click --> CTInvoices & CTVAT
-        //$('.tdInvoiceVal').click(function () {
-
-        //    invoiceId = $(this).data('id');
-        //    indexController.Load_CTInvoice_CTVAT_Partial(invoiceId);
-
-        //    //var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
-        //    //$.get(url, { invoiceId: invoiceId }, function (response) {
-
-        //    //    $('.cTInVoiceCTVAT').html(response);
-
-        //    //});
-        //});
-        //// invoice click --> CTInvoices & CTVAT
-
-        //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
-
         // create new KVCTPCT
         $('#btn_New_KVCTPCT').off('click').on('click', function () {
 
@@ -246,222 +121,6 @@ var indexController = {
         });
         // create new KVCTPCT
 
-        //// close create partial
-        //$('#btnCloseKhachCreatePartial').off('click').on('click', function () {
-        //    $('#sDSKhach').show(500);
-        //});
-        //$('#btnBackKhachHangCreatePartial').off('click').on('click', function () {
-        //    $('#khachHangCreatePartial').hide(500);
-        //    $('#sDSKhach').show(500);
-        //});
-        //// close create invoice partial
-
-        //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
-
-        //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
-
-        //$('.btnEditKhachHang').off('click').on('click', function (e) {
-        //    e.preventDefault();
-
-        //    idKhachTour = $(this).data('id');
-
-        //    $('#sDSKhach').hide(500);
-        //    $('#khachHangCreatePartial').hide(500);
-        //    //$('#createInvoicePartial').hide(500);
-
-        //    var url = '/DSKhachHangs/KhachHangEditPartial';
-        //    $.get(url, { id: idKhachTour }, function (response) {
-
-        //        $('#khachHangEditPartial').show(500);
-
-        //        $('#khachHangEditPartial').html(response);
-
-        //    });
-        //});
-
-        //// close create partial
-        //$('#btnCloseKhachEditPartial').off('click').on('click', function () {
-        //    $('#sDSKhach').show(500);
-        //});
-        //$('#btnBackKhachHangEditPartial').off('click').on('click', function () {
-        //    $('#khachHangEditPartial').hide(500);
-        //    $('#sDSKhach').show(500);
-        //});
-        //// close create invoice partial
-
-        //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
-
-        //////////////////////////////////////////////////////////////////////////////// XoaKhachPartial
-
-        //$('.btnXoaKhachHangPartial').off('click').on('click', function () {
-
-        //    id = $(this).data('id');
-
-        //    $.ajax({
-        //        url: '/DSKhachHangs/Delete',
-        //        data: {
-        //            id: id
-        //        },
-        //        dataType: 'json',
-        //        type: 'POST',
-        //        success: function (response) {
-        //            if (response.status) {
-
-        //                toastr.success('Xóa thành công!'); // toastr in admin/tour/indexController.js
-
-        //                tourid = response.tourid;
-
-        //                indexController.Load_DSKhachHang(tourid);
-        //            }
-        //            else {
-        //                toastr.error(response.message);
-
-        //            }
-        //        }
-        //    });
-
-        //});
-
-        //////////////////////////////////////////////////////////////////////////////// Xoa1KhachPartial
-
-        //////////////////////////////////////////////////////////////////////////////// CreateInvoicePartial finish post
-
-        //// create new invoice
-        //$('#btnNewInvoice').off('click').on('click', function () {
-
-        //    tourid = $(this).data('tourid');
-
-        //    $('#tabs_KeToan_TourInfo').hide(500);
-
-        //    var url = '/Invoices/CreateInvoicePartial';
-        //    $.get(url, { tourid: tourid }, function (response) {
-
-        //        $('#createInvoicePartial').show(500);
-
-        //        $('#createInvoicePartial').html(response);
-
-        //    });
-        //});
-        //// create new invoice
-        //// close crete invoice partial
-        //$('#btnCloseCreateInvoicePartial').off('click').on('click', function () {
-        //    $('#tabs_KeToan_TourInfo').show(500);
-        //});
-        //$('#btnBackCreateInvoicePartial').off('click').on('click', function () {
-        //    $('#createInvoicePartial').hide(500);
-        //    $('#tabs_KeToan_TourInfo').show(500);
-        //});
-        //// close crete invoice partial
-
-        //$('#btnCreateInvoicePartial').off('click').on('click', function () {
-
-        //    // if frm valid
-        //    if ($('#frmInvoiceCreatePartial').valid()) {
-        //        var invoice = $('#frmInvoiceCreatePartial').serialize();
-        //        $.ajax({
-        //            type: "POST",
-        //            url: "/Invoices/CreateInvoicePartial",
-        //            data: invoice,
-        //            dataType: "json",
-        //            success: function (response) {
-        //                if (response.status) {
-
-        //                    toastr.success('Thêm mới invoice thành công!');
-
-        //                    $('#createInvoicePartial').hide();
-
-        //                    $('#tabs_KeToan_TourInfo').show();
-        //                    tourId = tourIdInCreateInvoicePartial; // receive it from CreateInvoicePartial
-        //                    indexController.Load_KeToan_TourInfoByTourPartial(tourId);
-
-        //                }
-        //                else {
-        //                    toastr.error('Thêm mới invoice không thành công!');
-        //                    //  debugger
-        //                    // $('#createInvoiceModal').show();
-        //                    // $('.createInvoicePartial').html(response);
-        //                    //$('#createInvoiceModal').draggable();
-
-        //                    //tourid = $(this).data('tourid');
-        //                    //var url = '/Invoices/CreateInvoicePartial';
-        //                    //$.get(url, { tourid: tourid }, function (response) {
-
-        //                    //    $('#createInvoiceModal').show();
-        //                    //    $('.createInvoicePartial').html(response);
-        //                    //    $('#createInvoiceModal').draggable();
-
-        //                    //});
-
-        //                }
-        //            }
-        //        });
-        //    }
-        //});
-
-        ////////////////////////////////////////////////////////////////////////////////// CreateInvoicePartial finish post
-
-        ////////////////////////////////////////////////////////////////////////////////// EditInvoicePartial finish post
-
-        ////// edit invoice
-
-        //$('.btnEditInvoice').on('click', function () {
-
-        //    tourid = $(this).data('tourid');
-        //    invoiceId = $(this).data('invoiceid');
-
-        //    $('#tabs_KeToan_TourInfo').hide(500);
-        //    //$('#createInvoicePartial').hide(500);
-
-        //    var url = '/Invoices/EditInvoicePartial';
-        //    $.get(url, { tourid: tourid, invoiceId: invoiceId }, function (response) {
-
-        //        $('#editInvoicePartial').show(500);
-
-        //        $('#editInvoicePartial').html(response);
-
-        //    });
-        //});
-
-        ////// edit invoice
-
-        // back editinvoicepartial
-
-        // back editinvoicepartial
-        // --> btn submit edit invoice in its partial
-
-        //// del invoice ( huy invoice)
-
-        //$('.btnHuyInvoice').off('click').on('click', function () {
-
-        //    id = $(this).data('id');
-        //    strUrl = $(this).data('url');
-
-        //    $.get('/Invoices/HuyInvoicePartial', { id: id, strUrl: strUrl }, function (response) {
-
-
-        //        $('#huyInvoiceModal').modal('show');
-        //        $('.huyInvoicePartial').html(response);
-        //        $('#huyInvoiceModal').draggable();
-        //    });
-        //});
-        //// btnHuyInvoicePartialSubmit in its partial
-
-        // del invoice ( huy invoice)
-
-        //////////////////////////////////////////////////////////////////////////////// EditInvoicePartial finish post
-
-        //// BackCreateCTInvoicePartial
-        //$('#btnBackCreateCTInvoicePartial').off('click').on('click', function () {
-
-        //    $('#createCTInvoicePartial').hide(500);
-
-        //    $('#tabs_KeToan_TourInfo').show(500);
-        //});
-        //// BackCreateCTInvoicePartial
-        //////////////////////////////////////////////////////////////////////////////// CTInvoicesCTVATsInInvoicePartial
-
-
-        //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
 
     },
     Load_KVCTPCTPartial: function (soCT, page) {
@@ -476,16 +135,15 @@ var indexController = {
 
     },
     TdVal_Click: function (soCT, loaiPhieu) {
-
-        //soCT = $(this).data('id');
-
+        
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
         $('#hidCashier').val(soCT);
 
         // gang' soCT cho btnThemDong
         $('#btnThemDong').attr('disabled', false);
-        $('#hidThemDong').val(soCT);
+        $('#hidThemDongSoCT').val(soCT);
+        $('#hidThemDongSoCT_ContextMenu').val(soCT);
 
         // page
         var page = $('.active span').text();

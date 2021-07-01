@@ -11,7 +11,7 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    
+
 }
 
 <!-- layDataCashier modal-->
@@ -33,32 +33,14 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- layDataCashier modal-->
-<!-- ThemDong modal-->
-<div class="modal fade" id="ThemDongModal" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-xl">
 
-        <div class="modal-content ">
-            <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title">Thêm chi tiết phiếu - <span id="hidLoaiPhieuFull"></span></h4> 
-                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body ThemDongModal_Body p-0">
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- ThemDong modal-->
-    <!-- ThemDongFull modal-->
+<!-- ThemDongFull modal-->
 <div class="modal fade" id="ThemDongModal_Full" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
             <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title">Chi tiết tách phí và thuế - <span id="hidLoaiPhieu"></span></h4> 
+                <h4 class="modal-title">Chi tiết tách phí và thuế - <span id="hidLoaiPhieu"></span></h4>
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -114,7 +96,7 @@
 
                             <!-- click row and submit to index -->
                             @*<input type="hidden" name="id" id="hidId" />
-                            <input type="hidden" name="page" id="hidPage" />*@
+                                <input type="hidden" name="page" id="hidPage" />*@
 
                             <div class="col-md-6 text-sm">
                                 &nbsp;
@@ -124,10 +106,8 @@
                                     </button>
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
-                                    <button type="button" class="btn btn-outline-dark btn-sm " id="btnThemDong" disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
-                                    <input type="hidden" id="hidThemDong" />
-                                    @*<input type="hidden" id="hidPage" />*@
-                                    @*<a asp-action="ThemChiTietPhieu" asp-controller="KVCTPCTs" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-dark btn-sm " disabled data-strurl="@Model.StrUrl" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</a>*@
+                                    <button type="button" class="btn btn-outline-dark btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
+
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
@@ -141,6 +121,17 @@
                     </div>
                 </div>
             </form>
+            <form id="frmThemDong" asp-action="ThemDong" asp-controller="KVCTPCTs" method="get">
+                <input type="hidden" id="hidThemDongSoCT" name="soCT" />
+                <input type="hidden" value="@Model.StrUrl" name="strUrl" />
+                <input type="hidden" value="@Model.Page" name="page" />
+            </form>
+            <form id="frmThemDong_ContextMenu" asp-action="ThemDong_ContextMenu" asp-controller="KVCTPCTs" method="get">
+                <input type="hidden" id="hidThemDongSoCT_ContextMenu" name="soCT" />
+                <input type="hidden" value="@Model.StrUrl" name="strUrl" />
+                <input type="hidden" value="@Model.Page" name="page" />
+            </form>
+
             @*<br />*@
             <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; height: 300px">
                 <table class="table mytable text-nowrap text-sm" id="phieuTbl">
@@ -172,7 +163,7 @@
                                             <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-soCT="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             @*<span class="text-dark"> | </span>
 
-                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+                                                <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <!-- ko cho xóa -->
                                             @*<span class="text-dark"> | </span>*@
                                             <span SoCT="confirmDeleteSpan_@item.SoCT" style="display: none">
@@ -242,10 +233,10 @@
             <!-- KVCTPCT-->
             <div id="KVCTPCT_Tbl">
             </div>
-            <div id="KVCTPCT_Create_Partial">
+            @*<div id="KVCTPCT_Create_Partial">
             </div>
             <div id="KVCTPCT_Edit_Partial">
-            </div>
+            </div>*@
 
             <!-- KVCTPCT-->
 
@@ -266,12 +257,12 @@
     <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
         var soCT_Redirect = '@Model.KVPCT.SoCT'; //soct sau khi redirect ve //////////////////////////////////////////////
-        
+
         //var tr_click = $('#phieuTbl ' + soCT);
         if (soCT_Redirect !== '') {
-            
+
             var soCT_Redirect_Class = $('.' + soCT_Redirect);
-            
+
             if (soCT_Redirect_Class.hasClass("hoverClass")) {
                 soCT_Redirect_Class.removeClass("hoverClass");
             }

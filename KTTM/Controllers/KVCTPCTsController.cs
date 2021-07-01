@@ -132,7 +132,7 @@ namespace KTTM.Controllers
 
         //}
 
-        public async Task<IActionResult> KVCTPCT_Modal_Partial(string soCT, string strUrl)
+        public async Task<IActionResult> ThemDong(string soCT, string strUrl, int page)
         {
             
             Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
@@ -154,8 +154,9 @@ namespace KTTM.Controllers
             KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
             KVCTPCTVM.StrUrl = strUrl;
+            KVCTPCTVM.Page = page; // page for redirect
 
-            return PartialView(KVCTPCTVM);
+            return View(KVCTPCTVM);
         }
 
         private void Get_TkNo_TkCo()
@@ -178,8 +179,8 @@ namespace KTTM.Controllers
             }
         }
 
-        // KVCTPCT_Modal_Full_Partial
-        public async Task<IActionResult> KVCTPCT_Modal_Full_Partial(string soCT)
+        // ThemDong_ContextMenu
+        public async Task<IActionResult> ThemDong_ContextMenu(string soCT, int page)
         {
             ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
@@ -194,22 +195,19 @@ namespace KTTM.Controllers
 
             Get_TkNo_TkCo();
 
-            //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
-            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
             KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
 
-            //KVCTPCTVM.KhachHangs = viewSupplierCodes;
             var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
-            //KVCTPCTVM.StrUrl = strUrl;
+            KVCTPCTVM.Page = page;
 
-            return PartialView(KVCTPCTVM);
+            return View(KVCTPCTVM);
         }
 
-        [HttpPost, ActionName("KVCTPCT_Modal_Partial")]
-        public async Task<IActionResult> KVCTPCT_Modal_Partial_Post()
+        [HttpPost, ActionName("ThemDong")]
+        public async Task<IActionResult> ThemDong_Post()
         {
             var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
             // from login session
@@ -224,6 +222,8 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPCT.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPCT.MaKhNo) ? KVCTPCTVM.KVCTPCT.MaKhCo : KVCTPCTVM.KVCTPCT.MaKhNo;
+            KVCTPCTVM.KVCTPCT.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPCT.MaKhNo) ? "" : KVCTPCTVM.KVCTPCT.MaKhNo.ToUpper();
+            KVCTPCTVM.KVCTPCT.MaKhCo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPCT.MaKhCo) ? "" : KVCTPCTVM.KVCTPCT.MaKhCo.ToUpper();
 
             // ghi log
             KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
@@ -233,7 +233,7 @@ namespace KTTM.Controllers
                 await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT, page = KVCTPCTVM.Page }); // redirect to Home/Index/?soCT
+                return BackIndex(soCT, KVCTPCTVM.Page ); // redirect to Home/Index/?soCT
             }
             catch (Exception ex)
             {
@@ -272,15 +272,23 @@ namespace KTTM.Controllers
             }
 
             // data tu cashier
-            var kVCTPCTs = await _kVCTPCTService.GetKVCTPCTs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPCT.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
+            var kVCTPCTs = _kVCTPCTService.GetKVCTPCTs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPCT.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
             // ghi log ben service
 
             try
             {
                 await _kVCTPCTService.CreateRange(kVCTPCTs);
 
+                // save to cashier
+                var kVPCT = await _kVPCTService.GetBySoCT(soCT);
+                var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, user.Macn);
+                noptien.Phieuthu = soCT;
+                noptien.Ngaypt = kVPCT.NgayCT;
+                //noptien.Ghichu = kVPCT.ghichu; ??
+                await _kVCTPCTService.UpdateAsync_NopTien(noptien);
+
                 SetAlert("Thêm mới thành công.", "success");
-                return RedirectToAction(nameof(Index), "Home", new { soCT = soCT, page = KVCTPCTVM.Page }); // redirect to Home/Index/?soCT
+                return BackIndex(soCT, KVCTPCTVM.Page); // redirect to Home/Index/?soCT
             }
             catch (Exception ex)
             {
@@ -618,36 +626,36 @@ namespace KTTM.Controllers
             return RedirectToAction(nameof(Index), "Home", new { soCT = soCT, page });
         }
 
-        public async Task<IActionResult> ThemChiTietPhieu(string soCT, string strUrl)
-        {
+        //public async Task<IActionResult> ThemChiTietPhieu(string soCT, string strUrl)
+        //{
 
-            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
-            KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
-            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
-            //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
-            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
+        //    KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+        //    KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
+        //    KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
+        //    KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View();
+        //    //KVCTPCTVM.GetAll_TkCongNo_With_TenTK = _kVCTPCTService.GetAll_TkCongNo_With_TenTK();
+        //    //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_TaiKhoan_Except_TkConngNo();
 
-            if (KVCTPCTVM.KVPCT.MFieu == "T")
-            {
-                KVCTPCTVM.DmTks_TkNo = _kVCTPCTService.GetAll_DmTk_TienMat();
-                KVCTPCTVM.DmTks_TkCo = _kVCTPCTService.GetAll_DmTk_TaiKhoan();
-            }
-            else
-            {
-                KVCTPCTVM.DmTks_TkNo = _kVCTPCTService.GetAll_DmTk_TaiKhoan();
-                KVCTPCTVM.DmTks_TkCo = _kVCTPCTService.GetAll_DmTk_TienMat();
-            }
+        //    if (KVCTPCTVM.KVPCT.MFieu == "T")
+        //    {
+        //        KVCTPCTVM.DmTks_TkNo = _kVCTPCTService.GetAll_DmTk_TienMat();
+        //        KVCTPCTVM.DmTks_TkCo = _kVCTPCTService.GetAll_DmTk_TaiKhoan();
+        //    }
+        //    else
+        //    {
+        //        KVCTPCTVM.DmTks_TkNo = _kVCTPCTService.GetAll_DmTk_TaiKhoan();
+        //        KVCTPCTVM.DmTks_TkCo = _kVCTPCTService.GetAll_DmTk_TienMat();
+        //    }
 
-            //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_DmTk();
-            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
-            //KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_ViewCode();
-            //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
-            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View();
-            KVCTPCTVM.StrUrl = strUrl;
+        //    //KVCTPCTVM.GetAll_TaiKhoan_Except_TkConngNo = _kVCTPCTService.GetAll_DmTk();
+        //    KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
+        //    //KVCTPCTVM.KhachHangs = _kVCTPCTService.GetAll_KhachHangs_ViewCode();
+        //    //KVCTPCTVM.KhachHangJsons = JsonConvert.SerializeObject(KVCTPCTVM.KhachHangs);
+        //    KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View();
+        //    KVCTPCTVM.StrUrl = strUrl;
 
-            return View(KVCTPCTVM);
-        }
+        //    return View(KVCTPCTVM);
+        //}
 
         public JsonResult GetKhachHangs_By_Code(string code)
         {

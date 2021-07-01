@@ -38,6 +38,7 @@ namespace KTTM.Controllers
         {
             
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            HomeVM.Page = page;
 
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
