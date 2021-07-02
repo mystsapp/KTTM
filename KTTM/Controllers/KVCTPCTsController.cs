@@ -223,6 +223,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPCT.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPCT.MaKhNo) ? KVCTPCTVM.KVCTPCT.MaKhCo : KVCTPCTVM.KVCTPCT.MaKhNo;
             KVCTPCTVM.KVCTPCT.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPCT.MaKhNo) ? "" : KVCTPCTVM.KVCTPCT.MaKhNo.ToUpper();
+            KVCTPCTVM.KVCTPCT.TKCo = "1111000000";
 
             // ghi log
             KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
@@ -353,10 +354,7 @@ namespace KTTM.Controllers
 
             // tentk
             KVCTPCTVM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKNo).TenTk;
-            if(KVCTPCTVM.TenTkCo != null) // context menu ko co tkco
-            {
-                KVCTPCTVM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKCo).TenTk;
-            }            
+            KVCTPCTVM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKCo).TenTk;
             KVCTPCTVM.Dgiais = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPCT.TKNo, KVCTPCTVM.KVCTPCT.TKCo);
 
             if (KVCTPCTVM.KVCTPCT == null)

@@ -215,9 +215,10 @@
 
                         <div class="col-md-3">
                             <label asp-for="KVCTPCT.CoQuay" class="control-label "></label>
-                            <select asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                            </select>
+                            @*<select asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm select2"
+                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+        </select>*@
+                            <input asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm" id="ddlCoQuay" readonly/>
                             <span asp-validation-for="KVCTPCT.CoQuay" class="text-danger"></span>
                         </div>
 
