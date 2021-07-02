@@ -96,7 +96,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Thuế GTGT</label>
-                            <input class="form-control form-control-sm " id="txtThueGTGT" />
+                            <input class="form-control form-control-sm " id="txtThueGTGT" readonly/>
                             <span @*asp-validation-for="KVCTPCT.SoTien"*@ class="text-danger"></span>
                         </div>
                     </div>
@@ -519,7 +519,8 @@
                     }
                 }
             });
-
+            chiPhi = $('#txtChiPhi').val();
+            TinhThueGTGT(soTienNT, chiPhi);
         })
 
         $('#txtTyGia').blur(function () {
@@ -575,6 +576,43 @@
         // makh => tenkh
 
         // makh => tenkh
+
+        // tongtien, chiphi ==> thue GTGT
+        //$('#txtSoTienNT').blur(function () {
+        //    soTienNT = $(this).val();
+        //    chiPhi = $('#txtChiPhi').val();
+        //    TinhThueGTGT(soTienNT, chiPhi);
+
+        //})
+        $('#txtChiPhi').blur(function () {
+            
+            chiPhi = $(this).val();
+            soTienNT = $('#txtSoTienNT').val();
+            TinhThueGTGT(soTienNT, chiPhi);
+
+        })
+        function TinhThueGTGT(soTienNT, chiPhi) {
+
+            $.ajax({
+                type: "GET",
+                url: "/KVCTPCTs/TinhThueGTGT",
+                data: { tongTien: soTienNT, chiPhi: chiPhi },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+                        thueGTGT = response.thueGTGT;
+                        $('#txtThueGTGT').val(numeral(thueGTGT).format('0,0'));
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
+
+        }
+    // tongtien, chiphi ==> thue GTGT
+
 
         function Get_DienGiai_By_TkNo(tkNo) {
             $('#ddlDienGiai').html('');

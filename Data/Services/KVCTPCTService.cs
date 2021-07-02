@@ -159,7 +159,7 @@ namespace Data.Services
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo)
         {
             var dgiais = _unitOfWork.dGiaiRepository.GetAll();
-            var dgiais1 = dgiais.Where(x => x.Tkno == tkNo);
+            var dgiais1 = dgiais.Where(x => x.Tkno.Trim() == tkNo.Trim());
             return dgiais1;
         }
 

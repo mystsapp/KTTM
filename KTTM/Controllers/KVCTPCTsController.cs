@@ -353,7 +353,10 @@ namespace KTTM.Controllers
 
             // tentk
             KVCTPCTVM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKNo).TenTk;
-            KVCTPCTVM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKCo).TenTk;
+            if(KVCTPCTVM.TenTkCo != null) // context menu ko co tkco
+            {
+                KVCTPCTVM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKCo).TenTk;
+            }            
             KVCTPCTVM.Dgiais = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPCT.TKNo, KVCTPCTVM.KVCTPCT.TKCo);
 
             if (KVCTPCTVM.KVCTPCT == null)
@@ -720,6 +723,15 @@ namespace KTTM.Controllers
             {
                 status = true,
                 soTien = dsKhongVat.ToString()
+            });
+        }
+        public JsonResult TinhThueGTGT(decimal tongTien, decimal chiPhi)
+        {
+            var thueGTGT = tongTien - chiPhi;
+            return Json(new
+            {
+                status = true,
+                thueGTGT = thueGTGT.ToString()
             });
         }
     }
