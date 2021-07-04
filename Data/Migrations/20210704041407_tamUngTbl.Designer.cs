@@ -4,14 +4,16 @@ using Data.Models_KTTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    partial class KTTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210704041407_tamUngTbl")]
+    partial class tamUngTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,9 +297,6 @@ namespace Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
 
-                    b.Property<string>("LogFile")
-                        .HasColumnType("nvarchar(MAX)");
-
                     b.Property<string>("MaKhNo")
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
@@ -305,20 +304,6 @@ namespace Data.Migrations
                     b.Property<DateTime?>("NgayCT")
                         .IsRequired()
                         .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgaySua")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgayTao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("NguoiSua")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("NguoiTao")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("PhieuChi")
                         .HasMaxLength(10)
