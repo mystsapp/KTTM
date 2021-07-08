@@ -666,12 +666,23 @@ namespace KTTM.Controllers
         public JsonResult GetKhachHangs_By_Code(string code)
         {
             //var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
-            var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower() == code.ToLower()).FirstOrDefault();
-            return Json(new
+            var supplier = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower() == code.ToLower()).FirstOrDefault();
+            if(supplier != null)
             {
-                data = viewSupplier
-                //data = listViewModels.Select(x => x.Name.Trim()).Take(10)
-            }); ;
+                return Json(new
+                {
+                    status = true,
+                    data = supplier
+                    //data = listViewModels.Select(x => x.Name.Trim()).Take(10)
+                }); ;
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = false
+                });
+            }
         }
         public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
         {

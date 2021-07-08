@@ -162,52 +162,40 @@ var indexController = {
 
         indexController.Load_KVCTPCTPartial(soCT, page);
 
+    },
+    KhachHang_By_Code: function (code) {
+
+            $.ajax({
+                url: '/KVCTPCTs/GetKhachHangs_By_Code',
+                type: 'GET',
+                data: { code: code },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status) {
+                        var data = response.data;
+                       // console.log(data);
+
+                        if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
+                            $('#txtMaKhNo').val(data.code);
+                            $('#txtTenKhNo').val(data.name);
+                        }
+                        if ($('#btnKhSearch').data('name') === 'maKhCo') { // search of co
+                            $('#txtMaKhCo').val(data.code);
+                            $('#txtTenKhCo').val(data.name);
+                        }
+
+                        $('#txtKyHieu').val(data.taxSign);
+                        $('#txtMauSoHD').val(data.taxForm);
+                        $('#txtMsThue').val(data.taxCode);
+                        $('#txtTenKH').val(data.name);
+                        $('#txtDiaChi').val(data.address);
+
+                    }
+
+                }
+            });
+
     }
-    //Load_CTInvoice_CTVAT_Partial: function (invoiceId) {
-
-    //    var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
-    //    $.get(url, { invoiceId: invoiceId }, function (response) {
-
-    //        $('.cTInVoiceCTVAT').html(response);
-    //        $('.cTInVoiceCTVAT').show(5000);
-
-    //    });
-    //}
-    //,
-    //Load_BienNhan_CTBN_Partial: function (tourId) {
-
-    //    var url = '/Tours/BienNhanAndCTBNPartial';
-    //    $.get(url, { tourId: tourId }, function (response) {
-
-    //        $('#BienNhanAndCTBNPartial').html(response);
-    //        $('#BienNhanAndCTBNPartial').show(500);
-
-    //    });
-
-    //},
-    //Load_CTBienNhanInBienNhanPartial: function (bienNhanId) {
-
-    //    var url = '/BienNhans/CTBienNhanInBienNhanPartial';
-    //    $.get(url, { bienNhanId: bienNhanId }, function (response) {
-
-    //        $('#CTBienNhanInBienNhanPartial').html(response);
-    //        $('#CTBienNhanInBienNhanPartial').show(500);
-    //    });
-    //},
-    //Load_DSKhachHang: function (tourid) {
-
-    //    $('#khachHangCreatePartial').hide(500);
-    //    $('#khachHangEditPartial').hide(500);
-
-    //    var url = '/DSKhachHangs/DSKhachHangPartial';
-    //    $.get(url, { tourid: tourid }, function (response) {
-
-    //        $('#sDSKhach').html(response);
-
-    //        $('#sDSKhach').show(500);
-
-    //    });
-    //}
-
+    
 };
 indexController.init();

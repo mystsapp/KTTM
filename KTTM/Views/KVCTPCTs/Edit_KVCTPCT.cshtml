@@ -431,6 +431,7 @@
 
 @section Scripts{
     <script src="~/js/Admin/KVCTPCT/editController.js"></script>
+    <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
         //$('#txtMaKH').select2()
         $('.select2').select2()
@@ -461,6 +462,22 @@
             }
 
             KhachHangSearch(maKhtext);
+        })
+
+        $('#txtMaKhNo').blur(function () {
+            
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext);
+        })
+
+        $('#txtMaKhCo').blur(function () {
+
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext);
         })
 
         $('#frm_KVCTPCT_Edit').validate({
@@ -715,5 +732,39 @@
                 $('#khachHang_Modal').draggable();
             });
         }
+
+        //function KhachHang_By_Code(code) {
+
+        //    $.ajax({
+        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
+        //        type: 'GET',
+        //        data: { code: code },
+        //        dataType: 'json',
+        //        success: function (response) {
+        //            if (response.status) {
+        //                var data = response.data;
+        //                console.log(data);
+
+        //                if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
+        //                    $('#txtMaKhNo').val(data.code);
+        //                    $('#txtTenKhNo').val(data.name);
+        //                }
+        //                if ($('#btnKhSearch').data('name') === 'maKhCo') { // search of co
+        //                    $('#txtMaKhCo').val(data.code);
+        //                    $('#txtTenKhCo').val(data.name);
+        //                }
+
+        //                $('#txtKyHieu').val(data.taxSign);
+        //                $('#txtMauSoHD').val(data.taxForm);
+        //                $('#txtMsThue').val(data.taxCode);
+        //                $('#txtTenKH').val(data.name);
+        //                $('#txtDiaChi').val(data.address);
+
+        //            }
+
+        //        }
+        //    });
+
+        //}
     </script>
 }

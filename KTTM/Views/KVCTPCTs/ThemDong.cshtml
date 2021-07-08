@@ -483,6 +483,22 @@
         KhachHangSearch(maKhtext);
     })
 
+        $('#txtMaKhNo').blur(function () {
+
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext);
+        })
+
+        $('#txtMaKhCo').blur(function () {
+
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext);
+        })
+
     $('#frm_KVCTPCT_Create').validate({
         //rules: {
         //    email: {
