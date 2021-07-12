@@ -36,7 +36,15 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string soCT, int page = 1)
         {
-            
+            //var abcUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            //string abc = Environment.MachineName.ToString();
+            //string MachineName4 = System.Environment.GetEnvironmentVariable("COMPUTERNAME");
+
+            //string MachineName2 = System.Net.Dns.GetHostName();
+            //string MachineName1 = Environment.MachineName;
+
+            //ViewBag.stringName = abcUser + " - " + abc + " - " + MachineName4 + " - " + MachineName2 + " - " + MachineName1;
+
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;
 

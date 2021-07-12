@@ -39,10 +39,12 @@ namespace Data.Services
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         Task<KVCTPCT> GetById(long id);
         IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
+        IEnumerable<Models_HDVATOB.Supplier> GetSuppliersByCode(string code);
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
         Task UpdateAsync(KVCTPCT kVCTPCT);
         Task UpdateAsync_NopTien(Noptien noptien);
+        Task DeleteAsync(KVCTPCT kVCTPCT);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -333,5 +335,15 @@ namespace Data.Services
             
         }
 
+        public IEnumerable<Models_HDVATOB.Supplier> GetSuppliersByCode(string code)
+        {
+            return _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == code);
+        }
+
+        public async Task DeleteAsync(KVCTPCT kVCTPCT)
+        {
+            _unitOfWork.kVCTPCTRepository.Delete(kVCTPCT);
+            await _unitOfWork.Complete();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Data.Repository
     public interface ISupplier_hdvatob_Repository
     {
         IEnumerable<Supplier> GetAll();
+        Task<Supplier> GetSupplierById(string id);
         IEnumerable<Supplier> Find(Func<Supplier, bool> predicate);
 
     }
@@ -33,6 +34,10 @@ namespace Data.Repository
             return _context.Suppliers;
 
         }
-        
+
+        public async Task<Supplier> GetSupplierById(string id)
+        {
+            return await _context.Suppliers.FindAsync(id);
+        }
     }
 }
