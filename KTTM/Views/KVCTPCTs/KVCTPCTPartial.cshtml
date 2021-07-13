@@ -94,7 +94,7 @@
                                 <span id="confirmDeleteSpan_@item.Id" style="display: none">
 
                                     <span class="text-dark ">Xoá?</span>
-                                    <button type="button" class="btn btn-danger btn-xs btnXoaDong" data-id="@item.Id" >Yes</button>
+                                    <button type="button" class="btn btn-danger btn-xs btnXoaDong" data-id="@item.Id">Yes</button>
                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                 </span>
                                 <span id="deleteSpan_@item.Id">
@@ -161,7 +161,7 @@
 <script src="~/js/Admin/Home/indexController.js"></script>
 <script>
     function confirmDelete(uniqueId, isDeleteClicked) {
-        
+
         var deleteSpan = 'deleteSpan_' + uniqueId;
         var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
 
@@ -175,7 +175,7 @@
     }
     // btnXoaDong
     $('.btnXoaDong').click(function () {
-        
+
         var page = @Model.Page;
         var soCT = '@Model.KVPCT.SoCT';
 
@@ -183,7 +183,7 @@
 
         var url = '/KVCTPCTs/Delete';
         $.post(url, { id: id }, function (response) {
-            console.log(response);
+            
             if (response) {
                 toastr.success('Xoá thành công', 'Xoá!');
                 indexController.Load_KVCTPCTPartial(soCT, page);
@@ -193,4 +193,25 @@
     });
         // btnXoaDong
 
+    // btnTamUng
+    $('#btnTamUng').off('click').on('click', function () {
+        bootbox.confirm("Bạn có muốn thêm vào <b> tạm ứng </b> không?", function (result) {
+            if (result) {
+
+                id = $('#hidTamUng').val();
+
+                var url = '/TamUngs/Create';
+                $.post(url, { id: id }, function (response) {
+                    console.log(response);
+                    if (response.status) {
+                        toastr.success('Thêm mới thành công', 'Thêm tạm ứng!');
+                    }
+                    else {
+                        toastr.error(response.message, 'Thêm tạm ứng!')
+                    }
+                });
+            }
+        });
+    })
+    // btnTamUng
 </script>

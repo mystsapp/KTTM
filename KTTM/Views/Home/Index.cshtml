@@ -108,15 +108,15 @@
                                     </button>
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
-                                    <button type="button" class="btn btn-outline-dark btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
 
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
                                     <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
                                     <input type="hidden" id="hidCashier" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Tạm ứng">Tạm ứng</button>
-
+                                    <button type="button" class="btn btn-outline-info btn-sm" id="btnTamUng" disabled title="Tạm ứng">Tạm ứng</button>
+                                    <input type="hidden" id="hidTamUng" />
                                 </div>
                             </div>
                         </div>

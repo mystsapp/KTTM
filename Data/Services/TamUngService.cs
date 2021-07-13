@@ -1,15 +1,18 @@
-﻿using Data.Repository;
+﻿using Data.Models_KTTM;
+using Data.Repository;
 using Data.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Services
 {
     public interface ITamUngService
     {
         string GetSoCT(string param);
+        Task CreateAsync(TamUng tamUng);
     }
     public class TamUngService : ITamUngService
     {
@@ -20,6 +23,11 @@ namespace Data.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task CreateAsync(TamUng tamUng)
+        {
+            _unitOfWork.tamUngRepository.Create(tamUng);
+            await _unitOfWork.Complete();
+        }
 
         public string GetSoCT(string param)
         {

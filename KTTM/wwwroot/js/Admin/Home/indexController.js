@@ -96,6 +96,12 @@ var indexController = {
         });
         // giu trang thai phieu click
 
+        $('tr .tdVal_KVCTPCT').click(function () {
+
+            kVCTPCTId = $(this).data('id');
+            $('#btnTamUng').attr('disabled', false);
+            $('#hidTamUng').val(kVCTPCTId);
+        });
         // giu trang thai CT phieu click
         $('#cTPhieuTbl .ctphieu-cursor-pointer').off('click').on('click', function () {
             if ($(this).hasClass("hoverClass"))
@@ -104,6 +110,7 @@ var indexController = {
                 $('.ctphieu-cursor-pointer').removeClass("hoverClass");
                 $(this).addClass("hoverClass");
             }
+
         });
         // giu trang thai CT phieu click
 

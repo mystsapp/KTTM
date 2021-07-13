@@ -1,5 +1,7 @@
 ﻿using Data.Models_KTTM;
+using Data.Models_QLTaiKhoan;
 using Data.Services;
+using Data.Utilities;
 using KTTM.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,21 +33,48 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("Create")]
-        public async Task<IActionResult> Create(long id, string loaiTienUng) // loaitien == "VN" ==> "UV"(0378UV2014) or "NT" ==> "UN"(0133UN2014)
+        public async Task<IActionResult> Create(long id) // loaitien == "VN" ==> "UV"(0378UV2014) or "NT" ==> "UN"(0133UN2014)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             if (id == 0)
-                return NotFound();
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Chi tiết này không có thật!"
+                });
+            }
 
             var kVCTPCT = await _kVCTPCTService.GetById(id);
-            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
+            
             if (kVCTPCT == null)
-                return NotFound();
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Chi tiết này không có thật!"
+                });
+            }
+
+            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
+
+            string loaiTienUng;
+            if (kVPCT.NgoaiTe == "VN")
+            {
+                loaiTienUng = "UV";
+            }
+            else
+            {
+                loaiTienUng = "UN";
+            }
 
             var tamUng = new TamUng();
 
             tamUng.MaKhNo = kVCTPCT.MaKhNo;
             tamUng.SoCT = _tamUngService.GetSoCT(loaiTienUng);
-            tamUng.NgayCT = DateTime.Now;
+            tamUng.NgayCT = DateTime.Now; // ??
             tamUng.PhieuChi = kVCTPCT.KVPCTId; // soCT ben KVPCT
             tamUng.DienGiai = kVCTPCT.DienGiai;
             tamUng.LoaiTien = kVCTPCT.LoaiTien;
@@ -59,6 +88,17 @@ namespace KTTM.Controllers
             tamUng.Phong = kVPCT.Phong;
             //tamUng.TTTP ??
             tamUng.PhieuTT = kVCTPCT.KVPCTId; // soCT ben KVPCT;
+
+            tamUng.NgayTao = DateTime.Now;
+            tamUng.NguoiTao = user.Username;
+            // ghi log
+            tamUng.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            await _tamUngService.CreateAsync(tamUng);
+            return Json(new
+            {
+                status = true
+            });
         }
     }
 }
