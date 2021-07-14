@@ -15,7 +15,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("Mã KH nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
-        public string MaKhNo { get; set; } //
+        public string MaKhNo { get; set; } 
 
         [DisplayName("Số phiếu")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]

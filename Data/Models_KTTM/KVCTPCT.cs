@@ -21,7 +21,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("HTTC")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
-        public string HTTC { get; set; } //
+        public string HTTC { get; set; } 
         
         [DisplayName("Diễn giải")]
         [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "nvarchar(150)")]
@@ -138,7 +138,7 @@ namespace Data.Models_KTTM
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string KyHieu { get; set; }
         
-        [DisplayName("Mẫu số HD")]
+        [DisplayName("Mẫu số HĐ")]
         [MaxLength(11, ErrorMessage = "Chiều dài tối đa 11 ký tự"), Column(TypeName = "varchar(11)")]
         public string MauSoHD { get; set; }
         

@@ -43,6 +43,8 @@ var indexController = {
 
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
+            $('#btnTT141').attr('disabled', true); // whien click onother row ==> off btnTT141
+            $('#btnTamUng').attr('disabled', true); // whien click onother row ==> off btnTamUng
 
             soCT = $(this).data('id');
             loaiPhieu = $(this).data('loaiphieu');
@@ -96,10 +98,10 @@ var indexController = {
         });
         // giu trang thai phieu click
 
+        // tdVal_KVCTPCT row click
         $('tr .tdVal_KVCTPCT').click(function () {
             
             kVCTPCTId = $(this).data('id');
-            $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141
 
             // for btnTamUng
             var promise = indexController.CheckTamUng(kVCTPCTId);
@@ -117,10 +119,11 @@ var indexController = {
             // for TT141
             var promiseTT141 = indexController.CheckTT141(kVCTPCTId);
             promiseTT141.then(function (data) {
-
+                
                 if (data) {
+                    
                     $('#btnTT141').attr('disabled', false);
-                    $('#btnTT141').val(kVCTPCTId);
+                    $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141
                 }
                 else {
                     $('#btnTT141').attr('disabled', true);
@@ -128,6 +131,8 @@ var indexController = {
             }, error => alert(error));
 
         });
+        // tdVal_KVCTPCT row click
+
         // giu trang thai CT phieu click
         $('#cTPhieuTbl .ctphieu-cursor-pointer').off('click').on('click', function () {
             if ($(this).hasClass("hoverClass"))
@@ -240,7 +245,7 @@ var indexController = {
     CheckTT141: function (kVCTPCTId) {
         
         return $.post('/TamUngs/CheckTT141', { kVCTPCTId: kVCTPCTId }, function (response) {
-            // console.log(response);
+            console.log(response);
             return response;
         })
         
