@@ -12,6 +12,7 @@ namespace Data.Services
     public interface ITamUngService
     {
         string GetSoCT(string param);
+        Task<TamUng> GetByIdAsync(long id);
         Task CreateAsync(TamUng tamUng);
     }
     public class TamUngService : ITamUngService
@@ -27,6 +28,11 @@ namespace Data.Services
         {
             _unitOfWork.tamUngRepository.Create(tamUng);
             await _unitOfWork.Complete();
+        }
+
+        public async Task<TamUng> GetByIdAsync(long id)
+        {
+            return await _unitOfWork.tamUngRepository.GetByLongIdAsync(id);
         }
 
         public string GetSoCT(string param)

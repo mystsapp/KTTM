@@ -345,5 +345,6 @@ namespace Data.Services
             _unitOfWork.kVCTPCTRepository.Delete(kVCTPCT);
             await _unitOfWork.Complete();
         }
+
     }
 }

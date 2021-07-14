@@ -35,7 +35,6 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- layDataCashier modal-->
-
 <!-- ThemDongFull modal-->
 <div class="modal fade" id="ThemDongModal_Full" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
@@ -96,10 +95,6 @@
                                 <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
                             </div>
 
-                            <!-- click row and submit to index -->
-                            @*<input type="hidden" name="id" id="hidId" />
-                                <input type="hidden" name="page" id="hidPage" />*@
-
                             <div class="col-md-6 text-sm">
                                 &nbsp; @*<label class="custom-control-label">@ViewBag.stringName</label>*@
                                 <div class=" btn-block ">
@@ -109,9 +104,10 @@
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                                     <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
-
                                     <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
-                                    <button type="submit" class="btn btn-outline-warning btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="TT 141">TT 141</button>
+
+                                    <button type="button" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>
+                                    <input type="hidden" id="hidKVCTPCTId" />
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
                                     <input type="hidden" id="hidCashier" />
@@ -236,9 +232,9 @@
             <div id="KVCTPCT_Tbl">
             </div>
             @*<div id="KVCTPCT_Create_Partial">
-            </div>
-            <div id="KVCTPCT_Edit_Partial">
-            </div>*@
+                </div>
+                <div id="KVCTPCT_Edit_Partial">
+                </div>*@
 
             <!-- KVCTPCT-->
 

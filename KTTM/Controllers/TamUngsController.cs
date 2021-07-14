@@ -48,7 +48,7 @@ namespace KTTM.Controllers
             }
 
             var kVCTPCT = await _kVCTPCTService.GetById(id);
-            
+
             if (kVCTPCT == null)
             {
                 return Json(new
@@ -72,6 +72,7 @@ namespace KTTM.Controllers
 
             var tamUng = new TamUng();
 
+            tamUng.Id = kVCTPCT.Id;
             tamUng.MaKhNo = kVCTPCT.MaKhNo;
             tamUng.SoCT = _tamUngService.GetSoCT(loaiTienUng);
             tamUng.NgayCT = DateTime.Now; // ??
@@ -87,18 +88,54 @@ namespace KTTM.Controllers
             tamUng.TKCo = kVCTPCT.TKCo;
             tamUng.Phong = kVPCT.Phong;
             //tamUng.TTTP ??
-            tamUng.PhieuTT = kVCTPCT.KVPCTId; // soCT ben KVPCT;
+            tamUng.PhieuTT = ""; // soCT ben KVPCT khi thanh toan;
 
             tamUng.NgayTao = DateTime.Now;
             tamUng.NguoiTao = user.Username;
             // ghi log
             tamUng.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            if (!ModelState.IsValid)
+            {
 
+                return Json(new
+                {
+                    status = false
+                });
+            }
             await _tamUngService.CreateAsync(tamUng);
+
             return Json(new
             {
                 status = true
             });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CheckTamUng(long kVCTPCTId)
+        {
+            var kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId);
+            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
+            var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
+            if (tamUng == null) // chưa them
+                if (kVPCT.MFieu == "C" && kVCTPCT.TKNo.Trim() == "1411")
+                {
+                    return Json(true);
+                }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CheckTT141(long kVCTPCTId)
+        {
+            var kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId);
+            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
+            var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
+            if (tamUng.ConLai > 0) // chưa them
+                if (kVPCT.MFieu == "T" && kVCTPCT.TKCo.Trim() == "1411")
+                {
+                    return Json(true);
+                }
+            return Json(false);
         }
     }
 }

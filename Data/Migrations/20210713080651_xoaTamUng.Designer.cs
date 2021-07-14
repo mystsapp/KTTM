@@ -4,14 +4,16 @@ using Data.Models_KTTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    partial class KTTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210713080651_xoaTamUng")]
+    partial class xoaTamUng
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,91 +276,6 @@ namespace Data.Migrations
                     b.ToTable("KVPCTs");
                 });
 
-            modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("ConLai")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Conlaint")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("DienGiai")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("LoaiTien")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("LogFile")
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.Property<string>("MaKhNo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<DateTime?>("NgayCT")
-                        .IsRequired()
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgaySua")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgayTao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("NguoiSua")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("NguoiTao")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("PhieuChi")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("PhieuTT")
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("Phong")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("SoCT")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<decimal>("SoTien")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("SoTienNT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TKCo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("TKNo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<bool>("TTTP")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("TyGia")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TamUngs");
-                });
-
             modelBuilder.Entity("Data.Models_KTTM.KVCTPCT", b =>
                 {
                     b.HasOne("Data.Models_KTTM.KVPCT", "KVPCT")
@@ -368,17 +285,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("KVPCT");
-                });
-
-            modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
-                {
-                    b.HasOne("Data.Models_KTTM.KVCTPCT", "KVCTPCT")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("KVCTPCT");
                 });
 #pragma warning restore 612, 618
         }

@@ -97,10 +97,36 @@ var indexController = {
         // giu trang thai phieu click
 
         $('tr .tdVal_KVCTPCT').click(function () {
-
+            
             kVCTPCTId = $(this).data('id');
-            $('#btnTamUng').attr('disabled', false);
-            $('#hidTamUng').val(kVCTPCTId);
+            $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141
+
+            // for btnTamUng
+            var promise = indexController.CheckTamUng(kVCTPCTId);
+            promise.then(function (data) {
+                
+                if (data) {
+                    $('#btnTamUng').attr('disabled', false);
+                    $('#hidTamUng').val(kVCTPCTId);
+                }
+                else {
+                    $('#btnTamUng').attr('disabled', true);
+                }
+            }, error => alert(error));
+
+            // for TT141
+            var promiseTT141 = indexController.CheckTT141(kVCTPCTId);
+            promiseTT141.then(function (data) {
+
+                if (data) {
+                    $('#btnTT141').attr('disabled', false);
+                    $('#btnTT141').val(kVCTPCTId);
+                }
+                else {
+                    $('#btnTT141').attr('disabled', true);
+                }
+            }, error => alert(error));
+
         });
         // giu trang thai CT phieu click
         $('#cTPhieuTbl .ctphieu-cursor-pointer').off('click').on('click', function () {
@@ -202,6 +228,22 @@ var indexController = {
                 }
             });
 
+    },
+    CheckTamUng: function (kVCTPCTId) {
+        
+        return $.post('/TamUngs/CheckTamUng', { kVCTPCTId: kVCTPCTId }, function (response) {
+            // console.log(response);
+            return response;
+        })
+        
+    },
+    CheckTT141: function (kVCTPCTId) {
+        
+        return $.post('/TamUngs/CheckTT141', { kVCTPCTId: kVCTPCTId }, function (response) {
+            // console.log(response);
+            return response;
+        })
+        
     }
     
 };
