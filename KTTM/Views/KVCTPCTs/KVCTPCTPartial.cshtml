@@ -72,6 +72,7 @@
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MaTraCuu)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TkTruyCap)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().Password)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().Id)</th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +91,7 @@
 
                                 <!--<a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="item.Id"><i class="fas fa-list"></i></a>-->
 
-                                @if (item.TKNo.Trim() != "1411") // chi khac 1411: tamung moi duoc xoá
+                                @if (string.IsNullOrEmpty(item.TamUng)) // có trong tamung
                                 {
                                     <span class="text-dark"> | </span>
                                     <span id="confirmDeleteSpan_@item.Id" style="display: none">
@@ -106,7 +107,7 @@
                                     </span>
 
                                 }
-                                else // 1411 ko được xoá
+                                else // khong được xoa khi da them ct vao tam ung
                                 {
                                     <span class="text-dark"> | </span>
                                     <button type="button" disabled class=" border-0 bg-transparent btnXoa" title="Xoá"><i class="fas fa-trash-alt"></i></button>
@@ -114,9 +115,9 @@
                                 }
                                 <!-- hidden form khoiphuc-->
                                 <!--<form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
-        <input type="hidden" id="hidTourId" name="id" />
-        <input type="hidden" id="hidStrUrl" name="strUrl" value="Model.StrUrl" />
-    </form>-->
+                                    <input type="hidden" id="hidTourId" name="id" />
+                                    <input type="hidden" id="hidStrUrl" name="strUrl" value="Model.StrUrl" />
+                                </form>-->
 
                             </div>
                         </td>
@@ -157,6 +158,7 @@
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaTraCuu)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TkTruyCap)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Password)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
 
                     </tr>
 
@@ -182,17 +184,19 @@
             $('#' + confirmDeleteSpan).hide();
         }
     }
-    // btnXoaDong
-    $('.btnXoaDong').click(function () {
+
 
         var page = @Model.Page;
         var soCT = '@Model.KVPCT.SoCT';
+
+    // btnXoaDong
+    $('.btnXoaDong').click(function () {
 
         id = $(this).data('id');
 
         var url = '/KVCTPCTs/Delete';
         $.post(url, { id: id }, function (response) {
-            
+
             if (response) {
                 toastr.success('Xoá thành công', 'Xoá!');
                 indexController.Load_KVCTPCTPartial(soCT, page);
@@ -211,9 +215,10 @@
 
                 var url = '/TamUngs/Create';
                 $.post(url, { id: id }, function (response) {
-                    console.log(response);
+                    //console.log(response);
                     if (response.status) {
                         toastr.success('Thêm mới thành công', 'Thêm tạm ứng!');
+                        indexController.Load_KVCTPCTPartial(soCT, page);
                     }
                     else {
                         toastr.error(response.message, 'Thêm tạm ứng!')

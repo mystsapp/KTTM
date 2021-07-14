@@ -1,7 +1,7 @@
 ﻿using Data.Models_DanhMucKT;
 using Data.Models_QLTaiKhoan;
 using Data.Repository;
-using Data.Services;
+using KTTM.Services;
 using Data.Utilities;
 using Data.ViewModels;
 using KTTM.Models;
@@ -675,7 +675,7 @@ namespace KTTM.Controllers
                     status = true
                 });
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 //SetAlert(ex.Message, "error");
 

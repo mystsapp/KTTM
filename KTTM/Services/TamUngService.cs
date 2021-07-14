@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Services
+namespace KTTM.Services
 {
     public interface ITamUngService
     {

@@ -1,6 +1,6 @@
 ﻿using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
-using Data.Services;
+using KTTM.Services;
 using Data.Utilities;
 using KTTM.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -102,12 +102,28 @@ namespace KTTM.Controllers
                     status = false
                 });
             }
-            await _tamUngService.CreateAsync(tamUng);
-
-            return Json(new
+            try
             {
-                status = true
-            });
+                await _tamUngService.CreateAsync(tamUng);
+
+                // cap nhat cot tamung trong kvctpct
+                kVCTPCT.TamUng = tamUng.SoCT; // so tamung
+                await _kVCTPCTService.UpdateAsync(kVCTPCT);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception)
+            {
+
+                return Json(new
+                {
+                    status = false
+                });
+            }
+
         }
 
         [HttpPost]

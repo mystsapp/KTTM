@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Services
+namespace KTTM.Services
 {
     public interface IKVCTPCTService
     {
@@ -38,8 +38,8 @@ namespace Data.Services
         Task CreateRange(IEnumerable<KVCTPCT> kVCTPCTs);
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         Task<KVCTPCT> GetById(long id);
-        IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
-        IEnumerable<Models_HDVATOB.Supplier> GetSuppliersByCode(string code);
+        IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
+        IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code);
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
         Task UpdateAsync(KVCTPCT kVCTPCT);
@@ -297,7 +297,7 @@ namespace Data.Services
             return await _unitOfWork.kVCTPCTRepository.GetByLongIdAsync(id);
         }
 
-        public IEnumerable<Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB()
+        public IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB()
         {
             return _unitOfWork.supplier_Hdvatob_Repository.GetAll();
         }
@@ -335,7 +335,7 @@ namespace Data.Services
             
         }
 
-        public IEnumerable<Models_HDVATOB.Supplier> GetSuppliersByCode(string code)
+        public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code)
         {
             return _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == code);
         }
