@@ -28,6 +28,7 @@ namespace Data.Repository
         IKVPCTRepository kVPCTRepository { get; }
         IKVCTPCTRepository kVCTPCTRepository { get; }
         ITamUngRepository tamUngRepository { get; }
+        ITT621Repository tT621Repository { get; }
 
         // DanhMucKT
         IDmTkRepository dmTkRepository { get; }
@@ -81,6 +82,7 @@ namespace Data.Repository
             kVPCTRepository = new KVPCTRepository(_kTTMDbContext);
             kVCTPCTRepository = new KVCTPCTRepository(_kTTMDbContext);
             tamUngRepository = new TamUngRepository(_kTTMDbContext);
+            tT621Repository = new TT621Repository(_kTTMDbContext);
 
             // DanhMucKT
             dmTkRepository = new DmTkRepository(_danhMucKTContext);
@@ -142,6 +144,8 @@ namespace Data.Repository
         public ISupplier_hdvatob_Repository supplier_Hdvatob_Repository { get; }
 
         public ITamUngRepository tamUngRepository { get; }
+
+        public ITT621Repository tT621Repository { get; }
 
         public async Task<int> Complete()
         {

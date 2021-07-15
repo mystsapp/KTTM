@@ -1,0 +1,177 @@
+﻿@model TT621ViewModel
+
+@{
+    ViewData["Title"] = "TT621Create";
+}
+
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header p-0">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm phiếu</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-route-soCT="@Model.KVCTPCT.KVPCTId" asp-route-page="@Model.Page" asp-action="Index">Danh sách phiếu</a></li>
+                    <li class="breadcrumb-item active">Thanh toán tạm ứng</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thanh toán tạm ứng</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+
+            <div class=" row p-2">
+
+                <div class="col-md-8">
+                    <label class="control-label">Nội dung thanh toán</label>
+                    <input asp-for="KVCTPCT.DienGiaiP" class="form-control form-control-sm " id="txtDienGiaiP" />
+                    <span asp-validation-for="KVCTPCT.DienGiaiP" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="KVCTPCT.SoTienNT" class="control-label"></label>
+                    <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT" />
+                    <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="KVCTPCT.SoTien" class="control-label"></label>
+                    <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT" />
+                    <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <!-- Tam ung -->
+            <div class=" row p-2">
+
+                <div class="col-md-12">
+                    <label class="control-label text-blue">Chọn 1 phiếu tạm ứng sau để thanh toán</label>
+                    <input asp-for="CommentText" class="form-control form-control-sm " id="txtCommentText" />
+                    <span asp-validation-for="CommentText" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="pr-2 pl-2">
+                <table class="table mytable text-nowrap text-sm" id="tamUngTble">
+                    <thead>
+                        <tr class="table-info">
+
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().SoCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().NgayCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().PhieuChi)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().DienGiai)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().LoaiTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().Conlaint)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().ConLai)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.TamUngs != null)
+                        {
+                            @foreach (var item in Model.TamUngs)
+                            {
+
+                                <tr class="cursor-pointer @item.SoCT">
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuChi)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Conlaint)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ConLai)</td>
+
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- Chi tiet thanh toan -->
+            <div class=" row">
+
+                <div class="col-md-12">
+
+                    <div class="col-md-6 text-sm">
+                        <label class="control-label text-blue">Chi tiết thanh toán</label>
+                        <button type="button" class="btn btn-outline-info btn-sm" title="Thêm mới CT"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-outline-info btn-sm" title="Cập nhật CT"><i class="fas fa-edit"></i></button>
+                    </div>
+
+                    <div class="col-md-6 text-sm float-lg-right">
+                        <button type="button" class="btn btn-outline-info btn-sm" title="Thêm mới CT"><i class="fas fa-folder"></i></button>
+                        <button type="button" class="btn btn-outline-info btn-sm" title="Cập nhật CT"><i class="fas fa-check"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pr-2 pl-2">
+                <table class="table mytable text-nowrap text-sm" id="tamUngTble">
+                    <thead>
+                        <tr class="table-info">
+
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().SoCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().NgayCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().PhieuChi)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().DienGiai)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().LoaiTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().Conlaint)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().ConLai)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.TamUngs != null)
+                        {
+                            @foreach (var item in Model.TamUngs)
+                            {
+
+                                <tr class="cursor-pointer @item.SoCT">
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuChi)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Conlaint)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ConLai)</td>
+
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</section>

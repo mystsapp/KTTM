@@ -17,11 +17,11 @@ namespace Data.Models_KTTM
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhNo { get; set; } 
 
-        [DisplayName("Số phiếu")]
+        [DisplayName("Số tạm ứng")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string SoCT { get; set; }
 
-        [DisplayName("Ngày lập phiếu")]
+        [DisplayName("Ngày tạm ứng")]
         [Column(TypeName = "datetime")]
         [Required(ErrorMessage = "Ngày không được để trống")]
         public DateTime? NgayCT { get; set; }
@@ -46,11 +46,11 @@ namespace Data.Models_KTTM
         [Column(TypeName = "decimal(18,2)")]
         public decimal SoTienNT { get; set; }
 
-        [DisplayName("Còn lại")]
+        [DisplayName("Nợ VNĐ")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal ConLai { get; set; }
 
-        [DisplayName("Còn lại")]
+        [DisplayName("Còn nợ NT")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Conlaint { get; set; }
 

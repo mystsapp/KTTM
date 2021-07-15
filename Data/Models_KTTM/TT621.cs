@@ -9,9 +9,10 @@ namespace Data.Models_KTTM
 {
     public class TT621
     {
-        [Key, ForeignKey("KVCTPCT")]
+        [Key, ForeignKey("TamUng")]
         public long Id { get; set; }
-        public virtual KVCTPCT KVCTPCT { get; set; }
+
+        public virtual TamUng TamUng { get; set; }
 
         [DisplayName("Mã KH nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]

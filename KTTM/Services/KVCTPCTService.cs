@@ -45,6 +45,7 @@ namespace KTTM.Services
         Task UpdateAsync(KVCTPCT kVCTPCT);
         Task UpdateAsync_NopTien(Noptien noptien);
         Task DeleteAsync(KVCTPCT kVCTPCT);
+        
     }
     public class KVCTPCTService : IKVCTPCTService
     {

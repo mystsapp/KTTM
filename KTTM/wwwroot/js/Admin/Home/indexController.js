@@ -84,7 +84,12 @@ var indexController = {
         $('#btnThemDong').click(function () {
             $('#frmThemDong').submit();
         });
-
+        // themdong click
+        
+        // themdong click
+        $('#btnTT141').click(function () {
+            $('#frmTT621').submit();
+        });
         // themdong click
 
         // giu trang thai phieu click
