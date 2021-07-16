@@ -9,6 +9,7 @@ namespace KTTM.Services
 {
     public interface ITT621Service
     {
+        Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId);
         Task CreateAsync(TT621 tT621);
         Task UpdateAsync(TT621 tT621);
     }
@@ -25,6 +26,11 @@ namespace KTTM.Services
         {
             _unitOfWork.tT621Repository.Create(tT621);
             await _unitOfWork.Complete();
+        }
+
+        public async Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId)
+        {
+            return await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng, y => y.Id == tamUngId);
         }
 
         public async Task UpdateAsync(TT621 tT621)

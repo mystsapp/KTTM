@@ -57,11 +57,28 @@ namespace KTTM.Controllers
             if (TT621VM.TamUngs.Count() != 0)
             {
                 tamUng = TT621VM.TamUngs.FirstOrDefault();
-                TT621VM.CommentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien + " số tiền cần kết chuyển 141: "
+                TT621VM.CommentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.ToString("N0") + " số tiền cần kết chuyển 141: "
                                       + (tamUng.SoTien - kVCTPCT.SoTien).ToString("N0");
             }
 
             return View(TT621VM);
+        }
+
+        public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
+        {
+            var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
+            if(tT621s.Count() > 0)
+            {
+                return Json(new
+                {
+                    status = true,
+                    data = tT621s
+                });
+            }
+            return Json(new
+            {
+                status = false
+            });
         }
     }
 }

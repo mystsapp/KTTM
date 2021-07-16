@@ -44,33 +44,38 @@
         <div class="card-body p-0">
 
             <div class=" row p-2">
-
-                <div class="col-md-8">
-                    <label class="control-label">Nội dung thanh toán</label>
-                    <input asp-for="KVCTPCT.DienGiaiP" class="form-control form-control-sm " id="txtDienGiaiP" />
+                <div class="col-md-2">
+                    <label>Nội dung thanh toán</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="KVCTPCT.DienGiaiP" />
                     <span asp-validation-for="KVCTPCT.DienGiaiP" class="text-danger"></span>
                 </div>
 
+                <div class="col-md-1">
+                    <label asp-for="KVCTPCT.SoTienNT"></label>
+                </div>
                 <div class="col-md-2">
-                    <label asp-for="KVCTPCT.SoTienNT" class="control-label"></label>
                     <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT" />
                     <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
                 </div>
 
+                <div class="col-md-1">
+                    <label asp-for="KVCTPCT.SoTien"></label>
+                </div>
                 <div class="col-md-2">
-                    <label asp-for="KVCTPCT.SoTien" class="control-label"></label>
                     <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT" />
                     <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
                 </div>
 
             </div>
 
-            <!-- Tam ung -->
             <div class=" row p-2">
-
-                <div class="col-md-12">
+                <div class="col-md-3">
                     <label class="control-label text-blue">Chọn 1 phiếu tạm ứng sau để thanh toán</label>
-                    <input asp-for="CommentText" class="form-control form-control-sm " id="txtCommentText" />
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="CommentText" />
                     <span asp-validation-for="CommentText" class="text-danger"></span>
                 </div>
 
@@ -96,7 +101,7 @@
                             @foreach (var item in Model.TamUngs)
                             {
 
-                                <tr class="cursor-pointer @item.SoCT">
+                                <tr class="tamUngTr" data-id="@item.Id">
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
@@ -116,58 +121,62 @@
             </div>
 
             <!-- Chi tiet thanh toan -->
-            <div class=" row">
+            <div class=" row p-2">
 
-                <div class="col-md-12">
+                <div class="col-md-6 text-sm">
+                    <label class="control-label text-blue">Chi tiết thanh toán </label>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT"><i class="fas fa-plus text-blue"></i></button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT"><i class="fas fa-edit text-blue"></i></button>
+                </div>
 
-                    <div class="col-md-6 text-sm">
-                        <label class="control-label text-blue">Chi tiết thanh toán</label>
-                        <button type="button" class="btn btn-outline-info btn-sm" title="Thêm mới CT"><i class="fas fa-plus"></i></button>
-                        <button type="button" class="btn btn-outline-info btn-sm" title="Cập nhật CT"><i class="fas fa-edit"></i></button>
-                    </div>
-
-                    <div class="col-md-6 text-sm float-lg-right">
-                        <button type="button" class="btn btn-outline-info btn-sm" title="Thêm mới CT"><i class="fas fa-folder"></i></button>
-                        <button type="button" class="btn btn-outline-info btn-sm" title="Cập nhật CT"><i class="fas fa-check"></i></button>
-                    </div>
+                <div class="col-md-6 text-sm text-right">
+                    <button type="button" class="btn btn-outline-dark btn-sm" title="Kết chuyển"><i class="fas fa-folder text-warning"></i></button>
+                    <button type="button" class="btn btn-outline-dark btn-sm" title="Thanh toán không kết chuyển"><i class="fas fa-check"></i></button>
                 </div>
 
             </div>
 
-            <div class="pr-2 pl-2">
-                <table class="table mytable text-nowrap text-sm" id="tamUngTble">
+            <div class="pr-2 pl-2" style="overflow-x:auto;">
+                <table class="table mytable text-nowrap text-sm" id="tt621Tbl">
                     <thead>
                         <tr class="table-info">
 
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().SoCT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().NgayCT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().PhieuChi)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().DienGiai)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().LoaiTien)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().Conlaint)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().ConLai)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiai)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiaiP)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTienNT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TyGia)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKNo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhNo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @if (Model.TamUngs != null)
-                        {
-                            @foreach (var item in Model.TamUngs)
-                            {
+                    <tbody id="ctThanhToanBody">
 
-                                <tr class="cursor-pointer @item.SoCT">
-
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuChi)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Conlaint)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ConLai)</td>
-
-                                </tr>
-
-                            }
-                        }
                     </tbody>
                 </table>
 
@@ -175,3 +184,25 @@
         </div>
     </div>
 </section>
+
+@section Scripts{
+    <script src="~/js/Admin/Home/indexController.js"></script>
+
+    <script id="data-template" type="x-tmpl-mustache">
+
+        <tr>
+
+            <td>{{DienGiai}}</td>
+            <td>{{DienGiaiP}}</td>
+            <td>{{SoTienNT}}</td>
+            <td>{{SoTien}}</td>
+
+        </tr>
+    </script>
+    <script>
+        $('.tamUngTr').click(function () {
+            tamUngId = $(this).data('id');
+            indexController.GetTT621s_By_TamUng(tamUngId);
+        })
+    </script>
+}

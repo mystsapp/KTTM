@@ -9,9 +9,12 @@ namespace Data.Models_KTTM
 {
     public class TT621
     {
-        [Key, ForeignKey("TamUng")]
+        
         public long Id { get; set; }
 
+        public long TamUngId { get; set; }
+
+        [ForeignKey("TamUngId")]
         public virtual TamUng TamUng { get; set; }
 
         [DisplayName("Mã KH nợ")]

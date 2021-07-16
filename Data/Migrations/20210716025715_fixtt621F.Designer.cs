@@ -4,14 +4,16 @@ using Data.Models_KTTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    partial class KTTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210716025715_fixtt621F")]
+    partial class fixtt621F
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,177 +276,6 @@ namespace Data.Migrations
                     b.ToTable("KVPCTs");
                 });
 
-            modelBuilder.Entity("Data.Models_KTTM.TT621", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("BoPhan")
-                        .HasMaxLength(2)
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<string>("CoQuay")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<decimal>("DSKhongVAT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("DiaChi")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("DienGiai")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("DienGiaiP")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool>("DieuChinh")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("GhiSo")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("HTTC")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("HoaDonDT")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<string>("KyHieu")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("KyHieuHD")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("LapPhieu")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LoaiHDGoc")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("LoaiTien")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("LogFile")
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.Property<string>("MaKhCo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("MaKhNo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("MatHang")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("MauSoHD")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)");
-
-                    b.Property<string>("MsThue")
-                        .HasMaxLength(16)
-                        .HasColumnType("varchar(16)");
-
-                    b.Property<DateTime?>("NgayCT")
-                        .IsRequired()
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgayCTGoc")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgaySua")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("NgayTao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("NguoiSua")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("NguoiTao")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("NoQuay")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("PhieuTC")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("PhieuTU")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("Sgtcode")
-                        .HasMaxLength(17)
-                        .HasColumnType("varchar(17)");
-
-                    b.Property<string>("SoCT")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("SoCTGoc")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<decimal>("SoTien")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("SoTienNT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("SoXe")
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)");
-
-                    b.Property<string>("TKCo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("TKNo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<long>("TamUngId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("TenKH")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("TyGia")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("VAT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TamUngId");
-
-                    b.ToTable("TT621s");
-                });
-
             modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
                 {
                     b.Property<long>("Id")
@@ -539,17 +370,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("KVPCT");
-                });
-
-            modelBuilder.Entity("Data.Models_KTTM.TT621", b =>
-                {
-                    b.HasOne("Data.Models_KTTM.TamUng", "TamUng")
-                        .WithMany()
-                        .HasForeignKey("TamUngId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TamUng");
                 });
 
             modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>

@@ -254,7 +254,43 @@ var indexController = {
             return response;
         })
         
-    }
-    
+    },
+
+    GetTT621s_By_TamUng: function (tamUngId) {
+        
+        $.ajax({
+            url: '/TT621/GetTT621s_By_TamUng',
+            type: 'GET',
+            data: {
+                tamUngId: tamUngId
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    var data = response.data; console.log(data);
+                    var html = '';
+                    var template = $('#data-template').html();
+
+                    $.each(data, function (i, item) {
+                        html += Mustache.render(template, {
+                            DienGiai: item.dienGiai,
+                            DienGiaiP: item.dienGiaiP,
+                            SoTienNT: numeral(item.soTienNT).format('0,0'),
+                            LoaiTien: item.loaiTien,
+                            TyGia: numeral(item.tyGia).format('0,0'),
+                            SoTien: numeral(item.soTien).format('0,0'),
+                            TKNo: item.tKNo,
+                            MaKhNo: item.maKhNo,
+                        });
+
+                    });
+
+                    $('#ctThanhToanBody').html(html);
+                   
+                }
+            }
+        });
+    },
+
 };
 indexController.init();
