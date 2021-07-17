@@ -52,7 +52,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("Còn nợ NT")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Conlaint { get; set; }
+        public decimal ConLaiNT { get; set; }
 
         [DisplayName("Tỷ giá")]
         [Column(TypeName = "decimal(18,2)")]

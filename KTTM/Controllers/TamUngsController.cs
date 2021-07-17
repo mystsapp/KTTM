@@ -81,8 +81,8 @@ namespace KTTM.Controllers
             tamUng.LoaiTien = kVCTPCT.LoaiTien;
             tamUng.SoTien = kVCTPCT.SoTien;
             tamUng.SoTienNT = kVCTPCT.SoTienNT;
-            tamUng.ConLai = 0;
-            tamUng.Conlaint = 0;
+            tamUng.ConLai = kVCTPCT.SoTien;
+            tamUng.ConLaiNT = kVCTPCT.SoTienNT;
             tamUng.TyGia = kVCTPCT.TyGia;
             tamUng.TKNo = kVCTPCT.TKNo;
             tamUng.TKCo = kVCTPCT.TKCo;

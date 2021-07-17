@@ -1,4 +1,6 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
+using Data.Models_QLTour;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,13 @@ namespace KTTM.Models
         public string CommentText { get; set; }
         public string StrUrl { get; set; }
         public string Page { get; set; }
+
+        public IEnumerable<ViewDmHttc> DmHttcs { get; set; }
+        public IEnumerable<Ngoaite> Ngoaites { get; set; }
+        public IEnumerable<DmTk> DmTks_TkNo { get; set; }
+        public IEnumerable<DmTk> DmTks_TkCo { get; set; }
+        public IEnumerable<ViewQuay> Quays { get; set; }
+        public IEnumerable<ViewMatHang> MatHangs { get; set; }
+        public IEnumerable<ViewPhongBan> PhongBans { get; set; }
     }
 }

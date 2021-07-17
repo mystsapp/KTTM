@@ -4,14 +4,31 @@
     ViewData["Title"] = "TT621Create";
 }
 
+<!-- ThemMoiCT_TT modal-->
+<div class="modal fade" id="ThemMoiCT_TT_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
 
-
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title">Thêm chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ThemMoiCT_TT_Body p-0">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- ThemMoiCT_TT modal-->
 <!-- Content Header (Page header) -->
 <section class="content-header p-0">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm phiếu</h1>
+                <h1>Thêm phiếu TT</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -91,7 +108,7 @@
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().PhieuChi)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().DienGiai)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().LoaiTien)</th>
-                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().Conlaint)</th>
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().ConLaiNT)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().ConLai)</th>
                         </tr>
                     </thead>
@@ -108,8 +125,8 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuChi)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Conlaint)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ConLai)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.ConLaiNT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.ConLai.ToString("N0"))</td>
 
                                 </tr>
 
@@ -125,8 +142,12 @@
 
                 <div class="col-md-6 text-sm">
                     <label class="control-label text-blue">Chi tiết thanh toán </label>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT"><i class="fas fa-plus text-blue"></i></button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT"><i class="fas fa-edit text-blue"></i></button>
+
+                    <input type="hidden" id="hidTamUngId" />
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
@@ -149,34 +170,33 @@
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTien)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKNo)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhNo)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
-                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>
+                            @*<th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
+                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
                         </tr>
                     </thead>
                     <tbody id="ctThanhToanBody">
-
                     </tbody>
                 </table>
 
@@ -186,8 +206,8 @@
 </section>
 
 @section Scripts{
-    <script src="~/js/Admin/Home/indexController.js"></script>
-
+    @*<script src="~/js/Admin/Home/indexController.js"></script>*@
+    <script src="~/js/Admin/TT621/createController.js"></script>
     <script id="data-template" type="x-tmpl-mustache">
 
         <tr>
@@ -195,14 +215,20 @@
             <td>{{DienGiai}}</td>
             <td>{{DienGiaiP}}</td>
             <td>{{SoTienNT}}</td>
-            <td>{{SoTien}}</td>
+            <td>{{LoaiTien}}</td>
+            <td>{{TyGia}}</td>
+            <td>{{SoTiend}}</td>
+            <td>{{TKNo}}</td>
+            <td>{{MaKhNo}}</td>
 
         </tr>
     </script>
-    <script>
-        $('.tamUngTr').click(function () {
-            tamUngId = $(this).data('id');
-            indexController.GetTT621s_By_TamUng(tamUngId);
-        })
-    </script>
+
+    @*<script>
+            $('#tt621Tbl .tamUngTr').click(function () {
+                debugger
+                tamUngId = $(this).data('id');
+                indexController.GetTT621s_By_TamUng(tamUngId);
+            })
+        </script>*@
 }

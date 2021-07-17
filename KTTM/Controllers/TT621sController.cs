@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using KTTM.Models;
 using KTTM.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -64,10 +65,54 @@ namespace KTTM.Controllers
             return View(TT621VM);
         }
 
+        public IActionResult ThemMoiCT_TT_Partial(long tamUngId) // tamungid == kvctpctid // 1 <-> 1
+        {
+            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(tamUngId);
+            // ddl
+            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
+            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+            TT621VM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
+            viewDmHttcs.Insert(0, viewDmHttc);
+            TT621VM.DmHttcs = viewDmHttcs;
+
+            Get_TkNo_TkCo();
+
+            TT621VM.Quays = _kVCTPCTService.GetAll_Quay_View();
+            var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
+            viewMatHangs.Insert(0, viewMatHang);
+            TT621VM.MatHangs = viewMatHangs;
+            TT621VM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
+            
+            return PartialView(TT621VM);
+        }
+
+        private void Get_TkNo_TkCo()
+        {
+
+            DmTk dmTk = new DmTk() { Tkhoan = "" };
+            var dmTks_TienMat = _kVCTPCTService.GetAll_DmTk_TienMat().ToList();
+            var dmTks_TaiKhoan = _kVCTPCTService.GetAll_DmTk_TaiKhoan().ToList();
+            dmTks_TienMat.Insert(0, dmTk);
+            dmTks_TaiKhoan.Insert(0, dmTk);
+            //if (TT621VM.KVPCT.MFieu == "T")
+            //{ chac chan la phieu T
+            TT621VM.DmTks_TkNo = dmTks_TienMat;
+            TT621VM.DmTks_TkCo = dmTks_TaiKhoan;
+            //}
+            //else
+            //{
+            //    TT621VM.DmTks_TkNo = dmTks_TaiKhoan;
+            //    TT621VM.DmTks_TkCo = dmTks_TienMat;
+            //}
+        }
+
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
         {
             var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
-            if(tT621s.Count() > 0)
+            if (tT621s.Count() > 0)
             {
                 return Json(new
                 {

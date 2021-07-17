@@ -186,11 +186,11 @@
     }
 
 
+    // btnXoaDong
+    $('.btnXoaDong').off('click').on('click',function () {
+
         var page = @Model.Page;
         var soCT = '@Model.KVPCT.SoCT';
-
-    // btnXoaDong
-    $('.btnXoaDong').click(function () {
 
         id = $(this).data('id');
 
@@ -210,6 +210,9 @@
     $('#btnTamUng').off('click').on('click', function () {
         bootbox.confirm("Bạn có muốn thêm vào <b> tạm ứng </b> không?", function (result) {
             if (result) {
+
+                var page = @Model.Page;
+                var soCT = '@Model.KVPCT.SoCT';
 
                 id = $('#hidTamUng').val();
 
