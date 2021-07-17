@@ -61,6 +61,9 @@
         <div class="card-body p-0">
 
             <div class=" row p-2">
+
+                <input type="hidden" asp-for="KVCTPCT.Id" id="hidKVCTPCTId" />
+
                 <div class="col-md-2">
                     <label>Nội dung thanh toán</label>
                 </div>
@@ -81,7 +84,7 @@
                     <label asp-for="KVCTPCT.SoTien"></label>
                 </div>
                 <div class="col-md-2">
-                    <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT" />
+                    <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTien" />
                     <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
                 </div>
 
@@ -92,7 +95,7 @@
                     <label class="control-label text-blue">Chọn 1 phiếu tạm ứng sau để thanh toán</label>
                 </div>
                 <div class="col-md-9">
-                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="CommentText" />
+                    <input class="form-control form-control-sm " id="txtCommentText" asp-for="CommentText" />
                     <span asp-validation-for="CommentText" class="text-danger"></span>
                 </div>
 
@@ -202,6 +205,10 @@
 
             </div>
         </div>
+    </div>
+
+    <div class=" pt-1 pb-1">
+        <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Home" asp-route-page="@Model.Page" asp-route-soCT="@Model.KVCTPCT.KVPCTId"><i class="fas fa-backward "></i> Back</a>
     </div>
 </section>
 

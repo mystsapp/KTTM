@@ -13,6 +13,7 @@ namespace KTTM.Models
         public TT621 TT621 { get; set; }
         public KVCTPCT KVCTPCT { get; set; }
         public IEnumerable<TamUng> TamUngs { get; set; }
+        public long TamUngId { get; set; }
         public IEnumerable<TT621> TT621s { get; set; }
         public string CommentText { get; set; }
         public string StrUrl { get; set; }
@@ -25,5 +26,9 @@ namespace KTTM.Models
         public IEnumerable<ViewQuay> Quays { get; set; }
         public IEnumerable<ViewMatHang> MatHangs { get; set; }
         public IEnumerable<ViewPhongBan> PhongBans { get; set; }
+
+        public string TenTkNo { get; set; }
+        public string TenTkCo { get; set; }
+        public IEnumerable<Dgiai> Dgiais { get; set; }
     }
 }

@@ -27,7 +27,7 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input type="hidden" asp-for="KVCTPCT.KVPCTId" />
                 <input type="hidden" asp-for="StrUrl" />
-                
+
                 <!--Thông tin về tài chánh-->
                 <fieldset class="groupbox-border ">
                     <legend class="groupbox-border">Thông tin về tài chánh </legend>
@@ -96,7 +96,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Thuế GTGT</label>
-                            <input class="form-control form-control-sm " id="txtThueGTGT" readonly/>
+                            <input class="form-control form-control-sm " id="txtThueGTGT" readonly />
                             <span @*asp-validation-for="KVCTPCT.SoTien"*@ class="text-danger"></span>
                         </div>
                     </div>
@@ -153,40 +153,40 @@
                 <fieldset class="groupbox-border ">
                     <legend class="groupbox-border">Thông tin về công nợ đoàn </legend>
                     @*@if (Model.KVPCT.MFieu == "C")
-                    {*@
-                        <div class=" row">
+                        {*@
+                    <div class=" row">
 
-                            <div class="col-md-2">
-                                <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
-                                @*<select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
-                                            asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
-                                    </select>*@
-                                <div class="input-group">
-                                    <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
-                                    <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                    </span>
-                                </div>
-                                <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
+                        <div class="col-md-2">
+                            <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
+                            @*<select asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm select2"
+                                        asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhNo">
+                                </select>*@
+                            <div class="input-group">
+                                <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
+                                <span class="input-group-btn">
+                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                </span>
                             </div>
-                            <div class="col-md-10">
-                                <label class="control-label ">Tên KH nợ</label>
-                                <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
-                            </div>
-
+                            <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-10">
+                            <label class="control-label ">Tên KH nợ</label>
+                            <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
                         </div>
 
-                        @*}*@
+                    </div>
+
+                    @*}*@
                     <!--else // Thu
                     {
                         <div class=" row">
 
                             <div class="col-md-2">
                                 <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>-->
-                                @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
-                                            asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
-                                    </select>*@
-                                <!--<div class="input-group">
+                    @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
+                                asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
+                        </select>*@
+                    <!--<div class="input-group">
                                     <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
                                     <span class="input-group-btn">
                                         <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
@@ -216,9 +216,9 @@
                         <div class="col-md-3">
                             <label asp-for="KVCTPCT.CoQuay" class="control-label "></label>
                             @*<select asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm select2"
-                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-        </select>*@
-                            <input asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm" id="ddlCoQuay" readonly/>
+                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                </select>*@
+                            <input asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm" id="ddlCoQuay" readonly />
                             <span asp-validation-for="KVCTPCT.CoQuay" class="text-danger"></span>
                         </div>
 
@@ -269,7 +269,10 @@
 
                         <div class="col-md-3">
                             <label asp-for="KVCTPCT.LoaiHDGoc" class="control-label "></label>
-                            <input asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm" id="txtLoaiHDGoc" />
+                            @*<input asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm" id="txtLoaiHDGoc" />*@
+                            <select asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.LoaiHDGocs, "Name", "Name"))" id="ddlLoaiHDGoc">
+                            </select>
                             <span asp-validation-for="KVCTPCT.LoaiHDGoc" class="text-danger"></span>
                         </div>
 
@@ -436,7 +439,7 @@
     <!-- Validation -->
 
     <script>
-        
+
         $('#btnKhSearch').click(function () {
             debugger
             var maKhtext = '';
@@ -586,7 +589,7 @@
 
         //})
         $('#txtChiPhi').blur(function () {
-            
+
             chiPhi = $(this).val();
             soTienNT = $('#txtSoTienNT').val();
             TinhThueGTGT(soTienNT, chiPhi);
@@ -612,7 +615,7 @@
             });
 
         }
-    // tongtien, chiphi ==> thue GTGT
+        // tongtien, chiphi ==> thue GTGT
 
 
         function Get_DienGiai_By_TkNo(tkNo) {

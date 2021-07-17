@@ -35,7 +35,7 @@ namespace KTTM.Models
         public string TenTkNo { get; set; }
         public string TenTkCo { get; set; }
         public IEnumerable<Dgiai> Dgiais { get; set; }
-
+        public IEnumerable<ListViewModel> LoaiHDGocs { get; set; }
 
     }
 }

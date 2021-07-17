@@ -284,7 +284,10 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPCT.LoaiHDGoc" class="control-label "></label>
-                            <input asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm" id="txtLoaiHDGoc" />
+                            @*<input asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm" id="txtLoaiHDGoc" />*@
+                            <select asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.LoaiHDGocs, "Name", "Name"))" id="ddlLoaiHDGoc">
+                            </select>
                             <span asp-validation-for="KVCTPCT.LoaiHDGoc" class="text-danger"></span>
                         </div>
 

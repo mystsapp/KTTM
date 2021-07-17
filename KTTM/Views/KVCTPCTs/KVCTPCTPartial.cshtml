@@ -72,6 +72,7 @@
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().MaTraCuu)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TkTruyCap)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().Password)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().TamUng)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPCTs.FirstOrDefault().Id)</th>
             </tr>
         </thead>
@@ -158,6 +159,7 @@
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaTraCuu)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TkTruyCap)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Password)</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
 
                     </tr>
@@ -208,27 +210,43 @@
 
     // btnTamUng
     $('#btnTamUng').off('click').on('click', function () {
-        bootbox.confirm("Bạn có muốn thêm vào <b> tạm ứng </b> không?", function (result) {
-            if (result) {
 
-                var page = @Model.Page;
-                var soCT = '@Model.KVPCT.SoCT';
+        var page = @Model.Page;
+        var soCT = '@Model.KVPCT.SoCT';
 
-                id = $('#hidTamUng').val();
+        // kiem tra xem phieuchi nay da co tamung nao chua
+        var url = '/TamUngs/CheckTamUng_In_PhieuChi';
+        $.post(url, { KVPCTId: soCT }, function (response) {
+            //console.log(response);
+            if (response.status) {
+                toastr.error(response.message, 'Thêm tạm ứng!');
+                return false;
+            }
+            else {
 
-                var url = '/TamUngs/Create';
-                $.post(url, { id: id }, function (response) {
-                    //console.log(response);
-                    if (response.status) {
-                        toastr.success('Thêm mới thành công', 'Thêm tạm ứng!');
-                        indexController.Load_KVCTPCTPartial(soCT, page);
-                    }
-                    else {
-                        toastr.error(response.message, 'Thêm tạm ứng!')
+                // thoa yeu cau: chua ton tai tamung
+                bootbox.confirm("Bạn có muốn thêm vào <b> tạm ứng </b> không?", function (result) {
+                    if (result) {
+
+                        id = $('#hidTamUng').val();
+
+                        var url = '/TamUngs/Create';
+                        $.post(url, { id: id }, function (response) {
+                            //console.log(response);
+                            if (response.status) {
+                                toastr.success('Thêm mới thành công', 'Thêm tạm ứng!');
+                                indexController.Load_KVCTPCTPartial(soCT, page);
+                            }
+                            else {
+                                toastr.error(response.message, 'Thêm tạm ứng!')
+                            }
+                        });
                     }
                 });
             }
+
         });
+
     })
     // btnTamUng
 </script>

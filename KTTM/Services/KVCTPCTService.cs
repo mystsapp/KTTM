@@ -28,7 +28,7 @@ namespace KTTM.Services
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
         IEnumerable<Quay> GetAll_Quay();
         IEnumerable<ViewQuay> GetAll_Quay_View();
-        
+
         IEnumerable<MatHang> GetAll_MatHangs();
         IEnumerable<ViewMatHang> GetAll_MatHangs_View();
         IEnumerable<PhongBan> GetAll_PhongBans();
@@ -45,7 +45,8 @@ namespace KTTM.Services
         Task UpdateAsync(KVCTPCT kVCTPCT);
         Task UpdateAsync_NopTien(Noptien noptien);
         Task DeleteAsync(KVCTPCT kVCTPCT);
-        
+        IEnumerable<ListViewModel> LoaiHDGocs();
+        string AutoSgtcode(string param);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -131,7 +132,7 @@ namespace KTTM.Services
         {
             return _unitOfWork.quayRepository.GetAll_View();
         }
-        
+
         public IEnumerable<MatHang> GetAll_MatHangs()
         {
             return _unitOfWork.matHangRepository.GetAll();
@@ -168,7 +169,7 @@ namespace KTTM.Services
 
         public IEnumerable<KVCTPCT> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
-            
+
             var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
 
             string nguoiTao = username;
@@ -333,7 +334,7 @@ namespace KTTM.Services
         public async Task UpdateAsync_NopTien(Noptien noptien)
         {
             await _unitOfWork.nopTienRepository.UpdateAsync(noptien);
-            
+
         }
 
         public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code)
@@ -347,5 +348,82 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
+        public IEnumerable<ListViewModel> LoaiHDGocs()
+        {
+            List<ListViewModel> loaiHDGocs = new List<ListViewModel>()
+            {
+                new ListViewModel(){Name = ""},
+                new ListViewModel(){Name = "HTT"},
+                new ListViewModel(){Name = "KHD"},
+                new ListViewModel(){Name = "KCT"},
+                new ListViewModel(){Name = "VAT"},
+            };
+
+            return loaiHDGocs;
+        }
+
+        public string AutoSgtcode(string param)
+        {
+            //"033-58" sẽ ra " SGT033-2021-00058"
+            //"084/58" sẽ ra " STN084-2021-00058"(ĐAY LÀ CODE ĐOÀN nội địa"
+            //code hooàn chỉnh của STSTOB - 2021 - 00058 như này thì gõ " 58OB"
+
+            //khác là dấu "-" là code SGT
+            //còn "/" là code "STN"
+
+            string sgtcode;
+            string codeNumber;
+            string currentYear = DateTime.Now.Year.ToString();
+            string mark = param.Substring(3, 1); // mark : - / *
+            string[] stringArry = param.Split(mark);
+
+            switch (mark)
+            {
+                case "-":                    
+                    codeNumber = GetCodeNumber(stringArry[1]);
+                    sgtcode = "SGT" + stringArry[0] + currentYear + codeNumber;
+                    break;
+                case "/":
+                    codeNumber = GetCodeNumber(stringArry[1]);
+                    sgtcode = "STN" + stringArry[0] + currentYear + codeNumber;
+                    break;
+                //case "*":
+                //    codeNumber = GetCodeNumber(stringArry[1]);
+                //    sgtcode = "STS" + stringArry[0].ToUpper() + "2021" + codeNumber; // TOB
+                    //break;
+                default:
+                    codeNumber = param.Substring(0, param.Length - 2); // codeNumber
+                    codeNumber = GetCodeNumber(codeNumber);
+                    sgtcode = "STSTOB" + currentYear + codeNumber; // TOB
+                    break;
+            }
+
+            return sgtcode;
+        }
+
+        private string GetCodeNumber(string param)
+        {
+            string codeNumber;
+            switch (param.Length)
+            {
+                case 1:
+                    codeNumber = "0000" + param;
+                    break;
+                case 2:
+                    codeNumber = "000" + param;
+                    break;
+                case 3:
+                    codeNumber = "00" + param;
+                    break;
+                case 4:
+                    codeNumber = "0" + param;
+                    break;
+                default:
+                    codeNumber = param;
+                    break;
+            }
+
+            return codeNumber;
+        }
     }
 }

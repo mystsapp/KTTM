@@ -48,7 +48,6 @@ namespace KTTM.Controllers
             }
 
             var kVCTPCT = await _kVCTPCTService.GetById(id);
-
             if (kVCTPCT == null)
             {
                 return Json(new
@@ -99,7 +98,8 @@ namespace KTTM.Controllers
 
                 return Json(new
                 {
-                    status = false
+                    status = false,
+                    message = "ModelState is not invalid"
                 });
             }
             try
@@ -124,6 +124,25 @@ namespace KTTM.Controllers
                 });
             }
 
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CheckTamUng_In_PhieuChi(string KVPCTId)
+        {
+
+            var tamUngs_By_PhieuChi = await _tamUngService.Find_TamUngs_By_PhieuChi_Include(KVPCTId);
+            if (tamUngs_By_PhieuChi.Count() > 0) // da ton tai 1 cai' tamung nao do'
+            {
+                return Json(new
+                {
+                    status = true,
+                    message = "Phiếu chi này đã tồn tại tạm ứng."
+                });
+            }
+            return Json(new
+            {
+                status = false
+            });
         }
 
         [HttpPost]

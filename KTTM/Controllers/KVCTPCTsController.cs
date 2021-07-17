@@ -153,6 +153,7 @@ namespace KTTM.Controllers
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
+            KVCTPCTVM.LoaiHDGocs = _kVCTPCTService.LoaiHDGocs();
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page; // page for redirect
 
@@ -773,6 +774,16 @@ namespace KTTM.Controllers
             {
                 status = true,
                 thueGTGT = thueGTGT.ToString()
+            });
+        }
+        
+        public JsonResult AutoSgtcode(string param)
+        {
+            string sgtcode = _kVCTPCTService.AutoSgtcode(param);
+            return Json(new
+            {
+                status = true,
+                data = sgtcode
             });
         }
     }

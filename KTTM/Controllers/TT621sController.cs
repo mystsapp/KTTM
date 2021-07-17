@@ -65,9 +65,17 @@ namespace KTTM.Controllers
             return View(TT621VM);
         }
 
-        public IActionResult ThemMoiCT_TT_Partial(long tamUngId) // tamungid == kvctpctid // 1 <-> 1
+        public IActionResult ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuT) // tamungid == kvctpctid // 1 <-> 1
         {
-            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(tamUngId);
+            TT621VM.TamUngId = tamUngId;
+            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuT);
+            TT621VM.TT621 = tT621;
+
+            // tentk
+            TT621VM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
+            TT621VM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(tT621.TKCo).TenTk;
+            TT621VM.Dgiais = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
+
             // ddl
             Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
@@ -109,6 +117,13 @@ namespace KTTM.Controllers
             //}
         }
 
+        public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTien) // tamUngId == kvctpctId
+        {
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            string commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.ToString("N0") + " số tiền cần kết chuyển 141: "
+                                  + (tamUng.SoTien - soTien).ToString("N0");
+            return Json(commentText);
+        }
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
         {
             var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
