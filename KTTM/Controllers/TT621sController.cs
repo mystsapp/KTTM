@@ -17,11 +17,12 @@ namespace KTTM.Controllers
         private readonly IKVCTPCTService _kVCTPCTService;
         private readonly ITamUngService _tamUngService;
         private readonly ITT621Service _tT621Service;
+        private readonly IKVPCTService _kVPCTService;
 
         [BindProperty]
         public TT621ViewModel TT621VM { get; set; }
 
-        public TT621sController(IKVCTPCTService kVCTPCTService, ITamUngService tamUngService, ITT621Service tT621Service)
+        public TT621sController(IKVCTPCTService kVCTPCTService, ITamUngService tamUngService, ITT621Service tT621Service, IKVPCTService kVPCTService)
         {
             TT621VM = new TT621ViewModel()
             {
@@ -32,6 +33,7 @@ namespace KTTM.Controllers
             _kVCTPCTService = kVCTPCTService;
             _tamUngService = tamUngService;
             _tT621Service = tT621Service;
+            _kVPCTService = kVPCTService;
         }
         public async Task<IActionResult> TT621Create(long kvctpctId, string strUrl, string page)
         {
@@ -67,24 +69,28 @@ namespace KTTM.Controllers
             return View(TT621VM);
         }
 
-        public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuT) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuTC) // tamungid == kvctpctid // 1 <-> 1
         {
-            TT621VM.TamUngId = tamUngId;
-            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuT);
+            TT621VM.TamUngId = tamUngId; //tamungId phia tren
+            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuTC);
             TT621VM.TT621 = tT621;
 
-            TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            KVCTPCT kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId_PhieuT);
+            // lay sotien can de ket chuyen
+            TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
+            TT621VM.KVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
+            var soTienNT_TrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT - TT621VM.KVCTPCT.SoTienNT - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
+            TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
 
-            TT621VM.TT621.SoTienNT = tamUng.SoTien - kVCTPCT.SoTien; // kVCTPCT.SoTien trong phieuT
-            IEnumerable<TT621> tT621s_TheoTamUngPhiaTren = await _tT621Service.FindByTamUngId(tamUngId);
-            if(tT621s_TheoTamUngPhiaTren.Count() > 0)
-            {
-                decimal tongTienDaTT_NT_TheoTamUng = tT621s_TheoTamUngPhiaTren.Sum(x => x.SoTienNT);
-                decimal tyGia = tT621.TyGia;
+            //IEnumerable<TT621> tT621s_TheoTamUngPhiaTren = await _tT621Service.FindByTamUngId(tamUngId);
+            //if(tT621s_TheoTamUngPhiaTren.Count() > 0)
+            //{
+            //    decimal tongTienDaTT_NT_TheoTamUng = tT621s_TheoTamUngPhiaTren.Sum(x => x.SoTienNT);
+            //    decimal tyGia = tT621.TyGia;
 
-                TT621VM.TT621.SoTienNT += tongTienDaTT_NT_TheoTamUng;
-            }
+            //    TT621VM.TT621.SoTienNT += tongTienDaTT_NT_TheoTamUng;
+            //    TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
+            //}
 
             // tentk
             TT621VM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
@@ -108,12 +114,13 @@ namespace KTTM.Controllers
             viewMatHangs.Insert(0, viewMatHang);
             TT621VM.MatHangs = viewMatHangs;
             TT621VM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
-            
+
+            //TT621VM.KVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
             return PartialView(TT621VM);
         }
 
         [HttpPost, ActionName("ThemMoiCT_TT_Partial")]
-        public async Task<IActionResult> ThemMoiCT_TT_Partial_Post(long tamUngId, long kVCTPCTId_PhieuT) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> ThemMoiCT_TT_Partial_Post(long tamUngId) // tamungid phia tren khi click
         {
             if (tamUngId == 0)
                 return NotFound();
@@ -132,11 +139,29 @@ namespace KTTM.Controllers
                 return View(TT621VM);
             }
 
+            TT621VM.TT621.NgayCT = DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
             TT621VM.TT621.NgayTao = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
+            // lay soct cua tt621
+            if(TT621VM.TT621.LoaiTien == "VND")
+            {
+                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV");
+            }
+            else
+            {
+                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN");
+            }
 
+            // PhieuTC: tuy vao loai phieu lam TT
+            TT621VM.TT621.PhieuTC = TT621VM.KVCTPCT.KVPCTId; // SoCT ben KVPCT
+
+            // phieuTU
+            TT621VM.TT621.PhieuTU = tamUng.SoCT;
+
+            // Lapphieu
+            TT621VM.TT621.LapPhieu = user.Username;
             // ghi log
             TT621VM.TT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
@@ -178,11 +203,12 @@ namespace KTTM.Controllers
             //}
         }
 
-        public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTien) // tamUngId == kvctpctId
+        public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT) // tamUngId == kvctpctId
         {
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            var soTienTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
             string commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.ToString("N0") + " số tiền cần kết chuyển 141: "
-                                  + (tamUng.SoTien - soTien).ToString("N0");
+                                  + (tamUng.SoTien - soTienNT - soTienTrongTT621_TheoTamUng).ToString("N0");
             return Json(commentText);
         }
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)

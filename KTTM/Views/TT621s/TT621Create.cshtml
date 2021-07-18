@@ -76,7 +76,7 @@
                     <label asp-for="KVCTPCT.SoTienNT"></label>
                 </div>
                 <div class="col-md-2">
-                    <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT" />
+                    <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT_Create" />
                     <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
                 </div>
 
@@ -214,9 +214,11 @@
 
 @section Scripts{
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
+    <!--mustache-->
+    <script src="~/lib/mustache.min.js"></script>
     <script src="~/js/Admin/TT621/createController.js"></script>
     <script id="data-template" type="x-tmpl-mustache">
-
+        <div id="output"></div>
         <tr>
 
             <td>{{DienGiai}}</td>
@@ -230,12 +232,4 @@
 
         </tr>
     </script>
-
-    @*<script>
-            $('#tt621Tbl .tamUngTr').click(function () {
-                debugger
-                tamUngId = $(this).data('id');
-                indexController.GetTT621s_By_TamUng(tamUngId);
-            })
-        </script>*@
 }

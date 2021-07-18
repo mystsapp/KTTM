@@ -21,6 +21,10 @@
     {
       "library": "numeral.js@2.0.6",
       "destination": "wwwroot/lib/numeral.js/"
+    },
+    {
+      "library": "mustache.js@4.2.0",
+      "destination": "wwwroot/lib/mustache.js/"
     }
   ]
 }

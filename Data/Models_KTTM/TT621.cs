@@ -27,7 +27,6 @@ namespace Data.Models_KTTM
 
         [DisplayName("Ngày lập phiếu")]
         [Column(TypeName = "datetime")]
-        [Required(ErrorMessage = "Ngày không được để trống")]
         public DateTime? NgayCT { get; set; }
 
         [DisplayName("Phiếu TC")]

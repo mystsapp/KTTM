@@ -47,6 +47,7 @@ namespace KTTM.Services
         Task DeleteAsync(KVCTPCT kVCTPCT);
         IEnumerable<ListViewModel> LoaiHDGocs();
         string AutoSgtcode(string param);
+        Task<KVCTPCT> FindByIdInclude(long kVCTPCTId_PhieuTC);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -424,6 +425,12 @@ namespace KTTM.Services
             }
 
             return codeNumber;
+        }
+
+        public async Task<KVCTPCT> FindByIdInclude(long kVCTPCTId_PhieuTC)
+        {
+            var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.Id == kVCTPCTId_PhieuTC);
+            return kVCTPCTs.FirstOrDefault();
         }
     }
 }
