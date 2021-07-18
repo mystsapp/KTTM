@@ -1,5 +1,7 @@
 ﻿using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
+using Data.Models_QLTaiKhoan;
+using Data.Utilities;
 using KTTM.Models;
 using KTTM.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -65,11 +67,24 @@ namespace KTTM.Controllers
             return View(TT621VM);
         }
 
-        public IActionResult ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuT) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuT) // tamungid == kvctpctid // 1 <-> 1
         {
             TT621VM.TamUngId = tamUngId;
             TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuT);
             TT621VM.TT621 = tT621;
+
+            TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            KVCTPCT kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId_PhieuT);
+
+            TT621VM.TT621.SoTienNT = tamUng.SoTien - kVCTPCT.SoTien; // kVCTPCT.SoTien trong phieuT
+            IEnumerable<TT621> tT621s_TheoTamUngPhiaTren = await _tT621Service.FindByTamUngId(tamUngId);
+            if(tT621s_TheoTamUngPhiaTren.Count() > 0)
+            {
+                decimal tongTienDaTT_NT_TheoTamUng = tT621s_TheoTamUngPhiaTren.Sum(x => x.SoTienNT);
+                decimal tyGia = tT621.TyGia;
+
+                TT621VM.TT621.SoTienNT += tongTienDaTT_NT_TheoTamUng;
+            }
 
             // tentk
             TT621VM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
@@ -97,6 +112,52 @@ namespace KTTM.Controllers
             return PartialView(TT621VM);
         }
 
+        [HttpPost, ActionName("ThemMoiCT_TT_Partial")]
+        public async Task<IActionResult> ThemMoiCT_TT_Partial_Post(long tamUngId, long kVCTPCTId_PhieuT) // tamungid == kvctpctid // 1 <-> 1
+        {
+            if (tamUngId == 0)
+                return NotFound();
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            if (tamUng == null)
+                return NotFound();
+
+            TT621VM.TT621.TamUngId = tamUngId;
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (!ModelState.IsValid)
+            {
+
+                return View(TT621VM);
+            }
+
+            TT621VM.TT621.NguoiTao = user.Username;
+            TT621VM.TT621.NgayTao = DateTime.Now;
+            TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
+            TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
+
+            // ghi log
+            TT621VM.TT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            try
+            {
+                await _tT621Service.CreateAsync(TT621VM.TT621);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception)
+            {
+
+                return Json(new
+                {
+                    status = false
+                });
+            }
+        }
         private void Get_TkNo_TkCo()
         {
 
