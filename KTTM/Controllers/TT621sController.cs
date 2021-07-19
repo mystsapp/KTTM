@@ -71,10 +71,58 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuTC) // tamungid == kvctpctid // 1 <-> 1
         {
-            TT621VM.TamUngId = tamUngId; //tamungId phia tren
+            TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
             TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuTC);
             TT621VM.TT621 = tT621;
 
+            // lay sotien can de ket chuyen
+            TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
+            TT621VM.KVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
+            var soTienNT_TrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT - TT621VM.KVCTPCT.SoTienNT - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
+            TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
+
+            //IEnumerable<TT621> tT621s_TheoTamUngPhiaTren = await _tT621Service.FindByTamUngId(tamUngId);
+            //if(tT621s_TheoTamUngPhiaTren.Count() > 0)
+            //{
+            //    decimal tongTienDaTT_NT_TheoTamUng = tT621s_TheoTamUngPhiaTren.Sum(x => x.SoTienNT);
+            //    decimal tyGia = tT621.TyGia;
+
+            //    TT621VM.TT621.SoTienNT += tongTienDaTT_NT_TheoTamUng;
+            //    TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
+            //}
+
+            // tentk
+            TT621VM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
+            TT621VM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(tT621.TKCo).TenTk;
+            TT621VM.Dgiais = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
+
+            // ddl
+            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
+            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+            TT621VM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
+            viewDmHttcs.Insert(0, viewDmHttc);
+            TT621VM.DmHttcs = viewDmHttcs;
+
+            Get_TkNo_TkCo();
+
+            TT621VM.Quays = _kVCTPCTService.GetAll_Quay_View();
+            var viewMatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
+            viewMatHangs.Insert(0, viewMatHang);
+            TT621VM.MatHangs = viewMatHangs;
+            TT621VM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
+
+            //TT621VM.KVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
+            return PartialView(TT621VM);
+        }
+        
+        public async Task<IActionResult> CapNhatCT_TT_Partial(long tt621Id, long tamUngId) // tamungid == kvctpctid // 1 <-> 1
+        {
+            TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
+            
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.KVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
@@ -234,10 +282,27 @@ namespace KTTM.Controllers
             decimal tongTienNT = soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
             if(tamUng.SoTienNT - tongTienNT == 0)
             {
-                return Json(true) // btn on
+                return Json(false); // btn on
             }
-            return Json(false); // btn off
+            return Json(true); // btn off
 
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC)
+        {
+            TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+
+            if(tamUng.SoTienNT == soTienNTTrongTT621_TheoTamUng + soTienNT_PhieuTC)
+            {
+                tamUng.ConLaiNT = 0;
+                tamUng.ConLai = 0;
+                await _tamUngService.UpdateAsync(tamUng);
+
+                return Json(true);
+            }
+            return Json(false);
         }
 
     }

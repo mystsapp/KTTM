@@ -122,13 +122,13 @@ namespace KTTM.Services
         public async Task<decimal> GetSoTienNT_TrongTT621_TheoTamUngAsync(long tamUngId)
         {
             var tT621s = await FindByTamUngId(tamUngId);
-            decimal soTienTrongTT621_TheoTamUng = 0;
+            decimal soTienNT_TrongTT621_TheoTamUng = 0;
             if (tT621s.Count() > 0)
             {
-                soTienTrongTT621_TheoTamUng = tT621s.Sum(x => x.SoTien);
+                soTienNT_TrongTT621_TheoTamUng = tT621s.Sum(x => x.SoTienNT);
             }
 
-            return soTienTrongTT621_TheoTamUng;
+            return soTienNT_TrongTT621_TheoTamUng;
         }
 
     }

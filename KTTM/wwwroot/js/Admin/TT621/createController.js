@@ -63,9 +63,7 @@ var createController = {
 
             // gang' commentText khi lick tamung
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
-            $.get('/TT621s/GetCommentText_By_TamUng', { tamUngId: tamUngId, soTienNT: soTienNT }, function (response) {
-                $('#txtCommentText').val(response);
-            })
+            createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
 
             // Check_KetChuyenBtnStatus
             createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT);
@@ -79,7 +77,7 @@ var createController = {
         $('#btnThemMoiCT').off('click').on('click', function () {
 
             tamUngId = $('#hidTamUngId').val();
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT
             var url = '/TT621s/ThemMoiCT_TT_Partial';
 
             $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
@@ -90,6 +88,41 @@ var createController = {
             })
         })
         // btnThemMoiCT
+        
+        // btnCapNhatCT
+        $('#btnCapNhatCT').off('click').on('click', function () {
+
+            tamUngId = $('#hidTamUngId').val();
+            tt621Id = $('#hidTT621Id').val();
+
+            var url = '/TT621s/CapNhatCT_TT_Partial';
+
+            $.get(url, { tt621Id: tt621Id, tamUngId: tamUngId }, function (data) {
+
+                $('.CapNhatCT_TT_Body').html(data);
+                $('#CapNhatCT_TT_Modal').modal('show');
+                $('#CapNhatCT_TT_Modal').draggable();
+            })
+        })
+        // btnCapNhatCT
+
+        // btnKetChuyen
+        $('#btnKetChuyen').off('click').on('click', function () {
+
+            tamUngId = $('#hidTamUngId').val();
+            soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+
+            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT }, function (status) {
+                if (status) {
+
+                    location.reload(); // reload lai trang
+                    toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+                }
+                else {
+                    toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
+                }
+            })
+        })
     },
 
     GetTT621s_By_TamUng: function (tamUngId) {
@@ -102,7 +135,7 @@ var createController = {
             },
             dataType: 'json',
             success: function (response) {
-                console.log(response);
+                //console.log(response);
                 var data = response.data;
                 var html = '';
                 var template = $('#data-template').html();
@@ -112,20 +145,37 @@ var createController = {
                     $.each(data, function (i, item) {
 
                         html += Mustache.render(template, {
+                            Id: item.id,
                             DienGiai: item.dienGiai,
                             DienGiaiP: item.dienGiaiP,
                             SoTienNT: numeral(item.soTienNT).format('0,0'),
                             LoaiTien: item.loaiTien,
                             TyGia: numeral(item.tyGia).format('0,0'),
                             SoTien: numeral(item.soTien).format('0,0'),
-                            TKNo: item.tKNo,
-                            MaKhNo: item.maKhNo
+                            TKNo: item.tkNo,
+                            MaKhNo: item.maKhNo,
+                            TKCo: item.tkCo,
+                            MaKhCo: item.maKhCo
                         });
 
                     });
 
                     $('#ctThanhToanBody').html(html);
 
+                    // giu trang thai CT TT va gang' TT621 id
+                    $('.trTT621').off('click').on('click', function () {
+                        
+                        if ($(this).hasClass("hoverClass"))
+                            $(this).removeClass("hoverClass");
+                        else {
+                            $('.trTT621').removeClass("hoverClass");
+                            $(this).addClass("hoverClass");
+                        }
+
+                        tt621Id = $(this).data('id');
+                        $('#hidTT621Id').val(tt621Id); // moi lan click tt621 tr se gang' id len hidTT621Id
+
+                    })
                 }
                 else {
 
@@ -153,6 +203,13 @@ var createController = {
             $('#btnKetChuyen').attr('disabled', status)
 
         })
+    },
+    
+    GetCommentText_By_TamUng: function (tamUngId, soTienNT) {
+        $.get('/TT621s/GetCommentText_By_TamUng', { tamUngId: tamUngId, soTienNT: soTienNT }, function (response) {
+            $('#txtCommentText').val(response);
+        })
+
     }
 
 };

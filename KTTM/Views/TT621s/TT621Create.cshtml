@@ -4,6 +4,25 @@
     ViewData["Title"] = "TT621Create";
 }
 
+<!-- CapNhatCT_TT modal-->
+<div class="modal fade" id="CapNhatCT_TT_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title">Cập nhật chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body CapNhatCT_TT_Body p-0">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- CapNhatCT_TT modal-->
 <!-- ThemMoiCT_TT modal-->
 <div class="modal fade" id="ThemMoiCT_TT_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
@@ -148,7 +167,8 @@
 
                     <input type="hidden" id="hidTamUngId" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
-
+                    
+                    <input type="hidden" id="hidTT621Id" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
                     <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
                 </div>
@@ -173,9 +193,9 @@
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTien)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKNo)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhNo)</th>
-                            @*<th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
+                            @*   <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
@@ -218,18 +238,21 @@
     <script src="~/lib/mustache.min.js"></script>
     <script src="~/js/Admin/TT621/createController.js"></script>
     <script id="data-template" type="x-tmpl-mustache">
-        <div id="output"></div>
-        <tr>
+
+        <tr class="trTT621" data-id="{{Id}}">
 
             <td>{{DienGiai}}</td>
             <td>{{DienGiaiP}}</td>
             <td>{{SoTienNT}}</td>
             <td>{{LoaiTien}}</td>
             <td>{{TyGia}}</td>
-            <td>{{SoTiend}}</td>
+            <td>{{SoTien}}</td>
             <td>{{TKNo}}</td>
             <td>{{MaKhNo}}</td>
+            <td>{{TKCo}}</td>
+            <td>{{MaKhCo}}</td>
 
         </tr>
     </script>
+
 }

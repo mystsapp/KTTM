@@ -16,6 +16,8 @@ namespace KTTM.Services
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi);
         Task CreateAsync(TamUng tamUng);
+        Task UpdateAsync(TamUng tamUng);
+        
     }
     public class TamUngService : ITamUngService
     {
@@ -78,5 +80,10 @@ namespace KTTM.Services
             }
         }
 
+        public async Task UpdateAsync(TamUng tamUng)
+        {
+            _unitOfWork.tamUngRepository.Update(tamUng);
+            await _unitOfWork.Complete();
+        }
     }
 }
