@@ -49,7 +49,7 @@ var createController = {
 
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
         $('.tamUngTr').off('click').on('click', function () {
-            
+
             if ($(this).hasClass("hoverClass"))
                 $(this).removeClass("hoverClass");
             else {
@@ -67,6 +67,9 @@ var createController = {
                 $('#txtCommentText').val(response);
             })
 
+            // Check_KetChuyenBtnStatus
+            createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT);
+
             // gang' ds TT141 theo tamung
             createController.GetTT621s_By_TamUng(tamUngId);
         });
@@ -80,7 +83,7 @@ var createController = {
             var url = '/TT621s/ThemMoiCT_TT_Partial';
 
             $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
-                
+
                 $('.ThemMoiCT_TT_Body').html(data);
                 $('#ThemMoiCT_TT_Modal').modal('show');
                 $('#ThemMoiCT_TT_Modal').draggable();
@@ -105,7 +108,7 @@ var createController = {
                 var template = $('#data-template').html();
 
                 if (response.status) {
-                    
+
                     $.each(data, function (i, item) {
 
                         html += Mustache.render(template, {
@@ -126,23 +129,31 @@ var createController = {
                 }
                 else {
 
-                        //html = Mustache.render(template, {
-                        //    DienGiai: '',
-                        //    DienGiaiP: '',
-                        //    SoTienNT: '',
-                        //    LoaiTien: '',
-                        //    TyGia: '',
-                        //    SoTien: '',
-                        //    TKNo: '',
-                        //    MaKhNo: '',
-                        //});
+                    //html = Mustache.render(template, {
+                    //    DienGiai: '',
+                    //    DienGiaiP: '',
+                    //    SoTienNT: '',
+                    //    LoaiTien: '',
+                    //    TyGia: '',
+                    //    SoTien: '',
+                    //    TKNo: '',
+                    //    MaKhNo: '',
+                    //});
 
                     $('#ctThanhToanBody').html('');
 
                 }
             }
         });
+    },
+
+    Check_KetChuyenBtnStatus: function (tamUngId, soTienNT) {
+        $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
+
+            $('#btnKetChuyen').attr('disabled', status)
+
+        })
     }
-    
+
 };
 createController.init();

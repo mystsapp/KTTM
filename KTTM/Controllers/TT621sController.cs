@@ -145,7 +145,7 @@ namespace KTTM.Controllers
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
             // lay soct cua tt621
-            if(TT621VM.TT621.LoaiTien == "VND")
+            if (TT621VM.TT621.LoaiTien == "VND")
             {
                 TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV");
             }
@@ -206,9 +206,9 @@ namespace KTTM.Controllers
         public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT) // tamUngId == kvctpctId
         {
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            var soTienTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
             string commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.ToString("N0") + " số tiền cần kết chuyển 141: "
-                                  + (tamUng.SoTien - soTienNT - soTienTrongTT621_TheoTamUng).ToString("N0");
+                                  + (tamUng.SoTien - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
             return Json(commentText);
         }
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
@@ -227,5 +227,18 @@ namespace KTTM.Controllers
                 status = false
             });
         }
+        public async Task<JsonResult> Check_KetChuyenBtnStatus(long tamUngId, decimal soTienNT_Tren_TT621Create)
+        {
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            decimal tongTienNT = soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
+            if(tamUng.SoTienNT - tongTienNT == 0)
+            {
+                return Json(true) // btn on
+            }
+            return Json(false); // btn off
+
+        }
+
     }
 }
