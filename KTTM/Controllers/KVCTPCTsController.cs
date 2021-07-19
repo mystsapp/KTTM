@@ -203,6 +203,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
             KVCTPCTVM.Page = page;
+            KVCTPCTVM.LoaiHDGocs = _kVCTPCTService.LoaiHDGocs();
 
             return View(KVCTPCTVM);
         }
@@ -382,6 +383,7 @@ namespace KTTM.Controllers
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
+            KVCTPCTVM.LoaiHDGocs = _kVCTPCTService.LoaiHDGocs();
 
             return View(KVCTPCTVM);
         }
@@ -676,7 +678,7 @@ namespace KTTM.Controllers
                     status = true
                 });
             }
-            catch (Exception )
+            catch (Exception)
             {
                 //SetAlert(ex.Message, "error");
 
@@ -735,10 +737,17 @@ namespace KTTM.Controllers
         public JsonResult Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {
             var listViewModels = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-            return Json(new
-            {
-                data = listViewModels
-            });
+            if (listViewModels.Count() > 0)
+                return Json(new
+                {
+                    status = true,
+                    data = listViewModels
+                });
+            else
+                return Json(new
+                {
+                    status = false
+                });
         }
         public JsonResult Get_DienGiai_By_TkNo(string tkNo)
         {
@@ -776,7 +785,7 @@ namespace KTTM.Controllers
                 thueGTGT = thueGTGT.ToString()
             });
         }
-        
+
         public JsonResult AutoSgtcode(string param)
         {
             string sgtcode = _kVCTPCTService.AutoSgtcode(param);

@@ -57,12 +57,15 @@ var createController = {
                 $(this).addClass("hoverClass");
             }
 
-            $('#btnThemMoiCT').attr('disabled', false);
             tamUngId = $(this).data('id');
+            soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
+
             $('#hidTamUngId').val(tamUngId); // for TT141
 
-            // gang' commentText khi lick tamung
-            soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            // check btnThemMoiCTTT status
+            createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, kVCTPCTId_PhieuTC)//////////////////
+            // gang' commentText khi lick tamung            
             createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
 
             // Check_KetChuyenBtnStatus
@@ -70,6 +73,9 @@ var createController = {
 
             // gang' ds TT141 theo tamung
             createController.GetTT621s_By_TamUng(tamUngId);
+
+            // an nut btnCapNhatCT
+            $('#btnCapNhatCT').attr('disabled', true);
         });
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
 
@@ -77,7 +83,7 @@ var createController = {
         $('#btnThemMoiCT').off('click').on('click', function () {
 
             tamUngId = $('#hidTamUngId').val();
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
             var url = '/TT621s/ThemMoiCT_TT_Partial';
 
             $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
@@ -92,12 +98,12 @@ var createController = {
         // btnCapNhatCT
         $('#btnCapNhatCT').off('click').on('click', function () {
 
-            tamUngId = $('#hidTamUngId').val();
+            kVCTPCTId = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
 
             var url = '/TT621s/CapNhatCT_TT_Partial';
 
-            $.get(url, { tt621Id: tt621Id, tamUngId: tamUngId }, function (data) {
+            $.get(url, { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId }, function (data) {
 
                 $('.CapNhatCT_TT_Body').html(data);
                 $('#CapNhatCT_TT_Modal').modal('show');
@@ -174,6 +180,7 @@ var createController = {
 
                         tt621Id = $(this).data('id');
                         $('#hidTT621Id').val(tt621Id); // moi lan click tt621 tr se gang' id len hidTT621Id
+                        $('#btnCapNhatCT').attr('disabled', false);
 
                     })
                 }
@@ -210,6 +217,13 @@ var createController = {
             $('#txtCommentText').val(response);
         })
 
+    },
+    
+    Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status: function (tamUngId, kVCTPCTId_PhieuTC) {
+        $.post('/TT621s/Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status', { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
+
+            $('#btnThemMoiCT').attr('disabled', status);
+        })
     }
 
 };

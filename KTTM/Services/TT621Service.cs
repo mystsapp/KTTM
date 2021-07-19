@@ -17,6 +17,8 @@ namespace KTTM.Services
         Task<IEnumerable<TT621>> FindByTamUngId(long tamUngId);
         string GetSoCT(string param);
         Task<decimal> GetSoTienNT_TrongTT621_TheoTamUngAsync(long tamUngId);
+        Task<TT621> FindById_Include(long id);
+        TT621 GetBySoCTAsNoTracking(long tt621Id);
     }
     public class TT621Service : ITT621Service
     {
@@ -131,5 +133,15 @@ namespace KTTM.Services
             return soTienNT_TrongTT621_TheoTamUng;
         }
 
+        public async Task<TT621> FindById_Include(long id)
+        {
+            var tT621s = await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng, y => y.Id == id);
+            return tT621s.FirstOrDefault();
+        }
+
+        public TT621 GetBySoCTAsNoTracking(long tt621Id)
+        {
+            return _unitOfWork.tT621Repository.GetByIdAsNoTracking(x => x.Id == tt621Id);
+        }
     }
 }

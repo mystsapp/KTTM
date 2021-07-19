@@ -64,6 +64,35 @@ var serviceController = {
             }
         });
 
+    },
+    Get_DienGiai_By_TkNo_TkCo: function (tkNo, tkCo) {
+        $('#ddlDienGiai').html('');
+        var option = '';
+
+        $.ajax({
+            url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
+            type: 'GET',
+            data: {
+                tkNo: tkNo,
+                tkCo: tkCo
+            },
+            dataType: 'json',
+            success: function (response) {
+
+                if (response.status) {
+
+                    var data = response.data;
+
+                    $.each(data, function (i, item) {
+                        option = option + '<option value="' + item.dienGiai + '">' + item.dienGiai + '</option>'; //chinhanh1
+
+                    });
+
+                    $('#ddlDienGiai').html(option);
+                }
+
+            }
+        });
     }
     
 };

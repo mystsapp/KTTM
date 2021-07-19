@@ -121,6 +121,7 @@ namespace KTTM.Services
             tkNo ??= "";
             tkCo ??= "";
             var dgiais1 = dgiais.Where(x => x.Tkno.Trim() == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
+            //dgiais1 ??= null;
             return dgiais1;
         }
 

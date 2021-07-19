@@ -14,7 +14,7 @@
 
 }
 
-<input type="hidden" id="hidLoaiPhieu" />
+
 
 <!-- layDataCashier modal-->
 <div class="modal fade" id="layDataCashier" aria-hidden="true" style="display: none;">
@@ -101,6 +101,8 @@
                                     <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
                                         <i class="fas fa-search"></i>
                                     </button>
+
+                                    <input type="hidden" id="hidLoaiPhieu" />
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                                     <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>

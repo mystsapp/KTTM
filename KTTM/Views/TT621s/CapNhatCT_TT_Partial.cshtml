@@ -1,6 +1,6 @@
 ﻿@model TT621ViewModel
 @{
-    ViewData["Title"] = "Them CT TT";
+    ViewData["Title"] = "Update CT TT";
 }
 
 
@@ -9,43 +9,34 @@
 
     <!-- Default box -->
     <div class="card">
-        @*<div class="card-header">
-                <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm CT phiếu</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>*@
+       
         <div class="card-body p-0">
 
-            <form method="post" asp-action="ThemMoiCT_TT_Partial" autocomplete="off" id="frm_ThemMoiCT_TT_Partial" enctype="multipart/form-data">
+            <form method="post" asp-action="CapNhatCT_TT_Partial" autocomplete="off" id="frm_CapNhatCT_TT_Partial" enctype="multipart/form-data">
                 <div class="pr-4 pl-4 text-sm">
 
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> <!--tamungid khi khi click vao list tamung  trong TT621Create-->
                     <input type="hidden" asp-for="KVCTPCT.KVPCTId"> <!--dung de luu PhieuTC trong tt621-->
-                    @*<input type="hidden" asp-for="StrUrl" />*@
+                    <input type="hidden" asp-for="TT621.NgayCT" />
+                    <input type="hidden" asp-for="TT621.NguoiTao" />
+                    <input type="hidden" asp-for="TT621.NgayTao" />
+                    <input type="hidden" asp-for="TT621.PhieuTC" />
+                    <input type="hidden" asp-for="TT621.PhieuTU" />
+                    <input type="hidden" asp-for="TT621.LapPhieu" />
+
+                    <input type="hidden" asp-for="TT621.SoCT" />
+
                     <fieldset class="groupbox-border ">
                         <legend class="groupbox-border">Thông tin về tài chánh </legend>
 
                         <div class=" row">
 
                             <div class="col-md-11">
-                                <label asp-for="TT621.DienGiaiP" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
+                                <label asp-for="TT621.DienGiaiP" class="control-label"></label>
                                 <input asp-for="TT621.DienGiaiP" class="form-control form-control-sm " id="txtDienGiaiP" />
                                 <span asp-validation-for="TT621.DienGiaiP" class="text-danger"></span>
                             </div>
-
-                            @*<div class="col-md-2">
-                                    <label asp-for="TT621.SoXe" class="control-label"></label>
-                                    <input asp-for="TT621.SoXe" class="form-control form-control-sm" id="txtSoXe" />
-                                    <span asp-validation-for="TT621.SoXe" class="text-danger"></span>
-                                </div>*@
 
                             <div class="col-md-1">
                                 <label asp-for="TT621.HTTC" class="control-label"></label>
@@ -76,7 +67,7 @@
 
                             <div class="col-md-2">
                                 <label asp-for="TT621.TyGia" class="control-label "></label>
-                                <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" />
+                                <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtTyGia" />
                                 <span asp-validation-for="TT621.TyGia" class="text-danger"></span>
                             </div>
 
@@ -413,7 +404,7 @@
 
 <script>
 
-    $('#frm_ThemMoiCT_TT_Partial').validate({
+    $('#frm_CapNhatCT_TT_Partial').validate({
         //rules: {
         //    email: {
         //        required: true,
@@ -453,6 +444,7 @@
 
     $('#txtSgtcode').rules('add', {
         minlength: 17,
+        maxlength: 17,
         messages: {
             //required: "Chủ đề không được để trống"
         }
@@ -523,15 +515,15 @@
             var tt621 = $('#frm_ThemMoiCT_TT_Partial').serialize();
             $.ajax({
                 type: "POST",
-                url: "/TT621s/ThemMoiCT_TT_Partial",
+                url: "/TT621s/CapNhatCT_TT_Partial",
                 data: tt621,
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
 
-                        toastr.success('Tạo mới chi tiết thành công!', 'Chi tiết TT'); // toastr in admin/tour/indexController.js
+                        toastr.success('Cập nhật chi tiết thành công!', 'Chi tiết TT'); // toastr in admin/tour/indexController.js
 
-                        $('#ThemMoiCT_TT_Modal').modal('hide');
+                        $('#CapNhatCT_TT_Modal').modal('hide');
                         //debugger
                         @*soCT = '@Model.KVCTPCT.KVPCTId';
 

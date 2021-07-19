@@ -450,6 +450,7 @@
 @section Scripts{
 
     <script src="~/js/Admin/Home/indexController.js"></script>
+    <script src="~/js/Admin/serviceController.js"></script>
 
     <!-- select2 and multi select2 (bootstrap4)-->
     <script>
@@ -620,7 +621,7 @@
             }
         });
 
-        Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
     })
     $('#ddlTkCo').change(function () {
@@ -641,7 +642,7 @@
             }
         });
 
-        Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
     })
     // get dien giai by tkno tkco
@@ -761,30 +762,31 @@
 
     });*@
 
-    function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
-        $('#ddlDienGiai').html('');
-        var option = '';
+        //// forward to service
+    //function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
+    //    $('#ddlDienGiai').html('');
+    //    var option = '';
 
-        $.ajax({
-            url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
-            type: 'GET',
-            data: {
-                tkNo: tkNo,
-                tkCo: tkCo
-            },
-            dataType: 'json',
-            success: function (response) {
-                var data = response.data;
-                //console.log(data);
-                $.each(data, function (i, item) {
-                    option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
+    //    $.ajax({
+    //        url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
+    //        type: 'GET',
+    //        data: {
+    //            tkNo: tkNo,
+    //            tkCo: tkCo
+    //        },
+    //        dataType: 'json',
+    //        success: function (response) {
+    //            var data = response.data;
+    //            //console.log(data);
+    //            $.each(data, function (i, item) {
+    //                option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
 
-                });
+    //            });
 
-                $('#ddlDienGiai').html(option);
-            }
-        });
-    }
+    //            $('#ddlDienGiai').html(option);
+    //        }
+    //    });
+    //}
 
     function KhachHangSearch(code) {
         debugger
