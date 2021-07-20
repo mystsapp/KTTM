@@ -1,0 +1,31 @@
+﻿<!-- khachhang modal-->
+<div class="modal fade" id="khachHang_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header bg-secondary">
+                <h6 class="modal-title"><i class="fas fa-file text-info"></i> Chọn khách hàng</h6>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body khachHang_Modal_Body ">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark " @*data-dismiss="modal"*@ id="btnModalKH_Dismiss" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
+                @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- khachhang modal-->
+
+<script>
+    $('#btnModalKH_Dismiss').off('click').on('click', function () {
+        $('#khachHang_Modal').modal('hide');
+        
+    })
+    
+</script>

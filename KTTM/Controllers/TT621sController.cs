@@ -153,13 +153,8 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("CapNhatCT_TT_Partial")]
-        public async Task<IActionResult> CapNhatCT_TT_Partial_Post() // tamungid phia tren khi click
+        public async Task<IActionResult> CapNhatCT_TT_Partial_Post(decimal soTienNT_ChuaCapNhat) // soTienNT_ChuaCapNhat: soTienNT cũ
         {
-            
-            if (!ModelState.IsValid)
-            {
-                return View(TT621VM);
-            }
 
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -168,6 +163,18 @@ namespace KTTM.Controllers
             {
 
                 return View(TT621VM);
+            }
+
+            decimal soTienNT_CanKetChuyen = await _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, TT621VM.KVCTPCT.SoTienNT);
+
+            // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
+            if (TT621VM.TT621.SoTienNT > soTienNT_ChuaCapNhat + soTienNT_CanKetChuyen)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+                });
             }
 
             TT621VM.TT621.NguoiSua = user.Username;

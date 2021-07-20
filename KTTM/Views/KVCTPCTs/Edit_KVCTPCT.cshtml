@@ -185,7 +185,7 @@
                                 @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
                                     </select>*@
-                                <input type="text" class="form-control form-control-sm" id="ddlMaKhCo" disabled />
+                                <input type="text" class="form-control form-control-sm" disabled />
                                 <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                             </div>
 
@@ -459,10 +459,10 @@
             debugger
             var maKhtext = '';
 
-            if ($(this).data('name') === 'maKhNo') { // search off no
+            if ($(this).data('name') === 'maKhNo') { // search of no
                 maKhtext = $('#txtMaKhNo').val();
             }
-            if ($(this).data('name') === 'maKhCo') { // search off co
+            if ($(this).data('name') === 'maKhCo') { // search of co
                 maKhtext = $('#txtMaKhCo').val();
             }
 
@@ -653,30 +653,30 @@
         //    })
         //})
 
-        $('#ddlMaKhCo').change(function () { // ko duoc off change , on change
+        //$('#ddlMaKhCo').change(function () { // ko duoc off change , on change
 
-            var code = $(this).val();
-            $.ajax({
-                url: '/KVCTPCTs/GetKhachHangs_By_Code',
-                type: 'GET',
-                data: { code: code },
-                dataType: 'json',
-                success: function (response) {
-                    var data = response.data;
-                    //console.log(data);
+        //    var code = $(this).val();
+        //    $.ajax({
+        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
+        //        type: 'GET',
+        //        data: { code: code },
+        //        dataType: 'json',
+        //        success: function (response) {
+        //            var data = response.data;
+        //            //console.log(data);
 
-                    $('#txtTenKhCo').val(data.name.trim());
-                    $('#txtKyHieu').val(data.taxSign.trim());
-                    $('#txtMauSoHD').val(data.taxForm.trim());
-                    $('#txtMsThue').val(data.taxCode.trim());
-                    $('#txtTenKH').val(data.name.trim());
-                    if (data.address !== null) {
-                        $('#txtDiaChi').val(data.address.trim());
-                    }
+        //            $('#txtTenKhCo').val(data.name.trim());
+        //            $('#txtKyHieu').val(data.taxSign.trim());
+        //            $('#txtMauSoHD').val(data.taxForm.trim());
+        //            $('#txtMsThue').val(data.taxCode.trim());
+        //            $('#txtTenKH').val(data.name.trim());
+        //            if (data.address !== null) {
+        //                $('#txtDiaChi').val(data.address.trim());
+        //            }
 
-                }
-            })
-        })
+        //        }
+        //    })
+        //})
         // makh => tenkh
 
         // VAT ==> DSKhongVAT
