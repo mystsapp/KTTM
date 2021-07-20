@@ -2,6 +2,7 @@
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,5 +33,6 @@ namespace KTTM.Models
         public string TenTkCo { get; set; }
         public IEnumerable<Dgiai> Dgiais { get; set; }
         public IEnumerable<ListViewModel> LoaiHDGocs { get; set; }
+
     }
 }

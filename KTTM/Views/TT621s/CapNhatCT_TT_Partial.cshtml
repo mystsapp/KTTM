@@ -16,7 +16,6 @@
                 <div class="pr-4 pl-4 text-sm">
 
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> <!--tamungid khi khi click vao list tamung  trong TT621Create-->
                     <input type="hidden" asp-for="KVCTPCT.KVPCTId"> <!--dung de luu PhieuTC trong tt621-->
                     <input type="hidden" asp-for="TT621.NgayCT" />
                     <input type="hidden" asp-for="TT621.NguoiTao" />
@@ -24,6 +23,8 @@
                     <input type="hidden" asp-for="TT621.PhieuTC" />
                     <input type="hidden" asp-for="TT621.PhieuTU" />
                     <input type="hidden" asp-for="TT621.LapPhieu" />
+                    <input type="hidden" asp-for="TT621.Id" />
+                    <input type="hidden" asp-for="TT621.TamUngId" />
 
                     <input type="hidden" asp-for="TT621.SoCT" />
 
@@ -449,6 +450,13 @@
             //required: "Chủ đề không được để trống"
         }
     });
+    
+    $('#txtSoTienNT').rules('add', {
+        lessThan: $('#hidSoTienNT_CanKetChuyen').val(),
+        messages: {
+            //required: "Chủ đề không được để trống"
+        }
+    });
 
     // sotien
 
@@ -511,8 +519,8 @@
     $('#btnSaveData').off('click').on('click', function () {
         //debugger
 
-        if ($('#frm_ThemMoiCT_TT_Partial').valid()) {
-            var tt621 = $('#frm_ThemMoiCT_TT_Partial').serialize();
+        if ($('#frm_CapNhatCT_TT_Partial').valid()) {
+            var tt621 = $('#frm_CapNhatCT_TT_Partial').serialize();
             $.ajax({
                 type: "POST",
                 url: "/TT621s/CapNhatCT_TT_Partial",
@@ -552,8 +560,9 @@
 
     });
 
-    //// forward to service
-    //function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
+
+    //// Get_DienGiai_By_TkNo_TkCo --> forward to service
+    //function Check_SoTienCanKetChuyenToiDa(tkNo, tkCo) {
     //    $('#ddlDienGiai').html('');
     //    var option = '';
 

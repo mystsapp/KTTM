@@ -112,7 +112,7 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> CapNhatCT_TT_Partial(long tt621Id, long kVCTPCTId_PhieuTC) // tamungid == kvctpctid // 1 <-> 1
         {
-            
+
             if (tt621Id == 0)
                 return NotFound();
 
@@ -153,16 +153,9 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("CapNhatCT_TT_Partial")]
-        public async Task<IActionResult> CapNhatCT_TT_Partial_Post(long tt621Id, long tamUngId) // tamungid phia tren khi click
+        public async Task<IActionResult> CapNhatCT_TT_Partial_Post() // tamungid phia tren khi click
         {
-            if (tamUngId == 0)
-                return NotFound();
-            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            if (tamUng == null)
-                return NotFound();
-
-            TT621VM.TT621.TamUngId = tamUngId;
-
+            
             if (!ModelState.IsValid)
             {
                 return View(TT621VM);
@@ -186,7 +179,7 @@ namespace KTTM.Controllers
             #region log file
             //var t = _unitOfWork.tourRepository.GetById(id);
             string temp = "";
-            TT621 t = _tT621Service.GetBySoCTAsNoTracking(tt621Id);
+            TT621 t = _tT621Service.GetBySoCTAsNoTracking(TT621VM.TT621.Id);
 
             if (t.HTTC != TT621VM.TT621.HTTC)
             {
@@ -378,7 +371,7 @@ namespace KTTM.Controllers
                 });
             }
         }
-        
+
         [HttpPost, ActionName("ThemMoiCT_TT_Partial")]
         public async Task<IActionResult> ThemMoiCT_TT_Partial_Post(long tamUngId) // tamungid phia tren khi click
         {
@@ -443,7 +436,7 @@ namespace KTTM.Controllers
                 });
             }
         }
-        
+
         private void Get_TkNo_TkCo()
         {
 
@@ -489,12 +482,13 @@ namespace KTTM.Controllers
                 status = false
             });
         }
+
+        [HttpPost]
         public async Task<JsonResult> Check_KetChuyenBtnStatus(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
-            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            decimal soTienNTTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
-            decimal tongTienNT = soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
-            if (tamUng.SoTienNT - tongTienNT == 0)
+
+            decimal soTienNT_CanKetChuyen = await _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
+            if (soTienNT_CanKetChuyen == 0)
             {
                 return Json(false); // btn on
             }
@@ -519,21 +513,10 @@ namespace KTTM.Controllers
             return Json(false);
         }
 
-        [HttpPost]
-        public async Task<JsonResult> Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(long tamUngId, long kVCTPCTId_PhieuTC)
+        public async Task<JsonResult> Gang_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
-
-            // lay sotien can de ket chuyen
-            TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
-            var kVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
-            decimal soTienNT_TrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
-            decimal soTienNT_CanKetChuyen = tamUngPhiaTren.SoTienNT - kVCTPCT.SoTienNT - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
-
-            if (soTienNT_CanKetChuyen == 0)
-                return Json(true); // == 0 ==> ko can new them CTTT ==> disable btnThemMoiCT
-            
-            return Json(false);
+            decimal soTienNT_CanKetChuyen = await _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
+            return Json(soTienNT_CanKetChuyen);
         }
-
     }
 }
