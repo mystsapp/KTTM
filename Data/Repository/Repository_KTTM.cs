@@ -116,7 +116,7 @@ namespace Data.Repository
 
         public T GetSingleNoTracking(Func<T, bool> predicate)
         {
-            return _context.Set<T>().AsNoTracking().FirstOrDefault(predicate);
+            return _context.Set<T>().AsNoTracking().SingleOrDefault(predicate);
         }
 
         public async Task Save() => await _context.SaveChangesAsync();

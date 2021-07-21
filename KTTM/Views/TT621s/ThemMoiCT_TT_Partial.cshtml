@@ -28,7 +28,8 @@
 
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> @*tamungid khi khi click vao list tamung  trong TT621Create*@
-                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> dung de luu PhieuTC trong tt621
+                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> @*dung de luu PhieuTC trong tt621*@
+                        <input type="hidden" asp-for="KVCTPCT.SoTienNT">
 
                         <fieldset class="groupbox-border ">
                             <legend class="groupbox-border">Thông tin về tài chánh </legend>

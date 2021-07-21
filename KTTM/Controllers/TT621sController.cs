@@ -78,7 +78,7 @@ namespace KTTM.Controllers
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.KVCTPCT = await _kVCTPCTService.FindByIdInclude(kVCTPCTId_PhieuTC);
-            var soTienNT_TrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT - TT621VM.KVCTPCT.SoTienNT - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
             TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
 
@@ -153,7 +153,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("CapNhatCT_TT_Partial")]
-        public async Task<IActionResult> CapNhatCT_TT_Partial_Post(decimal soTienNT_ChuaCapNhat) // soTienNT_ChuaCapNhat: soTienNT cũ
+        public async Task<IActionResult> CapNhatCT_TT_Partial_Post(long id, decimal soTienNT_ChuaCapNhat) // soTienNT_ChuaCapNhat: soTienNT cũ
         {
 
             // from login session
@@ -165,8 +165,8 @@ namespace KTTM.Controllers
                 return View(TT621VM);
             }
 
-            decimal soTienNT_CanKetChuyen = await _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, TT621VM.KVCTPCT.SoTienNT);
-
+            // 
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, TT621VM.KVCTPCT.SoTienNT);
             // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
             if (TT621VM.TT621.SoTienNT > soTienNT_ChuaCapNhat + soTienNT_CanKetChuyen)
             {
@@ -186,7 +186,7 @@ namespace KTTM.Controllers
             #region log file
             //var t = _unitOfWork.tourRepository.GetById(id);
             string temp = "";
-            TT621 t = _tT621Service.GetBySoCTAsNoTracking(TT621VM.TT621.Id);
+            TT621 t = _tT621Service.GetByIdAsNoTracking(TT621VM.TT621.Id);
 
             if (t.HTTC != TT621VM.TT621.HTTC)
             {
@@ -369,7 +369,7 @@ namespace KTTM.Controllers
                     status = true
                 });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return Json(new
@@ -398,6 +398,19 @@ namespace KTTM.Controllers
 
                 return View(TT621VM);
             }
+
+            // 
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, TT621VM.KVCTPCT.SoTienNT); // TT621VM.KVCTPCT.SoTienNT tu view qua
+            // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
+            if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+                });
+            }
+
 
             TT621VM.TT621.NgayCT = DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
@@ -484,7 +497,7 @@ namespace KTTM.Controllers
         public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT) // tamUngId == kvctpctId
         {
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            decimal soTienNTTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             string commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.ToString("N0") + " số tiền cần kết chuyển 141: "
                                   + (tamUng.SoTien - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
             return Json(commentText);
@@ -507,10 +520,10 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Check_KetChuyenBtnStatus(long tamUngId, decimal soTienNT_Tren_TT621Create)
+        public JsonResult Check_KetChuyenBtnStatus(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
 
-            decimal soTienNT_CanKetChuyen = await _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
             if (soTienNT_CanKetChuyen == 0)
             {
                 return Json(false); // btn on
@@ -523,7 +536,7 @@ namespace KTTM.Controllers
         public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC)
         {
             TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            decimal soTienNTTrongTT621_TheoTamUng = await _tT621Service.GetSoTienNT_TrongTT621_TheoTamUngAsync(tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
 
             if (tamUng.SoTienNT == soTienNTTrongTT621_TheoTamUng + soTienNT_PhieuTC)
             {
@@ -538,7 +551,7 @@ namespace KTTM.Controllers
 
         public async Task<JsonResult> Gang_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
-            decimal soTienNT_CanKetChuyen = await _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
             return Json(soTienNT_CanKetChuyen);
         }
     }
