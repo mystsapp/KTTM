@@ -27,25 +27,19 @@
                     <div class="pr-4 pl-4 text-sm">
 
                         <div asp-validation-summary="All" class="text-danger"></div>
-                        <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> <!--tamungid khi khi click vao list tamung  trong TT621Create-->
-                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> <!--dung de luu PhieuTC trong tt621-->
-                        @*<input type="hidden" asp-for="StrUrl" />*@
+                        <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> @*tamungid khi khi click vao list tamung  trong TT621Create*@
+                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> dung de luu PhieuTC trong tt621
+
                         <fieldset class="groupbox-border ">
                             <legend class="groupbox-border">Thông tin về tài chánh </legend>
 
                             <div class=" row">
 
                                 <div class="col-md-11">
-                                    <label asp-for="TT621.DienGiaiP" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
+                                    <label asp-for="TT621.DienGiaiP" class="control-label"></label>
                                     <input asp-for="TT621.DienGiaiP" class="form-control form-control-sm " id="txtDienGiaiP" />
                                     <span asp-validation-for="TT621.DienGiaiP" class="text-danger"></span>
                                 </div>
-
-                                @*<div class="col-md-2">
-                                        <label asp-for="TT621.SoXe" class="control-label"></label>
-                                        <input asp-for="TT621.SoXe" class="form-control form-control-sm" id="txtSoXe" />
-                                        <span asp-validation-for="TT621.SoXe" class="text-danger"></span>
-                                    </div>*@
 
                                 <div class="col-md-1">
                                     <label asp-for="TT621.HTTC" class="control-label"></label>
@@ -154,13 +148,13 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH nợ</label>
-                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhNo" disabled />
+                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" disabled />
                                     </div>
 
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo_ThemMoi">
                                             <span class="input-group-btn">
                                                 <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
@@ -170,7 +164,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" />
                                     </div>
 
                                 }
@@ -179,7 +173,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhNo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
+                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi">
                                             <span class="input-group-btn">
                                                 <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
@@ -188,13 +182,13 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH nợ</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhNo_ThemMoi" />
                                     </div>
 
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi" disabled>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
@@ -392,9 +386,9 @@
         </div>
     </section>
 </div>
-<!--Khach hang modal-->
-<partial name="~/Views/Shared/_KhachHangPartial.cshtml" />
-
+<!--Khach hang them moi modal-->
+<partial name="~/Views/Shared/_KhachHangPartial_ThemMoiCTTT.cshtml" />
+<!--Khach hang them moi modal-->
 @*<script src="~/js/Admin/Home/indexController.js"></script>*@
 <script src="~/js/Admin/serviceController.js"></script>
 <!-- select2 and multi select2 (bootstrap4)-->
@@ -417,17 +411,17 @@
 <script>
     // btnKhSearch
     $('#btnKhSearch_ThemMoi').click(function () {
-        debugger
+        
         var maKhtext = '';
 
         if ($(this).data('name') === 'maKhNo') { // search of no
-            maKhtext = $('#txtMaKhNo').val();
+            maKhtext = $('#txtMaKhNo_ThemMoi').val();
         }
         if ($(this).data('name') === 'maKhCo') { // search of co
-            maKhtext = $('#txtMaKhCo').val();
+            maKhtext = $('#txtMaKhCo_ThemMoi').val();
         }
 
-        serviceController.KhachHangSearch(maKhtext);
+        KhachHangSearch_ThemMoiTT(maKhtext);
     })
 
     $('#frm_ThemMoiCT_TT_Partial').validate({
@@ -569,43 +563,15 @@
 
     });
 
-    // btnKVCTPCTCreatePartial_Back
-    $('#btnKVCTPCTCreatePartial_Back').off('click').on('click', function () {
-        $('#KVCTPCT_Create_Partial').hide(500);
+    function KhachHangSearch_ThemMoiTT(code) {
+        $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT', { code: code }, function (data) {
 
-        $('#KVCTPCT_Tbl').show(500);
+            $('#khachHang_Modal_ThemMoiCTTT').modal('show');
+            $('.khachHang_Modal_Body').html(data);
+            $('#khachHang_Modal_ThemMoiCTTT').draggable();
+        });
+    }
 
-    });
-
-    //// forward to service
-    //function Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo) {
-    //    $('#ddlDienGiai').html('');
-    //    var option = '';
-
-    //    $.ajax({
-    //        url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
-    //        type: 'GET',
-    //        data: {
-    //            tkNo: tkNo,
-    //            tkCo: tkCo
-    //        },
-    //        dataType: 'json',
-    //        success: function (response) {
-
-    //            if (response.status) {
-
-    //                var data = response.data;
-
-    //                $.each(data, function (i, item) {
-    //                    option = option + '<option value="' + item.dienGiai + '">' + item.dienGiai + '</option>'; //chinhanh1
-
-    //                });
-
-    //                $('#ddlDienGiai').html(option);
-    //            }
-
-    //        }
-    //    });
-    //}
+    //// Get_DienGiai_By_TkNo_TkCo forward to service
 
 </script>

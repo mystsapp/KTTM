@@ -34,5 +34,8 @@ namespace KTTM.Models
         public IEnumerable<Dgiai> Dgiais { get; set; }
         public IEnumerable<ListViewModel> LoaiHDGocs { get; set; }
 
+        public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
+        public string MaKhText { get; set; }
+
     }
 }

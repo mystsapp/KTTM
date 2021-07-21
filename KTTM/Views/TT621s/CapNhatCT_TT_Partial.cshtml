@@ -142,7 +142,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhNo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" disabled>
+                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" disabled>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
@@ -154,9 +154,9 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo_CapNhat">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_CapNhat" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
@@ -173,9 +173,9 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhNo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo">
+                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo_CapNhat">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_CapNhat" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
@@ -188,7 +188,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" disabled>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
@@ -386,9 +386,9 @@
         </div>
     </section>
 </div>
-<!--Khach hang modal-->
-<partial name="~/Views/Shared/_KhachHangPartial.cshtml" />
-
+<!--Khach hang capnhat modal-->
+<partial name="~/Views/Shared/_KhachHangPartial_CapNhatCTTT.cshtml" />
+<!--Khach hang capnhat modal-->
 @*<script src="~/js/Admin/Home/indexController.js"></script>*@
 <script src="~/js/Admin/serviceController.js"></script>
 <!-- select2 and multi select2 (bootstrap4)-->
@@ -410,18 +410,18 @@
 
 <script>
     // btnKhSearch
-    $('#btnKhSearch').click(function () {
-        debugger
+    $('#btnKhSearch_CapNhat').click(function () {
+        
         var maKhtext = '';
 
         if ($(this).data('name') === 'maKhNo') { // search of no
-            maKhtext = $('#txtMaKhNo').val();
+            maKhtext = $('#txtMaKhNo_CapNhat').val();
         }
         if ($(this).data('name') === 'maKhCo') { // search of co
-            maKhtext = $('#txtMaKhCo').val();
+            maKhtext = $('#txtMaKhCo_CapNhat').val();
         }
 
-        serviceController.KhachHangSearch(maKhtext);
+        KhachHangSearch(maKhtext);
     })
 
     $('#frm_CapNhatCT_TT_Partial').validate({
@@ -570,6 +570,15 @@
         }
 
     });
+
+    function KhachHangSearch(code) {
+        $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT', { code: code }, function (data) {
+
+            $('#khachHang_Modal_CapNhatCTTT').modal('show');
+            $('.khachHang_CapNhat_Modal_Body').html(data);
+            $('#khachHang_Modal_CapNhatCTTT').draggable();
+        });
+    }
 
     //// Get_DienGiai_By_TkNo_TkCo --> forward to service
     //function Check_SoTienCanKetChuyenToiDa(tkNo, tkCo) {

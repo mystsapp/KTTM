@@ -444,6 +444,22 @@ namespace KTTM.Controllers
             }
         }
 
+        public IActionResult GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code)
+        {
+            code ??= "";
+            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.MaKhText = code;
+            return PartialView(TT621VM);
+        }
+        
+        public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT(string code)
+        {
+            code ??= "";
+            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.MaKhText = code;
+            return PartialView(TT621VM);
+        }
+
         private void Get_TkNo_TkCo()
         {
 

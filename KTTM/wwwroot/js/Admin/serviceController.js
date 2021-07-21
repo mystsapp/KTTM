@@ -43,7 +43,7 @@ var serviceController = {
 
     },
     TinhSoTien: function () {
-        
+
         soTienNT = $('#txtSoTienNT').val();
         tyGia = $('#txtTyGia').val();
 
@@ -93,17 +93,8 @@ var serviceController = {
 
             }
         });
-    },
+    }
 
-    KhachHangSearch: function(code) {
-        $.get('/KVCTPCTs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
 
-            $('#khachHang_Modal').modal('show');
-            $('.khachHang_Modal_Body').html(data);
-            $('#khachHang_Modal').draggable();
-        });
-        }
-
-    
 };
 serviceController.init();
