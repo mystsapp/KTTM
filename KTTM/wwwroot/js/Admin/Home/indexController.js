@@ -85,6 +85,13 @@ var indexController = {
             $('#frmThemDong').submit();
         });
         // themdong click
+
+        // press r + choose row => copy new row
+        shortcut.add("r", function () {
+            var tmpId = $('#hid_Id_Dong_Da_Click_tmp').val();
+            $('#hidIdCu').val(tmpId);
+
+        });
         
         // themdong click
         $('#btnTT141').click(function () {
@@ -134,6 +141,9 @@ var indexController = {
                     $('#btnTT141').attr('disabled', true);
                 }
             }, error => alert(error));
+
+            // for phim' R => copy dong cu cho dong moi
+            $('#hid_Id_Dong_Da_Click_tmp').val(kVCTPCTId); // luu tạm
 
         });
         // tdVal_KVCTPCT row click

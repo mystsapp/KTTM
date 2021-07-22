@@ -56,6 +56,7 @@ var serviceController = {
                 if (response.status) {
                     soTien = response.soTien;
                     $('#txtSoTien').val(numeral(soTien).format('0,0'));
+                    //$('#txtSoTien').val(numeral(soTien).format('0.0[0000]'));
                 }
                 else {
                     toastr.error(response.message);
@@ -93,6 +94,13 @@ var serviceController = {
 
             }
         });
+    },
+    AutoSgtcode: function (param) {
+        $.get('/KVCTPCTs/AutoSgtcode', { param: param }, function (response) {
+            if (response.status) {
+                $('#txtSgtcode').val(response.data);
+            }
+        })
     }
 
 

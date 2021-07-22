@@ -366,12 +366,15 @@ namespace KTTM.Services
 
         public string AutoSgtcode(string param)
         {
-            //"033-58" sẽ ra " SGT033-2021-00058"
-            //"084/58" sẽ ra " STN084-2021-00058"(ĐAY LÀ CODE ĐOÀN nội địa"
-            //code hooàn chỉnh của STSTOB - 2021 - 00058 như này thì gõ " 58OB"
+            //"033-58" sẽ ra " SGT033-2021-00058"(ĐAY LÀ CODE ĐOÀN inbound")
+            //"084/58" sẽ ra " STN084-2021-00058"(ĐAY LÀ CODE ĐOÀN nội địa")
+            //" 58OB"  sẽ ra "STSTOB-2021-00058" (ĐAY LÀ CODE ĐOÀN outbound")
 
             //khác là dấu "-" là code SGT
             //còn "/" là code "STN"
+
+            param ??= "";
+            param = param.Trim();
 
             string sgtcode;
             string codeNumber;
@@ -383,21 +386,26 @@ namespace KTTM.Services
             {
                 case "-":                    
                     codeNumber = GetCodeNumber(stringArry[1]);
-                    sgtcode = "SGT" + stringArry[0] + currentYear + codeNumber;
+                    sgtcode = "SGT" + stringArry[0] + "-" + currentYear + "-" + codeNumber;
                     break;
                 case "/":
                     codeNumber = GetCodeNumber(stringArry[1]);
-                    sgtcode = "STN" + stringArry[0] + currentYear + codeNumber;
+                    sgtcode = "STN" + stringArry[0] + "-" + currentYear + "-" + codeNumber;
                     break;
-                //case "*":
-                //    codeNumber = GetCodeNumber(stringArry[1]);
-                //    sgtcode = "STS" + stringArry[0].ToUpper() + "2021" + codeNumber; // TOB
-                    //break;
                 default:
-                    codeNumber = param.Substring(0, param.Length - 2); // codeNumber
-                    codeNumber = GetCodeNumber(codeNumber);
-                    sgtcode = "STSTOB" + currentYear + codeNumber; // TOB
-                    break;
+                    string paramSub = param.Substring(param.Length - 2, 2);
+                    if (paramSub.ToUpper() == "OB")
+                    {
+                        codeNumber = param.Substring(0, param.Length - 2); // codeNumber
+                        codeNumber = GetCodeNumber(codeNumber);
+                        sgtcode = "STSTOB-" + currentYear + "-" + codeNumber; // TOB
+                        break;
+                    }
+                    else
+                    {
+                        sgtcode = "";
+                        break;
+                    }
             }
 
             return sgtcode;

@@ -49,90 +49,7 @@ namespace KTTM.Controllers
             return PartialView(KVCTPCTVM);
         }
 
-        //[HttpPost, ActionName("KVCTPCT_Create_Partial")]
-        //public async Task<IActionResult> KVCTPCT_Create_Partial_Post()
-        //{
-        //    // from login session
-        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-        //    KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
-        //    KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
-
-        //    // ghi log
-        //    KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-        //    try
-        //    {
-        //        try
-        //        {
-        //            await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
-        //        }
-        //        catch (Exception ex)
-        //        {
-
-        //            throw ex;
-        //        }
-
-
-        //        return Json(new
-        //        {
-        //            status = true
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return Json(new
-        //        {
-        //            status = false,
-        //            message = ex.Message
-        //        });
-        //    }
-
-        //}
-
-        //[HttpPost, ActionName("KVCTPCT_Modal_Create_Partial")]
-        //public async Task<IActionResult> KVCTPCT_Modal_Create_Partial_Post(string strUrl)
-        //{
-        //    // from login session
-        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        //HomeVM = new HomeViewModel()
-        //        //{
-        //        //    KVPCT = new KVPCT(),
-        //        //    LoaiTiens = _kVPCTService.ListLoaiTien(),
-        //        //    LoaiPhieus = _kVPCTService.ListLoaiPhieu(),
-        //        //    Phongbans = _kVPCTService.GetAllPhongBan(),
-        //        //    StrUrl = strUrl
-        //        //};
-
-        //        return View(KVCTPCTVM);
-        //    }
-
-        //    KVCTPCTVM.KVCTPCT.NguoiTao = user.Username;
-        //    KVCTPCTVM.KVCTPCT.NgayTao = DateTime.Now;
-
-        //    // ghi log
-        //    KVCTPCTVM.KVCTPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-
-        //    try
-        //    {
-        //        await _kVCTPCTService.Create(KVCTPCTVM.KVCTPCT);
-
-        //        SetAlert("Thêm mới thành công.", "success");
-
-        //        return Redirect(KVCTPCTVM.StrUrl);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        SetAlert(ex.Message, "error");
-        //        return View(KVCTPCTVM);
-        //    }
-
-        //}
-
-        public async Task<IActionResult> ThemDong(string soCT, string strUrl, int page)
+        public async Task<IActionResult> ThemDong(string soCT, string strUrl, int page, long id_Dong_Da_Click = 0)
         {
 
             Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
@@ -156,6 +73,13 @@ namespace KTTM.Controllers
             KVCTPCTVM.LoaiHDGocs = _kVCTPCTService.LoaiHDGocs();
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page; // page for redirect
+
+            // R + btnThemdong
+            if(id_Dong_Da_Click > 0)
+            {
+                var dongCu = await _kVCTPCTService.GetById(id_Dong_Da_Click);
+                KVCTPCTVM.KVCTPCT = dongCu;
+            }
 
             return View(KVCTPCTVM);
         }
@@ -786,14 +710,31 @@ namespace KTTM.Controllers
             });
         }
 
+        /// <summary>
+        ///"033-58" sẽ ra " SGT033-2021-00058"(ĐAY LÀ CODE ĐOÀN inbound")
+        ///"084/58" sẽ ra " STN084-2021-00058"(ĐAY LÀ CODE ĐOÀN nội địa")
+        ///" 58OB"  sẽ ra "STSTOB-2021-00058" (ĐAY LÀ CODE ĐOÀN outbound")
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns>Sgtcode</returns>
         public JsonResult AutoSgtcode(string param)
         {
             string sgtcode = _kVCTPCTService.AutoSgtcode(param);
-            return Json(new
+            if (!string.IsNullOrEmpty(sgtcode))
             {
-                status = true,
-                data = sgtcode
-            });
+                return Json(new
+                {
+                    status = true,
+                    data = sgtcode
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = false
+                });
+            }
         }
     }
 }

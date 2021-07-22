@@ -419,6 +419,7 @@
 @section Scripts{
 
     <script src="~/js/Admin/Home/indexController.js"></script>
+    <script src="~/js/Admin/serviceController.js"></script>
 
     <!-- select2 and multi select2 (bootstrap4)-->
     <script>
@@ -501,57 +502,65 @@
         //});
 
         // sotien
-
         $('#txtSoTienNT').blur(function () {
 
+            serviceController.TinhSoTien();
+
             soTienNT = $('#txtSoTienNT').val();
-            tyGia = $('#txtTyGia').val();
+            //tyGia = $('#txtTyGia').val();
 
-            $.ajax({
-                type: "GET",
-                url: "/KVCTPCTs/TinhSoTien",
-                data: { soTienNT: soTienNT, tyGia: tyGia },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
-                        soTien = response.soTien;
-                        $('#txtSoTien').val(numeral(soTien).format('0,0'));
-                    }
-                    else {
-                        toastr.error(response.message);
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/KVCTPCTs/TinhSoTien",
+            //    data: { soTienNT: soTienNT, tyGia: tyGia },
+            //    dataType: "json",
+            //    success: function (response) {
+            //        if (response.status) {
+            //            soTien = response.soTien;
+            //            $('#txtSoTien').val(numeral(soTien).format('0,0'));
+            //        }
+            //        else {
+            //            toastr.error(response.message);
 
-                    }
-                }
-            });
+            //        }
+            //    }
+            //});
             chiPhi = $('#txtChiPhi').val();
             TinhThueGTGT(soTienNT, chiPhi);
         })
 
         $('#txtTyGia').blur(function () {
 
-            soTienNT = $('#txtSoTienNT').val();
-            tyGia = $('#txtTyGia').val();
+            serviceController.TinhSoTien();
 
-            $.ajax({
-                type: "GET",
-                url: "/KVCTPCTs/TinhSoTien",
-                data: { soTienNT: soTienNT, tyGia: tyGia },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
-                        soTien = response.soTien;
-                        $('#txtSoTien').val(numeral(soTien).format('0,0'));
-                    }
-                    else {
-                        toastr.error(response.message);
+            //soTienNT = $('#txtSoTienNT').val();
+            //tyGia = $('#txtTyGia').val();
 
-                    }
-                }
-            });
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/KVCTPCTs/TinhSoTien",
+            //    data: { soTienNT: soTienNT, tyGia: tyGia },
+            //    dataType: "json",
+            //    success: function (response) {
+            //        if (response.status) {
+            //            soTien = response.soTien;
+            //            $('#txtSoTien').val(numeral(soTien).format('0,0'));
+            //        }
+            //        else {
+            //            toastr.error(response.message);
+
+            //        }
+            //    }
+            //});
 
         })
-
         // sotien
+
+        // AutoSgtcode
+        $('#txtSgtcode').blur(function () {
+            sgtcodeText = $(this).val();
+            serviceController.AutoSgtcode(sgtcodeText);
+        })
 
         // get dien giai by tkno tkco
         $('#ddlTkNo').change(function () {
