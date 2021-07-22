@@ -58,14 +58,10 @@ namespace KTTM.Controllers
             // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
             TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh); // MaKh == MaKhNo
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
-            TamUng tamUng = new TamUng();
-            if (TT621VM.TamUngs.Count() != 0)
-            {
-                tamUng = TT621VM.TamUngs.FirstOrDefault();
-                TT621VM.CommentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.ToString("N0") + " số tiền cần kết chuyển 141: "
-                                      + (tamUng.SoTien - kVCTPCT.SoTien).ToString("N0");
-            }
 
+            var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
+            TT621VM.CommentText = jsonResult.Result.Value.ToString();
+            
             return View(TT621VM);
         }
 
@@ -374,7 +370,8 @@ namespace KTTM.Controllers
 
                 return Json(new
                 {
-                    status = false
+                    status = false,
+                    message = ex.Message
                 });
             }
         }
@@ -457,6 +454,46 @@ namespace KTTM.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<JsonResult> Delete(long tt621Id, long kVCTPCTId_PhieuTC)
+        {
+            if (tt621Id == 0)
+                return Json(new
+                {
+                    status = false,
+                    message = "TT này không tồn tại."
+                });
+
+            TT621 tT621 = await _tT621Service.FindById_Include(tt621Id);
+
+            if (tT621 == null)
+                return Json(new
+                {
+                    status = false,
+                    message = "TT này không tồn tại."
+                });
+
+            try
+            {
+                await _tT621Service.DeleteAsync(tT621);
+                
+                // nếu ketchuyen roi ==> ko xoá được
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+
         public IActionResult GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code)
         {
             code ??= "";
@@ -477,21 +514,25 @@ namespace KTTM.Controllers
         {
 
             DmTk dmTk = new DmTk() { Tkhoan = "" };
-            var dmTks_TienMat = _kVCTPCTService.GetAll_DmTk_TienMat().ToList();
+            //var dmTks_TienMat = _kVCTPCTService.GetAll_DmTk_TienMat().ToList();
             var dmTks_TaiKhoan = _kVCTPCTService.GetAll_DmTk_TaiKhoan().ToList();
-            dmTks_TienMat.Insert(0, dmTk);
+            //dmTks_TienMat.Insert(0, dmTk);
             dmTks_TaiKhoan.Insert(0, dmTk);
-            if (TT621VM.KVCTPCT.KVPCT.MFieu == "T")
-            {
 
-                TT621VM.DmTks_TkNo = dmTks_TienMat;
-                TT621VM.DmTks_TkCo = dmTks_TaiKhoan;
-            }
-            else
-            {
-                TT621VM.DmTks_TkNo = dmTks_TaiKhoan;
-                TT621VM.DmTks_TkCo = dmTks_TienMat;
-            }
+            //// do trong CTTT (tt621) có thể là của phiếu T or phiếu C
+            TT621VM.DmTks_TkNo = dmTks_TaiKhoan;
+            TT621VM.DmTks_TkCo = dmTks_TaiKhoan;
+            //if (TT621VM.KVCTPCT.KVPCT.MFieu == "T")
+            //{
+
+            //    TT621VM.DmTks_TkNo = dmTks_TienMat;
+            //    TT621VM.DmTks_TkCo = dmTks_TaiKhoan;
+            //}
+            //else
+            //{
+            //    TT621VM.DmTks_TkNo = dmTks_TaiKhoan;
+            //    TT621VM.DmTks_TkCo = dmTks_TienMat;
+            //}
         }
 
         public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT) // tamUngId == kvctpctId
@@ -531,6 +572,19 @@ namespace KTTM.Controllers
             return Json(true); // btn off
 
         }
+        
+        [HttpPost]
+        public JsonResult Check_BtnThemMoiCTTT_Status(long tamUngId, decimal soTienNT_Tren_TT621Create)
+        {
+
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
+            if (soTienNT_CanKetChuyen <= 0)
+            {
+                return Json(true); // btn on
+            }
+            return Json(false); // btn off
+
+        }
 
         [HttpPost]
         public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC)
@@ -549,7 +603,7 @@ namespace KTTM.Controllers
             return Json(false);
         }
 
-        public async Task<JsonResult> Gang_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create)
+        public JsonResult Gang_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
             return Json(soTienNT_CanKetChuyen);

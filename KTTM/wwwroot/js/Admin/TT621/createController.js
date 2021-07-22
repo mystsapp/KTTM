@@ -65,6 +65,7 @@ var createController = {
 
             // check btnThemMoiCTTT status
             createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT)//////////////////
+
             // gang' commentText khi lick tamung            
             createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
 
@@ -98,7 +99,7 @@ var createController = {
 
         })
         // btnThemMoiCT
-        
+
         // btnCapNhatCT
         $('#btnCapNhatCT').off('click').on('click', function () {
 
@@ -108,6 +109,34 @@ var createController = {
             createController.CapNhatCT_TT_Partial(tt621Id, kVCTPCTId_PhieuTC);
         })
         // btnCapNhatCT
+        // btnDelete
+        $('#btnDelete').off('click').on('click', function () {
+
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
+            tt621Id = $('#hidTT621Id').val();
+            tamUngId = $('#hidTamUngId').val();
+            soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+
+            bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
+                if (result) {
+
+                    $.post('/TT621s/Delete', { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (response) {
+                        //console.log(response);
+                        if (response.status) {
+                            toastr.success('Xoá thành công', 'Xoá!');
+
+                            createController.GetTT621s_By_TamUng(tamUngId);
+                            createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
+                        }
+                        else {
+                            toastr.error(response.message, 'Thêm tạm ứng!')
+                        }
+                    });
+                }
+            });
+
+        })
+        // btnDelete
 
         // btnKetChuyen
         $('#btnKetChuyen').off('click').on('click', function () {
@@ -167,7 +196,7 @@ var createController = {
 
                     // giu trang thai CT TT va gang' TT621 id
                     $('.trTT621').off('click').on('click', function () {
-                        
+
                         if ($(this).hasClass("hoverClass"))
                             $(this).removeClass("hoverClass");
                         else {
@@ -178,6 +207,7 @@ var createController = {
                         tt621Id = $(this).data('id');
                         $('#hidTT621Id').val(tt621Id); // moi lan click tt621 tr se gang' id len hidTT621Id
                         $('#btnCapNhatCT').attr('disabled', false);
+                        $('#btnDelete').attr('disabled', false);
 
                     })
                 }
@@ -210,23 +240,19 @@ var createController = {
 
         })
     },
-    
+
     GetCommentText_By_TamUng: function (tamUngId, soTienNT) {
         $.get('/TT621s/GetCommentText_By_TamUng', { tamUngId: tamUngId, soTienNT: soTienNT }, function (response) {
             $('#txtCommentText').val(response);
         })
 
     },
-    
+
     Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status: function (tamUngId, soTienNT) {
-        $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
-            if (status) {
-                $('#btnThemMoiCT').attr('disabled', false);
-            }
-            else {
-                $('#btnThemMoiCT').attr('disabled', true);
-            }
-            // nguoc lai so voi Check_KetChuyenBtnStatus
+        $.post('/TT621s/Check_BtnThemMoiCTTT_Status', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
+
+            $('#btnThemMoiCT').attr('disabled', status);
+
         })
     },
 

@@ -561,6 +561,7 @@
                         createController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
                         createController.GetCommentText_By_TamUng(tamUngId, soTienNT); // get comment text
                         createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT); // check nut ketchuyen
+                        createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT); // check nut themmoi
                     }
                     else {
                         toastr.error(response.message, 'Chi tiết TT');

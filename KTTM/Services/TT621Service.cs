@@ -13,6 +13,7 @@ namespace KTTM.Services
         Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId);
         Task CreateAsync(TT621 tT621);
         Task UpdateAsync(TT621 tT621);
+        Task DeleteAsync(TT621 tT621);
         TT621 GetDummyTT621_By_KVCTPCT(long tamUngId);
         IEnumerable<TT621> FindByTamUngId(long tamUngId);
         string GetSoCT(string param);
@@ -152,6 +153,12 @@ namespace KTTM.Services
             decimal soTienNT_CanKetChuyen = tamUng.SoTienNT - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
 
             return soTienNT_CanKetChuyen;
+        }
+
+        public async Task DeleteAsync(TT621 tT621)
+        {
+            _unitOfWork.tT621Repository.Delete(tT621);
+            await _unitOfWork.Complete();
         }
     }
 }

@@ -88,8 +88,7 @@
                     <label>Nội dung thanh toán</label>
                 </div>
                 <div class="col-md-4">
-                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="KVCTPCT.DienGiaiP" />
-                    <span asp-validation-for="KVCTPCT.DienGiaiP" class="text-danger"></span>
+                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="KVCTPCT.DienGiaiP" readonly/>
                 </div>
 
                 <div class="col-md-1">
@@ -97,18 +96,14 @@
                 </div>
                 <div class="col-md-2">
 
-                    @*<input type="text" id="hidSoTienNT_CanKetChuyen" />*@
-
-                    <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT_Create" />
-                    <span asp-validation-for="KVCTPCT.SoTienNT" class="text-danger"></span>
+                    <input asp-for="KVCTPCT.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT_Create" readonly/>
                 </div>
 
                 <div class="col-md-1">
                     <label asp-for="KVCTPCT.SoTien"></label>
                 </div>
                 <div class="col-md-2">
-                    <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTien" />
-                    <span asp-validation-for="KVCTPCT.SoTien" class="text-danger"></span>
+                    <input asp-for="KVCTPCT.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTien" readonly/>
                 </div>
 
             </div>
@@ -119,7 +114,6 @@
                 </div>
                 <div class="col-md-9">
                     <input class="form-control form-control-sm " id="txtCommentText" asp-for="CommentText" />
-                    <span asp-validation-for="CommentText" class="text-danger"></span>
                 </div>
 
             </div>
@@ -171,10 +165,10 @@
 
                     <input type="hidden" id="hidTamUngId" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
-                    
+
                     <input type="hidden" id="hidTT621Id" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
-                    <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnCapNhatCT" disabled><i class="fas fa-trash-alt text-blue"></i></button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnDelete" disabled><i class="fas fa-trash-alt text-blue"></i></button>
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
@@ -259,4 +253,18 @@
         </tr>
     </script>
 
+    <script>
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+    </script>
 }

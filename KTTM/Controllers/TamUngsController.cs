@@ -163,10 +163,8 @@ namespace KTTM.Controllers
         public async Task<JsonResult> CheckTT141(long kVCTPCTId)
         {
             var kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId);
-            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
-            //var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
-            //if (tamUng != null && tamUng.ConLai > 0) // chưa them
-            if (kVPCT.MFieu == "T" && kVCTPCT.TKCo.Trim() == "1411")
+            
+            if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411")
             {
                 return Json(true);
             }
