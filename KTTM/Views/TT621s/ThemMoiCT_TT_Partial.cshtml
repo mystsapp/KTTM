@@ -44,7 +44,7 @@
 
                                 <div class="col-md-1">
                                     <label asp-for="TT621.HTTC" class="control-label"></label>
-                                    <select asp-for="TT621.HTTC" class="form-control form-control-sm select2"
+                                    <select asp-for="TT621.HTTC" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.DmHttcs, "Httc", "Httc"))" id="ddlHttc">
                                     </select>
                                     <span asp-validation-for="TT621.HTTC" class="text-danger"></span>
@@ -215,7 +215,7 @@
 
                                     <div class="col-md-3">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.CoQuay" class="form-control form-control-sm select2"
+                                        <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
                                                 asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
@@ -226,7 +226,7 @@
                                 {
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm select2"
+                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
                                                 asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
@@ -243,7 +243,7 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.BoPhan" class="control-label "></label>
-                                    <select asp-for="TT621.BoPhan" class="form-control form-control-sm select2"
+                                    <select asp-for="TT621.BoPhan" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "BoPhan"))" id="ddlBoPhan">
                                     </select>
                                     <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
@@ -272,7 +272,7 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.LoaiHDGoc" class="control-label "></label>
-                                    <select asp-for="TT621.LoaiHDGoc" class="form-control form-control-sm select2"
+                                    <select asp-for="TT621.LoaiHDGoc" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.LoaiHDGocs, "Name", "Name"))" id="ddlLoaiHDGoc">
                                     </select>
                                     <span asp-validation-for="TT621.LoaiHDGoc" class="text-danger"></span>

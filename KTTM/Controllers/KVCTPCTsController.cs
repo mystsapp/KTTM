@@ -91,11 +91,11 @@ namespace KTTM.Controllers
         private void Get_TkNo_TkCo()
         {
 
-            DmTk dmTk = new DmTk() { Tkhoan = "" };
+            //DmTk dmTk = new DmTk() { Tkhoan = "" };
             var dmTks_TienMat = _kVCTPCTService.GetAll_DmTk_TienMat().ToList();
             var dmTks_TaiKhoan = _kVCTPCTService.GetAll_DmTk_TaiKhoan().ToList();
-            dmTks_TienMat.Insert(0, dmTk);
-            dmTks_TaiKhoan.Insert(0, dmTk);
+            //dmTks_TienMat.Insert(0, dmTk);
+            //dmTks_TaiKhoan.Insert(0, dmTk);
             if (KVCTPCTVM.KVPCT.MFieu == "T")
             {
                 KVCTPCTVM.DmTks_TkNo = dmTks_TienMat;
@@ -295,7 +295,6 @@ namespace KTTM.Controllers
 
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
-            //Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(KVCTPCTVM.KVCTPCT.KVPCTId);
@@ -319,7 +318,7 @@ namespace KTTM.Controllers
 
         [HttpPost, ActionName("Edit_KVCTPCT")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_KVCTPCT_Post(long id)
+        public async Task<IActionResult> Edit_KVCTPCT_Post(long id, int page)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -582,7 +581,23 @@ namespace KTTM.Controllers
                     return View(KVCTPCTVM);
                 }
             }
+
             // not valid
+            KVCTPCTVM.KVCTPCT = await _kVCTPCTService.GetById(id);
+            KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(KVCTPCTVM.KVCTPCT.KVPCTId);
+            KVCTPCTVM.Page = page;
+            KVCTPCTVM.DmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();
+            KVCTPCTVM.Quays = _kVCTPCTService.GetAll_Quay_View();
+            KVCTPCTVM.MatHangs = _kVCTPCTService.GetAll_MatHangs_View().ToList();
+            KVCTPCTVM.PhongBans = _kVCTPCTService.GetAll_PhongBans_View();
+            KVCTPCTVM.LoaiHDGocs = _kVCTPCTService.LoaiHDGocs();
+            KVCTPCTVM.Ngoaites = _kVCTPCTService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            Get_TkNo_TkCo();
+            // tentk
+            KVCTPCTVM.TenTkNo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKNo).TenTk;
+            KVCTPCTVM.TenTkCo = _kVCTPCTService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPCT.TKCo).TenTk;
+            KVCTPCTVM.Dgiais = _kVCTPCTService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPCT.TKNo, KVCTPCTVM.KVCTPCT.TKCo);
+
 
             return View(KVCTPCTVM);
         }

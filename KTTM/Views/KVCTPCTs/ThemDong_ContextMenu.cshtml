@@ -42,7 +42,7 @@
 
                         <div class="col-md-1">
                             <label asp-for="KVCTPCT.HTTC" class="control-label"></label>
-                            <select asp-for="KVCTPCT.HTTC" class="form-control form-control-sm select2"
+                            <select asp-for="KVCTPCT.HTTC" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.DmHttcs, "Httc", "Httc"))" id="ddlHttc">
                             </select>
                             <span asp-validation-for="KVCTPCT.HTTC" class="text-danger"></span>
@@ -176,38 +176,12 @@
 
                     </div>
 
-                    @*}*@
-                    <!--else // Thu
-                    {
-                        <div class=" row">
-
-                            <div class="col-md-2">
-                                <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>-->
-                    @*<select asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm select2"
-                                asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" id="ddlMaKhCo">
-                        </select>*@
-                    <!--<div class="input-group">
-                                    <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo">
-                                    <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                    </span>
-                                </div>
-                                <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-10">
-                                <label class="control-label ">Tên KH có</label>
-                                <input type="text" class="form-control form-control-sm" id="txtTenKhCo" />
-                            </div>
-
-                        </div>
-
-                    }-->
 
                     <div class=" row">
 
                         <div class="col-md-3">
                             <label asp-for="KVCTPCT.NoQuay" class="control-label "></label>
-                            <select asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm select2"
+                            <select asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                             </select>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
@@ -224,7 +198,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="KVCTPCT.BoPhan" class="control-label "></label>
-                            <select asp-for="KVCTPCT.BoPhan" class="form-control form-control-sm select2"
+                            <select asp-for="KVCTPCT.BoPhan" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "BoPhan"))" id="ddlBoPhan">
                             </select>
                             <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
@@ -270,7 +244,7 @@
                         <div class="col-md-3">
                             <label asp-for="KVCTPCT.LoaiHDGoc" class="control-label "></label>
                             @*<input asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm" id="txtLoaiHDGoc" />*@
-                            <select asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm select2"
+                            <select asp-for="KVCTPCT.LoaiHDGoc" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.LoaiHDGocs, "Name", "Name"))" id="ddlLoaiHDGoc">
                             </select>
                             <span asp-validation-for="KVCTPCT.LoaiHDGoc" class="text-danger"></span>
