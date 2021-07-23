@@ -134,7 +134,7 @@
                 <input type="hidden" id="hidThemDongSoCT" name="soCT" />
                 <input type="hidden" value="@Model.StrUrl" name="strUrl" />
                 <input type="hidden" value="@Model.Page" name="page" />
-                <input type="hidden" id="hidIdCu" name="id_Dong_Da_Click" />
+                <input type="hidden" id="hidIdCu" name="id_Dong_Da_Click" value="0"/>
             </form>
             <form id="frmThemDong_ContextMenu" asp-action="ThemDong_ContextMenu" asp-controller="KVCTPCTs" method="get">
                 <input type="hidden" id="hidThemDongSoCT_ContextMenu" name="soCT" />
@@ -264,7 +264,6 @@
 
 @section Scripts{
 
-    <script src="~/lib/shortcut.js"></script>
     <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
 

@@ -576,20 +576,7 @@
             tkNo = $(this).val();
             tkCo = $('#ddlTkCo').val();
 
-            $.ajax({
-                url: '/KVCTPCTs/Get_TenTk_By_Tk',
-                type: 'GET',
-                data: {
-                    tk: tkNo
-                },
-                dataType: 'json',
-                success: function (response) {
-                    //var data = JSON.parse(response.data);
-                    // console.log(data);
-                    $('#txtTenTkNo').val(response.data);
-                }
-            });
-
+            serviceController.DdlTkNo(tkNo);
             serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
         })
@@ -597,73 +584,60 @@
             tkCo = $(this).val();
             tkNo = $('#ddlTkNo').val();
 
-            $.ajax({
-                url: '/KVCTPCTs/Get_TenTk_By_Tk',
-                type: 'GET',
-                data: {
-                    tk: tkCo
-                },
-                dataType: 'json',
-                success: function (response) {
-                    //var data = JSON.parse(response.data);
-                    //console.log(data);
-                    $('#txtTenTkCo').val(response.data);
-                }
-            });
-
+            serviceController.DdlTkCo(tkCo);
             serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
         })
         // get dien giai by tkno tkco
 
-        // makh => tenkh
-        $('#ddlMaKhNo').change(function () {
+        //// makh => tenkh
+        //$('#ddlMaKhNo').change(function () {
 
-            var code = $(this).val();
-            $.ajax({
-                url: '/KVCTPCTs/GetKhachHangs_By_Code',
-                type: 'GET',
-                data: { code: code },
-                dataType: 'json',
-                success: function (response) {
-                    var data = response.data;
-                    console.log(data);
-                    $('#txtTenKhNo').val(data.name.trim());
-                    $('#txtKyHieu').val(data.taxSign.trim());
-                    $('#txtMauSoHD').val(data.taxForm.trim());
-                    $('#txtMsThue').val(data.taxCode.trim());
-                    $('#txtTenKH').val(data.name.trim());
-                    if (data.address !== null) {
-                        $('#txtDiaChi').val(data.address.trim());
-                    }
-                }
-            })
-        })
-        $('#ddlMaKhCo').change(function () { // ko duoc off change , on change
+        //    var code = $(this).val();
+        //    $.ajax({
+        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
+        //        type: 'GET',
+        //        data: { code: code },
+        //        dataType: 'json',
+        //        success: function (response) {
+        //            var data = response.data;
+        //            console.log(data);
+        //            $('#txtTenKhNo').val(data.name.trim());
+        //            $('#txtKyHieu').val(data.taxSign.trim());
+        //            $('#txtMauSoHD').val(data.taxForm.trim());
+        //            $('#txtMsThue').val(data.taxCode.trim());
+        //            $('#txtTenKH').val(data.name.trim());
+        //            if (data.address !== null) {
+        //                $('#txtDiaChi').val(data.address.trim());
+        //            }
+        //        }
+        //    })
+        //})
+        //$('#ddlMaKhCo').change(function () { // ko duoc off change , on change
 
-            var code = $(this).val();
-            $.ajax({
-                url: '/KVCTPCTs/GetKhachHangs_By_Code',
-                type: 'GET',
-                data: { code: code },
-                dataType: 'json',
-                success: function (response) {
-                    var data = response.data;
-                    //console.log(data);
+        //    var code = $(this).val();
+        //    $.ajax({
+        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
+        //        type: 'GET',
+        //        data: { code: code },
+        //        dataType: 'json',
+        //        success: function (response) {
+        //            var data = response.data;
+        //            //console.log(data);
 
-                    $('#txtTenKhCo').val(data.name.trim());
-                    $('#txtKyHieu').val(data.taxSign.trim());
-                    $('#txtMauSoHD').val(data.taxForm.trim());
-                    $('#txtMsThue').val(data.taxCode.trim());
-                    $('#txtTenKH').val(data.name.trim());
-                    if (data.address !== null) {
-                        $('#txtDiaChi').val(data.address.trim());
-                    }
+        //            $('#txtTenKhCo').val(data.name.trim());
+        //            $('#txtKyHieu').val(data.taxSign.trim());
+        //            $('#txtMauSoHD').val(data.taxForm.trim());
+        //            $('#txtMsThue').val(data.taxCode.trim());
+        //            $('#txtTenKH').val(data.name.trim());
+        //            if (data.address !== null) {
+        //                $('#txtDiaChi').val(data.address.trim());
+        //            }
 
-                }
-            })
-        })
-        // makh => tenkh
+        //        }
+        //    })
+        //})
+        //// makh => tenkh
 
         // VAT ==> DSKhongVAT
         $('#txtVAT').blur(function () {

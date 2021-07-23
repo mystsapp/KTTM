@@ -101,8 +101,41 @@ var serviceController = {
                 $('#txtSgtcode').val(response.data);
             }
         })
-    }
+    },
+    DdlTkNo: function (tkNo) {
 
+        $.ajax({
+            url: '/KVCTPCTs/Get_TenTk_By_Tk',
+            type: 'GET',
+            data: {
+                tk: tkNo
+            },
+            dataType: 'json',
+            success: function (response) {
+                //var data = JSON.parse(response.data);
+                // console.log(data);
+                $('#txtTenTkNo').val(response.data);
+            }
+        });
+
+    },
+    DdlTkCo: function (tkCo) {
+
+        $.ajax({
+            url: '/KVCTPCTs/Get_TenTk_By_Tk',
+            type: 'GET',
+            data: {
+                tk: tkCo
+            },
+            dataType: 'json',
+            success: function (response) {
+                //var data = JSON.parse(response.data);
+                //console.log(data);
+                $('#txtTenTkCo').val(response.data);
+            }
+        });
+
+    }
 
 };
 serviceController.init();

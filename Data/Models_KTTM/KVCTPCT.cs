@@ -29,10 +29,12 @@ namespace Data.Models_KTTM
 
         [DisplayName("TK Nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [Required(ErrorMessage = "TK không được để trống")]
         public string TKNo { get; set; } 
 
         [DisplayName("TK Có")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [Required(ErrorMessage = "TK không được để trống")]
         public string TKCo { get; set; } 
         
         [MaxLength(17, ErrorMessage = "Chiều dài tối đa 17 ký tự"), MinLength(17, ErrorMessage = "Chiều dài tối thiểu 17 ký tự"), Column(TypeName = "varchar(17)")]

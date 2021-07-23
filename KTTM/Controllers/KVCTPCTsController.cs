@@ -49,8 +49,12 @@ namespace KTTM.Controllers
             return PartialView(KVCTPCTVM);
         }
 
-        public async Task<IActionResult> ThemDong(string soCT, string strUrl, int page, long id_Dong_Da_Click = 0)
+        public async Task<IActionResult> ThemDong(string soCT, string strUrl, int page, long id_Dong_Da_Click)
         {
+            if (!ModelState.IsValid) // check id_Dong_Da_Click valid (da gang' = 0 trong home/index)
+            {
+                return View();
+            }
 
             Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
@@ -75,7 +79,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.Page = page; // page for redirect
 
             // R + btnThemdong
-            if(id_Dong_Da_Click > 0)
+            if (id_Dong_Da_Click > 0)
             {
                 var dongCu = await _kVCTPCTService.GetById(id_Dong_Da_Click);
                 KVCTPCTVM.KVCTPCT = dongCu;
@@ -652,10 +656,11 @@ namespace KTTM.Controllers
         }
         public JsonResult Get_TenTk_By_Tk(string tk)
         {
+            tk ??= "";
             var dmTk = _kVCTPCTService.GetAll_DmTk().Where(x => x.Tkhoan.Trim() == tk.Trim()).FirstOrDefault();
             return Json(new
             {
-                data = dmTk.TenTk.Trim()
+                data = dmTk == null ? "" : dmTk.TenTk.Trim()
             });
         }
         public JsonResult Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)

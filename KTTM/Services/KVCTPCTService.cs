@@ -379,7 +379,16 @@ namespace KTTM.Services
             string sgtcode;
             string codeNumber;
             string currentYear = DateTime.Now.Year.ToString();
-            string mark = param.Substring(3, 1); // mark : - / *
+            string mark = "";
+            try
+            {
+                mark = param.Substring(3, 1); // mark : - / *
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+            
             string[] stringArry = param.Split(mark);
 
             switch (mark)
