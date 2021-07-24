@@ -1,0 +1,66 @@
+﻿@model HomeViewModel
+
+
+<div class="modal fade" id="timPhieuModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-2">
+                <h4 class="modal-title">Tìm phiếu thu / chi</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body p-2">
+                <form id="frmTimPhieuPartial" asp-action="Index" method="post" autocomplete="off">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-12">
+                        <div class="row rounded pl-2" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+                            <div class=" row text-sm">
+
+                                <div class="col-md-3 text-sm">
+                                    <label>Nhập thông tin</label>
+                                    <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch" />
+                                </div>
+
+                                <div class="col-md-3 text-sm">
+                                    <label>Từ ngày</label>
+                                    <input class="form-control form-control-sm maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
+                                </div>
+
+                                <div class="col-md-3 text-sm">
+                                    <label>Đến ngày</label>
+                                    <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
+                                </div>
+
+                                <div class="col-md-1 text-sm">
+                                    <label>Sgtcode</label>
+                                    <input type="checkbox" name="boolSgtcode" checked="@ViewBag.boolSgtcode" />
+                                </div>
+
+                                <div class="col-md-2 text-sm">
+                                    <label>&nbsp;</label>
+                                    <div class=" btn-block ">
+                                        <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
+                                            <i class="fas fa-search"></i> Tìm kiếm
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer p-0 pt-1">
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
+                    </div>
+                </form>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Validation -->

@@ -30,33 +30,32 @@ namespace KTTM.Controllers
             _kVPCTService = kVPCTService;
             HomeVM = new HomeViewModel()
             {
-                KVPCT = new Data.Models_KTTM.KVPCT(),
+                KVPCT = new Data.Models_KTTM.KVPCT()
             };
         }
 
-        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string soCT, int page = 1)
+        //-----------LayDataCashierPartial------------
+        
+        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, string soCT, int page = 1)
         {
-            //var abcUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            //string abc = Environment.MachineName.ToString();
-            //string MachineName4 = System.Environment.GetEnvironmentVariable("COMPUTERNAME");
-
-            //string MachineName2 = System.Net.Dns.GetHostName();
-            //string MachineName1 = Environment.MachineName;
-
-            //ViewBag.stringName = abcUser + " - " + abc + " - " + MachineName4 + " - " + MachineName2 + " - " + MachineName1;
-
+            
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;
 
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
+            ViewBag.boolSgtcode = boolSgtcode;
 
             if (!string.IsNullOrEmpty(soCT)) // for redirect with soct
             {
                 HomeVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
             }
-            HomeVM.KVPTCDtos = _kVPCTService.ListKVPTC(searchString, searchFromDate, searchToDate, page);
+            else
+            {
+                HomeVM.KVPCT = new KVPCT();
+            }
+            HomeVM.KVPTCDtos = await _kVPCTService.ListKVPTC(searchString, searchFromDate, searchToDate, boolSgtcode, page);
             return View(HomeVM);
         }
 

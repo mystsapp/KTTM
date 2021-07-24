@@ -15,6 +15,7 @@
 }
 
 
+<partial name="~/Views/Home/TimPhieuPartial.cshtml" />
 
 <!-- layDataCashier modal-->
 <div class="modal fade" id="layDataCashier" aria-hidden="true" style="display: none;">
@@ -79,28 +80,28 @@
                     <div class="col-md-12">
                         <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
 
-                            <div class="col-md-2 text-sm">
-                                Nhập thông tin
-                                @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
-                                <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch" />
-                            </div>
+                            @*<div class="col-md-2 text-sm">
+                                    Nhập thông tin
+                                    <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch" />
+                                </div>
 
-                            <div class="col-md-2 text-sm">
-                                Từ ngày
-                                <input class="form-control form-control-sm maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
-                            </div>
+                                <div class="col-md-2 text-sm">
+                                    Từ ngày
+                                    <input class="form-control form-control-sm maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
+                                </div>
 
-                            <div class="col-md-2 text-sm">
-                                Đến ngày
-                                <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
-                            </div>
+                                <div class="col-md-2 text-sm">
+                                    Đến ngày
+                                    <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
+                                </div>*@
 
                             <div class="col-md-6 text-sm">
-                                &nbsp; @*<label class="custom-control-label">@ViewBag.stringName</label>*@
+                                @*&nbsp;*@
                                 <div class=" btn-block ">
-                                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                                    @*<button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
+                                            <i class="fas fa-search"></i>
+                                        </button>*@
+                                    <button type="button" class="btn btn-primary btn-sm" id="btnTimPhieu"> <i class="fas fa-binoculars text-dark"></i> Tìm phiếu</button>
 
                                     <input type="hidden" id="hidLoaiPhieu" />
 
@@ -127,14 +128,14 @@
                 <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
                 <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                 <input type="hidden" value="@Model.Page" name="page" />
-                
+
             </form>
 
             <form id="frmThemDong" asp-action="ThemDong" asp-controller="KVCTPCTs" method="get">
                 <input type="hidden" id="hidThemDongSoCT" name="soCT" />
                 <input type="hidden" value="@Model.StrUrl" name="strUrl" />
                 <input type="hidden" value="@Model.Page" name="page" />
-                <input type="hidden" id="hidIdCu" name="id_Dong_Da_Click" value="0"/>
+                <input type="hidden" id="hidIdCu" name="id_Dong_Da_Click" value="0" />
             </form>
             <form id="frmThemDong_ContextMenu" asp-action="ThemDong_ContextMenu" asp-controller="KVCTPCTs" method="get">
                 <input type="hidden" id="hidThemDongSoCT_ContextMenu" name="soCT" />
@@ -173,7 +174,7 @@
                                             <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-soCT="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             @*<span class="text-dark"> | </span>
 
-                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+                                                <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <!-- ko cho xóa -->
                                             @*<span class="text-dark"> | </span>*@
                                             <span SoCT="confirmDeleteSpan_@item.SoCT" style="display: none">
@@ -185,9 +186,9 @@
 
                                             @*<span SoCT="deleteSpan_@item.SoCT">
 
-                                            <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" data-SoCT="@item.SoCT" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.SoCT', true)"><i class="fas fa-trash-alt"></i></button>
 
-                                        </span>*@
+                                                </span>*@
 
                                             <!-- hidden form khoiphuc-->
                                             <form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
@@ -244,9 +245,9 @@
             <div id="KVCTPCT_Tbl">
             </div>
             @*<div id="KVCTPCT_Create_Partial">
-        </div>
-        <div id="KVCTPCT_Edit_Partial">
-        </div>*@
+                </div>
+                <div id="KVCTPCT_Edit_Partial">
+                </div>*@
 
             <!-- KVCTPCT-->
 

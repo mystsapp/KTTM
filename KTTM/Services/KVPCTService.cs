@@ -19,7 +19,7 @@ namespace KTTM.Services
         IEnumerable<KVPCT> GetAll();
         IEnumerable<Ngoaite> GetAllNgoaiTe();
         IEnumerable<Phongban> GetAllPhongBan();
-        IPagedList<KVPTCDto> ListKVPTC(string searchString, string searchFromDate, string searchToDate, int? page);
+        Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page);
 
         IEnumerable<ListViewModel> ListLoaiPhieu();
         IEnumerable<ListViewModel> ListLoaiTien();
@@ -30,7 +30,7 @@ namespace KTTM.Services
         Task UpdateAsync(KVPCT kVPCT);
 
         IEnumerable<TkCongNo> GetAllTkCongNo();
-        
+
     }
     public class KVPCTService : IKVPCTService
     {
@@ -96,7 +96,7 @@ namespace KTTM.Services
             }
         }
 
-        public IPagedList<KVPTCDto> ListKVPTC(string searchString, string searchFromDate, string searchToDate, int? page)
+        public async Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -112,7 +112,29 @@ namespace KTTM.Services
                 return null;
             }
 
-            if (!string.IsNullOrEmpty(searchString))
+            // search for sgtcode in kvctpct
+            if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
+            {
+
+                List<KVCTPCT> kVCTPCTs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
+
+                if (kVCTPCTs.Count() > 0)
+                {
+                    List<KVPCT> kVPCTs1 = new List<KVPCT>();
+                    foreach (var item in kVCTPCTs)
+                    {
+                        KVPCT kVPCT = await GetBySoCT(item.KVPCTId);
+                        kVPCTs1.Add(kVPCT);
+                    }
+                    if (kVPCTs1.Count > 0)
+                    {
+                        kVPCTs = kVPCTs1.Distinct();
+                    }
+                }
+
+            }
+
+            if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
                 kVPCTs = kVPCTs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
                                        (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
@@ -123,6 +145,8 @@ namespace KTTM.Services
                                        (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
+
+
             }
 
             foreach (var item in kVPCTs)
@@ -254,7 +278,7 @@ namespace KTTM.Services
         public async Task CreateAsync(KVPCT kVPCT)
         {
             _unitOfWork.kVPCTRepository.Create(kVPCT);
-           await _unitOfWork.Complete();
+            await _unitOfWork.Complete();
         }
 
         public async Task UpdateAsync(KVPCT kVPCT)

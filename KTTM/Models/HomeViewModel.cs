@@ -20,5 +20,6 @@ namespace KTTM.Models
         public IEnumerable<TkCongNo> TkCongNos { get; set; }
         public string StrUrl { get; set; }
         public int Page { get; set; }
+
     }
 }

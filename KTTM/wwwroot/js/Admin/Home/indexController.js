@@ -41,6 +41,13 @@ var indexController = {
             });
         });
 
+        $('#btnTimPhieu').off('click').on('click', function () {
+
+            $('#timPhieuModal').modal('show');
+            $('#timPhieuModal').draggable();
+
+        })
+
         // phieu click --> load kvctpct
         $('tr .tdVal').click(function () {
             $('#btnTT141').attr('disabled', true); // whien click onother row ==> off btnTT141
@@ -92,7 +99,7 @@ var indexController = {
             $('#hidIdCu').val(tmpId);
 
         });
-        
+
         // themdong click
         $('#btnTT141').click(function () {
             $('#frmTT621').submit();
@@ -112,13 +119,13 @@ var indexController = {
 
         // tdVal_KVCTPCT row click
         $('tr .tdVal_KVCTPCT').click(function () {
-            
+
             kVCTPCTId = $(this).data('id');
 
             // for btnTamUng
             var promise = indexController.CheckTamUng(kVCTPCTId);
             promise.then(function (data) {
-                
+
                 if (data) {
                     $('#btnTamUng').attr('disabled', false);
                     $('#hidTamUng').val(kVCTPCTId);
@@ -131,9 +138,9 @@ var indexController = {
             // for TT141
             var promiseTT141 = indexController.CheckTT141(kVCTPCTId);
             promiseTT141.then(function (data) {
-                
+
                 if (data) {
-                    
+
                     $('#btnTT141').attr('disabled', false);
                     $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141
                 }
@@ -218,56 +225,56 @@ var indexController = {
     },
     KhachHang_By_Code: function (code) {
 
-            $.ajax({
-                url: '/KVCTPCTs/GetKhachHangs_By_Code',
-                type: 'GET',
-                data: { code: code },
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status) {
-                        var data = response.data;
-                       // console.log(data);
+        $.ajax({
+            url: '/KVCTPCTs/GetKhachHangs_By_Code',
+            type: 'GET',
+            data: { code: code },
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    var data = response.data;
+                    // console.log(data);
 
-                        if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
-                            $('#txtMaKhNo').val(data.code);
-                            $('#txtTenKhNo').val(data.name);
-                        }
-                        if ($('#btnKhSearch').data('name') === 'maKhCo') { // search of co
-                            $('#txtMaKhCo').val(data.code);
-                            $('#txtTenKhCo').val(data.name);
-                        }
-
-                        $('#txtKyHieu').val(data.taxSign);
-                        $('#txtMauSoHD').val(data.taxForm);
-                        $('#txtMsThue').val(data.taxCode);
-                        $('#txtTenKH').val(data.name);
-                        $('#txtDiaChi').val(data.address);
-
+                    if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
+                        $('#txtMaKhNo').val(data.code);
+                        $('#txtTenKhNo').val(data.name);
+                    }
+                    if ($('#btnKhSearch').data('name') === 'maKhCo') { // search of co
+                        $('#txtMaKhCo').val(data.code);
+                        $('#txtTenKhCo').val(data.name);
                     }
 
+                    $('#txtKyHieu').val(data.taxSign);
+                    $('#txtMauSoHD').val(data.taxForm);
+                    $('#txtMsThue').val(data.taxCode);
+                    $('#txtTenKH').val(data.name);
+                    $('#txtDiaChi').val(data.address);
+
                 }
-            });
+
+            }
+        });
 
     },
     CheckTamUng: function (kVCTPCTId) {
-        
+
         return $.post('/TamUngs/CheckTamUng', { kVCTPCTId: kVCTPCTId }, function (response) {
             // console.log(response);
             return response;
         })
-        
+
     },
     CheckTT141: function (kVCTPCTId) {
-        
+
         return $.post('/TamUngs/CheckTT141', { kVCTPCTId: kVCTPCTId }, function (response) {
             //console.log(response);
             return response;
         })
-        
+
     }
 
     //GetTT621s_By_TamUng: function (tamUngId) {
-        
+
     //    $.ajax({
     //        url: '/TT621/GetTT621s_By_TamUng',
     //        type: 'GET',
@@ -296,7 +303,7 @@ var indexController = {
     //                });
 
     //                $('#ctThanhToanBody').html(html);
-                   
+
     //            }
     //        }
     //    });
