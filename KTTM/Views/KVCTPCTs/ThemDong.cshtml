@@ -139,13 +139,13 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
                                 <div class="input-group">
-                                    <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" disabled>
+                                    <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" readonly>
                                 </div>
                                 <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
                                 <label class="control-label ">Tên KH nợ</label>
-                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhNo" disabled />
+                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhNo" readonly />
                             </div>
 
                             <div class="col-md-2">
@@ -185,14 +185,14 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPCT.MaKhCo" class="control-label "></label>
                                 <div class="input-group">
-                                    <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
+                                    <input asp-for="KVCTPCT.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" readonly>
                                 </div>
                                 <span asp-validation-for="KVCTPCT.MaKhCo" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label class="control-label ">Tên KH có</label>
-                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" disabled />
+                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" readonly />
                             </div>
 
                         }
@@ -203,9 +203,10 @@
                         {
                             <div class="col-md-3">
                                 <label asp-for="KVCTPCT.NoQuay" class="control-label "></label>
-                                <select asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm select2" disabled
+                                @*<select asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm select2" disabled
                                         asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                </select>
+                                </select>*@
+                                <input asp-for="KVCTPCT.NoQuay" class="form-control form-control-sm " readonly />
                                 <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                             </div>
 
@@ -230,9 +231,10 @@
 
                             <div class="col-md-3">
                                 <label asp-for="KVCTPCT.CoQuay" class="control-label "></label>
-                                <select asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm select2" disabled
+                                @*<select asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm select2" disabled
                                         asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                </select>
+                                </select>*@
+                                <input asp-for="KVCTPCT.CoQuay" class="form-control form-control-sm " readonly />
                                 <span asp-validation-for="KVCTPCT.CoQuay" class="text-danger"></span>
                             </div>
                         }

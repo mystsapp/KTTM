@@ -30,6 +30,8 @@
                         <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> @*tamungid khi khi click vao list tamung  trong TT621Create*@
                         <input type="hidden" asp-for="KVCTPCT.KVPCTId"> @*dung de luu PhieuTC trong tt621*@
                         <input type="hidden" asp-for="KVCTPCT.SoTienNT">
+                        <input type="hidden" asp-for="KVCTPCT.TKNo"> <!-- for form valid in tt621 post-->
+                        <input type="hidden" asp-for="KVCTPCT.TKCo"> <!-- for form valid in tt621 post-->
 
                         <fieldset class="groupbox-border ">
                             <legend class="groupbox-border">Thông tin về tài chánh </legend>
@@ -143,13 +145,13 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhNo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" disabled>
+                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" readonly>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH nợ</label>
-                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" disabled />
+                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" readonly />
                                     </div>
 
                                     <div class="col-md-2">
@@ -189,14 +191,14 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi" disabled>
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi" readonly>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" disabled />
+                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" readonly />
                                     </div>
 
                                 }
@@ -207,9 +209,10 @@
                                 {
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
+                                        @*<select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
                                                 asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                        </select>
+                                        </select>*@
+                                        <input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
 
@@ -234,9 +237,10 @@
 
                                     <div class="col-md-3">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
+                                        @*<select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
                                                 asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                        </select>
+                                        </select>*@
+                                        <input asp-for="TT621.CoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
                                 }

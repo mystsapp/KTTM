@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Dtos;
+using Data.Models_KTTM;
 using Data.Repository;
 using Data.Utilities;
 using System;
@@ -21,6 +22,7 @@ namespace KTTM.Services
         Task<TT621> FindById_Include(long id);
         TT621 GetByIdAsNoTracking(long tt621Id);
         decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create);
+        TT621Dto ConvertTT621ToTT621Dto(TT621 tT621);
     }
     public class TT621Service : ITT621Service
     {
@@ -84,6 +86,61 @@ namespace KTTM.Services
         public async Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId)
         {
             return await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng, y => y.TamUngId == tamUngId);
+        }
+
+        public TT621Dto ConvertTT621ToTT621Dto(TT621 tT621)
+        {
+            var kVPCTId = _unitOfWork.kVCTPCTRepository.GetById(tT621.TamUngId).KVPCTId;
+            var kVPCT = _unitOfWork.kVPCTRepository.GetById(kVPCTId);
+            TT621Dto tT621Dto = new TT621Dto()
+            {
+                BoPhan = tT621.BoPhan,
+                CoQuay = tT621.CoQuay,
+                DiaChi = tT621.DiaChi,
+                DienGiai = tT621.DienGiai,
+                DienGiaiP = tT621.DienGiaiP,
+                DieuChinh = tT621.DieuChinh,
+                DSKhongVAT = tT621.DSKhongVAT,
+                GhiSo = tT621.GhiSo,
+                HoaDonDT = tT621.HoaDonDT,
+                HTTC = tT621.HTTC,
+                Id = tT621.Id,
+                KyHieu = tT621.KyHieu,
+                KyHieuHD = tT621.KyHieuHD,
+                LapPhieu = tT621.LapPhieu,
+                LoaiHDGoc = tT621.LoaiHDGoc,
+                LoaiPhieu = kVPCT.MFieu,
+                LoaiTien = tT621.LoaiTien,
+                LogFile = tT621.LogFile,
+                MaKhCo = tT621.MaKhCo,
+                MaKhNo = tT621.MaKhNo,
+                MatHang = tT621.MatHang,
+                MauSoHD = tT621.MauSoHD,
+                MsThue = tT621.MsThue,
+                NgayCT = tT621.NgayCT,
+                NgayCTGoc = tT621.NgayCTGoc,
+                NgaySua = tT621.NgaySua,
+                NgayTao = tT621.NgayTao,
+                NguoiSua = tT621.NguoiSua,
+                NguoiTao = tT621.NguoiTao,
+                NoQuay = tT621.NoQuay,
+                PhieuTC = tT621.PhieuTC,
+                PhieuTU = tT621.PhieuTU,
+                Sgtcode = tT621.Sgtcode,
+                SoCT = tT621.SoCT,
+                SoCTGoc = tT621.SoCTGoc,
+                SoTien = tT621.SoTien,
+                SoTienNT = tT621.SoTienNT,
+                SoXe = tT621.SoXe,
+                TamUngId = tT621.TamUngId,
+                TenKH = tT621.TenKH,
+                TKCo = tT621.TKCo,
+                TKNo = tT621.TKNo,
+                TyGia = tT621.TyGia,
+                VAT = tT621.VAT
+            };
+
+            return tT621Dto;
         }
 
         public async Task UpdateAsync(TT621 tT621)

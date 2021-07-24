@@ -48,7 +48,8 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm phiếu TT</h1>
+                <h1>Thêm phiếu TT - <span>@Model.KVPCT.MFieu</span></h1>
+                <input type="hidden" value="@Model.KVPCT.SoCT" id="kVPCTId_TT621CreateView" />
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -215,6 +216,7 @@
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
+                            <th>Phiếu TC</th>
                         </tr>
                     </thead>
                     <tbody id="ctThanhToanBody">
@@ -237,7 +239,7 @@
     <script src="~/js/Admin/TT621/createController.js"></script>
     <script id="data-template" type="x-tmpl-mustache">
 
-        <tr class="trTT621" data-id="{{Id}}">
+        <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
 
             <td>{{DienGiai}}</td>
             <td>{{DienGiaiP}}</td>
@@ -249,6 +251,7 @@
             <td>{{MaKhNo}}</td>
             <td>{{TKCo}}</td>
             <td>{{MaKhCo}}</td>
+            <td>{{PhieuTC}}</td>
 
         </tr>
     </script>

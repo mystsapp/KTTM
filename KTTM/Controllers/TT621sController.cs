@@ -27,7 +27,8 @@ namespace KTTM.Controllers
             TT621VM = new TT621ViewModel()
             {
                 TT621 = new Data.Models_KTTM.TT621(),
-                KVCTPCT = new Data.Models_KTTM.KVCTPCT()
+                KVCTPCT = new Data.Models_KTTM.KVCTPCT(),
+                KVPCT = new KVPCT()
             };
 
             _kVCTPCTService = kVCTPCTService;
@@ -61,6 +62,8 @@ namespace KTTM.Controllers
 
             var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
             TT621VM.CommentText = jsonResult.Result.Value.ToString();
+
+            TT621VM.KVPCT = await _kVPCTService.GetBySoCT(TT621VM.KVCTPCT.KVPCTId);
             
             return View(TT621VM);
         }
@@ -545,6 +548,7 @@ namespace KTTM.Controllers
         }
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
         {
+            
             var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
             if (tT621s.Count() > 0)
             {

@@ -187,7 +187,8 @@ var createController = {
                             TKNo: item.tkNo,
                             MaKhNo: item.maKhNo,
                             TKCo: item.tkCo,
-                            MaKhCo: item.maKhCo
+                            MaKhCo: item.maKhCo,
+                            PhieuTC: item.phieuTC
                         });
 
                     });
@@ -203,10 +204,24 @@ var createController = {
                             $('.trTT621').removeClass("hoverClass");
                             $(this).addClass("hoverClass");
                         }
-
                         tt621Id = $(this).data('id');
                         $('#hidTT621Id').val(tt621Id); // moi lan click tt621 tr se gang' id len hidTT621Id
-                        $('#btnCapNhatCT').attr('disabled', false);
+
+                        
+                        phieuTC = $(this).data('phieutc');                             // trong tt621 tbl
+                        var soCT_TT621CreateView = $('#kVPCTId_TT621CreateView').val();// trong TT621CreateView
+                        
+                        if (phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) { // cung phieu T cho capnhat
+                            $('#btnCapNhatCT').attr('disabled', false);
+                        }
+                        if (phieuTC.includes("C") && soCT_TT621CreateView.includes("C")) { // cung phieu C cho capnhat
+                            $('#btnCapNhatCT').attr('disabled', false);
+                        }
+                        if ((!phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) ||
+                             (phieuTC.includes("T") && !soCT_TT621CreateView.includes("T"))) { // khac phieu => ko cho capnhat
+                            $('#btnCapNhatCT').attr('disabled', true);
+                        }
+                        
                         $('#btnDelete').attr('disabled', false);
 
                     })

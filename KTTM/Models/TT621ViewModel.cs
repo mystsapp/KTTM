@@ -14,6 +14,7 @@ namespace KTTM.Models
     {
         public TT621 TT621 { get; set; }
         public KVCTPCT KVCTPCT { get; set; }
+        public KVPCT KVPCT { get; set; }
         public IEnumerable<TamUng> TamUngs { get; set; }
         public long TamUngId { get; set; }
         public IEnumerable<TT621> TT621s { get; set; }
