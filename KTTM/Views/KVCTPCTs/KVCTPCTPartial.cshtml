@@ -67,13 +67,13 @@
                         <td>
                             <div class="btn-group text-white" role="group">
 
-                                <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPCT" asp-controller="KVCTPCTs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
-                                @*<span class="text-dark"> | </span>*@
-
-                                <!--<a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="item.Id"><i class="fas fa-list"></i></a>-->
-
                                 @if (string.IsNullOrEmpty(item.TamUng)) // có trong tamung
                                 {
+                                    <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPCT" asp-controller="KVCTPCTs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
+                                    @*<span class="text-dark"> | </span>*@
+
+                                    <!--<a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="item.Id"><i class="fas fa-list"></i></a>-->
+
                                     <span class="text-dark"> | </span>
                                     <span id="confirmDeleteSpan_@item.Id" style="display: none">
 
@@ -90,15 +90,16 @@
                                 }
                                 else // khong được xoa khi da them ct vao tam ung
                                 {
+                                    <button type="button" disabled class="border-0 bg-transparent" ><i class="fas fa-edit"></i></button>
                                     <span class="text-dark"> | </span>
                                     <button type="button" disabled class=" border-0 bg-transparent btnXoa" title="Xoá"><i class="fas fa-trash-alt"></i></button>
 
                                 }
                                 <!-- hidden form khoiphuc-->
                                 <!--<form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
-                                    <input type="hidden" id="hidTourId" name="id" />
-                                    <input type="hidden" id="hidStrUrl" name="strUrl" value="Model.StrUrl" />
-                                </form>-->
+        <input type="hidden" id="hidTourId" name="id" />
+        <input type="hidden" id="hidStrUrl" name="strUrl" value="Model.StrUrl" />
+    </form>-->
 
                             </div>
                         </td>

@@ -105,9 +105,17 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TKCo" class="control-label"></label>
-                                    <select asp-for="TT621.TKCo" class="form-control form-control-sm select2"
-                                            asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
-                                    </select>
+                                    @if (Model.TT621.TKCo == "1411") // tk co 1411 => ko cho sua
+                                    {
+                                        <input asp-for="TT621.TKCo" class="form-control form-control-sm " readonly />
+                                    }
+                                    else
+                                    {
+                                        <select asp-for="TT621.TKCo" class="form-control form-control-sm select2"
+                                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                                        </select>
+                                    }
+
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
                                 </div>
 
@@ -167,7 +175,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" readonly/>
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" readonly />
                                     </div>
 
                                 }
@@ -210,8 +218,8 @@
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         @*<select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                        </select>*@
+                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            </select>*@
                                         <input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
@@ -238,8 +246,8 @@
                                     <div class="col-md-3">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         @*<select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                        </select>*@
+                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                            </select>*@
                                         <input asp-for="TT621.CoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -342,7 +350,7 @@
 
                                     <div class="col-md-12">
                                         <label asp-for="TT621.TenKH" class="control-label "></label>
-                                        <input asp-for="TT621.TenKH" class="form-control form-control-sm" id="txtTenKH" readonly/>
+                                        <input asp-for="TT621.TenKH" class="form-control form-control-sm" id="txtTenKH" readonly />
                                         <span asp-validation-for="TT621.TenKH" class="text-danger"></span>
                                     </div>
 
@@ -352,7 +360,7 @@
 
                                     <div class="col-md-12">
                                         <label asp-for="TT621.DiaChi" class="control-label "></label>
-                                        <input asp-for="TT621.DiaChi" class="form-control form-control-sm" id="txtDiaChi" readonly/>
+                                        <input asp-for="TT621.DiaChi" class="form-control form-control-sm" id="txtDiaChi" readonly />
                                         <span asp-validation-for="TT621.DiaChi" class="text-danger"></span>
                                     </div>
 
@@ -442,7 +450,7 @@
 <script>
     // btnKhSearch
     $('#btnKhSearch_CapNhat').click(function () {
-        
+
         var maKhtext = '';
 
         if ($(this).data('name') === 'maKhNo') { // search of no
@@ -454,6 +462,24 @@
 
         KhachHangSearch(maKhtext);
     })
+
+    $('#txtMaKhNo_CapNhat').blur(function () {
+
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            createController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
+        })
+
+    $('#txtMaKhCo_CapNhat').blur(function () {
+
+            var tkCo = '@Model.KVCTPCT.TKCo';
+            if (tkCo !== "1411") {
+                maKhtext = $(this).val();
+
+                indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
+            }
+        })
 
     $('#frm_CapNhatCT_TT_Partial').validate({
         //rules: {
@@ -612,35 +638,7 @@
         });
     }
 
-    //// Get_DienGiai_By_TkNo_TkCo --> forward to service
-    //function Check_SoTienCanKetChuyenToiDa(tkNo, tkCo) {
-    //    $('#ddlDienGiai').html('');
-    //    var option = '';
+    //// Check_SoTienCanKetChuyenToiDa Get_DienGiai_By_TkNo_TkCo --> forward to service
 
-    //    $.ajax({
-    //        url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
-    //        type: 'GET',
-    //        data: {
-    //            tkNo: tkNo,
-    //            tkCo: tkCo
-    //        },
-    //        dataType: 'json',
-    //        success: function (response) {
-
-    //            if (response.status) {
-
-    //                var data = response.data;
-
-    //                $.each(data, function (i, item) {
-    //                    option = option + '<option value="' + item.dienGiai + '">' + item.dienGiai + '</option>'; //chinhanh1
-
-    //                });
-
-    //                $('#ddlDienGiai').html(option);
-    //            }
-
-    //        }
-    //    });
-    //}
 
 </script>

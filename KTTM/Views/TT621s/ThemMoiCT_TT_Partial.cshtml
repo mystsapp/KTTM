@@ -416,7 +416,7 @@
 <script>
     // btnKhSearch
     $('#btnKhSearch_ThemMoi').click(function () {
-        
+
         var maKhtext = '';
 
         if ($(this).data('name') === 'maKhNo') { // search of no
@@ -428,6 +428,24 @@
 
         KhachHangSearch_ThemMoiTT(maKhtext);
     })
+
+    $('#txtMaKhNo_ThemMoi').blur(function () {
+
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            createController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
+        })
+
+    $('#txtMaKhCo_ThemMoi').blur(function () {
+
+            var tkCo = '@Model.KVCTPCT.TKCo';
+            if (tkCo !== "1411") {
+                maKhtext = $(this).val();
+
+                indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
+            }
+        })
 
     $('#frm_ThemMoiCT_TT_Partial').validate({
         //rules: {
