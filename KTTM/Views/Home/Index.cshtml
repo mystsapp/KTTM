@@ -73,42 +73,30 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <form method="get" autocomplete="off">
 
-                <div class="pr-2 pl-2" style="padding-bottom:10px; padding-top: 6px; ">
+            <div class="pr-2 pl-2" style="padding-bottom:10px; padding-top: 6px; ">
 
-                    <div class="col-md-12">
-                        <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+                <div class="col-md-12">
+                    <div class="row rounded" style="padding-bottom: 5px; padding-top: 5px; background-color: aliceblue;" id="search">
 
-                            @*<div class="col-md-2 text-sm">
-                                    Nhập thông tin
-                                    <input class="form-control form-control-sm" name="searchString" value="@ViewBag.searchString" id="testSearch" />
-                                </div>
-
-                                <div class="col-md-2 text-sm">
-                                    Từ ngày
-                                    <input class="form-control form-control-sm maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
-                                </div>
-
-                                <div class="col-md-2 text-sm">
-                                    Đến ngày
-                                    <input class="form-control form-control-sm maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
-                                </div>*@
-
-                            <div class="col-md-6 text-sm">
-                                @*&nbsp;*@
+                        <div class="col-md-6 text-sm">
+                            <form id="frmTT621" asp-action="TT621Create" asp-controller="TT621s" method="get">
                                 <div class=" btn-block ">
-                                    @*<button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
-                                            <i class="fas fa-search"></i>
-                                        </button>*@
+
                                     <button type="button" class="btn btn-primary btn-sm" id="btnTimPhieu"> <i class="fas fa-binoculars text-dark"></i> Tìm phiếu</button>
 
                                     <input type="hidden" id="hidLoaiPhieu" />
 
                                     <a class="btn btn-outline-info btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                                     <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
-                                    <button type="submit" class="btn btn-outline-dark btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="141 Không TC">141 Không TC</button>
-                                    <button type="button" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>
+                                    
+                                    <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
+                                    <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
+                                    <input type="hidden" value="@Model.Page" name="page" />
+                                    <button type="submit" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>
+                                    <button type="submit" class="btn btn-outline-dark btn-sm" disabled id="btn141KhongTC" title="141 Không TC" formaction="/TT621s/KhongTC_141" formmethod="get">141 Không TC</button>
+
+                                    @*<button type="button" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>*@
 
                                     <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
@@ -116,19 +104,18 @@
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btnTamUng" disabled title="Tạm ứng">Tạm ứng</button>
                                     <input type="hidden" id="hidTamUng" />
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
 
-
-            <form id="frmTT621" asp-action="TT621Create" asp-controller="TT621s" method="get">
+            @*<form id="frmTT621" asp-action="TT621Create" asp-controller="TT621s" method="get">
                 <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
                 <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                 <input type="hidden" value="@Model.Page" name="page" />
 
-            </form>
+            </form>*@
 
             <form id="frmThemDong" asp-action="ThemDong" asp-controller="KVCTPCTs" method="get">
                 <input type="hidden" id="hidThemDongSoCT" name="soCT" />
@@ -297,18 +284,18 @@
                 $('#' + confirmDeleteSpan).hide();
             }
         }
-        function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
-            var deleteSpan = 'deleteInvoiceSpan_' + uniqueId;
-            var confirmDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
+        //function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
+        //    var deleteSpan = 'deleteInvoiceSpan_' + uniqueId;
+        //    var confirmDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
 
-            if (isDeleteClicked) {
-                $('#' + deleteSpan).hide();
-                $('#' + confirmDeleteSpan).show();
-            } else {
-                $('#' + deleteSpan).show();
-                $('#' + confirmDeleteSpan).hide();
-            }
-        }
+        //    if (isDeleteClicked) {
+        //        $('#' + deleteSpan).hide();
+        //        $('#' + confirmDeleteSpan).show();
+        //    } else {
+        //        $('#' + deleteSpan).show();
+        //        $('#' + confirmDeleteSpan).hide();
+        //    }
+        //}
 
         function KVCTPCT_Tbl() { // tab href
             location.href = "#KVCTPCT_Tbl";

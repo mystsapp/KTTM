@@ -100,11 +100,11 @@ var indexController = {
 
         //});
 
-        // themdong click
-        $('#btnTT141').click(function () {
-            $('#frmTT621').submit();
-        });
-        // themdong click
+        //// btnTT141 click
+        //$('#btnTT141').click(function () {
+        //    $('#frmTT621').submit();
+        //});
+        //// btnTT141 click
 
         // giu trang thai phieu click
         $('#phieuTbl .cursor-pointer').off('click').on('click', function () {
@@ -135,17 +135,19 @@ var indexController = {
                 }
             }, error => alert(error));
 
-            // for TT141
+            // for TT141 and 141KhongTC
             var promiseTT141 = indexController.CheckTT141(kVCTPCTId);
             promiseTT141.then(function (data) {
 
                 if (data) {
 
                     $('#btnTT141').attr('disabled', false);
+                    $('#btn141KhongTC').attr('disabled', false);
                     $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141
                 }
                 else {
                     $('#btnTT141').attr('disabled', true);
+                    $('#btn141KhongTC').attr('disabled', true);
                 }
             }, error => alert(error));
 

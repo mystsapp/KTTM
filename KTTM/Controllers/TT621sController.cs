@@ -36,7 +36,7 @@ namespace KTTM.Controllers
             _tT621Service = tT621Service;
             _kVPCTService = kVPCTService;
         }
-        public async Task<IActionResult> TT621Create(long kvctpctId, string strUrl, string page)
+        public async Task<IActionResult> KhongTC_141(long kvctpctId, string strUrl, string page)
         {
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
@@ -60,6 +60,41 @@ namespace KTTM.Controllers
             TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh); // MaKh == MaKhNo
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
 
+            // get commenttext
+            var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
+            TT621VM.CommentText = jsonResult.Result.Value.ToString();
+
+            TT621VM.KVPCT = await _kVPCTService.GetBySoCT(TT621VM.KVCTPCT.KVPCTId);
+            
+            return View(TT621VM);
+        }
+
+        ////////////////////////////////////////////// TT141 //////////////////////////////////////////////
+         public async Task<IActionResult> TT621Create(long kvctpctId, string strUrl, string page)
+        {
+            TT621VM.StrUrl = strUrl;
+            TT621VM.Page = page;
+
+            if (kvctpctId == 0)
+            {
+                ViewBag.ErrorMessage = "Chi tiết này không tồn tại";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            var kVCTPCT = await _kVCTPCTService.GetById(kvctpctId);
+
+            if (kVCTPCT == null)
+            {
+                ViewBag.ErrorMessage = "Chi tiết này không tồn tại";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            TT621VM.KVCTPCT = kVCTPCT;
+            // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
+            TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh); // MaKh == MaKhNo
+            TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
+
+            // get commenttext
             var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
             TT621VM.CommentText = jsonResult.Result.Value.ToString();
 
