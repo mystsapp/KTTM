@@ -505,6 +505,12 @@
             indexController.KhachHang_By_Code(maKhtext);
         })
 
+        $('#ddlNgoaiTe').change(function () {
+            loaiTien = $(this).val();
+            loaiPhieu = '@Model.KVPCT.MFieu';
+            serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
+        })
+
         $('#frm_KVCTPCT_Create').validate({
             //rules: {
             //    email: {

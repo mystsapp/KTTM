@@ -88,7 +88,7 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TKNo" class="control-label"></label>
-                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm select2"
+                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                                     </select>
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
@@ -111,7 +111,7 @@
                                     }
                                     else
                                     {
-                                        <select asp-for="TT621.TKCo" class="form-control form-control-sm select2"
+                                        <select asp-for="TT621.TKCo" class="form-control form-control-sm "
                                                 asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
                                         </select>
                                     }
@@ -435,6 +435,8 @@
     //$('#txtMaKH').select2()
     $('.select2').select2({
     })
+    $('#ddlTkNo').select2()
+    $('#ddlTkCo').select2()
     //Initialize Select2 Elements
     $('.select2bs4').select2({
         theme: 'bootstrap4'
@@ -479,6 +481,12 @@
 
                 indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
             }
+        })
+
+        $('#ddlNgoaiTe').change(function () {
+            loaiTien = $(this).val();
+            loaiPhieu = '@Model.KVCTPCT.KVPCT.MFieu';
+            serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
         })
 
     $('#frm_CapNhatCT_TT_Partial').validate({

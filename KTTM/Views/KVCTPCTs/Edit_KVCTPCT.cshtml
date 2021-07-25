@@ -530,6 +530,12 @@
             }
         })
 
+        $('#ddlNgoaiTe').change(function () {
+            loaiTien = $(this).val();
+            loaiPhieu = '@Model.KVPCT.MFieu';
+            serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
+        })
+
         $('#frm_KVCTPCT_Edit').validate({
             //rules: {
             //    ddlTkNo: {

@@ -93,12 +93,12 @@ var indexController = {
         });
         // themdong click
 
-        // press r + choose row => copy new row
-        shortcut.add("r", function () {
-            var tmpId = $('#hid_Id_Dong_Da_Click_tmp').val();
-            $('#hidIdCu').val(tmpId);
+        //// press r + choose row => copy new row
+        //shortcut.add("r", function () {
+        //    var tmpId = $('#hid_Id_Dong_Da_Click_tmp').val();
+        //    $('#hidIdCu').val(tmpId);
 
-        });
+        //});
 
         // themdong click
         $('#btnTT141').click(function () {
@@ -149,8 +149,8 @@ var indexController = {
                 }
             }, error => alert(error));
 
-            // for phim' R => copy dong cu cho dong moi
-            $('#hid_Id_Dong_Da_Click_tmp').val(kVCTPCTId); // luu tạm
+            // for => copy dong cu cho dong moi
+            $('#hidIdCu').val(kVCTPCTId); 
 
         });
         // tdVal_KVCTPCT row click

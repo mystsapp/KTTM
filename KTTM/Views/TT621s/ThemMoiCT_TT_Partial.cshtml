@@ -210,8 +210,8 @@
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         @*<select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                        </select>*@
+                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            </select>*@
                                         <input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
@@ -238,8 +238,8 @@
                                     <div class="col-md-3">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         @*<select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                        </select>*@
+                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                            </select>*@
                                         <input asp-for="TT621.CoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -445,6 +445,12 @@
 
                 indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
             }
+    })
+
+        $('#ddlNgoaiTe').change(function () {
+            loaiTien = $(this).val();
+            loaiPhieu = '@Model.KVCTPCT.KVPCT.MFieu';
+            serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
         })
 
     $('#frm_ThemMoiCT_TT_Partial').validate({
