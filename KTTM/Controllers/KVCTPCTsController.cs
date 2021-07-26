@@ -661,17 +661,16 @@ namespace KTTM.Controllers
 
         public JsonResult GetKhachHangs_By_Code(string code)
         {
-            //var viewSupplier = _kVCTPCTService.GetAll_KhachHangs_View().Where(x => x.Code == code).FirstOrDefault();
-            //var suppliers = _kVCTPCTService.GetSuppliersByCode(code).ToList();//
-            var supplierList = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().ToList();//
-            var supplier = supplierList.Where(x => x.Code.Trim().ToLower() == code.Trim().ToLower()).FirstOrDefault();
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            var supplier = _kVCTPCTService.GetSuppliersByCode(code, user.Macn).FirstOrDefault();
             if (supplier != null)
             {
                 return Json(new
                 {
                     status = true,
                     data = supplier
-                    //data = listViewModels.Select(x => x.Name.Trim()).Take(10)
                 }); ;
             }
             else
@@ -684,9 +683,11 @@ namespace KTTM.Controllers
         }
         public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             code ??= "";
-            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
-            KVCTPCTVM.MaKhText = code;
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetSuppliersByCode(code, user.Macn);
             return PartialView(KVCTPCTVM);
         }
         public JsonResult Get_TenTk_By_Tk(string tk)

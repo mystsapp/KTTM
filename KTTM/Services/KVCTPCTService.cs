@@ -39,7 +39,7 @@ namespace KTTM.Services
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         Task<KVCTPCT> GetById(long id);
         IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
-        IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code);
+        IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn);
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
         Task UpdateAsync(KVCTPCT kVCTPCT);
@@ -339,9 +339,10 @@ namespace KTTM.Services
 
         }
 
-        public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code)
+        public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn)
         {
-            return _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == code);
+            code ??= "";
+            return _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn);
         }
 
         public async Task DeleteAsync(KVCTPCT kVCTPCT)

@@ -48,7 +48,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm phiếu TT - <span>@Model.KVPCT.MFieu</span></h1>
+                <h1>Thêm phiếu TT </h1>
                 <input type="hidden" value="@Model.KVPCT.SoCT" id="kVPCTId_TT621CreateView" />
             </div>
             <div class="col-sm-6">
@@ -186,7 +186,7 @@
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
-                    <button type="button" class="btn btn-outline-dark btn-sm" title="Thanh toán không kết chuyển"><i class="fas fa-folder text-warning"></i></button>
+                    @*<button type="button" class="btn btn-outline-dark btn-sm" title="Thanh toán không kết chuyển"><i class="fas fa-folder text-warning"></i></button>*@
                     <button type="button" class="btn btn-outline-dark btn-sm" title="Kết chuyển" disabled id="btnKetChuyen"><i class="fas fa-check"></i></button>
                 </div>
 
@@ -275,7 +275,13 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- khachhang modal-->
-
+<form asp-action="KhongTC_141" method="get" id="frm_KhongTC_141">
+    <input type="hidden" name="kvpctId" id="hidKvpctId" />
+    <input type="hidden" name="strUrl" id="hidStrUrl" />
+    <input type="hidden" name="page" id="hidPage" />
+    <input type="hidden" name="maKh" id="hidMaKh" />
+    <input type="hidden" name="tenKh" id="hidTenKh" />
+</form>
 @section Scripts{
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
     <!--mustache-->
@@ -294,6 +300,42 @@
             var page = '@Model.Page';
 
             KhachHangSearch(maKhtext, kvpctId, strUrl, page);
+        })
+
+        $('#txtMaKh').blur(function () {
+
+            code = $(this).val();
+
+            $.ajax({
+                url: '/KVCTPCTs/GetKhachHangs_By_Code',
+                type: 'GET',
+                data: { code: code },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status) {
+                        var data = response.data;
+                        // console.log(data);
+
+                        //$('#txtMaKh').val(data.code);
+                        //$('#txtTenKh').val(data.name);
+
+                        // submit qua KhongTC_141 <-> frm_KhongTC_141
+                        $('#hidKvpctId').val('@Model.KVPCT.SoCT');
+                        $('#hidStrUrl').val('@Model.StrUrl');
+                        $('#hidPage').val('@Model.Page');
+                        $('#hidMaKh').val(data.code);
+                        $('#hidTenKh').val(data.name);
+
+                        $('#frm_KhongTC_141').submit();
+                    }
+                    else {// search ko co KH nao het => ...
+
+                        $('#txtMaKh').val('');
+                        $('#txtTenKh').val('');
+                    }
+                }
+            });
+
         })
 
         function KhachHangSearch(code, kvpctId, strUrl, page) {

@@ -239,7 +239,22 @@ var indexController = {
                     $('#txtDiaChi').val(data.address);
 
                 }
+                else {// search ko co KH nao het => ...
+                    if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
+                        $('#txtMaKhNo').val('');
+                        $('#txtTenKhNo').val('');
+                    }
+                    if ($('#btnKhSearch').data('name') === 'maKhCo') { // search of co
+                        $('#txtMaKhCo').val('');
+                        $('#txtTenKhCo').val('');
+                    }
 
+                    $('#txtKyHieu').val('');
+                    $('#txtMauSoHD').val('');
+                    $('#txtMsThue').val('');
+                    $('#txtTenKH').val('');
+                    $('#txtDiaChi').val('');
+                }
             }
         });
 

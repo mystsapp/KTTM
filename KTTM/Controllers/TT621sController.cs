@@ -48,14 +48,33 @@ namespace KTTM.Controllers
             {
                 TT621VM.KVPCT = await _kVPCTService.GetBySoCT(kvpctId);
             }
-            // tamungs
+
+            if (!string.IsNullOrEmpty(maKh))
+            {
+                // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
+                TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include_KhongTC(maKh);
+                TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
+
+                // get commenttext
+                if (TT621VM.TamUngs.Count() > 0)
+                {
+                    var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, 0);
+                    TT621VM.CommentText = jsonResult.Result.Value.ToString();
+                }
+
+            }
+
             return View(TT621VM);
         }
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, string page)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             code ??= "";
-            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetSuppliersByCode(code, user.Macn);
             TT621VM.MaKhText = code;
 
             ViewBag.kvpctId = kvpctId;
