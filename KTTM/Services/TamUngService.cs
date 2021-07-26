@@ -17,7 +17,7 @@ namespace KTTM.Services
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi);
         Task CreateAsync(TamUng tamUng);
         Task UpdateAsync(TamUng tamUng);
-        
+        Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh);
     }
     public class TamUngService : ITamUngService
     {
@@ -40,9 +40,35 @@ namespace KTTM.Services
             return tamUngs;
         }
 
+        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh)
+        {
+            var tamUngs = await Find_TamUngs_By_MaKh_Include(maKh);
+            var tamUngs1 = tamUngs.ToList();
+            //foreach (var item in tamUngs1)
+            //{
+            //    var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
+            //    if (tT621s.Count() > 0)
+            //    {
+            //        tamUngs1.Remove(item);
+            //        tamUngs = tamUngs1;
+            //    }
+            //}
+
+            foreach (var item in tamUngs1.Reverse<TamUng>())
+            {
+                var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
+                if (tT621s.Count() > 0)
+                {
+                    tamUngs1.Remove(item);
+                }
+            }
+
+            return tamUngs1;
+        }
+
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi)
         {
-           return await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPCT, y => y.PhieuChi == phieuChi);
+            return await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPCT, y => y.PhieuChi == phieuChi);
         }
 
         public async Task<TamUng> GetByIdAsync(long id)

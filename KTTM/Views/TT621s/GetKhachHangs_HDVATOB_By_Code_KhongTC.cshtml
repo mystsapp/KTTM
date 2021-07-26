@@ -1,0 +1,81 @@
+﻿@model TT621ViewModel
+
+<div class="row form-group">
+    <div class="col-xs-12 col-md-6">
+        <div class="input-group">
+            <input type="text" value="@Model.MaKhText" class="form-control form-control-sm" id="txtTimkh" placeholder="Tìm thông tin code, tên khách hàng">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm" id="btSearch"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div style="overflow-x:auto; overflow-y:auto; height: 300px">
+    <table class="table mytable text-nowrap text-sm" id="khachHangTbl">
+        <thead>
+            <tr class="table-info">
+
+                <th>Mã KH</th>
+                <th>Tên KH</th>
+                <th>Thành phố</th>
+                <th>Địa chỉ</th>
+                <th>Điện thoại</th>
+                <th>Email</th>
+                <th>Ms Thuế</th>
+                <th>Ký hiệu </th>
+                <th>Mẫu số</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.KhachHangs_HDVATOB != null)
+            {
+                @foreach (var item in Model.KhachHangs_HDVATOB)
+                {
+
+                    <tr class="khachhangs-cursor-pointer ">
+
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Name)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.City)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Address)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Telephone)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Email)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxcode)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxsign)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxform)</td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+<form asp-action="KhongTC_141" method="get" id="frm_KhachHang_by_code">
+    <input type="hidden" name="kvpctId" id="hidKvpctId" />
+    <input type="hidden" name="strUrl" id="hidStrUrl" />
+    <input type="hidden" name="page" id="hidPage" />
+    <input type="hidden" name="maKh" id="hidMaKh" />
+    <input type="hidden" name="tenKh" id="hidTenKh" />
+</form>
+<script>
+    $('#btSearch').click(function () {
+        debugger
+        var maKhText = $('#txtTimkh').val();
+
+        KhachHangSearch(maKhText); // ben Edit_KVCTPCT
+    })
+    $('.khachhangs-cursor-pointer').click(function () {
+        var code = $(this).children().eq(0).html();
+        var name = $(this).children().eq(1).html();
+
+        $('#hidKvpctId').val('@ViewBag.kvpctId');
+        $('#hidStrUrl').val('@Model.StrUrl');
+        $('#hidPage').val('@Model.Page');
+        $('#hidMaKh').val(code);
+        $('#hidTenKh').val(name);
+
+        $('#frm_KhachHang_by_code').submit();
+    })
+</script>

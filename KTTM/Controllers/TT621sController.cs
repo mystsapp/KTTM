@@ -36,41 +36,37 @@ namespace KTTM.Controllers
             _tT621Service = tT621Service;
             _kVPCTService = kVPCTService;
         }
-        public async Task<IActionResult> KhongTC_141(long kvctpctId, string strUrl, string page)
+        public async Task<IActionResult> KhongTC_141(string kvpctId, string strUrl, string page, string maKh, string tenKh)
         {
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
 
-            if (kvctpctId == 0)
+            ViewBag.maKh = maKh;
+            ViewBag.tenKh = tenKh;
+
+            if (!string.IsNullOrEmpty(kvpctId)) // nguoi ta có chọn 1 dóng phiếu nào đó
             {
-                ViewBag.ErrorMessage = "Chi tiết này không tồn tại";
-                return View("~/Views/Shared/NotFound.cshtml");
+                TT621VM.KVPCT = await _kVPCTService.GetBySoCT(kvpctId);
             }
-
-            var kVCTPCT = await _kVCTPCTService.GetById(kvctpctId);
-
-            if (kVCTPCT == null)
-            {
-                ViewBag.ErrorMessage = "Chi tiết này không tồn tại";
-                return View("~/Views/Shared/NotFound.cshtml");
-            }
-
-            TT621VM.KVCTPCT = kVCTPCT;
-            // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
-            TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh); // MaKh == MaKhNo
-            TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
-
-            // get commenttext
-            var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
-            TT621VM.CommentText = jsonResult.Result.Value.ToString();
-
-            TT621VM.KVPCT = await _kVPCTService.GetBySoCT(TT621VM.KVCTPCT.KVPCTId);
-            
+            // tamungs
             return View(TT621VM);
         }
 
+        public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, string page)
+        {
+            code ??= "";
+            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.MaKhText = code;
+
+            ViewBag.kvpctId = kvpctId;
+            TT621VM.StrUrl = strUrl;
+            TT621VM.Page = page;
+
+            return PartialView(TT621VM);
+        }
+
         ////////////////////////////////////////////// TT141 //////////////////////////////////////////////
-         public async Task<IActionResult> TT621Create(long kvctpctId, string strUrl, string page)
+        public async Task<IActionResult> TT621Create(long kvctpctId, string strUrl, string page)
         {
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
@@ -95,11 +91,14 @@ namespace KTTM.Controllers
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
 
             // get commenttext
-            var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
-            TT621VM.CommentText = jsonResult.Result.Value.ToString();
+            if (TT621VM.TamUngs.Count() > 0)
+            {
+                var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien);
+                TT621VM.CommentText = jsonResult.Result.Value.ToString();
+            }
 
             TT621VM.KVPCT = await _kVPCTService.GetBySoCT(TT621VM.KVCTPCT.KVPCTId);
-            
+
             return View(TT621VM);
         }
 
@@ -514,7 +513,7 @@ namespace KTTM.Controllers
             try
             {
                 await _tT621Service.DeleteAsync(tT621);
-                
+
                 // nếu ketchuyen roi ==> ko xoá được
 
                 return Json(new
@@ -539,7 +538,7 @@ namespace KTTM.Controllers
             TT621VM.MaKhText = code;
             return PartialView(TT621VM);
         }
-        
+
         public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT(string code)
         {
             code ??= "";
@@ -583,7 +582,7 @@ namespace KTTM.Controllers
         }
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
         {
-            
+
             var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
             if (tT621s.Count() > 0)
             {
@@ -611,7 +610,7 @@ namespace KTTM.Controllers
             return Json(true); // btn off
 
         }
-        
+
         [HttpPost]
         public JsonResult Check_BtnThemMoiCTTT_Status(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {

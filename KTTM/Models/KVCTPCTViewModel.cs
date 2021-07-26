@@ -20,12 +20,9 @@ namespace KTTM.Models
         public IEnumerable<DmTk> DmTks_TkCo { get; set; }
         public IEnumerable<DmTk> DmTks_Cashier { get; set; }
         public IEnumerable<ViewQuay> Quays { get; set; }
-        //public IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK { get; set; }
-        //public IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo { get; set; }
-        //public IEnumerable<Data.Models_DanhMucKT.ViewSupplierCode> KhachHangs { get; set; }
+        
         public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
-        //public IEnumerable<Data.Models_DanhMucKT.ViewSupplierCode> KhachHang_Edits { get; set; }
-        //public IEnumerable<Data.Models_DanhMucKT.Supplier> KhachHang_Edit_Nos { get; set; }
+        
         public IEnumerable<ViewMatHang> MatHangs { get; set; }
         public IEnumerable<ViewPhongBan> PhongBans { get; set; }
         public LayDataCashierModel LayDataCashierModel { get; set; }

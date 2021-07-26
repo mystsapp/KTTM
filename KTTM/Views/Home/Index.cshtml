@@ -91,10 +91,11 @@
                                     <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i>Thêm dòng</button>
                                     
                                     <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
+                                    <input type="hidden" id="hidKVPCTId" name="kvpctId" /> <!--for khongTC_141-->
                                     <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                                     <input type="hidden" value="@Model.Page" name="page" />
                                     <button type="submit" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>
-                                    <button type="submit" class="btn btn-outline-dark btn-sm" disabled id="btn141KhongTC" title="141 Không TC" formaction="/TT621s/KhongTC_141" formmethod="get">141 Không TC</button>
+                                    <button type="submit" class="btn btn-outline-dark btn-sm" id="btn141KhongTC" title="141 Không TC" formaction="/TT621s/KhongTC_141" formmethod="get">141 Không TC</button>
 
                                     @*<button type="button" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>*@
 

@@ -93,19 +93,6 @@ var indexController = {
         });
         // themdong click
 
-        //// press r + choose row => copy new row
-        //shortcut.add("r", function () {
-        //    var tmpId = $('#hid_Id_Dong_Da_Click_tmp').val();
-        //    $('#hidIdCu').val(tmpId);
-
-        //});
-
-        //// btnTT141 click
-        //$('#btnTT141').click(function () {
-        //    $('#frmTT621').submit();
-        //});
-        //// btnTT141 click
-
         // giu trang thai phieu click
         $('#phieuTbl .cursor-pointer').off('click').on('click', function () {
             if ($(this).hasClass("hoverClass"))
@@ -121,6 +108,7 @@ var indexController = {
         $('tr .tdVal_KVCTPCT').click(function () {
 
             kVCTPCTId = $(this).data('id');
+            $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141 and 1411KhongTC
 
             // for btnTamUng
             var promise = indexController.CheckTamUng(kVCTPCTId);
@@ -135,22 +123,19 @@ var indexController = {
                 }
             }, error => alert(error));
 
-            // for TT141 and 141KhongTC
+            // for TT141
             var promiseTT141 = indexController.CheckTT141(kVCTPCTId);
             promiseTT141.then(function (data) {
 
                 if (data) {
 
                     $('#btnTT141').attr('disabled', false);
-                    $('#btn141KhongTC').attr('disabled', false);
-                    $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141
                 }
                 else {
                     $('#btnTT141').attr('disabled', true);
-                    $('#btn141KhongTC').attr('disabled', true);
                 }
             }, error => alert(error));
-
+            
             // for => copy dong cu cho dong moi
             $('#hidIdCu').val(kVCTPCTId); 
 
@@ -210,6 +195,7 @@ var indexController = {
         $('#btnThemDong').attr('disabled', false);
         $('#hidThemDongSoCT').val(soCT);
         $('#hidThemDongSoCT_ContextMenu').val(soCT);
+        $('#hidKVPCTId').val(soCT);
 
         // page
         var page = $('.active span').text();
@@ -274,42 +260,6 @@ var indexController = {
         })
 
     }
-
-    //GetTT621s_By_TamUng: function (tamUngId) {
-
-    //    $.ajax({
-    //        url: '/TT621/GetTT621s_By_TamUng',
-    //        type: 'GET',
-    //        data: {
-    //            tamUngId: tamUngId
-    //        },
-    //        dataType: 'json',
-    //        success: function (response) {
-    //            if (response.status) {
-    //                var data = response.data; console.log(data);
-    //                var html = '';
-    //                var template = $('#data-template').html();
-
-    //                $.each(data, function (i, item) {
-    //                    html += Mustache.render(template, {
-    //                        DienGiai: item.dienGiai,
-    //                        DienGiaiP: item.dienGiaiP,
-    //                        SoTienNT: numeral(item.soTienNT).format('0,0'),
-    //                        LoaiTien: item.loaiTien,
-    //                        TyGia: numeral(item.tyGia).format('0,0'),
-    //                        SoTien: numeral(item.soTien).format('0,0'),
-    //                        TKNo: item.tKNo,
-    //                        MaKhNo: item.maKhNo,
-    //                    });
-
-    //                });
-
-    //                $('#ctThanhToanBody').html(html);
-
-    //            }
-    //        }
-    //    });
-    //},
-
+   
 };
 indexController.init();

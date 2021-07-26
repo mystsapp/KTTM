@@ -41,12 +41,6 @@ var createController = {
         //    });
         //});
 
-        $('.tamUngTr').click(function () {
-            debugger
-            tamUngId = $(this).data('id');
-            createController.GetTT621s_By_TamUng(tamUngId);
-        })
-
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
         $('.tamUngTr').off('click').on('click', function () {
 
@@ -78,8 +72,6 @@ var createController = {
             // an nut btnCapNhatCT
             $('#btnCapNhatCT').attr('disabled', true);
 
-            //// gang sotien canketchuyen vao hidSoTienNT_CanKetChuyen
-            //createController.Gang_SoTienNT_CanKetChuyen(tamUngId, soTienNT);
         });
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
 
@@ -228,17 +220,6 @@ var createController = {
                 }
                 else {
 
-                    //html = Mustache.render(template, {
-                    //    DienGiai: '',
-                    //    DienGiaiP: '',
-                    //    SoTienNT: '',
-                    //    LoaiTien: '',
-                    //    TyGia: '',
-                    //    SoTien: '',
-                    //    TKNo: '',
-                    //    MaKhNo: '',
-                    //});
-
                     $('#ctThanhToanBody').html('');
 
                 }
@@ -248,9 +229,7 @@ var createController = {
 
     Check_KetChuyenBtnStatus: function (tamUngId, soTienNT) {
         $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
-            // tamUng.SoTienNT - soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create = 0 
-            // ==> SoTien Can Ket chuyen = 0 
-            // => return fale
+            
             $('#btnKetChuyen').attr('disabled', status)
 
         })

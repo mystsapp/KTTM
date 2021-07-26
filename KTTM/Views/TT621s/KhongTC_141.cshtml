@@ -54,7 +54,16 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-controller="Home" asp-route-soCT="@Model.KVCTPCT.KVPCTId" asp-route-page="@Model.Page" asp-action="Index">Danh sách phiếu</a></li>
+                    @if (Model.KVPCT != null)
+                    {
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-page="@Model.Page" asp-action="Index">Danh sách phiếu</a></li>
+
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="DetailsRedirect">Danh sách phiếu</a></li>
+
+                    }
                     <li class="breadcrumb-item active">Thanh toán tạm ứng</li>
                 </ol>
             </div>
@@ -83,7 +92,7 @@
 
             <div class=" row p-2">
 
-                <input type="hidden" asp-for="KVCTPCT.Id" id="hidKVCTPCTId" />
+                @*<input type="hidden" asp-for="KVCTPCT.Id" id="hidKVCTPCTId" />*@
 
                 <div class="col-md-2">
                     <label>Chọn nhân viên đã tạm ứng</label>
@@ -91,20 +100,20 @@
                 <div class="col-md-1">
                     <div class="input-group">
 
-                        <input class="form-control form-control-sm" id="txtMaKh">
+                        <input class="form-control form-control-sm text-uppercase" id="txtMaKh" value="@ViewBag.maKh">
                         <span class="input-group-btn">
-                            <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                            <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                         </span>
 
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <input class="form-control form-control-sm" id="txtTenKH">
+                <div class="col-md-5">
+                    <input class="form-control form-control-sm" id="txtTenKh" value="@ViewBag.TenKh">
                 </div>
 
-                <div class="col-md-2 float-right">
-                    <label >Ngày thanh toán</label>
+                <div class="col-md-2 text-right">
+                    <label>Ngày thanh toán</label>
                 </div>
                 <div class="col-md-2">
 
@@ -232,15 +241,74 @@
     </div>
 
     <div class=" pt-1 pb-1">
-        <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Home" asp-route-page="@Model.Page" asp-route-soCT="@Model.KVCTPCT.KVPCTId"><i class="fas fa-backward "></i> Back</a>
+        @if (Model.KVPCT != null)
+        {
+            <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Home" asp-route-page="@Model.Page" asp-route-soCT="@Model.KVPCT.SoCT"><i class="fas fa-backward "></i> Back</a>
+
+        }
+        else
+        {
+            <a class="btn btn-success btn-sm" asp-controller="Home" asp-action="DetailsRedirect"><i class="fas fa-backward "></i> Back</a>
+        }
     </div>
 </section>
+<!-- khachhang modal-->
+<div class="modal fade" id="khachHang_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header bg-secondary">
+                <h6 class="modal-title"><i class="fas fa-file text-info"></i> Chọn khách hàng</h6>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body khachHang_Modal_Body ">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
+                @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- khachhang modal-->
 
 @section Scripts{
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
     <!--mustache-->
     <script src="~/lib/mustache.min.js"></script>
     <script src="~/js/Admin/TT621/createController.js"></script>
+
+    <script>
+        $('#btnKhSearch').click(function () {
+            debugger
+            var maKhtext = maKhtext = $('#txtMaKh').val();
+            var kvpctId = '';
+            if ('@Model.KVPCT.SoCT' != null) {
+                kvpctId = '@Model.KVPCT.SoCT';
+            }
+            var strUrl = '@Model.StrUrl';
+            var page = '@Model.Page';
+
+            KhachHangSearch(maKhtext, kvpctId, strUrl, page);
+        })
+
+        function KhachHangSearch(code, kvpctId, strUrl, page) {
+            url = '/TT621s/GetKhachHangs_HDVATOB_By_Code_KhongTC';
+            $.get(url, { code: code, kvpctId: kvpctId, strUrl: strUrl, page: page }, function (data) {
+
+                $('#khachHang_Modal').modal('show');
+                $('.khachHang_Modal_Body').html(data);
+                $('#khachHang_Modal').draggable();
+
+            });
+        }
+
+    </script>
+
     <script id="data-template" type="x-tmpl-mustache">
 
         <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
