@@ -495,22 +495,6 @@
             soTienNT = $('#txtSoTienNT').val();
             //tyGia = $('#txtTyGia').val();
 
-            //$.ajax({
-            //    type: "GET",
-            //    url: "/KVCTPCTs/TinhSoTien",
-            //    data: { soTienNT: soTienNT, tyGia: tyGia },
-            //    dataType: "json",
-            //    success: function (response) {
-            //        if (response.status) {
-            //            soTien = response.soTien;
-            //            $('#txtSoTien').val(numeral(soTien).format('0,0'));
-            //        }
-            //        else {
-            //            toastr.error(response.message);
-
-            //        }
-            //    }
-            //});
             chiPhi = $('#txtChiPhi').val();
             TinhThueGTGT(soTienNT, chiPhi);
         })
@@ -518,26 +502,6 @@
         $('#txtTyGia').blur(function () {
 
             serviceController.TinhSoTien();
-
-            //soTienNT = $('#txtSoTienNT').val();
-            //tyGia = $('#txtTyGia').val();
-
-            //$.ajax({
-            //    type: "GET",
-            //    url: "/KVCTPCTs/TinhSoTien",
-            //    data: { soTienNT: soTienNT, tyGia: tyGia },
-            //    dataType: "json",
-            //    success: function (response) {
-            //        if (response.status) {
-            //            soTien = response.soTien;
-            //            $('#txtSoTien').val(numeral(soTien).format('0,0'));
-            //        }
-            //        else {
-            //            toastr.error(response.message);
-
-            //        }
-            //    }
-            //});
 
         })
         // sotien

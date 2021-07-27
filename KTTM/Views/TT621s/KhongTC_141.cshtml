@@ -253,28 +253,10 @@
     </div>
 </section>
 <!-- khachhang modal-->
-<div class="modal fade" id="khachHang_KhongTC_Modal" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-xl">
+<partial name="~/Views/TT621s/_khachHang_KhongTC_Modal.cshtml" />
+<!--ThemMoiCT_TT_KhongTC_Model-->
+<partial name="~/Views/TT621s/_ThemMoiCT_TT_KhongTC_Modal.cshtml" />
 
-        <div class="modal-content ">
-            <div class="modal-header bg-secondary">
-                <h6 class="modal-title"><i class="fas fa-file text-info"></i> Chọn khách hàng</h6>
-                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body khachHang_KhongTC_Modal_Body ">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
-                @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- khachhang modal-->
 <form asp-action="KhongTC_141" method="get" id="frm_KhongTC_141">
     <input type="hidden" name="kvpctId" id="hidKvpctId" />
     <input type="hidden" name="strUrl" id="hidStrUrl" />
@@ -287,11 +269,12 @@
     <!--mustache-->
     <script src="~/lib/mustache.min.js"></script>
     @*<script src="~/js/Admin/TT621/createController.js"></script>*@
+    <script src="~/js/Admin/TT621/khongTCController.js"></script>
 
     <script>
         $('#btnKhSearch').click(function () { // khi click có the dinh' nut txtMaKh blur (su kien blur khi go~ dang do~ va bam' nut btnKhSearch)
             debugger
-            
+
             var maKhtext = maKhtext = $('#txtMaKh').val();
             var kvpctId = '';
             if ('@Model.KVPCT.SoCT' != null) {
