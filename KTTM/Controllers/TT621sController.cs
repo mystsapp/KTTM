@@ -66,10 +66,31 @@ namespace KTTM.Controllers
 
             return View(TT621VM);
         }
+        public JsonResult GetKhachHangs_By_Code_KhongTC(string code)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
 
+            var supplier = _tT621Service.GetSuppliersByCode(code, user.Macn).FirstOrDefault();
+            if (supplier != null)
+            {
+                return Json(new
+                {
+                    status = true,
+                    data = supplier
+                }); ;
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = false
+                });
+            }
+        }
         public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, string page)
         {
-
+            
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -552,16 +573,26 @@ namespace KTTM.Controllers
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             code ??= "";
-            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetSuppliersByCode(code, user.Macn);
             TT621VM.MaKhText = code;
             return PartialView(TT621VM);
         }
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT(string code)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             code ??= "";
-            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.KhachHangs_HDVATOB = _kVCTPCTService.GetSuppliersByCode(code, user.Macn);
             TT621VM.MaKhText = code;
             return PartialView(TT621VM);
         }

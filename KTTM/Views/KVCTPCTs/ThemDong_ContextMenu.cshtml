@@ -27,6 +27,7 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input type="hidden" asp-for="KVCTPCT.KVPCTId" />
                 <input type="hidden" asp-for="StrUrl" />
+                <input type="hidden" asp-for="KVCTPCT.TKCo" value="1111000000" />
 
                 <!--Thông tin về tài chánh-->
                 <fieldset class="groupbox-border ">
@@ -118,7 +119,7 @@
                             </div>
 
                         }
-                        else
+                        @*else // chi cho phieu chi
                         {
                             <div class="col-md-2">
                                 <label asp-for="KVCTPCT.TKCo" class="control-label"></label>
@@ -133,7 +134,7 @@
                                 <input class="form-control form-control-sm " id="txtTenTkNo" />
                             </div>
 
-                        }
+                        }*@
 
                     </div>
 
@@ -424,6 +425,14 @@
             }
 
             KhachHangSearch(maKhtext);
+        })
+
+        $('#txtMaKhNo').blur(function () {
+
+            maKhtext = $(this).val();
+
+            //KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext);
         })
 
         $('#ddlNgoaiTe').change(function () {

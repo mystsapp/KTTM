@@ -53,13 +53,13 @@
     </table>
 
 </div>
-<form asp-action="KhongTC_141" method="get" id="frm_KhachHang_by_code">
+@*<form asp-action="KhongTC_141" method="get" id="frm_KhachHang_by_code">
     <input type="hidden" name="kvpctId" id="hidKvpctId" />
     <input type="hidden" name="strUrl" id="hidStrUrl" />
     <input type="hidden" name="page" id="hidPage" />
     <input type="hidden" name="maKh" id="hidMaKh" />
     <input type="hidden" name="tenKh" id="hidTenKh" />
-</form>
+</form>*@
 <script>
     $('#btSearch').click(function () {
         debugger
@@ -77,6 +77,6 @@
         $('#hidMaKh').val(code);
         $('#hidTenKh').val(name);
 
-        $('#frm_KhachHang_by_code').submit();
+        $('#frm_KhongTC_141').submit(); // ben KHongTC_141 view
     })
 </script>

@@ -1,4 +1,5 @@
 ﻿using Data.Dtos;
+using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Repository;
 using Data.Utilities;
@@ -23,6 +24,7 @@ namespace KTTM.Services
         TT621 GetByIdAsNoTracking(long tt621Id);
         decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create);
         TT621Dto ConvertTT621ToTT621Dto(TT621 tT621);
+        IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
     }
     public class TT621Service : ITT621Service
     {
@@ -216,6 +218,14 @@ namespace KTTM.Services
         {
             _unitOfWork.tT621Repository.Delete(tT621);
             await _unitOfWork.Complete();
+        }
+
+        public IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn)
+        {
+            code ??= "";
+            // supplier co 2 key
+            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower() == code.Trim().ToLower() && x.Chinhanh == maCn).ToList();
+            return suppliers;
         }
     }
 }

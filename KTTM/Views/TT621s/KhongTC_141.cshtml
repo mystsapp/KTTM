@@ -253,7 +253,7 @@
     </div>
 </section>
 <!-- khachhang modal-->
-<div class="modal fade" id="khachHang_Modal" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="khachHang_KhongTC_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
@@ -263,7 +263,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body khachHang_Modal_Body ">
+            <div class="modal-body khachHang_KhongTC_Modal_Body ">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
@@ -286,11 +286,12 @@
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
     <!--mustache-->
     <script src="~/lib/mustache.min.js"></script>
-    <script src="~/js/Admin/TT621/createController.js"></script>
+    @*<script src="~/js/Admin/TT621/createController.js"></script>*@
 
     <script>
-        $('#btnKhSearch').click(function () {
+        $('#btnKhSearch').click(function () { // khi click có the dinh' nut txtMaKh blur (su kien blur khi go~ dang do~ va bam' nut btnKhSearch)
             debugger
+            
             var maKhtext = maKhtext = $('#txtMaKh').val();
             var kvpctId = '';
             if ('@Model.KVPCT.SoCT' != null) {
@@ -307,7 +308,7 @@
             code = $(this).val();
 
             $.ajax({
-                url: '/KVCTPCTs/GetKhachHangs_By_Code',
+                url: '/TT621s/GetKhachHangs_By_Code_KhongTC',
                 type: 'GET',
                 data: { code: code },
                 dataType: 'json',
@@ -330,7 +331,7 @@
                     }
                     else {// search ko co KH nao het => ...
 
-                        $('#txtMaKh').val('');
+                        //$('#txtMaKh').val('');
                         $('#txtTenKh').val('');
                     }
                 }
@@ -342,9 +343,9 @@
             url = '/TT621s/GetKhachHangs_HDVATOB_By_Code_KhongTC';
             $.get(url, { code: code, kvpctId: kvpctId, strUrl: strUrl, page: page }, function (data) {
 
-                $('#khachHang_Modal').modal('show');
-                $('.khachHang_Modal_Body').html(data);
-                $('#khachHang_Modal').draggable();
+                $('#khachHang_KhongTC_Modal').modal('show');
+                $('.khachHang_KhongTC_Modal_Body').html(data);
+                $('#khachHang_KhongTC_Modal').draggable();
 
             });
         }

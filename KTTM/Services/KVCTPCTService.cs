@@ -342,7 +342,8 @@ namespace KTTM.Services
         public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn)
         {
             code ??= "";
-            return _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn);
+            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn).ToList();
+            return suppliers;
         }
 
         public async Task DeleteAsync(KVCTPCT kVCTPCT)

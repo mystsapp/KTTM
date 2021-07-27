@@ -439,12 +439,13 @@
 
     $('#txtMaKhCo_ThemMoi').blur(function () {
 
-            var tkCo = '@Model.KVCTPCT.TKCo';
-            if (tkCo !== "1411") {
+        var tkCo = '@Model.KVCTPCT.TKCo';
+
+            //if (tkCo !== "1411") {
                 maKhtext = $(this).val();
 
-                indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
-            }
+                createController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
+            //}
     })
 
         $('#ddlNgoaiTe').change(function () {
