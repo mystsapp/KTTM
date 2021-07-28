@@ -135,8 +135,9 @@ var createController = {
 
             tamUngId = $('#hidTamUngId').val();
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // TT621Create_View
 
-            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT }, function (status) {
+            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
                 if (status) {
 
                     location.reload(); // reload lai trang
@@ -286,6 +287,39 @@ var createController = {
                     if (txtMaKh === 'txtMaKhCo') { // search of co
                         $('#txtMaKhCo_ThemMoi').val(data.code);
                         $('#txtTenKhCo_ThemMoi').val(data.name);
+                    }
+
+                    $('#txtKyHieu').val(data.taxSign);
+                    $('#txtMauSoHD').val(data.taxForm);
+                    $('#txtMsThue').val(data.taxCode);
+                    $('#txtTenKH').val(data.name);
+                    $('#txtDiaChi').val(data.address);
+
+                }
+
+            }
+        });
+
+    },
+    KhachHang_By_Code_CapNhat: function (code, txtMaKh) {
+
+        $.ajax({
+            url: '/KVCTPCTs/GetKhachHangs_By_Code',
+            type: 'GET',
+            data: { code: code },
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    var data = response.data;
+                    // console.log(data);
+
+                    if (txtMaKh === 'txtMaKhNo') { // search of no
+                        $('#txtMaKhNo_CapNhat').val(data.code);
+                        $('#txtTenKhNo').val(data.name);
+                    }
+                    if (txtMaKh === 'txtMaKhCo') { // search of co
+                        $('#txtMaKhCo_CapNhat').val(data.code);
+                        $('#txtTenKhCo_CapNhat').val(data.name);
                     }
 
                     $('#txtKyHieu').val(data.taxSign);

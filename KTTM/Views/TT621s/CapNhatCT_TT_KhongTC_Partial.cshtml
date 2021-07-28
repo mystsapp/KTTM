@@ -1,6 +1,6 @@
 ﻿@model TT621ViewModel
 @{
-    ViewData["Title"] = "Update CT TT";
+    ViewData["Title"] = "Update CT Khong TC";
 }
 
 <div style="overflow-x:auto; overflow-y:auto; height: 600px">
@@ -16,10 +16,10 @@
                     <div class="pr-4 pl-4 text-sm">
 
                         <div asp-validation-summary="All" class="text-danger"></div>
-                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> <!--dung de luu PhieuTC trong tt621-->
-                        <input type="hidden" asp-for="KVCTPCT.SoTienNT"> <!-- KVCTPCT nay la PhieuTC trước khi vao btn TT141-->
-                        <input type="hidden" asp-for="KVCTPCT.TKNo"> <!-- for form valid in tt621 post-->
-                        <input type="hidden" asp-for="KVCTPCT.TKCo"> <!-- for form valid in tt621 post-->
+                        <!--<input type="hidden" asp-for="KVCTPCT.KVPCTId">--> <!--dung de luu PhieuTC trong tt621-->
+                        <!--<input type="hidden" asp-for="KVCTPCT.SoTienNT">--> <!-- KVCTPCT nay la PhieuTC trước khi vao btn TT141-->
+                        <!--<input type="hidden" asp-for="KVCTPCT.TKNo">--> <!-- for form valid in tt621 post-->
+                        <!--<input type="hidden" asp-for="KVCTPCT.TKCo">--> <!-- for form valid in tt621 post-->
                         <input type="hidden" asp-for="TT621.NgayCT" />
                         <input type="hidden" asp-for="TT621.NguoiTao" />
                         <input type="hidden" asp-for="TT621.NgayTao" />
@@ -29,8 +29,8 @@
                         <input type="hidden" asp-for="TT621.Id" />
                         <input type="hidden" asp-for="TT621.TamUngId" />
 
-                        <input type="hidden" value="@Model.TT621.SoTienNT" name="soTienNT_ChuaCapNhat" />
-                        <input type="hidden" value="@Model.TT621.Id" name="id" />
+                        @*<input type="hidden" value="@Model.TT621.SoTienNT" name="soTienNT_ChuaCapNhat" />*@
+                        @*<input type="hidden" value="@Model.TT621.Id" name="id" />*@
                         <input type="hidden" asp-for="TT621.SoCT" />
 
                         <fieldset class="groupbox-border ">
@@ -59,21 +59,22 @@
 
                                 <div class="col-md-4">
                                     <label asp-for="TT621.SoTienNT" class="control-label"></label>
-                                    <input asp-for="TT621.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" />
+                                    <input asp-for="TT621.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" readonly />
                                     <span asp-validation-for="TT621.SoTienNT" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.LoaiTien" class="control-label "></label>
-                                    <select asp-for="TT621.LoaiTien" class="form-control form-control-sm"
-                                            asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
-                                    </select>
+                                    @*<select asp-for="TT621.LoaiTien" class="form-control form-control-sm"
+                                                asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe" >
+                                        </select>*@
+                                    <input asp-for="TT621.LoaiTien" class="form-control form-control-sm" readonly />
                                     <span asp-validation-for="TT621.LoaiTien" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TyGia" class="control-label "></label>
-                                    <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtTyGia" />
+                                    <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" readonly />
                                     <span asp-validation-for="TT621.TyGia" class="text-danger"></span>
                                 </div>
 
@@ -88,7 +89,7 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TKNo" class="control-label"></label>
-                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm "
+                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm select2"
                                             asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                                     </select>
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
@@ -96,32 +97,7 @@
 
                                 <div class="col-md-10">
                                     <label class="control-label">Tên tài khoãn</label>
-                                    <input class="form-control form-control-sm " id="txtTenTkNo" value="@Model.TenTkNo" />
-                                </div>
-
-                            </div>
-
-                            <div class=" row">
-
-                                <div class="col-md-2">
-                                    <label asp-for="TT621.TKCo" class="control-label"></label>
-                                    @if (Model.TT621.TKCo == "1411") // tk co 1411 => ko cho sua
-                                    {
-                                        <input asp-for="TT621.TKCo" class="form-control form-control-sm " readonly />
-                                    }
-                                    else
-                                    {
-                                        <select asp-for="TT621.TKCo" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
-                                        </select>
-                                    }
-
-                                    <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-md-10">
-                                    <label class="control-label">Tên tài khoãn</label>
-                                    <input class="form-control form-control-sm " id="txtTenTkCo" value="@Model.TenTkCo" />
+                                    <input class="form-control form-control-sm " id="txtTenTkNo" />
                                 </div>
 
                             </div>
@@ -129,16 +105,11 @@
                             <div class=" row">
 
                                 <div class="col-md-12">
+                                    <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
+                                    <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="ddlDienGiai">
+                                    </select>
 
-                                    <div class="col-md-12">
-                                        <label asp-for="TT621.DienGiai" class="control-label"></label>
-                                        <select asp-for="TT621.DienGiai" class="form-control form-control-sm"
-                                                asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))" id="ddlDienGiai">
-                                        </select>
-
-                                        <span asp-validation-for="TT621.DienGiai" class="text-danger"></span>
-                                    </div>
-
+                                    <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -148,58 +119,58 @@
                             <legend class="groupbox-border">Thông tin về công nợ đoàn </legend>
 
                             <div class=" row">
-                                @if (Model.KVCTPCT.KVPCT.MFieu == "T")
-                                {
-                                    <div class="col-md-2">
-                                        <label asp-for="TT621.MaKhNo" class="control-label "></label>
-                                        <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" readonly>
+                                @*@if (Model.KVCTPCT.KVPCT.MFieu == "T")  // chi danh cho phieu chi
+                                    {
+                                        <div class="col-md-2">
+                                            <label asp-for="TT621.MaKhNo" class="control-label "></label>
+                                            <div class="input-group">
+                                                <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" readonly>
+                                            </div>
+                                            <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                         </div>
-                                        <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="control-label ">Tên KH nợ</label>
-                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhNo" readonly />
-                                    </div>
+                                        <div class="col-md-4">
+                                            <label class="control-label ">Tên KH nợ</label>
+                                            <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" readonly />
+                                        </div>
 
-                                    <div class="col-md-2">
+                                        <div class="col-md-2">
+                                            <label asp-for="TT621.MaKhCo" class="control-label "></label>
+                                            <div class="input-group">
+                                                <input asp-for="TT621.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo_ThemMoi">
+                                                <span class="input-group-btn">
+                                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                </span>
+                                            </div>
+                                            <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="control-label ">Tên KH có</label>
+                                            <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" />
+                                        </div>
+
+                                    }
+                                    else
+                                    {*@
+                                <div class="col-md-2">
+                                    <label asp-for="TT621.MaKhNo" class="control-label "></label>
+                                    <div class="input-group">
+                                        <input asp-for="TT621.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo_KhongTC">
+                                        <span class="input-group-btn">
+                                            <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_KhongTC" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                        </span>
+                                    </div>
+                                    <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-10">
+                                    <label class="control-label ">Tên KH nợ</label>
+                                    <input type="text" class="form-control form-control-sm" id="txtTenKhNo_KhongTC" />
+                                </div>
+
+                                @*<div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo_CapNhat" readonly>
-                                            <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm disabled" id="btnKhSearch_CapNhat" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                            </span>
-                                        </div>
-                                        <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" readonly />
-                                    </div>
-
-                                }
-                                else
-                                {
-                                    <div class="col-md-2">
-                                        <label asp-for="TT621.MaKhNo" class="control-label "></label>
-                                        <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo_CapNhat">
-                                            <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_CapNhat" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                            </span>
-                                        </div>
-                                        <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="control-label ">Tên KH nợ</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <label asp-for="TT621.MaKhCo" class="control-label "></label>
-                                        <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" readonly>
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi" readonly>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
@@ -207,51 +178,49 @@
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
                                         <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" readonly />
-                                    </div>
+                                    </div>*@
 
-                                }
+                                @*}*@
                             </div>
 
                             <div class=" row">
-                                @if (Model.KVCTPCT.KVPCT.MFieu == "T")
-                                {
-                                    <div class="col-md-3">
-                                        <label asp-for="TT621.NoQuay" class="control-label "></label>
-                                        @*<select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
-                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                            </select>*@
-                                        <input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />
-                                        <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
-                                    </div>
+                                @*@if (Model.KVCTPCT.KVPCT.MFieu == "T")
+                                    {
+                                        <div class="col-md-3">
+                                            <label asp-for="TT621.NoQuay" class="control-label "></label>
 
-                                    <div class="col-md-3">
-                                        <label asp-for="TT621.CoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                        </select>
-                                        <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
-                                    </div>
+                                            <input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />
+                                            <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
+                                        </div>
 
-                                }
-                                else
-                                {
-                                    <div class="col-md-3">
-                                        <label asp-for="TT621.NoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                        </select>
-                                        <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label asp-for="TT621.CoQuay" class="control-label "></label>
-                                        @*<select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
+                                        <div class="col-md-3">
+                                            <label asp-for="TT621.CoQuay" class="control-label "></label>
+                                            <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
                                                     asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                            </select>*@
-                                        <input asp-for="TT621.CoQuay" class="form-control form-control-sm " readonly />
-                                        <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
-                                    </div>
-                                }
+                                            </select>
+                                            <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
+                                        </div>
+
+                                    }
+                                    else
+                                    {*@
+                                <div class="col-md-2">
+                                    <label asp-for="TT621.NoQuay" class="control-label "></label>
+                                    <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                    </select>
+                                    <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label asp-for="TT621.CoQuay" class="control-label "></label>
+                                    @*<select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                        </select>*@
+                                    <input asp-for="TT621.CoQuay" class="form-control form-control-sm " readonly />
+                                    <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
+                                </div>
+                                @*}*@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.BoPhan" class="control-label "></label>
@@ -261,13 +230,13 @@
                                     <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label asp-for="TT621.Sgtcode" class="control-label"></label>
                                     <input asp-for="TT621.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
                                     <span asp-validation-for="TT621.Sgtcode" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label asp-for="TT621.SoXe" class="control-label"></label>
                                     <input asp-for="TT621.SoXe" class="form-control form-control-sm" id="txtSoXe" />
                                     <span asp-validation-for="TT621.SoXe" class="text-danger"></span>
@@ -344,52 +313,26 @@
                                 </div>
 
                             </div>
-                            @if (Model.TT621.TKCo == "1411")
-                            {
-                                <div class=" row">
 
-                                    <div class="col-md-12">
-                                        <label asp-for="TT621.TenKH" class="control-label "></label>
-                                        <input asp-for="TT621.TenKH" class="form-control form-control-sm" id="txtTenKH" readonly />
-                                        <span asp-validation-for="TT621.TenKH" class="text-danger"></span>
-                                    </div>
+                            <div class=" row">
 
+                                <div class="col-md-12">
+                                    <label asp-for="TT621.TenKH" class="control-label "></label>
+                                    <input asp-for="TT621.TenKH" class="form-control form-control-sm" id="txtTenKH" />
+                                    <span asp-validation-for="TT621.TenKH" class="text-danger"></span>
                                 </div>
 
-                                <div class=" row">
+                            </div>
 
-                                    <div class="col-md-12">
-                                        <label asp-for="TT621.DiaChi" class="control-label "></label>
-                                        <input asp-for="TT621.DiaChi" class="form-control form-control-sm" id="txtDiaChi" readonly />
-                                        <span asp-validation-for="TT621.DiaChi" class="text-danger"></span>
-                                    </div>
+                            <div class=" row">
 
+                                <div class="col-md-12">
+                                    <label asp-for="TT621.DiaChi" class="control-label "></label>
+                                    <input asp-for="TT621.DiaChi" class="form-control form-control-sm" id="txtDiaChi" />
+                                    <span asp-validation-for="TT621.DiaChi" class="text-danger"></span>
                                 </div>
 
-                            }
-                            else
-                            {
-                                <div class=" row">
-
-                                    <div class="col-md-12">
-                                        <label asp-for="TT621.TenKH" class="control-label "></label>
-                                        <input asp-for="TT621.TenKH" class="form-control form-control-sm" id="txtTenKH" />
-                                        <span asp-validation-for="TT621.TenKH" class="text-danger"></span>
-                                    </div>
-
-                                </div>
-
-                                <div class=" row">
-
-                                    <div class="col-md-12">
-                                        <label asp-for="TT621.DiaChi" class="control-label "></label>
-                                        <input asp-for="TT621.DiaChi" class="form-control form-control-sm" id="txtDiaChi" />
-                                        <span asp-validation-for="TT621.DiaChi" class="text-danger"></span>
-                                    </div>
-
-                                </div>
-
-                            }
+                            </div>
 
                             <div class=" row">
 
@@ -426,7 +369,7 @@
     </section>
 </div>
 <!--Khach hang capnhat modal-->
-<partial name="~/Views/Shared/_KhachHangPartial_CapNhatCTTT.cshtml" />
+<partial name="~/Views/Shared/_KhachHangPartial_CapNhatCTTT_KhongTC.cshtml" />
 <!--Khach hang capnhat modal-->
 @*<script src="~/js/Admin/Home/indexController.js"></script>*@
 <script src="~/js/Admin/serviceController.js"></script>
@@ -455,12 +398,7 @@
 
         var maKhtext = '';
 
-        if ($(this).data('name') === 'maKhNo') { // search of no
-            maKhtext = $('#txtMaKhNo_CapNhat').val();
-        }
-        if ($(this).data('name') === 'maKhCo') { // search of co
-            maKhtext = $('#txtMaKhCo_CapNhat').val();
-        }
+        maKhtext = $('#txtMaKhNo_CapNhat').val();
 
         KhachHangSearch(maKhtext);
     })
@@ -470,7 +408,7 @@
             maKhtext = $(this).val();
 
             //KhachHang_By_Code(maKhtext);
-            createController.KhachHang_By_Code_CapNhat(maKhtext, 'txtMaKhNo');
+            createController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
         })
 
     $('#txtMaKhCo_CapNhat').blur(function () {
