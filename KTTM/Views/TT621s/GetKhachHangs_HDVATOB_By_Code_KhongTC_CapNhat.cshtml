@@ -1,0 +1,99 @@
+﻿@model TT621ViewModel
+
+
+<div class="row form-group">
+    <div class="col-xs-12 col-md-6">
+        <div class="input-group">
+            <input type="text" value="@Model.MaKhText" class="form-control form-control-sm text-uppercase" id="txtTimkh_KhongTC_CapNhat" placeholder="Tìm thông tin code, tên khách hàng">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm" id="btnSearch_KhongTC_CapNhat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div style="overflow-x:auto; overflow-y:auto; height: 300px">
+    <table class="table mytable text-nowrap text-sm" id="khachHangTbl">
+        <thead>
+            <tr class="table-info">
+
+                <th>Mã KH</th>
+                <th>Tên KH</th>
+                <th>Thành phố</th>
+                <th>Địa chỉ</th>
+                <th>Điện thoại</th>
+                <th>Email</th>
+                <th>Ms Thuế</th>
+                <th>Ký hiệu </th>
+                <th>Mẫu số</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.KhachHangs_HDVATOB != null)
+            {
+                @foreach (var item in Model.KhachHangs_HDVATOB)
+                {
+
+                    <tr class="khachhangs-cursor-pointer ">
+
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Name)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.City)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Address)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Telephone)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Email)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxcode)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxsign)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Taxform)</td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+@*<form asp-action="KhongTC_141" method="get" id="frm_KhachHang_by_code">
+        <input type="hidden" name="kvpctId" id="hidKvpctId" />
+        <input type="hidden" name="strUrl" id="hidStrUrl" />
+        <input type="hidden" name="page" id="hidPage" />
+        <input type="hidden" name="maKh" id="hidMaKh" />
+        <input type="hidden" name="tenKh" id="hidTenKh" />
+    </form>*@
+<script>
+    $('#btnSearch_KhongTC_CapNhat').click(function () {
+        debugger
+        var maKhText = $('#txtTimkh_KhongTC_CapNhat').val();
+
+        KhachHangSearch_KhongTC_CapNhat(maKhText); // ben ThemMoiCT_TT_KhongTC_Partial
+    })
+    $('.khachhangs-cursor-pointer').click(function () {
+
+        // giu trang thai
+        if ($(this).hasClass("hoverClass"))
+            $(this).removeClass("hoverClass");
+        else {
+            $('.khachhangs-cursor-pointer').removeClass("hoverClass");
+            $(this).addClass("hoverClass");
+        }
+
+        var code = $(this).children().eq(0).html();
+        var name = $(this).children().eq(1).html();
+        var city = $(this).children().eq(2).html();
+        var address = $(this).children().eq(3).html();
+        var telephone = $(this).children().eq(4).html();
+        var email = $(this).children().eq(5).html();
+        var taxCode = $(this).children().eq(6).html();
+        var taxSign = $(this).children().eq(7).html();
+        var taxForm = $(this).children().eq(8).html();
+
+        $('#txtMaKhNo_KhongTC').val(code);
+        $('#txtTenKhNo_KhongTC').val(name);
+        $('#txtKyHieu').val(taxSign);
+        $('#txtMauSoHD').val(taxForm);
+        $('#txtMsThue').val(taxCode);
+        $('#txtTenKH').val(name);
+        $('#txtDiaChi').val(address);
+
+    })
+</script>

@@ -12,7 +12,7 @@
 
             <div class="card-body p-0">
 
-                <form method="post" autocomplete="off" id="frm_CapNhatCT_TT_Partial" enctype="multipart/form-data">
+                <form method="post" autocomplete="off" id="frm_CapNhatCT_TT_KhongTC_Partial" enctype="multipart/form-data">
                     <div class="pr-4 pl-4 text-sm">
 
                         <div asp-validation-summary="All" class="text-danger"></div>
@@ -28,6 +28,7 @@
                         <input type="hidden" asp-for="TT621.LapPhieu" />
                         <input type="hidden" asp-for="TT621.Id" />
                         <input type="hidden" asp-for="TT621.TamUngId" />
+                        <input type="hidden" asp-for="TT621.TKCo" />
 
                         @*<input type="hidden" value="@Model.TT621.SoTienNT" name="soTienNT_ChuaCapNhat" />*@
                         @*<input type="hidden" value="@Model.TT621.Id" name="id" />*@
@@ -97,7 +98,7 @@
 
                                 <div class="col-md-10">
                                     <label class="control-label">Tên tài khoãn</label>
-                                    <input class="form-control form-control-sm " id="txtTenTkNo" />
+                                    <input class="form-control form-control-sm " id="txtTenTkNo" value="@Model.TenTkCo" />
                                 </div>
 
                             </div>
@@ -105,10 +106,10 @@
                             <div class=" row">
 
                                 <div class="col-md-12">
-                                    <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
-                                    <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="ddlDienGiai">
+                                    <label asp-for="TT621.DienGiai" class="control-label"></label>
+                                    <select asp-for="TT621.DienGiai" class="form-control form-control-sm"
+                                            asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))" id="ddlDienGiai">
                                     </select>
-
                                     <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
                                 </div>
                             </div>
@@ -355,7 +356,7 @@
                         </fieldset>
 
                         <div class=" pt-1 pb-1">
-                            <button type="button" class="btn btn-primary btn-sm" id="btnSaveData"><i class="fas fa-save"></i> Save</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="btnSaveData_KhongTC_CapNhat"><i class="fas fa-save"></i> Save</button>
                             <button type="button" class="btn btn-success btn-sm" data-dismiss="modal"><i class="fas fa-backward "></i> Back</button>
                         </div>
                     </div>
@@ -394,40 +395,41 @@
 
 <script>
     // btnKhSearch
-    $('#btnKhSearch_CapNhat').click(function () {
+    $('#btnKhSearch_KhongTC').click(function () {
 
-        var maKhtext = '';
+        var maKhtext = $('#txtMaKhNo_KhongTC').val();
 
-        maKhtext = $('#txtMaKhNo_CapNhat').val();
-
-        KhachHangSearch(maKhtext);
+        KhachHangSearch_KhongTC_CapNhat(maKhtext);
     })
 
-    $('#txtMaKhNo_CapNhat').blur(function () {
+    $('#txtMaKhNo_KhongTC').blur(function () {
 
             maKhtext = $(this).val();
 
-            //KhachHang_By_Code(maKhtext);
-            createController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
-        })
+        $.get('/KVCTPCTs/GetKhachHangs_By_Code', { code: maKhtext }, function (response) {
+            if (response.status) {
+                var data = response.data;
+                 console.log(data);
 
-    $('#txtMaKhCo_CapNhat').blur(function () {
+                $('#txtMaKhNo_KhongTC').val(data.code);
+                $('#txtTenKhNo_KhongTC').val(data.name);
 
-            var tkCo = '@Model.KVCTPCT.TKCo';
-            if (tkCo !== "1411") {
-                maKhtext = $(this).val();
+                $('#txtKyHieu').val(data.taxsign);
+                $('#txtMauSoHD').val(data.taxform);
+                $('#txtMsThue').val(data.taxcode);
+                $('#txtTenKH').val(data.name);
+                $('#txtDiaChi').val(data.address);
 
-                indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
             }
         })
-
-        $('#ddlNgoaiTe').change(function () {
-            loaiTien = $(this).val();
-            loaiPhieu = '@Model.KVCTPCT.KVPCT.MFieu';
-            serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
         })
 
-    $('#frm_CapNhatCT_TT_Partial').validate({
+        //$('#ddlNgoaiTe').change(function () {
+        //    loaiTien = $(this).val();
+        //    serviceController.DdlLoaiTien(loaiTien, 'C');
+        //})
+
+    $('#frm_CapNhatCT_TT_KhongTC_Partial').validate({
         //rules: {
         //    email: {
         //        required: true,
@@ -481,7 +483,6 @@
     });
 
     // sotien
-
     $('#txtSoTienNT').blur(function () {
         serviceController.TinhSoTien();
     })
@@ -489,13 +490,18 @@
     $('#txtTyGia').blur(function () {
         serviceController.TinhSoTien();
     })
-
     // sotien
+
+    // AutoSgtcode
+    $('#txtSgtcode').blur(function () {
+        sgtcodeText = $(this).val();
+        serviceController.AutoSgtcode(sgtcodeText);
+    })
 
     // get dien giai by tkno tkco
     $('#ddlTkNo').change(function () {
         tkNo = $(this).val();
-        tkCo = $('#ddlTkCo').val();
+        tkCo = '@Model.TT621.TKCo';
 
         $.ajax({
             url: '/KVCTPCTs/Get_TenTk_By_Tk',
@@ -514,44 +520,24 @@
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
     })
-    $('#ddlTkCo').change(function () {
-        tkCo = $(this).val();
-        tkNo = $('#ddlTkNo').val();
 
-        $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
-            type: 'GET',
-            data: {
-                tk: tkCo
-            },
-            dataType: 'json',
-            success: function (response) {
-                //var data = JSON.parse(response.data);
-                //console.log(data);
-                $('#txtTenTkCo').val(response.data);
-            }
-        });
-
-        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-    })
     // get dien giai by tkno tkco
 
     // save
-    $('#btnSaveData').off('click').on('click', function () {
+    $('#btnSaveData_KhongTC_CapNhat').off('click').on('click', function () {
         //debugger
 
-        if ($('#frm_CapNhatCT_TT_Partial').valid()) {
-            var tt621 = $('#frm_CapNhatCT_TT_Partial').serialize();
+        if ($('#frm_CapNhatCT_TT_KhongTC_Partial').valid()) {
+            var tt621 = $('#frm_CapNhatCT_TT_KhongTC_Partial').serialize();
             $.ajax({
                 type: "POST",
-                url: "/TT621s/CapNhatCT_TT_Partial",
+                url: "/TT621s/CapNhatCT_TT_KhongTC_Partial",
                 data: tt621,
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
 
-                        toastr.success('Cập nhật chi tiết thành công!', 'Chi tiết TT'); // toastr in admin/tour/indexController.js
+                        toastr.success('Cập nhật chi tiết thành công!', 'Chi tiết TT không TC'); // toastr in admin/tour/indexController.js
 
                         $('#CapNhatCT_TT_Modal').modal('hide');
                         //debugger
@@ -559,14 +545,14 @@
 
                             indexController.Load_KVCTPCTPartial(soCT);*@
                         tamUngId = $('#hidTamUngId').val();
-                        soTienNT = @Model.KVCTPCT.SoTienNT;
-                        createController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
-                        createController.GetCommentText_By_TamUng(tamUngId, soTienNT); // get comment text
-                        createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT); // check nut ketchuyen
-                        createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT); // check nut themmoi
+                        //soTienNT = Model.KVCTPCT.SoTienNT;
+                        khongTCController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
+                        khongTCController.GetCommentText_By_TamUng(tamUngId, 0); // get comment text
+                        khongTCController.Check_KetChuyenBtnStatus(tamUngId, 0); // check nut ketchuyen
+                        khongTCController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, 0); // check nut ketchuyen
                     }
                     else {
-                        toastr.error(response.message, 'Chi tiết TT');
+                        toastr.error(response.message, 'Chi tiết TT Không TC');
 
                     }
                 }
@@ -575,12 +561,20 @@
 
     });
 
-    function KhachHangSearch(code) {
-        $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT', { code: code }, function (data) {
+    // VAT ==> DSKhongVAT
+    $('#txtVAT').blur(function () {
+        vat = $(this).val();
+        soTien = $('#txtSoTien').val();
 
-            $('#khachHang_Modal_CapNhatCTTT').modal('show');
-            $('.khachHang_CapNhat_Modal_Body').html(data);
-            $('#khachHang_Modal_CapNhatCTTT').draggable();
+        serviceController.TxtVAT_Blur(vat, soTien);
+    })
+
+    function KhachHangSearch_KhongTC_CapNhat(code) {
+        $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_KhongTC_CapNhat', { code: code }, function (data) {
+
+            $('#khachHang_Modal_CapNhatCTTT_KhongTC').modal('show');
+            $('.khachHang_Modal_CapNhatCTTT_KhongTC_Body').html(data);
+            $('#khachHang_Modal_CapNhatCTTT_KhongTC').draggable();
         });
     }
 

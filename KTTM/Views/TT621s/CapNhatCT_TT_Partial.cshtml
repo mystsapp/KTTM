@@ -543,7 +543,6 @@
     });
 
     // sotien
-
     $('#txtSoTienNT').blur(function () {
         serviceController.TinhSoTien();
     })
@@ -551,8 +550,13 @@
     $('#txtTyGia').blur(function () {
         serviceController.TinhSoTien();
     })
-
     // sotien
+
+    // AutoSgtcode
+    $('#txtSgtcode').blur(function () {
+        sgtcodeText = $(this).val();
+        serviceController.AutoSgtcode(sgtcodeText);
+    })
 
     // get dien giai by tkno tkco
     $('#ddlTkNo').change(function () {

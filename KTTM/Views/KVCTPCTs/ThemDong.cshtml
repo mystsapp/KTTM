@@ -598,78 +598,12 @@
         })
         // get dien giai by tkno tkco
 
-        //// makh => tenkh
-        //$('#ddlMaKhNo').change(function () {
-
-        //    var code = $(this).val();
-        //    $.ajax({
-        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
-        //        type: 'GET',
-        //        data: { code: code },
-        //        dataType: 'json',
-        //        success: function (response) {
-        //            var data = response.data;
-        //            console.log(data);
-        //            $('#txtTenKhNo').val(data.name.trim());
-        //            $('#txtKyHieu').val(data.taxSign.trim());
-        //            $('#txtMauSoHD').val(data.taxForm.trim());
-        //            $('#txtMsThue').val(data.taxCode.trim());
-        //            $('#txtTenKH').val(data.name.trim());
-        //            if (data.address !== null) {
-        //                $('#txtDiaChi').val(data.address.trim());
-        //            }
-        //        }
-        //    })
-        //})
-        //$('#ddlMaKhCo').change(function () { // ko duoc off change , on change
-
-        //    var code = $(this).val();
-        //    $.ajax({
-        //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
-        //        type: 'GET',
-        //        data: { code: code },
-        //        dataType: 'json',
-        //        success: function (response) {
-        //            var data = response.data;
-        //            //console.log(data);
-
-        //            $('#txtTenKhCo').val(data.name.trim());
-        //            $('#txtKyHieu').val(data.taxSign.trim());
-        //            $('#txtMauSoHD').val(data.taxForm.trim());
-        //            $('#txtMsThue').val(data.taxCode.trim());
-        //            $('#txtTenKH').val(data.name.trim());
-        //            if (data.address !== null) {
-        //                $('#txtDiaChi').val(data.address.trim());
-        //            }
-
-        //        }
-        //    })
-        //})
-        //// makh => tenkh
-
         // VAT ==> DSKhongVAT
         $('#txtVAT').blur(function () {
             vat = $(this).val();
             soTien = $('#txtSoTien').val();
 
-
-            $.ajax({
-                type: "GET",
-                url: "/KVCTPCTs/TinhDsKhongVat",
-                data: { vat: vat, soTien: soTien },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
-                        soTien = response.soTien;
-                        $('#txtDSKhongVAT').val(numeral(soTien).format('0,0'));
-                    }
-                    else {
-                        toastr.error(response.message);
-
-                    }
-                }
-            });
-
+            serviceController.TxtVAT_Blur(vat, soTien);
         })
         // VAT ==> DSKhongVAT
 

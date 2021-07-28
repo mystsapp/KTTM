@@ -100,53 +100,51 @@ var khongTCController = {
 
             khongTCController.CapNhatCT_TT_Partial(tt621Id);
         })
-        // btnCapNhatCT
-        //// btnDelete
-        //$('#btnDelete').off('click').on('click', function () {
+        
+        // btnDelete
+        $('#btnDelete').off('click').on('click', function () {
 
-        //    kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
-        //    tt621Id = $('#hidTT621Id').val();
-        //    tamUngId = $('#hidTamUngId').val();
-        //    soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            tt621Id = $('#hidTT621Id').val();
+            tamUngId = $('#hidTamUngId').val();
+           // soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
 
-        //    bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
-        //        if (result) {
+            bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
+                if (result) {
 
-        //            $.post('/TT621s/Delete', { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (response) {
-        //                //console.log(response);
-        //                if (response.status) {
-        //                    toastr.success('Xoá thành công', 'Xoá!');
+                    $.post('/TT621s/Delete', { tt621Id: tt621Id }, function (response) {
+                        //console.log(response);
+                        if (response.status) {
+                            toastr.success('Xoá thành công', 'Xoá!');
 
-        //                    khongTCController.GetTT621s_By_TamUng(tamUngId);
-        //                    khongTCController.GetCommentText_By_TamUng(tamUngId, soTienNT);
-        //                }
-        //                else {
-        //                    toastr.error(response.message, 'Thêm tạm ứng!')
-        //                }
-        //            });
-        //        }
-        //    });
+                            khongTCController.GetTT621s_By_TamUng(tamUngId);
+                            khongTCController.GetCommentText_By_TamUng(tamUngId, 0);
+                        }
+                        else {
+                            toastr.error(response.message, 'Thêm thanh toán!')
+                        }
+                    });
+                }
+            });
 
-        //})
-    //    // btnDelete
+        })
+        
+        // btnKetChuyen
+        $('#btnKetChuyen').off('click').on('click', function () {
 
-    //    // btnKetChuyen
-    //    $('#btnKetChuyen').off('click').on('click', function () {
+            tamUngId = $('#hidTamUngId').val();
+            //soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
 
-    //        tamUngId = $('#hidTamUngId').val();
-    //        soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
-
-    //        $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT }, function (status) {
-    //            if (status) {
-
-    //                location.reload(); // reload lai trang
-    //                toastr.success('Kết chuyển thành công', 'Kết chuyển!');
-    //            }
-    //            else {
-    //                toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
-    //            }
-    //        })
-    //    })
+            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: 0 }, function (status) {
+                if (status) {
+                    toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+                    location.reload(); // reload lai trang
+                    
+                }
+                else {
+                    toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
+                }
+            })
+        })
     },
 
     GetTT621s_By_TamUng: function (tamUngId) {

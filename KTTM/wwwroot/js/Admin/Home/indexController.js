@@ -232,9 +232,9 @@ var indexController = {
                         $('#txtTenKhCo').val(data.name);
                     }
 
-                    $('#txtKyHieu').val(data.taxSign);
-                    $('#txtMauSoHD').val(data.taxForm);
-                    $('#txtMsThue').val(data.taxCode);
+                    $('#txtKyHieu').val(data.taxsign);
+                    $('#txtMauSoHD').val(data.taxform);
+                    $('#txtMsThue').val(data.taxcode);
                     $('#txtTenKH').val(data.name);
                     $('#txtDiaChi').val(data.address);
 

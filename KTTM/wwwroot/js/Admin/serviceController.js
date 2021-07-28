@@ -148,6 +148,26 @@ var serviceController = {
             }
         }
         
+    },
+    TxtVAT_Blur: function (vat, soTien) {
+
+        $.ajax({
+            type: "GET",
+            url: "/KVCTPCTs/TinhDsKhongVat",
+            data: { vat: vat, soTien: soTien },
+            dataType: "json",
+            success: function (response) {
+                if (response.status) {
+                    soTien = response.soTien;
+                    $('#txtDSKhongVAT').val(numeral(soTien).format('0,0'));
+                }
+                else {
+                    toastr.error(response.message);
+
+                }
+            }
+        });
+
     }
 
 };

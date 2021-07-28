@@ -620,31 +620,13 @@
         })
         // get dien giai by tkno tkco
 
-
         // VAT ==> DSKhongVAT
         $('#txtVAT').blur(function () {
             vat = $(this).val();
             soTien = $('#txtSoTien').val();
 
-            $.ajax({
-                type: "GET",
-                url: "/KVCTPCTs/TinhDsKhongVat",
-                data: { vat: vat, soTien: soTien },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status) {
-                        soTien = response.soTien;
-                        $('#txtDSKhongVAT').val(numeral(soTien).format('0,0'));
-                    }
-                    else {
-                        toastr.error(response.message);
-
-                    }
-                }
-            });
-
+            serviceController.TxtVAT_Blur(vat, soTien);
         })
-        // VAT ==> DSKhongVAT
 
         //// Get_DienGiai_By_TkNo_TkCo forward to service
 

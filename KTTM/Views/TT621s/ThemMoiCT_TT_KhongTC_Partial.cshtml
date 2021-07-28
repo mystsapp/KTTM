@@ -107,11 +107,11 @@
                             <div class=" row">
 
                                 <div class="col-md-12">
-                                    <label asp-for="KVCTPCT.DienGiai" class="control-label"></label>
-                                    <select asp-for="KVCTPCT.DienGiai" class="form-control form-control-sm" id="ddlDienGiai">
+                                    <label asp-for="TT621.DienGiai" class="control-label"></label>
+                                    <select asp-for="TT621.DienGiai" class="form-control form-control-sm" id="ddlDienGiai">
                                     </select>
 
-                                    <span asp-validation-for="KVCTPCT.DienGiai" class="text-danger"></span>
+                                    <span asp-validation-for="TT621.DienGiai" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -413,9 +413,9 @@
                 $('#txtMaKhNo_KhongTC').val(data.code);
                 $('#txtTenKhNo_KhongTC').val(data.name);
 
-                $('#txtKyHieu').val(data.taxSign);
-                $('#txtMauSoHD').val(data.taxForm);
-                $('#txtMsThue').val(data.taxCode);
+                $('#txtKyHieu').val(data.taxsign);
+                $('#txtMauSoHD').val(data.taxform);
+                $('#txtMsThue').val(data.taxcode);
                 $('#txtTenKH').val(data.name);
                 $('#txtDiaChi').val(data.address);
 
@@ -479,6 +479,12 @@
     })
     // sotien
 
+    // AutoSgtcode
+    $('#txtSgtcode').blur(function () {
+        sgtcodeText = $(this).val();
+        serviceController.AutoSgtcode(sgtcodeText);
+    })
+
     // get dien giai by tkno
     $('#ddlTkNo').change(function () {
 
@@ -518,7 +524,7 @@
                 success: function (response) {
                     if (response.status) {
 
-                        toastr.success('Tạo mới chi tiết thành công!', 'Chi tiết TT'); // toastr in admin/tour/indexController.js
+                        toastr.success('Tạo mới chi tiết thành công!', 'Chi tiết TT Không TC'); // toastr in admin/tour/indexController.js
 
                         $('#ThemMoiCT_TT_KhongTC_Modal').modal('hide');
                         //debugger
@@ -530,9 +536,10 @@
                         khongTCController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
                         khongTCController.GetCommentText_By_TamUng(tamUngId, 0); // get comment text
                         khongTCController.Check_KetChuyenBtnStatus(tamUngId, 0); // check nut ketchuyen
+                        khongTCController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, 0); // check nut themoi
                     }
                     else {
-                        toastr.error(response.message);
+                        toastr.error(response.message, 'Chi tiết TT Không TC');
 
                     }
                 }
@@ -554,7 +561,7 @@
             dataType: 'json',
             success: function (response) {
                 var data = response.data;
-                console.log(data);
+                // console.log(data);
                 $.each(data, function (i, item) {
                     option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
 
@@ -564,6 +571,14 @@
             }
         });
     }
+
+    // VAT ==> DSKhongVAT
+    $('#txtVAT').blur(function () {
+        vat = $(this).val();
+        soTien = $('#txtSoTien').val();
+
+        serviceController.TxtVAT_Blur(vat, soTien);
+    })
 
     function KhachHangSearch_KhongTC_ThemMoi(code) {
         $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_KhongTC_ThemMoi', { code: code }, function (data) {

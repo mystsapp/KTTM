@@ -494,13 +494,13 @@
 
     $('#txtSgtcode').rules('add', {
         minlength: 17,
+        maxlength: 17,
         messages: {
             //required: "Chủ đề không được để trống"
         }
     });
 
     // sotien
-
     $('#txtSoTienNT').blur(function () {
         serviceController.TinhSoTien();
     })
@@ -508,8 +508,13 @@
     $('#txtTyGia').blur(function () {
         serviceController.TinhSoTien();
     })
-
     // sotien
+
+    // AutoSgtcode
+    $('#txtSgtcode').blur(function () {
+        sgtcodeText = $(this).val();
+        serviceController.AutoSgtcode(sgtcodeText);
+    })
 
     // get dien giai by tkno tkco
     $('#ddlTkNo').change(function () {
@@ -592,6 +597,14 @@
         }
 
     });
+
+    // VAT ==> DSKhongVAT
+    $('#txtVAT').blur(function () {
+        vat = $(this).val();
+        soTien = $('#txtSoTien').val();
+
+        serviceController.TxtVAT_Blur(vat, soTien);
+    })
 
     function KhachHangSearch_ThemMoiTT(code) {
         $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT', { code: code }, function (data) {

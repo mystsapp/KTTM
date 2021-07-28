@@ -121,7 +121,7 @@ var createController = {
                             createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
                         }
                         else {
-                            toastr.error(response.message, 'Thêm tạm ứng!')
+                            toastr.error(response.message, 'Thêm thanh toán!')
                         }
                     });
                 }
@@ -289,9 +289,9 @@ var createController = {
                         $('#txtTenKhCo_ThemMoi').val(data.name);
                     }
 
-                    $('#txtKyHieu').val(data.taxSign);
-                    $('#txtMauSoHD').val(data.taxForm);
-                    $('#txtMsThue').val(data.taxCode);
+                    $('#txtKyHieu').val(data.taxsign);
+                    $('#txtMauSoHD').val(data.taxform);
+                    $('#txtMsThue').val(data.taxcode);
                     $('#txtTenKH').val(data.name);
                     $('#txtDiaChi').val(data.address);
 
