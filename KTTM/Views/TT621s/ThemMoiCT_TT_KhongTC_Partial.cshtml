@@ -61,21 +61,22 @@
 
                                 <div class="col-md-4">
                                     <label asp-for="TT621.SoTienNT" class="control-label"></label>
-                                    <input asp-for="TT621.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" />
+                                    <input asp-for="TT621.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" readonly/>
                                     <span asp-validation-for="TT621.SoTienNT" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.LoaiTien" class="control-label "></label>
-                                    <select asp-for="TT621.LoaiTien" class="form-control form-control-sm"
-                                            asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
-                                    </select>
+                                    @*<select asp-for="TT621.LoaiTien" class="form-control form-control-sm"
+                                            asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe" >
+                                    </select>*@
+                                    <input asp-for="TT621.LoaiTien" class="form-control form-control-sm" readonly value="VND"/>
                                     <span asp-validation-for="TT621.LoaiTien" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TyGia" class="control-label "></label>
-                                    <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" />
+                                    <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" readonly/>
                                     <span asp-validation-for="TT621.TyGia" class="text-danger"></span>
                                 </div>
 

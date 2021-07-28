@@ -65,6 +65,14 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPCT.KVPCTId = soCT;
             KVCTPCTVM.KVCTPCT.TyGia = 1;
             KVCTPCTVM.KVCTPCT.LoaiTien = "VND";
+            if (KVCTPCTVM.KVCTPCT.KVPCTId.Contains("C"))
+            {
+                KVCTPCTVM.KVCTPCT.TKCo = "1111000000";
+            }
+            else
+            {
+                KVCTPCTVM.KVCTPCT.TKNo = "1111000000";
+            }
             KVCTPCTVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
             
             var viewDmHttcs = _kVCTPCTService.GetAll_DmHttc_View().ToList();

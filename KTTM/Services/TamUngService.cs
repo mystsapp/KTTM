@@ -44,20 +44,11 @@ namespace KTTM.Services
         {
             var tamUngs = await Find_TamUngs_By_MaKh_Include(maKh);
             var tamUngs1 = tamUngs.ToList();
-            //foreach (var item in tamUngs1)
-            //{
-            //    var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
-            //    if (tT621s.Count() > 0)
-            //    {
-            //        tamUngs1.Remove(item);
-            //        tamUngs = tamUngs1;
-            //    }
-            //}
-
+            
             foreach (var item in tamUngs1.Reverse<TamUng>())
             {
                 var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
-                if (tT621s.Count() > 0)
+                if (tT621s.Count() != 1 && tT621s.FirstOrDefault().SoTienNT != item.SoTienNT)
                 {
                     tamUngs1.Remove(item);
                 }

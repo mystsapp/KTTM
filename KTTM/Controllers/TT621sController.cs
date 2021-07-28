@@ -237,32 +237,32 @@ namespace KTTM.Controllers
                 });
             }
 
-            // 
-            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, 0); // TT621VM.KVCTPCT.SoTienNT tu view qua
-            // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
-            if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
-            {
-                return Json(new
-                {
-                    status = false,
-                    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
-                });
-            }
+            //// 
+            //decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, 0); // TT621VM.KVCTPCT.SoTienNT tu view qua
+            //// txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
+            //if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
+            //{
+            //    return Json(new
+            //    {
+            //        status = false,
+            //        message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+            //    });
+            //}
 
             TT621VM.TT621.NgayCT = DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
             TT621VM.TT621.NgayTao = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
-            // lay soct cua tt621
-            if (TT621VM.TT621.LoaiTien == "VND")
-            {
+            //// lay soct cua tt621
+            //if (TT621VM.TT621.LoaiTien == "VND")
+            //{
                 TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV");
-            }
-            else
-            {
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN");
-            }
+            //}
+            //else
+            //{
+            //    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN");
+            //}
 
             TT621VM.KVCTPCT = await _kVCTPCTService.GetById(tamUngId); // tamUngId == kvctpctId 1 <-> 1
             // PhieuTC: tuy vao loai phieu lam TT
