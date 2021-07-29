@@ -172,6 +172,10 @@ var indexController = {
         });
         // create new KVCTPCT
 
+        // btnInPhieu
+        $('#btnInPhieu').off('click').on('click', function () {
+            $('#frmInPhieu').submit();
+        })
 
     },
     Load_KVCTPCTPartial: function (soCT, page) {
@@ -196,6 +200,10 @@ var indexController = {
         $('#hidThemDongSoCT').val(soCT);
         $('#hidThemDongSoCT_ContextMenu').val(soCT);
         $('#hidKVPCTId').val(soCT);
+
+        // gang' soCT cho btnInphieu
+        $('#btnInPhieu').attr('disabled', false);
+        $('#hidSoCT_InPhieu').val(soCT);
 
         // page
         var page = $('.active span').text();

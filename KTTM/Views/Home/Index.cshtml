@@ -79,9 +79,8 @@
                 <div class="col-md-12">
                     <div class="row rounded" style="padding-bottom: 5px; padding-top: 5px; background-color: aliceblue;" id="search">
 
-                        <div class="col-md-6 text-sm">
                             <form id="frmTT621" asp-action="TT621Create" asp-controller="TT621s" method="get">
-                                <div class=" btn-block ">
+                                <div class=" btn-block btn-group">
 
                                     <button type="button" class="btn btn-primary btn-sm" id="btnTimPhieu"> <i class="fas fa-binoculars text-dark"></i> Tìm phiếu</button>
 
@@ -89,36 +88,35 @@
 
                                     <a class="btn btn-outline-success btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm phiếu"><i class="fas fa-plus"></i> Thêm phiếu</a>
                                     <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</button>
-
+                                    
+                                    <button type="button" class="btn btn-outline-danger btn-sm" id="btnTamUng" disabled title="Tạm ứng">Tạm ứng</button>
+                                    <input type="hidden" id="hidTamUng" />
+                                    
                                     <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
                                     <input type="hidden" id="hidKVPCTId" name="kvpctId" /> <!--for khongTC_141-->
                                     <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                                     <input type="hidden" value="@Model.Page" name="page" />
                                     <button type="submit" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-dark btn-sm" id="btn141KhongTC" title="141 Không TC" formaction="/TT621s/KhongTC_141" formmethod="get">141 Không TC</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
-                                    
+                                    <input type="hidden" id="hidCashier" />
+                                    <button type="button" class="btn btn-outline-info btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
+
                                     <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInPhieu" title="TT 141"><i class="fas fa-print"></i> In phiếu</button>
                                     <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInCTPhieu" title="TT 141"><i class="fas fa-print"></i> In CT phiếu</button>
 
-                                    <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i></button>
+                                    <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i> Excel</button>
 
-                                    <input type="hidden" id="hidCashier" />
-                                    <button type="button" class="btn btn-outline-info btn-sm" id="btnTamUng" disabled title="Tạm ứng">Tạm ứng</button>
-                                    <input type="hidden" id="hidTamUng" />
                                 </div>
                             </form>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
 
-            @*<form id="frmTT621" asp-action="TT621Create" asp-controller="TT621s" method="get">
-                <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
-                <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
+            <form id="frmInPhieu" asp-action="InPhieu" asp-controller="BaoCaos" method="post">
+                <input type="hidden" id="hidSoCT_InPhieu" name="soCT" />
                 <input type="hidden" value="@Model.Page" name="page" />
-
-            </form>*@
+            </form>
 
             <form id="frmThemDong" asp-action="ThemDong" asp-controller="KVCTPCTs" method="get">
                 <input type="hidden" id="hidThemDongSoCT" name="soCT" />
@@ -233,13 +231,7 @@
             <!-- KVCTPCT-->
             <div id="KVCTPCT_Tbl">
             </div>
-            @*<div id="KVCTPCT_Create_Partial">
-                </div>
-                <div id="KVCTPCT_Edit_Partial">
-                </div>*@
-
-            <!-- KVCTPCT-->
-
+            
         </div>
         <!-- /.card-body -->
         @*<div class="card-footer">
@@ -287,18 +279,6 @@
                 $('#' + confirmDeleteSpan).hide();
             }
         }
-        //function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
-        //    var deleteSpan = 'deleteInvoiceSpan_' + uniqueId;
-        //    var confirmDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
-
-        //    if (isDeleteClicked) {
-        //        $('#' + deleteSpan).hide();
-        //        $('#' + confirmDeleteSpan).show();
-        //    } else {
-        //        $('#' + deleteSpan).show();
-        //        $('#' + confirmDeleteSpan).hide();
-        //    }
-        //}
 
         function KVCTPCT_Tbl() { // tab href
             location.href = "#KVCTPCT_Tbl";
