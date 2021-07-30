@@ -219,7 +219,7 @@ var indexController = {
         indexController.Load_KVCTPCTPartial(soCT, page);
 
     },
-    KhachHang_By_Code: function (code) {
+    KhachHang_By_Code: function (code, txtMaKh) {
 
         $.ajax({
             url: '/KVCTPCTs/GetKhachHangs_By_Code',
@@ -231,11 +231,11 @@ var indexController = {
                     var data = response.data;
                     // console.log(data);
 
-                    if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
+                    if (txtMaKh === 'txtMaKhNo') { // search of no
                         $('#txtMaKhNo').val(data.code);
                         $('#txtTenKhNo').val(data.name);
                     }
-                    if ($('#btnKhSearch').data('name') === 'maKhCo') { // search of co
+                    if (txtMaKh === 'txtMaKhCo') { // search of co
                         $('#txtMaKhCo').val(data.code);
                         $('#txtTenKhCo').val(data.name);
                     }

@@ -145,7 +145,10 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhNo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" readonly>
+                                            <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi">
+                                            <span class="input-group-btn">
+                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                            </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
@@ -210,8 +213,8 @@
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
-                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                            </select>
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                        </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
@@ -414,6 +417,14 @@
 <!-- Validation -->
 
 <script>
+
+    // enter for search
+    shortcut.add("Enter", function () {
+
+            $('#btnKhSearch_ThemMoi').click()
+
+    });
+
     // btnKhSearch
     $('#btnKhSearch_ThemMoi').click(function () {
 

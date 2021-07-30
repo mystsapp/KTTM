@@ -134,16 +134,22 @@ var khongTCController = {
             tamUngId = $('#hidTamUngId').val();
             //soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
 
-            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: 0 }, function (status) {
-                if (status) {
-                    toastr.success('Kết chuyển thành công', 'Kết chuyển!');
-                    location.reload(); // reload lai trang
-                    
+            bootbox.confirm("Bạn có muốn <b> kết chuyển </b> không?", function (result) {
+                if (result) {
+
+                    $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: 0 }, function (status) {
+                        if (status) {
+                            toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+                            location.reload(); // reload lai trang
+
+                        }
+                        else {
+                            toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
+                        }
+                    })
                 }
-                else {
-                    toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
-                }
-            })
+            });
+
         })
     },
 

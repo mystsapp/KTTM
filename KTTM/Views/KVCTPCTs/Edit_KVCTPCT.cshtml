@@ -496,11 +496,15 @@
     <!-- Validation -->
 
     <script>
-        $(".maskInput").mask("99/99/9999");
+        //$(".maskInput").mask("99/99/9999");
 
         // enter for search
         shortcut.add("Enter", function () {
-            $('#btnKhSearch').click()
+            var btnKhSearch_Status = $('#btnKhSearch').hasClass('disabled');
+            if (!btnKhSearch_Status) {
+                $('#btnKhSearch').click()
+            }
+
         });
 
         $('#btnKhSearch').click(function () {

@@ -450,6 +450,16 @@
 <!-- Validation -->
 
 <script>
+
+    // enter for search
+    shortcut.add("Enter", function () {
+        var btnKhSearch_CapNhat_Status = $('#btnKhSearch_CapNhat').hasClass('disabled');
+        if (!btnKhSearch_CapNhat_Status) {
+            $('#btnKhSearch_CapNhat').click()
+        }
+        
+    });
+
     // btnKhSearch
     $('#btnKhSearch_CapNhat').click(function () {
 

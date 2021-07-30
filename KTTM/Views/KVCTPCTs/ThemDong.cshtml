@@ -139,7 +139,10 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPCT.MaKhNo" class="control-label "></label>
                                 <div class="input-group">
-                                    <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo" readonly>
+                                    <input asp-for="KVCTPCT.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo" >
+                                    <span class="input-group-btn">
+                                        <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    </span>
                                 </div>
                                 <span asp-validation-for="KVCTPCT.MaKhNo" class="text-danger"></span>
                             </div>
@@ -499,7 +502,7 @@
             maKhtext = $(this).val();
 
             //KhachHang_By_Code(maKhtext);
-            indexController.KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
         })
 
         $('#txtMaKhCo').blur(function () {
@@ -507,7 +510,7 @@
             maKhtext = $(this).val();
 
             //KhachHang_By_Code(maKhtext);
-            indexController.KhachHang_By_Code(maKhtext);
+            indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
         })
 
         $('#ddlNgoaiTe').change(function () {

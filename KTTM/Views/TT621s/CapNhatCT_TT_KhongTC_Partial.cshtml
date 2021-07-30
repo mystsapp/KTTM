@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <label class="control-label ">Tên KH nợ</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtTenKhNo_KhongTC" />
+                                    <input type="text" class="form-control form-control-sm" id="txtTenKhNo_KhongTC" value="@Model.TT621.TenKH"/>
                                 </div>
 
                                 @*<div class="col-md-2">
@@ -394,6 +394,16 @@
 <!-- Validation -->
 
 <script>
+
+    // enter for search
+    shortcut.add("Enter", function () {
+        var btnKhSearch_KhongTC_Status = $('#btnKhSearch_KhongTC').hasClass('disabled');
+        if (!btnKhSearch_KhongTC_Status) {
+            $('#btnKhSearch_KhongTC').click()
+        }
+
+    });
+
     // btnKhSearch
     $('#btnKhSearch_KhongTC').click(function () {
 

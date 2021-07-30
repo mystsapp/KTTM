@@ -57,8 +57,9 @@ var createController = {
 
             $('#hidTamUngId').val(tamUngId); // for TT141
 
-            // check btnThemMoiCTTT status
-            createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT)//////////////////
+            //// check btnThemMoiCTTT status
+            //createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT)//////////////////
+            $('#btnThemMoiCT').attr('disabled', false); // ko can check lun
 
             // gang' commentText khi lick tamung            
             createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
@@ -137,16 +138,22 @@ var createController = {
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // TT621Create_View
 
-            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
-                if (status) {
+            bootbox.confirm("Bạn có muốn <b> kết chuyển </b> không?", function (result) {
+                if (result) {
 
-                    location.reload(); // reload lai trang
-                    toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+                    $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
+                        if (status) {
+
+                            location.reload(); // reload lai trang
+                            toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+                        }
+                        else {
+                            toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
+                        }
+                    })
                 }
-                else {
-                    toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
-                }
-            })
+            });
+
         })
     },
 
@@ -200,10 +207,10 @@ var createController = {
                         tt621Id = $(this).data('id');
                         $('#hidTT621Id').val(tt621Id); // moi lan click tt621 tr se gang' id len hidTT621Id
 
-                        
+
                         phieuTC = $(this).data('phieutc');                             // trong tt621 tbl
                         var soCT_TT621CreateView = $('#kVPCTId_TT621CreateView').val();// trong TT621CreateView
-                        
+
                         if (phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) { // cung phieu T cho capnhat
                             $('#btnCapNhatCT').attr('disabled', false);
                         }
@@ -211,10 +218,10 @@ var createController = {
                             $('#btnCapNhatCT').attr('disabled', false);
                         }
                         if ((!phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) ||
-                             (phieuTC.includes("T") && !soCT_TT621CreateView.includes("T"))) { // khac phieu => ko cho capnhat
+                            (phieuTC.includes("T") && !soCT_TT621CreateView.includes("T"))) { // khac phieu => ko cho capnhat
                             $('#btnCapNhatCT').attr('disabled', true);
                         }
-                        
+
                         $('#btnDelete').attr('disabled', false);
 
                     })
@@ -230,7 +237,7 @@ var createController = {
 
     Check_KetChuyenBtnStatus: function (tamUngId, soTienNT) {
         $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
-            
+
             $('#btnKetChuyen').attr('disabled', status)
 
         })
