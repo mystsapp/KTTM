@@ -703,7 +703,8 @@ namespace KTTM.Controllers
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetSuppliersByCode(code, user.Macn);
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPCTService.GetSuppliersByCodeName(code, user.Macn);
+            KVCTPCTVM.MaKhText = code;
             return PartialView(KVCTPCTVM);
         }
         public JsonResult Get_TenTk_By_Tk(string tk)

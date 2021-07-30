@@ -353,7 +353,7 @@
                 </fieldset>
 
                 <div class=" pt-1 pb-1">
-                    <button type="submit" class="btn btn-primary btn-sm" @*id="btnKVCTPCTCreatePartial_Save"*@><i class="fas fa-save"></i> Save</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnKVCTPCTCreatePartial_Save"><i class="fas fa-save"></i> Save</button>
                     <a class="btn btn-success btn-sm" asp-action="BackIndex" asp-route-soCT="@Model.KVPCT.SoCT" asp-route-page="@Model.Page"><i class="fas fa-backward "></i> Back</a>
                 </div>
             </div>
@@ -412,6 +412,11 @@
     <!-- Validation -->
 
     <script>
+
+        // enter for search
+        shortcut.add("Enter", function () {
+            $('#btnKhSearch').click()
+        });
 
         $('#btnKhSearch').click(function () {
             debugger
@@ -505,6 +510,10 @@
 
         })
         // sotien
+        // btnKVCTPCTCreatePartial_Save
+        $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {
+            $('#frm_KVCTPCT_Create').submit();
+        })
 
         // AutoSgtcode
         $('#txtSgtcode').blur(function () {

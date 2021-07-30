@@ -209,10 +209,10 @@
                                 {
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
-                                        @*<select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
+                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
                                                     asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                            </select>*@
-                                        <input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />
+                                            </select>
+                                        @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
 
@@ -481,8 +481,8 @@
         errorPlacement: function (error, element) {
             // add error text
 
-            //error.addClass('invalid-feedback').removeClass('error');
-            //element.closest('.chuDeTourGroup').append(error);
+            error.addClass('invalid-feedback').removeClass('error');
+            element.closest('#txtSgtcode').append(error);
         },
         highlight: function (element, errorClass, validClass) {
             $(element).addClass('is-invalid');
@@ -493,10 +493,11 @@
     });
 
     $('#txtSgtcode').rules('add', {
-        minlength: 17,
+        //minlength: 17,
         maxlength: 17,
         messages: {
-            //required: "Chủ đề không được để trống"
+            minlength: "Sgtcode phải là 17 ký tự",
+            maxlength: "Sgtcode phải là 17 ký tự"
         }
     });
 

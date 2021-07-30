@@ -40,6 +40,7 @@ namespace KTTM.Services
         Task<KVCTPCT> GetById(long id);
         IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
         IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn);
+        IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCodeName(string code, string maCn);
         IEnumerable<Dgiai> GetAll_DienGiai();
         KVCTPCT GetBySoCTAsNoTracking(long id);
         Task UpdateAsync(KVCTPCT kVCTPCT);
@@ -343,6 +344,16 @@ namespace KTTM.Services
         {
             code ??= "";
             var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn).ToList();
+            
+            return suppliers;
+        }
+
+        public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCodeName(string code, string maCn)
+        {
+            code ??= "";
+            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) ||
+                                                                              (!string.IsNullOrEmpty(x.Name) && x.Name.Trim().ToLower().Contains(code.Trim().ToLower()))).ToList();
+            suppliers = suppliers.Where(x => x.Chinhanh == maCn).ToList();
             return suppliers;
         }
 
