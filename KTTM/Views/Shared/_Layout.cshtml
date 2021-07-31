@@ -69,7 +69,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                                 <li class="dropdown-divider"></li>
 
-                                <li><a href="#" class="dropdown-item">In CTGS do thanh toán tạm ứng</a></li>
+                                <li><a href="#" class="dropdown-item" id="btnInChungTuGhiSo">In CTGS do thanh toán tạm ứng</a></li>
                                 <!-- Level two dropdown-->
                                 @*<li class="dropdown-submenu dropdown-hover">
                                         <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
@@ -110,6 +110,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             </div>
             <partial name="_LoginPartial.cshtml" />
+            <partial name="_InChungTuGhiSo_Modal.cshtml" />
         </nav>
         <!-- /.navbar -->
         <!-- Content Wrapper. Contains page content -->
@@ -215,5 +216,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
     </style>
 
+    <script>
+        $('#btnInChungTuGhiSo').off('click').on('click', function (e) {
+            e.preventDefault();
+
+            $.get('/BaoCaos/InChungTuGhiSo', function (data) {
+                $('#inChungTuGhiSo_Modal_Body').html(data)
+                $('#inChungTuGhiSo_Modal').modal('show');
+                $('#inChungTuGhiSo_Modal').draggable();
+            })
+        })
+    </script>
 </body>
+
 </html>

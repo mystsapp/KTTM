@@ -1,6 +1,7 @@
 ﻿using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Utilities;
+using KTTM.Models;
 using KTTM.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,15 @@ namespace KTTM.Controllers
         private readonly IKVPCTService _kVPCTService;
         private readonly IKVCTPCTService _kVCTPCTService;
 
+        [BindProperty]
+        public BaoCaoViewModel BaoCaoVM { get; set; }
+
         public BaoCaosController(IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService)
         {
             _kVPCTService = kVPCTService;
             _kVCTPCTService = kVCTPCTService;
+
+            BaoCaoVM = new BaoCaoViewModel();
         }
 
         [HttpPost]
@@ -201,6 +207,12 @@ namespace KTTM.Controllers
             {
                 throw;
             }
+        }
+
+        public async Task<IActionResult> InChungTuGhiSo(string searchFromDate, string searchToDate)
+        {
+            BaoCaoVM.TT621s = _kVCTPCTService.FindByDate(searchFromDate, searchToDate);
+            return PartialView(BaoCaoVM);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
