@@ -49,7 +49,6 @@ namespace KTTM.Services
         IEnumerable<ListViewModel> LoaiHDGocs();
         string AutoSgtcode(string param);
         Task<KVCTPCT> FindByIdInclude(long kVCTPCTId_PhieuTC);
-        IEnumerable<TT621> FindByDate(string searchFromDate, string searchToDate);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -465,76 +464,5 @@ namespace KTTM.Services
             return kVCTPCTs.FirstOrDefault();
         }
 
-        public IEnumerable<TT621> GetAll()
-        {
-            return _unitOfWork.tT621Repository.GetAll();
-        }
-
-        public IEnumerable<TT621> FindByDate(string searchFromDate, string searchToDate)
-        {
-            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
-            {
-                return null;
-            }
-                List<TT621> list = GetAll().ToList();
-            // search date
-            DateTime fromDate, toDate;
-            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
-            {
-
-                try
-                {
-                    fromDate = DateTime.Parse(searchFromDate); // NgayCT
-                    toDate = DateTime.Parse(searchToDate); // NgayCT
-
-                    if (fromDate > toDate)
-                    {
-                        return null; //
-                    }
-
-                    list = list.Where(x => x.NgayCT >= fromDate &&
-                                       x.NgayCT < toDate.AddDays(1)).ToList();
-                }
-                catch (Exception)
-                {
-
-                    return null;
-                }
-
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
-                {
-                    try
-                    {
-                        fromDate = DateTime.Parse(searchFromDate);
-                        list = list.Where(x => x.NgayCT >= fromDate).ToList();
-                    }
-                    catch (Exception)
-                    {
-                        return null;
-                    }
-
-                }
-                if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
-                {
-                    try
-                    {
-                        toDate = DateTime.Parse(searchToDate);
-                        list = list.Where(x => x.NgayCT < toDate.AddDays(1)).ToList();
-
-                    }
-                    catch (Exception)
-                    {
-                        return null;
-                    }
-
-                }
-            }
-            // search date
-
-            return list;
-        }
     }
 }

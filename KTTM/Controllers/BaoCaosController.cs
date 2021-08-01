@@ -21,15 +21,16 @@ namespace KTTM.Controllers
     {
         private readonly IKVPCTService _kVPCTService;
         private readonly IKVCTPCTService _kVCTPCTService;
+        private readonly ITT621Service _tT621Service;
 
         [BindProperty]
         public BaoCaoViewModel BaoCaoVM { get; set; }
 
-        public BaoCaosController(IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService)
+        public BaoCaosController(IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService, ITT621Service tT621Service)
         {
             _kVPCTService = kVPCTService;
             _kVCTPCTService = kVCTPCTService;
-
+            _tT621Service = tT621Service;
             BaoCaoVM = new BaoCaoViewModel();
         }
 
@@ -209,9 +210,31 @@ namespace KTTM.Controllers
             }
         }
 
-        public async Task<IActionResult> InChungTuGhiSo(string searchFromDate, string searchToDate)
+        public IActionResult InChungTuGhiSo_Partial(string searchFromDate, string searchToDate)
         {
-            BaoCaoVM.TT621s = _kVCTPCTService.FindByDate(searchFromDate, searchToDate);
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+                DateTime fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                DateTime toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                if (fromDate > toDate) // dao nguoc lai
+                {
+                    string tmp = searchFromDate;
+                    searchFromDate = searchToDate;
+                    searchToDate = tmp;
+                }
+
+                BaoCaoVM.TT621s = _tT621Service.FindByDate(searchFromDate, searchToDate);
+
+                if(BaoCaoVM.TT621s == null)
+                {
+
+                    return Json(false);
+                }
+            }
+
             return PartialView(BaoCaoVM);
         }
 

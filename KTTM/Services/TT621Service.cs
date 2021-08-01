@@ -25,6 +25,8 @@ namespace KTTM.Services
         decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create);
         TT621Dto ConvertTT621ToTT621Dto(TT621 tT621);
         IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
+        IEnumerable<TT621> GetAll();
+        IEnumerable<TT621> FindByDate(string searchFromDate, string searchToDate);
     }
     public class TT621Service : ITT621Service
     {
@@ -226,6 +228,76 @@ namespace KTTM.Services
             // supplier co 2 key
             var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower() == code.Trim().ToLower() && x.Chinhanh == maCn).ToList();
             return suppliers;
+        }
+
+
+        public IEnumerable<TT621> GetAll()
+        {
+            return _unitOfWork.tT621Repository.GetAll();
+        }
+
+        public IEnumerable<TT621> FindByDate(string searchFromDate, string searchToDate)
+        {
+            
+            List<TT621> list = GetAll().ToList();
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                    toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                    if (fromDate > toDate)
+                    {
+                        return null; //
+                    }
+
+                    list = list.Where(x => x.NgayCT >= fromDate &&
+                                       x.NgayCT < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        list = list.Where(x => x.NgayCT >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        list = list.Where(x => x.NgayCT < toDate.AddDays(1)).ToList();
+
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+            }
+            // search date
+
+            return list;
         }
     }
 }

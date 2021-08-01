@@ -1,0 +1,115 @@
+﻿@model BaoCaoViewModel
+
+<div class="row form-group">
+    <div class="col-xs-12 col-md-12 ml-2 pr-4">
+        <div class="row rounded p-2 text-sm" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+            @*<div class=" row text-sm">*@
+
+            <div class="col-md-2">
+                <label>Từ ngày</label>
+            </div>
+
+            <div class="col-md-3">
+                <input class="form-control form-control-sm maskInput" id="txtTuNgay" value="@ViewBag.searchFromDate" />
+
+            </div>
+
+            <div class="col-md-2">
+                <label>Đến ngày</label>
+            </div>
+
+            <div class="col-md-3">
+                <input class="form-control form-control-sm maskInput" id="txtDenNgay" value="@ViewBag.searchToDate" />
+
+            </div>
+
+            <div class="col-md-2 text-sm">
+                @*<label>&nbsp;</label>*@
+                <div class=" btn-block btn-group">
+                    <button type="button" class="btn btn-primary btn-sm" id="btnInChungTuSearch" title="Tìm kiếm">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button type="button" class="btn btn-success btn-sm" id="btnInChungTu" title="In chứng từ">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            @*</div>*@
+        </div>
+    </div>
+</div>
+
+<div style="overflow-x:auto; overflow-y:auto; height: 300px">
+    <table class="table mytable text-nowrap text-sm" id="khachHangTbl">
+        <thead>
+            <tr class="table-info">
+
+                <th>Số TT</th>
+                <th>Ngày</th>
+                <th>Mã KH có</th>
+                <th>Tên Người Thanh Toán</th>
+                <th>Phiếu thu/chi</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TT621s != null)
+            {
+                @foreach (var item in Model.TT621s.ToList())
+                {
+
+                    <tr class="khachhangs-cursor-pointer ">
+
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPCT.KVPCT.LapPhieu)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>
+
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+<!--<div class=" pt-1 pb-1">
+    <button type="button" class="btn btn-success btn-sm"-->
+@*id="btnKVCTPCTCreatePartial_Back"*@
+<!--data-dismiss="modal"><i class="fas fa-backward "></i> Back</button>
+</div>-->
+
+
+<script>
+    $(".maskInput").mask("99/99/9999");
+
+    // enter for search
+    shortcut.add("Enter", function () {
+
+        $('#btnInChungTuSearch').click();
+    });
+
+    $('#btnInChungTuSearch').off('click').on('click', function () {
+        tuNgay = $('#txtTuNgay').val();
+        denNgay = $('#txtDenNgay').val();
+
+        InChungTungGhiSo(tuNgay, denNgay); // _TopMenu
+    })
+    $('.khachhangs-cursor-pointer').click(function () {
+
+        // giu trang thai
+        if ($(this).hasClass("hoverClass"))
+            $(this).removeClass("hoverClass");
+        else {
+            $('.khachhangs-cursor-pointer').removeClass("hoverClass");
+            $(this).addClass("hoverClass");
+        }
+
+        //var code = $(this).children().eq(0).html();
+        //var name = $(this).children().eq(1).html();
+
+
+    })
+</script>
