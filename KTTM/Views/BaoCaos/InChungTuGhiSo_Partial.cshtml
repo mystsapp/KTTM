@@ -59,13 +59,13 @@
                 @foreach (var item in Model.TT621s.ToList())
                 {
 
-                    <tr class="khachhangs-cursor-pointer ">
+                    <tr class="khachhangs-cursor-pointer " data-id="@item.Id">
 
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPCT.KVPCT.LapPhieu)</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>
+                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
+                        <td class="tdVal_TT621" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
+                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPCT.KVPCT.LapPhieu)</td>
+                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>
 
                     </tr>
 
@@ -75,12 +75,17 @@
     </table>
 
 </div>
-<!--<div class=" pt-1 pb-1">
-    <button type="button" class="btn btn-success btn-sm"-->
-@*id="btnKVCTPCTCreatePartial_Back"*@
-<!--data-dismiss="modal"><i class="fas fa-backward "></i> Back</button>
-</div>-->
 
+<form asp-action="InChungTuGhiSoExcel" id="frm_InChungTuGhiSoExcel" method="post">
+    <input type="hidden" id="hidTuNgay" name="tuNgay" />
+    <input type="hidden" id="hidDenNgay" name="denNgay" />
+
+    <input type="hidden" id="hidId_TT" name="id_TT" />
+    <input type="hidden" id="hidSoCT_TT" name="soCT_TT" />
+    <input type="hidden" id="hidNgayCT_TT" name="ngayCT_TT" />
+    <input type="hidden" id="hidMaKhCo_TT" name="maKhCo_TT" />
+    <input type="hidden" id="hidPhieuTC_TT" name="phieuTC_TT" />
+</form>
 
 <script>
     $(".maskInput").mask("99/99/9999");
@@ -97,6 +102,11 @@
 
         InChungTungGhiSo(tuNgay, denNgay); // _TopMenu
     })
+
+    $('#btnInChungTu').off('click').on('click', function () {
+    
+        $('#frm_InChungTuGhiSoExcel').submit();
+    })
     $('.khachhangs-cursor-pointer').click(function () {
 
         // giu trang thai
@@ -106,6 +116,24 @@
             $('.khachhangs-cursor-pointer').removeClass("hoverClass");
             $(this).addClass("hoverClass");
         }
+
+        tuNgay = $('#txtTuNgay').val();
+        denNgay = $('#txtDenNgay').val();
+
+        var id_TT = $(this).data('id');
+        var soCT_TT = $(this).children().eq(0).html();
+        var ngayCT_TT = $(this).children().eq(1).html();
+        var maKhCo_TT = $(this).children().eq(2).html();
+        var phieuTC_TT = $(this).children().eq(3).html();
+
+        $('#hidTuNgay').val(tuNgay);
+        $('#hidDenNgay').val(denNgay);
+
+        $('#hidId_TT').val(id_TT);
+        $('#hidSoCT_TT').val(soCT_TT);
+        $('#hidNgayCT_TT').val(ngayCT_TT);
+        $('#hidMaKhCo_TT').val(maKhCo_TT);
+        $('#hidPhieuTC_TT').val(phieuTC_TT);
 
         //var code = $(this).children().eq(0).html();
         //var name = $(this).children().eq(1).html();

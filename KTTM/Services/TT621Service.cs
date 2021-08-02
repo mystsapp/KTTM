@@ -239,7 +239,7 @@ namespace KTTM.Services
         public IEnumerable<TT621> FindByDate(string searchFromDate, string searchToDate)
         {
             
-            List<TT621> list = GetAll().ToList();
+            List<TT621> list = _unitOfWork.tT621Repository.GetTT621s_IncludeTwice().ToList();
             // search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))

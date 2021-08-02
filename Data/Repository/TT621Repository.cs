@@ -20,7 +20,7 @@ namespace Data.Repository
 
         public IEnumerable<TT621> GetTT621s_IncludeTwice()
         {
-            return _context.TT621s.Include(x => x.TamUng).ThenInclude(x => x.KVCTPCT);
+            return _context.TT621s.Include(x => x.TamUng).ThenInclude(x => x.KVCTPCT).ThenInclude(x => x.KVPCT);
         }
 
     }
