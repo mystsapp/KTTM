@@ -246,7 +246,7 @@ namespace KTTM.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> InChungTuGhiSoExcel(string tuNgay, string denNgay, 
+        public async Task<IActionResult> InChungTuGhiSoExcel(string tuNgay, string denNgay,
                                                              long id_TT, string soCT_TT, string ngayCT_TT, string maKhCo_TT, string phieuTC_TT)
         {
             IEnumerable<TT621> tT621s = _tT621Service.FindByDate(tuNgay, denNgay);
@@ -267,43 +267,47 @@ namespace KTTM.Controllers
             xlSheet.Column(7).Width = 20;// Mã KH nợ
             xlSheet.Column(8).Width = 40;// Tên KH nợ
             xlSheet.Column(9).Width = 20;// Code đoàn
+            xlSheet.Column(10).Width = 20;// CT Gốc
 
             xlSheet.Cells[1, 1].Value = "Đơn vị: CÔNG TY TNHH MTV DVLH SAIGONTOURIST";
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[1, 1, 1, 2].Merge = true;
+            xlSheet.Cells[1, 1, 1, 10].Merge = true;
 
             xlSheet.Cells[2, 1].Value = "Địa chỉ: 45 LÊ THÁNH TÔN, P.BẾN NGHÉ, Q.1, TP.HCM";
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[2, 1, 2, 2].Merge = true;
+            xlSheet.Cells[2, 1, 2, 10].Merge = true;
 
             xlSheet.Cells[3, 1].Value = "CHÚNG TỪ GHI SỔ TK 141 SỐ " + soCT_TT;
             xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
-            xlSheet.Cells[3, 1, 3, 5].Merge = true;
+            xlSheet.Cells[3, 1, 3, 10].Merge = true;
             setCenterAligment(3, 1, 3, 10, xlSheet);
 
             string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu + " số " + tT621.TamUng.KVCTPCT.KVPCTId + " - " +
                 "Nhân viên: " + maKhCo_TT + " " + tT621.TenKH;
-            xlSheet.Cells[3, 1].Value = stringNgay;
-            xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
-            xlSheet.Cells[3, 1, 3, 5].Merge = true;
-            setCenterAligment(3, 1, 3, 10, xlSheet);
+            xlSheet.Cells[4, 1].Value = stringNgay;
+            xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            TrSetCellBorder(xlSheet, 4, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Italic);
+            xlSheet.Cells[4, 1, 4, 10].Merge = true;
+            setCenterAligment(4, 1, 4, 10, xlSheet);
 
             // Tạo header
-            xlSheet.Cells[5, 1].Value = "DIỄN GIẢI";
-            xlSheet.Cells[5, 2].Value = "TK ĐỐI ỨNG";
-            xlSheet.Cells[5, 3].Value = "SỐ TIỀN NT";
-            xlSheet.Cells[5, 4].Value = "SỐ TIỀN";
-            xlSheet.Cells[5, 5].Value = "SGTCODE";
+            xlSheet.Cells[5, 1].Value = "Diễn giải";
+            xlSheet.Cells[5, 2].Value = "Số tiền NT";
+            xlSheet.Cells[5, 3].Value = "LT";
+            xlSheet.Cells[5, 4].Value = "Tỷ giá";
+            xlSheet.Cells[5, 5].Value = "Số tiền";
+            xlSheet.Cells[5, 6].Value = "TK nợ";
+            xlSheet.Cells[5, 7].Value = "Mã KH nợ";
+            xlSheet.Cells[5, 8].Value = "Tên KH nợ";
+            xlSheet.Cells[5, 9].Value = "Code đoàn";
+            xlSheet.Cells[5, 10].Value = "CT Gốc";
 
-            xlSheet.Cells[5, 1, 5, 12].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            setBorder(5, 1, 5, 5, xlSheet);
-            setCenterAligment(5, 1, 5, 5, xlSheet);
+            xlSheet.Cells[5, 1, 10, 12].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            setBorder(5, 1, 5, 10, xlSheet);
+            setCenterAligment(5, 1, 5, 10, xlSheet);
 
             // do du lieu tu table
             int dong = 6;
-
-            //// moi load vao
-            var kVCTPCTs = await _kVCTPCTService.List_KVCTPCT_By_SoCT(soCT);
 
             //du lieu
             //int iRowIndex = 6;
@@ -315,64 +319,75 @@ namespace KTTM.Controllers
 
             int idem = 1;
 
-            if (kVCTPCTs.Count() > 0)
+            if (tT621 != null)
             {
 
-                foreach (var item in kVCTPCTs)
-                {
-                    xlSheet.Cells[dong, 1].Value = item.DienGiai;
-                    TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                    //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                xlSheet.Cells[dong, 1].Value = tT621.TamUng.KVCTPCT.DienGiai;
+                TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    if (kVPCT.MFieu == "T")
-                    {
-                        xlSheet.Cells[dong, 2].Value = item.TKCo;
-                    }
-                    else
-                    {
-                        xlSheet.Cells[dong, 2].Value = item.TKNo;
-                    }
-                    TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                    // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                xlSheet.Cells[dong, 2].Value = tT621.TamUng.KVCTPCT.SoTienNT;
+                TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 3].Value = item.SoTienNT;
-                    TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                    //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                xlSheet.Cells[dong, 3].Value = tT621.TamUng.KVCTPCT.LoaiTien;
+                TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 4].Value = item.SoTien;
-                    TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                    //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                xlSheet.Cells[dong, 4].Value = tT621.TamUng.KVCTPCT.TyGia;
+                TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 5].Value = item.Sgtcode;
-                    TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                xlSheet.Cells[dong, 5].Value = tT621.TamUng.KVCTPCT.SoTien;
+                TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    //setBorder(5, 1, dong, 10, xlSheet);
-                    NumberFormat(dong, 3, dong, 4, xlSheet);
+                xlSheet.Cells[dong, 6].Value = tT621.TamUng.KVCTPCT.TKNo;
+                TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                
+                xlSheet.Cells[dong, 7].Value = tT621.TamUng.KVCTPCT.MaKhNo;
+                TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                
+                xlSheet.Cells[dong, 8].Value = tT621.TamUng.KVCTPCT.TenKH;
+                TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                
+                xlSheet.Cells[dong, 9].Value = tT621.TamUng.KVCTPCT.Sgtcode;
+                TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                
+                xlSheet.Cells[dong, 10].Value = tT621.TamUng.KVCTPCT.SoCTGoc;
+                TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    dong++;
-                    idem++;
-                }
+                //setBorder(5, 1, dong, 10, xlSheet);
+                NumberFormat(dong, 2, dong + 1, 2, xlSheet);
+                NumberFormat(dong, 5, dong + 1, 5, xlSheet);
+
+                dong++;
+                idem++;
 
                 xlSheet.Cells[dong, 1].Value = "TỔNG CỘNG:";
-                xlSheet.Cells[dong, 3].Formula = "SUM(C6:C" + (dong - 1) + ")";
-                xlSheet.Cells[dong, 4].Formula = "SUM(D6:D" + (dong - 1) + ")";
+                xlSheet.Cells[dong, 2].Formula = "SUM(B6:B" + (dong - 1) + ")";
+                xlSheet.Cells[dong, 5].Formula = "SUM(E6:E" + (dong - 1) + ")";
 
-                NumberFormat(dong, 3, dong, 4, xlSheet);
-                setFontBold(dong, 1, dong, 5, 12, xlSheet);
-                setBorder(dong, 1, dong, 5, xlSheet);
+                //NumberFormat(dong, 3, dong, 4, xlSheet);
+                setFontBold(dong, 1, dong, 10, 12, xlSheet);
+                setBorder(dong, 1, dong, 10, xlSheet);
 
-                xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";
-                xlSheet.Cells[dong + 2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
-                xlSheet.Cells[dong + 2, 4].Value = "Kế toán trưởng";
-                xlSheet.Cells[dong + 2, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
+                //xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";
+                //xlSheet.Cells[dong + 2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
+                //xlSheet.Cells[dong + 2, 4].Value = "Kế toán trưởng";
+                //xlSheet.Cells[dong + 2, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
 
-                setCenterAligment(dong + 2, 1, dong + 2, 4, xlSheet);
+                //setCenterAligment(dong + 2, 1, dong + 2, 4, xlSheet);
             }
             else
             {
-                SetAlert("Phiếu này không có chi tiết nào.", "warning");
-                return RedirectToAction(nameof(Index), "Home", new { soCT, page });
+                //SetAlert("Phiếu này không có chi tiết nào.", "warning");
+                return NoContent();
             }
 
             //dong++;
@@ -414,7 +429,7 @@ namespace KTTM.Controllers
                 return File(
                 fileContents: fileContents,
                 contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                fileDownloadName: "BangKe_" + kVPCT.SoCT + "_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
+                fileDownloadName: "ChungTuGhiSoTK141_" + soCT_TT + "_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
             }
             catch (Exception)
             {
