@@ -210,6 +210,44 @@ namespace KTTM.Controllers
             }
         }
 
+        // InChungTuGhiSo_Partial
+        public IActionResult TheoDoiTUNoiBoTk141_Partial(string searchFromDate, string searchToDate)
+        {
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate)) // moi load vao
+            {
+                BaoCaoVM.TT621s = null;
+                return PartialView(BaoCaoVM);
+            }
+
+            // dao ngay thang
+            DateTime fromDate = DateTime.Parse(searchFromDate); // NgayCT
+            DateTime toDate = DateTime.Parse(searchToDate); // NgayCT
+
+            if (fromDate > toDate) // dao nguoc lai
+            {
+                string tmp = searchFromDate;
+                searchFromDate = searchToDate;
+                searchToDate = tmp;
+                ViewBag.searchFromDate = searchFromDate;
+                ViewBag.searchToDate = searchToDate;
+            }
+
+            BaoCaoVM.PhongBans = _kVCTPCTService.GetAll_PhongBans().Where(x => x.BoPhan == "ND" ||
+                                                                               x.BoPhan == "HK" ||
+                                                                               x.BoPhan == "HC" ||
+                                                                               x.BoPhan == "HD" ||
+                                                                               x.BoPhan == "KT" ||
+                                                                               x.BoPhan == "TB" ||
+                                                                               x.BoPhan == "TH" ||
+                                                                               x.BoPhan == "VT" ||
+                                                                               x.BoPhan == "VS" ||
+                                                                               x.BoPhan == "XE" );
+            return PartialView(BaoCaoVM);
+        }
+        
+        // InChungTuGhiSo_Partial
         public IActionResult InChungTuGhiSo_Partial(string searchFromDate, string searchToDate)
         {
             ViewBag.searchFromDate = searchFromDate;
@@ -244,9 +282,10 @@ namespace KTTM.Controllers
             return PartialView(BaoCaoVM);
         }
 
+        // InChungTuGhiSoExcel
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> InChungTuGhiSoExcel(string tuNgay, string denNgay,
+        public IActionResult InChungTuGhiSoExcel(string tuNgay, string denNgay,
                                                              long id_TT, string soCT_TT, string ngayCT_TT, string maKhCo_TT, string phieuTC_TT)
         {
             IEnumerable<TT621> tT621s = _tT621Service.FindByDate(tuNgay, denNgay);
@@ -259,12 +298,12 @@ namespace KTTM.Controllers
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
             // Định dạng chiều dài cho cột
             xlSheet.Column(1).Width = 40;// Diễn giải
-            xlSheet.Column(2).Width = 20;// Số tiền NT
+            xlSheet.Column(2).Width = 15;// Số tiền NT
             xlSheet.Column(3).Width = 10;// LT
             xlSheet.Column(4).Width = 10;// Tỷ giá
-            xlSheet.Column(5).Width = 20;// Số tiền
+            xlSheet.Column(5).Width = 15;// Số tiền
             xlSheet.Column(6).Width = 20;// TK nợ
-            xlSheet.Column(7).Width = 20;// Mã KH nợ
+            xlSheet.Column(7).Width = 10;// Mã KH nợ
             xlSheet.Column(8).Width = 40;// Tên KH nợ
             xlSheet.Column(9).Width = 20;// Code đoàn
             xlSheet.Column(10).Width = 20;// CT Gốc
@@ -282,11 +321,12 @@ namespace KTTM.Controllers
             xlSheet.Cells[3, 1, 3, 10].Merge = true;
             setCenterAligment(3, 1, 3, 10, xlSheet);
 
-            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu + " số " + tT621.TamUng.KVCTPCT.KVPCTId + " - " +
+            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + tT621.TamUng.KVCTPCT.KVPCTId + " - " +
                 "Nhân viên: " + maKhCo_TT + " " + tT621.TenKH;
             xlSheet.Cells[4, 1].Value = stringNgay;
-            xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            TrSetCellBorder(xlSheet, 4, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Italic);
+            xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+            //xlSheet.Cells[4, 1].Style.Font.Bold = true;
+            //xlSheet.Cells[4, 1].Style.Font.Italic = true;
             xlSheet.Cells[4, 1, 4, 10].Merge = true;
             setCenterAligment(4, 1, 4, 10, xlSheet);
 
@@ -369,12 +409,13 @@ namespace KTTM.Controllers
                 dong++;
                 idem++;
 
-                xlSheet.Cells[dong, 1].Value = "TỔNG CỘNG:";
+                xlSheet.Cells[dong, 1].Value = "Tổng cộng:";
+                xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                 xlSheet.Cells[dong, 2].Formula = "SUM(B6:B" + (dong - 1) + ")";
                 xlSheet.Cells[dong, 5].Formula = "SUM(E6:E" + (dong - 1) + ")";
 
                 //NumberFormat(dong, 3, dong, 4, xlSheet);
-                setFontBold(dong, 1, dong, 10, 12, xlSheet);
+                //setFontBold(dong, 1, dong, 10, 12, xlSheet);
                 setBorder(dong, 1, dong, 10, xlSheet);
 
                 //xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";

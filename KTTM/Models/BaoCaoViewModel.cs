@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace KTTM.Models
     public class BaoCaoViewModel
     {
         public IEnumerable<TT621> TT621s { get; set; }
+        public IEnumerable<PhongBan> PhongBans { get; set; }
         public string StrUrl { get; set; }
     }
 }
