@@ -20,6 +20,7 @@ namespace KTTM.Services
         Task UpdateAsync(TamUng tamUng);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh);
         IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan);
+        IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs);
     }
     public class TamUngService : ITamUngService
     {
@@ -42,13 +43,38 @@ namespace KTTM.Services
             return tamUngs.Where(x => x.ConLaiNT > 0);
         }
 
-        public IEnumerable<TamUngModel> TamUngModels_ByTamUng(IEnumerable<TamUng> tamUngs)
+        public IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs)
         {
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach(var item in tamUngs)
             {
-                
+                tamUngModels.Add(new TamUngModel()
+                {
+                    NgayCT = item.NgayCT,
+                    SoCT = item.SoCT,
+                    DienGiai = item.DienGiai,
+                    SoTienNT = item.SoTienNT,
+                    LT = item.LoaiTien,
+                    TyGia = item.TyGia,
+                    VND = item.SoTien,
+                    Name = item.MaKhNo + " " + item.KVCTPCT.TenKH,
+                    Id = item.Id
+                });
             }
+
+            var result1 = from p in tamUngModels
+                          group p by p.Name into g
+                          select new TamUngModel_GroupBy_Name()
+                          {
+                              Name = g.Key,
+                              TamUngModels = g.ToList()
+                          };
+            foreach(var item in result1)
+            {
+                var tongCong = item.TamUngModels.Sum(x => x.VND);
+                item.TongCong = tongCong;
+            }
+            return result1;
         }
 
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh)
