@@ -83,6 +83,7 @@ namespace KTTM
             services.AddTransient<IKVCTPCTService, KVCTPCTService>();
             services.AddTransient<ITamUngService, TamUngService>();
             services.AddTransient<ITT621Service, TT621Service>();
+            services.AddTransient<IBaoCaoService, BaoCaoService>();
 
             // FOR session
             services.AddSession(options =>

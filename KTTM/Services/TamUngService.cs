@@ -1,6 +1,7 @@
 ﻿using Data.Models_KTTM;
 using Data.Repository;
 using Data.Utilities;
+using KTTM.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace KTTM.Services
         Task CreateAsync(TamUng tamUng);
         Task UpdateAsync(TamUng tamUng);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh);
+        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan);
     }
     public class TamUngService : ITamUngService
     {
@@ -32,6 +34,21 @@ namespace KTTM.Services
         {
             _unitOfWork.tamUngRepository.Create(tamUng);
             await _unitOfWork.Complete();
+        }
+
+        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
+        {
+            var tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan);
+            return tamUngs.Where(x => x.ConLaiNT > 0);
+        }
+
+        public IEnumerable<TamUngModel> TamUngModels_ByTamUng(IEnumerable<TamUng> tamUngs)
+        {
+            List<TamUngModel> tamUngModels = new List<TamUngModel>();
+            foreach(var item in tamUngs)
+            {
+                
+            }
         }
 
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh)

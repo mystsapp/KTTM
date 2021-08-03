@@ -7,6 +7,7 @@ namespace Data.Repository
 {
     public interface IPhongBan_DanhMucKT_Repository
     {
+        PhongBan GetById(int id);
         IEnumerable<PhongBan> GetAll();
         IEnumerable<ViewPhongBan> GetAll_View();
     }
@@ -25,6 +26,11 @@ namespace Data.Repository
         public IEnumerable<ViewPhongBan> GetAll_View()
         {
             return _context.ViewPhongBans;
+        }
+
+        public PhongBan GetById(int id)
+        {
+            return _context.PhongBans.Find(id);
         }
     }
 }
