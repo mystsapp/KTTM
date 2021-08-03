@@ -74,7 +74,9 @@ namespace KTTM.Services
 
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
-            var kVPCT = _unitOfWork.kVPCTRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            var kVPCT = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(param)) // chi lay nhung soCT cung param: QT, TC, NT, NC
+                                                   .OrderByDescending(x => x.SoCT)
+                                                   .FirstOrDefault();
             if (kVPCT == null || string.IsNullOrEmpty(kVPCT.SoCT))
             {
                 return GetNextId.NextID("", "") + subfix; // 0001
@@ -82,11 +84,14 @@ namespace KTTM.Services
             else
             {
                 var oldYear = kVPCT.SoCT.Substring(6, 4);
+                
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
+
                     var oldSoCT = kVPCT.SoCT.Substring(0, 4);
                     return GetNextId.NextID(oldSoCT, "") + subfix;
+
                 }
                 else
                 {

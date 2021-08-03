@@ -162,7 +162,10 @@ namespace KTTM.Services
 
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // TN2015?  TV2015? 
-            var tT621 = _unitOfWork.tT621Repository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            //var tT621 = _unitOfWork.tT621Repository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            var tT621 = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(param)) // chi lay nhung soCT cung param: TV, TN
+                                                    .OrderByDescending(x => x.SoCT)
+                                                    .FirstOrDefault();
             if (tT621 == null || string.IsNullOrEmpty(tT621.SoCT))
             {
                 return GetNextId.NextID("", "") + subfix; // 0001

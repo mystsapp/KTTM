@@ -18,16 +18,16 @@ namespace KTTM.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IKVPCTService _kVPCTService;
+        private readonly IKVCTPCTService _kVCTPCTService;
 
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
-        public HomeController(IUnitOfWork unitOfWork, IKVPCTService kVPCTService)
+        public HomeController(IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService)
         {
-            _unitOfWork = unitOfWork;
             _kVPCTService = kVPCTService;
+            _kVCTPCTService = kVCTPCTService;
             HomeVM = new HomeViewModel()
             {
                 KVPCT = new Data.Models_KTTM.KVPCT()
@@ -77,7 +77,8 @@ namespace KTTM.Controllers
 
             HomeVM.LoaiTiens = _kVPCTService.ListLoaiTien();
             HomeVM.LoaiPhieus = _kVPCTService.ListLoaiPhieu();
-            HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
+            //HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
+            HomeVM.Phongbans = _kVCTPCTService.GetAll_PhongBans();
 
             return View(HomeVM);
         }
@@ -95,7 +96,8 @@ namespace KTTM.Controllers
                     KVPCT = new KVPCT(),
                     LoaiTiens = _kVPCTService.ListLoaiTien(),
                     LoaiPhieus = _kVPCTService.ListLoaiPhieu(),
-                    Phongbans = _kVPCTService.GetAllPhongBan(),
+                    //Phongbans = _kVPCTService.GetAllPhongBan(),
+                    Phongbans = _kVCTPCTService.GetAll_PhongBans(),
                     StrUrl = strUrl
                 };
 
@@ -135,20 +137,20 @@ namespace KTTM.Controllers
 
             HomeVM.KVPCT.LapPhieu = user.Username;
 
-            // May tinh
-            var computerName = Environment.MachineName;
-            var userName = Environment.UserName;
-            var osVersion = Environment.OSVersion;
-            var domainName = Environment.UserDomainName;
+            //// May tinh
+            //var computerName = Environment.MachineName;
+            //var userName = Environment.UserName;
+            //var osVersion = Environment.OSVersion;
+            //var domainName = Environment.UserDomainName;
 
-            string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
-            // Get the IP  
-            //var info = Dns.GetHostByName(hostName).AddressList;//.ToList();
-            var info = Dns.GetHostEntry(hostName).AddressList;
-            //string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
-            string myIP = Dns.GetHostEntry(hostName).AddressList[3].ToString();
+            //string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
+            //// Get the IP  
+            ////var info = Dns.GetHostByName(hostName).AddressList;//.ToList();
+            //var info = Dns.GetHostEntry(hostName).AddressList;
+            ////string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+            //string myIP = Dns.GetHostEntry(hostName).AddressList[3].ToString();
 
-            HomeVM.KVPCT.MayTinh = computerName + "|" + userName + "|" + myIP + "|" + domainName;
+            //HomeVM.KVPCT.MayTinh = computerName + "|" + userName + "|" + myIP + "|" + domainName;
 
 
             // ghi log
@@ -191,7 +193,8 @@ namespace KTTM.Controllers
 
             HomeVM.LoaiTiens = _kVPCTService.ListLoaiTien();
             HomeVM.LoaiPhieus = _kVPCTService.ListLoaiPhieu();
-            HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
+            //HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
+            HomeVM.Phongbans = _kVCTPCTService.GetAll_PhongBans();
 
             return View(HomeVM);
         }

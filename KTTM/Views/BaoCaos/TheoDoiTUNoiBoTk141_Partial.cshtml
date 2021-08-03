@@ -36,10 +36,10 @@
             <tr class="table-info">
 
                 @*<th>Số TT</th>
-                <th>Ngày</th>
-                <th>Mã KH có</th>
-                <th>Tên Người Thanh Toán</th>
-                <th>Phiếu thu/chi</th>*@
+                    <th>Ngày</th>
+                    <th>Mã KH có</th>
+                    <th>Tên Người Thanh Toán</th>
+                    <th>Phiếu thu/chi</th>*@
 
             </tr>
         </thead>
@@ -49,13 +49,13 @@
                 @foreach (var item in Model.PhongBans.ToList())
                 {
 
-                    <tr class="khachhangs-cursor-pointer " data-id="@item.Id">
+                    <tr class="bophans-cursor-pointer " data-id="@item.Id">
 
                         <td class="tdVal_PhongBan" data-id="@item.Id">@Html.DisplayFor(m => item.TenBoPhan)</td>
                         @*<td class="tdVal_TT621" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>
-                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
-                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPCT.KVPCT.LapPhieu)</td>
-                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>*@
+                            <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
+                            <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPCT.KVPCT.LapPhieu)</td>
+                            <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>*@
 
                     </tr>
 
@@ -65,40 +65,23 @@
     </table>
 
 </div>
-
-<form asp-action="InChungTuGhiSoExcel" id="frm_InChungTuGhiSoExcel" method="post">
+               
+<form asp-action="TheoDoiTUNoiBoTk141_Partial_Excel" id="frm_TheoDoiTUNoiBo" method="post">
     <input type="hidden" id="hidTuNgay" name="tuNgay" />
     <input type="hidden" id="hidDenNgay" name="denNgay" />
+    <input type="hidden" id="hidId_BoPhan" name="id_BoPhan" />
 
-    <input type="hidden" id="hidId_TT" name="id_TT" />
-    <input type="hidden" id="hidSoCT_TT" name="soCT_TT" />
-    <input type="hidden" id="hidNgayCT_TT" name="ngayCT_TT" />
-    <input type="hidden" id="hidMaKhCo_TT" name="maKhCo_TT" />
-    <input type="hidden" id="hidPhieuTC_TT" name="phieuTC_TT" />
 </form>
 
 <script>
     $(".maskInput").mask("99/99/9999");
 
-    // enter for search
-    shortcut.add("Enter", function () {
+    //// btnPrintSelect
+    $('#btnPrintSelect').click(function () {// _TheoDoiTUNoiBo_Modal
+        $('#frm_TheoDoiTUNoiBo').submit();
 
-        $('#btnInChungTuSearch').click();
-    });
-
-    $('#btnInChungTuSearch').off('click').on('click', function () {
-        tuNgay = $('#txtTuNgay').val();
-        denNgay = $('#txtDenNgay').val();
-
-        InChungTungGhiSo(tuNgay, denNgay); // _TopMenu
     })
-
-    // btnInChungTu
-    $('#btnInChungTu').off('click').on('click', function () {
-
-        $('#frm_InChungTuGhiSoExcel').submit();
-    })
-    $('.khachhangs-cursor-pointer').click(function () {
+    $('.bophans-cursor-pointer').click(function () {
 
         // giu trang thai
         if ($(this).hasClass("hoverClass"))
@@ -110,21 +93,11 @@
 
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
-
-        var id_TT = $(this).data('id');
-        var soCT_TT = $(this).children().eq(0).html();
-        var ngayCT_TT = $(this).children().eq(1).html();
-        var maKhCo_TT = $(this).children().eq(2).html();
-        var phieuTC_TT = $(this).children().eq(3).html();
+        var id_bophan = $(this).data('id');
 
         $('#hidTuNgay').val(tuNgay);
         $('#hidDenNgay').val(denNgay);
-
-        $('#hidId_TT').val(id_TT);
-        $('#hidSoCT_TT').val(soCT_TT);
-        $('#hidNgayCT_TT').val(ngayCT_TT);
-        $('#hidMaKhCo_TT').val(maKhCo_TT);
-        $('#hidPhieuTC_TT').val(phieuTC_TT);
+        $('#hidId_BoPhan').val(id_bophan);
 
         //var code = $(this).children().eq(0).html();
         //var name = $(this).children().eq(1).html();

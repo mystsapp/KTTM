@@ -76,7 +76,10 @@ namespace KTTM.Services
 
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
-            var tamUng = _unitOfWork.tamUngRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            //var tamUng = _unitOfWork.tamUngRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            var tamUng = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(param)) // chi lay nhung soCT cung param: UN, UV
+                                                    .OrderByDescending(x => x.SoCT)
+                                                    .FirstOrDefault();
             if (tamUng == null || string.IsNullOrEmpty(tamUng.SoCT))
             {
                 return GetNextId.NextID("", "") + subfix; // 0001
