@@ -79,10 +79,19 @@
 <script>
     $(".maskInput").mask("99/99/9999");
 
-    //// btnPrintSelect
+    //// btnHidIn
     $('#btnPrintSelect').click(function () {// _TheoDoiTUNoiBo_Modal
-        //$('#frm_TheoDoiTUNoiBo').submit();
         $('#btnHidIn').click();
+    })
+    //// btnHidInTatCa
+    $('#btnPrintSelect_InTatCa').click(function () {// _TheoDoiTUNoiBo_Modal
+        tuNgay = $('#txtTuNgay').val();
+        denNgay = $('#txtDenNgay').val();
+
+        $('#hidTuNgay').val(tuNgay);
+        $('#hidDenNgay').val(denNgay);
+
+        $('#btnHidInTatCa').click();
     })
     $('.bophans-cursor-pointer').click(function () {
 

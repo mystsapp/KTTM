@@ -39,16 +39,9 @@ namespace KTTM.Services
 
         public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
         {
-            List<TamUng> tamUngs = new List<TamUng>();
-            if (string.IsNullOrEmpty(boPhan))
-            {
-                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList();
-            }
-            else
-            {
-                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList();
-            }
-            
+
+            var tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList();
+
             return tamUngs.Where(x => x.ConLaiNT > 0);
         }
 
