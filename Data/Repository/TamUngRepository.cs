@@ -23,6 +23,11 @@ namespace Data.Repository
         {
             return _context.TamUngs.Where(x => x.Phong == boPhan).Include(x => x.KVCTPCT).ThenInclude(x => x.KVPCT);
         }
+        
+        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong()
+        {
+            return _context.TamUngs.Where(x => x.ConLaiNT > 0).Include(x => x.KVCTPCT).ThenInclude(x => x.KVPCT);
+        }
 
     }
 }

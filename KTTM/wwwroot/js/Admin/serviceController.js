@@ -141,10 +141,12 @@ var serviceController = {
             if (loaiPhieu == 'T') {
                 $('#ddlTkNo').val("1111000000");
                 $('#ddlTkNo').trigger('change.select2');
+                
             }
             else {
                 $('#ddlTkCo').val("1111000000");
                 $('#ddlTkCo').trigger('change.select2');
+                
             }
         }
         

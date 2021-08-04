@@ -66,11 +66,14 @@
 
 </div>
                
-<form asp-action="TheoDoiTUNoiBoTk141_Partial_Excel" id="frm_TheoDoiTUNoiBo" method="post">
+<form id="frm_TheoDoiTUNoiBo" method="post">
     <input type="hidden" id="hidTuNgay" name="tuNgay" />
     <input type="hidden" id="hidDenNgay" name="denNgay" />
     <input type="hidden" id="hidId_BoPhan" name="id_BoPhan" />
 
+    <button type="submit" hidden id="btnHidIn" formaction="/BaoCaos/TheoDoiTUNoiBoTk141_Partial_Excel_In" formmethod="post"></button>
+    <button type="submit" hidden id="btnHidInTatCa" formaction="/BaoCaos/TheoDoiTUNoiBoTk141_Partial_Excel_InTatCa" formmethod="post"></button>
+    <button type="submit" hidden id="btnHidTatCaTrong1Sheet"></button>
 </form>
 
 <script>
@@ -78,8 +81,8 @@
 
     //// btnPrintSelect
     $('#btnPrintSelect').click(function () {// _TheoDoiTUNoiBo_Modal
-        $('#frm_TheoDoiTUNoiBo').submit();
-
+        //$('#frm_TheoDoiTUNoiBo').submit();
+        $('#btnHidIn').click();
     })
     $('.bophans-cursor-pointer').click(function () {
 

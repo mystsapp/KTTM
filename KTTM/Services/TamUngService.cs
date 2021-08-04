@@ -39,14 +39,23 @@ namespace KTTM.Services
 
         public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
         {
-            var tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan);
+            List<TamUng> tamUngs = new List<TamUng>();
+            if (string.IsNullOrEmpty(boPhan))
+            {
+                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList();
+            }
+            else
+            {
+                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList();
+            }
+            
             return tamUngs.Where(x => x.ConLaiNT > 0);
         }
 
         public IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs)
         {
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
-            foreach(var item in tamUngs)
+            foreach (var item in tamUngs)
             {
                 tamUngModels.Add(new TamUngModel()
                 {
@@ -62,17 +71,18 @@ namespace KTTM.Services
                 });
             }
 
-            var result1 = from p in tamUngModels
-                          group p by p.Name into g
-                          select new TamUngModel_GroupBy_Name()
-                          {
-                              Name = g.Key,
-                              TamUngModels = g.ToList()
-                          };
-            foreach(var item in result1)
+            var result1 = (from p in tamUngModels
+                           group p by p.Name into g
+                           select new TamUngModel_GroupBy_Name()
+                           {
+                               Name = g.Key,
+                               TamUngModels = g.ToList()
+                           }).ToList();
+            foreach (var item in result1)
             {
-                var tongCong = item.TamUngModels.Sum(x => x.VND);
-                item.TongCong = tongCong;
+
+                item.TongCong = item.TamUngModels.Sum(x => x.VND);
+
             }
             return result1;
         }
