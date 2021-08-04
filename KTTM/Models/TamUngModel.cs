@@ -16,7 +16,7 @@ namespace KTTM.Models
         public decimal TyGia { get; set; }
         public decimal VND { get; set; }
         public string Name { get; set; }
-        
-        
+
+        public string Name_Phong { get; set; }
     }
 }

@@ -73,7 +73,7 @@
 
     <button type="submit" hidden id="btnHidIn" formaction="/BaoCaos/TheoDoiTUNoiBoTk141_Partial_Excel_In" formmethod="post"></button>
     <button type="submit" hidden id="btnHidInTatCa" formaction="/BaoCaos/TheoDoiTUNoiBoTk141_Partial_Excel_InTatCa" formmethod="post"></button>
-    <button type="submit" hidden id="btnHidTatCaTrong1Sheet"></button>
+    <button type="submit" hidden id="btnHidTatCaTrong1Sheet" formaction="/BaoCaos/TheoDoiTUNoiBoTk141_Partial_Excel_TatCa1Sheet"></button>
 </form>
 
 <script>
@@ -81,6 +81,12 @@
 
     //// btnHidIn
     $('#btnPrintSelect').click(function () {// _TheoDoiTUNoiBo_Modal
+        tuNgay = $('#txtTuNgay').val();
+        denNgay = $('#txtDenNgay').val();
+
+        $('#hidTuNgay').val(tuNgay);
+        $('#hidDenNgay').val(denNgay);
+
         $('#btnHidIn').click();
     })
     //// btnHidInTatCa
@@ -92,6 +98,15 @@
         $('#hidDenNgay').val(denNgay);
 
         $('#btnHidInTatCa').click();
+    })//// btnPrintSelect_TatCa1Sheet
+    $('#btnPrintSelect_TatCa1Sheet').click(function () {// _TheoDoiTUNoiBo_Modal
+        tuNgay = $('#txtTuNgay').val();
+        denNgay = $('#txtDenNgay').val();
+
+        $('#hidTuNgay').val(tuNgay);
+        $('#hidDenNgay').val(denNgay);
+
+        $('#btnHidTatCaTrong1Sheet').click();
     })
     $('.bophans-cursor-pointer').click(function () {
 
@@ -103,12 +118,8 @@
             $(this).addClass("hoverClass");
         }
 
-        tuNgay = $('#txtTuNgay').val();
-        denNgay = $('#txtDenNgay').val();
         var id_bophan = $(this).data('id');
 
-        $('#hidTuNgay').val(tuNgay);
-        $('#hidDenNgay').val(denNgay);
         $('#hidId_BoPhan').val(id_bophan);
 
         //var code = $(this).children().eq(0).html();

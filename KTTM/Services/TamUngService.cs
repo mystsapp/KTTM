@@ -21,6 +21,7 @@ namespace KTTM.Services
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh);
         IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan);
         IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs);
+        IEnumerable<TamUngModel_GroupBy_Name_Phong> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs);
     }
     public class TamUngService : ITamUngService
     {
@@ -39,10 +40,17 @@ namespace KTTM.Services
 
         public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
         {
+            List<TamUng> tamUngs = new List<TamUng>();
+            if (string.IsNullOrEmpty(boPhan))
+            {
+                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong().ToList(); // getall with conlaiNT > 0
+            }
+            else
+            {
+                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList(); // by phong with conlaiNT > 0
+            }
 
-            var tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList();
-
-            return tamUngs.Where(x => x.ConLaiNT > 0);
+            return tamUngs;
         }
 
         public IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs)
@@ -60,6 +68,7 @@ namespace KTTM.Services
                     TyGia = item.TyGia,
                     VND = item.SoTien,
                     Name = item.MaKhNo + " " + item.KVCTPCT.TenKH,
+                    Name_Phong = item.Phong,
                     Id = item.Id
                 });
             }
@@ -78,6 +87,56 @@ namespace KTTM.Services
 
             }
             return result1;
+        }
+
+        public IEnumerable<TamUngModel_GroupBy_Name_Phong> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs)
+        {
+            List<TamUngModel> tamUngModels = new List<TamUngModel>();
+            foreach (var item in tamUngs)
+            {
+                tamUngModels.Add(new TamUngModel()
+                {
+                    NgayCT = item.NgayCT,
+                    SoCT = item.SoCT,
+                    DienGiai = item.DienGiai,
+                    SoTienNT = item.SoTienNT,
+                    LT = item.LoaiTien,
+                    TyGia = item.TyGia,
+                    VND = item.SoTien,
+                    Name = item.MaKhNo + " " + item.KVCTPCT.TenKH,
+                    Name_Phong = item.Phong,
+                    Id = item.Id
+                });
+            }
+
+            var result1 = (from p in tamUngModels
+                           group p by new
+                           {
+                               p.Name,
+                               p.Name_Phong
+                           } into g
+                           select new TamUngModel_GroupBy_Name()
+                           {
+                               Name = g.Key.Name,
+                               Name_Phong = g.Key.Name_Phong,
+                               TamUngModels = g.ToList()
+                           }).ToList();
+            foreach (var item in result1)
+            {
+
+                item.TongCong = item.TamUngModels.Sum(x => x.VND);
+
+            }
+
+            // group theo phong
+            var result2 = (from r in result1
+                           group r by r.Name_Phong into gr
+                           select new TamUngModel_GroupBy_Name_Phong()
+                           {
+                               Name_Phong = gr.Key,
+                               TamUngModel_GroupBy_Names = gr.ToList()
+                           }).ToList();
+            return result2;
         }
 
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh)
@@ -152,5 +211,6 @@ namespace KTTM.Services
             _unitOfWork.tamUngRepository.Update(tamUng);
             await _unitOfWork.Complete();
         }
+
     }
 }
