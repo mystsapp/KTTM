@@ -14,11 +14,17 @@ namespace Data.Repository
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(DateTime fromDate, DateTime toDate);
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(DateTime fromDate, string nullToDate);
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string nullFromDate, DateTime toDate);
+        IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
     }
     public class TT621Repository : Repository_KTTM<TT621>, ITT621Repository
     {
         public TT621Repository(KTTMDbContext context) : base(context)
         {
+        }
+
+        public IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId)
+        {
+            return _context.TT621s.Where(x => x.TamUngId == tamUngId).Include(x => x.TamUng).ThenInclude(x => x.KVCTPCT);
         }
 
         public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(DateTime fromDate, DateTime toDate)

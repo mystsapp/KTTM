@@ -775,15 +775,15 @@ namespace KTTM.Controllers
                     xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
                     dong++;
 
-                    foreach (var TamUngModel_GroupBy_Name in tamUngModels_GroupBy_Name_Phong.TamUngModel_GroupBy_Names)
+                    foreach (var tamUngModel_GroupBy_Name in tamUngModels_GroupBy_Name_Phong.TamUngModel_GroupBy_Names)
                     {
                         // Name
-                        xlSheet.Cells[dong, 3].Value = TamUngModel_GroupBy_Name.Name;
+                        xlSheet.Cells[dong, 3].Value = tamUngModel_GroupBy_Name.Name;
                         setBorder(dong, 1, dong, 7, xlSheet);
                         xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                         dong++;
                         // list tamung
-                        foreach (var item in TamUngModel_GroupBy_Name.TamUngModels)
+                        foreach (var item in tamUngModel_GroupBy_Name.TamUngModels)
                         {
                             xlSheet.Cells[dong, 1].Value = item.NgayCT;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
@@ -964,6 +964,8 @@ namespace KTTM.Controllers
         {
             IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay);
             TT621 tT621 = tT621s.Where(x => x.Id == id_TT).FirstOrDefault();
+            List<TT621> tT621s_By_TamUng = _tT621Service.FindTT621s_IncludeTwice(tT621.TamUngId).ToList();
+
             string loaiphieu = tT621.TamUng.KVCTPCT.KVPCT.MFieu == "T" ? "THU" : "CHI";
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -1033,55 +1035,59 @@ namespace KTTM.Controllers
 
             int idem = 1;
 
-            if (tT621 != null)
+            if (tT621s_By_TamUng.Count > 0)
             {
+                foreach (var item in tT621s_By_TamUng)
+                {
 
-                xlSheet.Cells[dong, 1].Value = tT621.TamUng.KVCTPCT.DienGiai;
-                TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 1].Value = item.DienGiai;
+                    TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 2].Value = tT621.TamUng.KVCTPCT.SoTienNT;
-                TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 2].Value = item.SoTienNT;
+                    TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 3].Value = tT621.TamUng.KVCTPCT.LoaiTien;
-                TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 3].Value = item.LoaiTien;
+                    TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 4].Value = tT621.TamUng.KVCTPCT.TyGia;
-                TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 4].Value = item.TyGia;
+                    TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 5].Value = tT621.TamUng.KVCTPCT.SoTien;
-                TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 5].Value = item.SoTien;
+                    TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 6].Value = tT621.TamUng.KVCTPCT.TKNo;
-                TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 6].Value = item.TKNo;
+                    TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 7].Value = tT621.TamUng.KVCTPCT.MaKhNo;
-                TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 7].Value = item.MaKhNo;
+                    TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 8].Value = tT621.TamUng.KVCTPCT.TenKH;
-                TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 8].Value = item.TenKH;
+                    TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 9].Value = tT621.TamUng.KVCTPCT.Sgtcode;
-                TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 9].Value = item.Sgtcode;
+                    TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                xlSheet.Cells[dong, 10].Value = tT621.TamUng.KVCTPCT.SoCTGoc;
-                TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    xlSheet.Cells[dong, 10].Value = item.SoCTGoc;
+                    TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                //setBorder(5, 1, dong, 10, xlSheet);
-                NumberFormat(dong, 2, dong + 1, 2, xlSheet);
-                NumberFormat(dong, 5, dong + 1, 5, xlSheet);
+                    //setBorder(5, 1, dong, 10, xlSheet);
+                    NumberFormat(dong, 2, dong + 1, 2, xlSheet);
+                    NumberFormat(dong, 5, dong + 1, 5, xlSheet);
 
-                dong++;
-                idem++;
+                    dong++;
+                    idem++;
+
+                }
 
                 xlSheet.Cells[dong, 1].Value = "Tổng cộng:";
                 xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));

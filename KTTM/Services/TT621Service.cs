@@ -27,6 +27,7 @@ namespace KTTM.Services
         IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
         IEnumerable<TT621> GetAll();
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate);
+        IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
     }
     public class TT621Service : ITT621Service
     {
@@ -301,6 +302,11 @@ namespace KTTM.Services
             // search date
 
             return list;
+        }
+
+        public IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId)
+        {
+            return _unitOfWork.tT621Repository.FindTT621s_IncludeTwice(tamUngId);
         }
     }
 }
