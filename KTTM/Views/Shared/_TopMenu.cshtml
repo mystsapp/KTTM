@@ -9,8 +9,8 @@
     <li class="nav-item dropdown">
         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Báo cáo</a>
         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-            <li><a href="#" class="dropdown-item">Báo cáo quỹ tiền VND </a></li>
-            <li><a href="#" class="dropdown-item">Báo cáo quỹ tiền ngoại tệ</a></li>
+            <li><a href="#" class="dropdown-item" id="baoCaoQuyTienVND">Báo cáo quỹ tiền VND </a></li>
+            <li><a href="#" class="dropdown-item" id="baoCaoQuyTienNT">Báo cáo quỹ tiền ngoại tệ</a></li>
 
             <li class="dropdown-divider"></li>
 
@@ -48,9 +48,11 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
 <script>
+    // baoCaoQuyTienVND
+
     // theoDoiTUNoiBoTk141
     $('#theoDoiTUNoiBoTk141').off('click').on('click', function (e) {
-        e.preventDefault();
+        //e.preventDefault();
         TheoDoiTUNoiBoTk141();
     })
 
