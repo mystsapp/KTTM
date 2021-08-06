@@ -49,6 +49,13 @@
 
 <script>
     // baoCaoQuyTienVND
+    $('#baoCaoQuyTienVND').off('click').on('click', function () {
+
+        $('#baoCaoQuyTienVND_Modal').modal('show');
+        $('#baoCaoQuyTienVND_Modal').draggable();
+
+    })
+
 
     // theoDoiTUNoiBoTk141
     $('#theoDoiTUNoiBoTk141').off('click').on('click', function (e) {
