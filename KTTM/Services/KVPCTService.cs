@@ -110,12 +110,13 @@ namespace KTTM.Services
             // retrieve list from database/whereverand
 
             var list = new List<KVPTCDto>();
-            var kVPCTs = GetAll();
+            var kVPCTs = new List<KVPCT>();
+            //var kVPCTs = GetAll();
 
-            if (kVPCTs == null)
-            {
-                return null;
-            }
+            //if (kVPCTs == null)
+            //{
+            //    return null;
+            //}
 
             // search for sgtcode in kvctpct
             if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
@@ -133,15 +134,15 @@ namespace KTTM.Services
                     }
                     if (kVPCTs1.Count > 0)
                     {
-                        kVPCTs = kVPCTs1.Distinct();
+                        kVPCTs = kVPCTs1.Distinct().ToList();
                     }
                 }
 
             }
 
-            if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
+            else if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
-                kVPCTs = kVPCTs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
+                kVPCTs = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
                                        (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
@@ -151,7 +152,26 @@ namespace KTTM.Services
                                        (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
 
+                //kVPCTs = kVPCTs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
+                //                       (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.DonVi) && x.DonVi.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.Phong) && x.Phong.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
+                //                       (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
 
+
+            }
+            else
+            {
+                kVPCTs = GetAll().ToList();
+
+                if (kVPCTs == null)
+                {
+                    return null;
+                }
             }
 
             foreach (var item in kVPCTs)

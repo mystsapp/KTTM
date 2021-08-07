@@ -1,0 +1,131 @@
+﻿@model TonQuyViewModel
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="rounded p-2 text-sm" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+            <div class=" row form-group text-sm">
+
+                <div class="col-md-2">
+                    <label>Từ ngày</label>
+                </div>
+
+                <div class="col-md-3">
+                    <input class="form-control form-control-sm maskInput" id="txtTuNgay_TonQuy" value="@ViewBag.searchFromDate" />
+
+                </div>
+                <div class="col-md-2">
+                    <label>Đến ngày</label>
+                </div>
+
+                <div class="col-md-3">
+                    <input class="form-control form-control-sm maskInput" id="txtDenNgay_TonQuy" value="@ViewBag.searchToDate" />
+
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSearchTonQuy"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div style="overflow-x:auto; overflow-y:auto; height: 300px">
+    <table class="table mytable text-nowrap text-sm" id="tonQuyTbl">
+        <thead>
+            <tr class="table-info">
+
+                <th>Ngày CT</th>
+                <th>Loại tiền</th>
+                <th>Số tiền</th>
+                <th>Số tiền NT</th>
+                <th>Tỷ giá</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.TonQuies != null)
+            {
+                @foreach (var item in Model.TonQuies)
+                {
+
+                    <tr class="tonquies-cursor-pointer ">
+
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.NgayCT)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.SoTien)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.SoTienNT)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
+
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+<!--<div class=" pt-1 pb-1">
+    <button type="button" class="btn btn-success btn-sm"-->
+@*id="btnKVCTPCTCreatePartial_Back"*@
+<!--data-dismiss="modal"><i class="fas fa-backward "></i> Back</button>
+</div>-->
+
+
+<script>
+    $('#btnSearchTonQuy').click(function () {
+        debugger
+        tuNgay = $('#txtTuNgay_TonQuy').val();
+        denNgay = $('#txtDenNgay_TonQuy').val();
+
+        GetTonQuies(tuNgay, denNgay); // ben _BaoCaoQuyTienVND
+    })
+    $('.tonquis-cursor-pointer').click(function () {
+
+        // giu trang thai
+        if ($(this).hasClass("hoverClass"))
+            $(this).removeClass("hoverClass");
+        else {
+            $('.tonquis-cursor-pointer').removeClass("hoverClass");
+            $(this).addClass("hoverClass");
+        }
+
+        //var code = $(this).children().eq(0).html();
+        //var name = $(this).children().eq(1).html();
+        //var city = $(this).children().eq(2).html();
+        //var address = $(this).children().eq(3).html();
+        //var telephone = $(this).children().eq(4).html();
+        //var email = $(this).children().eq(5).html();
+        //var taxCode = $(this).children().eq(6).html();
+        //var taxSign = $(this).children().eq(7).html();
+        //var taxForm = $(this).children().eq(8).html();
+
+        //if ($('#btnKhSearch').data('name') === 'maKhNo') { // search off no
+        //    $('#txtMaKhNo').val(code);
+        //    $('#txtTenKhNo').val(name);
+        //}
+        //if ($('#btnKhSearch').data('name') === 'maKhCo') { // search off co
+        //    $('#txtMaKhCo').val(code);
+        //    $('#txtTenKhCo').val(name);
+        //}
+
+        //$('#txtKyHieu').val(taxSign);
+        //$('#txtMauSoHD').val(taxForm);
+        //$('#txtMsThue').val(taxCode);
+        //$('#txtTenKH').val(name);
+        //$('#txtDiaChi').val(address);
+
+        //var code = $(this).find("td").eq(0).html();
+        //var name = $(this).find("td").eq(1).html();
+        //var city = $(this).find("td").eq(2).html();
+        //var address = $(this).find("td").eq(3).html();
+        //var telephone = $(this).find("td").eq(4).html();
+        //var email = $(this).find("td").eq(5).html();
+        //var taxCode = $(this).find("td").eq(6).html();
+        //var taxSign = $(this).find("td").eq(7).html();
+        //var taxForm = $(this).find("td").eq(8).html();
+
+        //console.log(text);
+    })
+</script>

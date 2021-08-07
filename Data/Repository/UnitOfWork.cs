@@ -29,6 +29,7 @@ namespace Data.Repository
         IKVCTPCTRepository kVCTPCTRepository { get; }
         ITamUngRepository tamUngRepository { get; }
         ITT621Repository tT621Repository { get; }
+        ITonQuyRepository tonQuyRepository { get; }
 
         // DanhMucKT
         IDmTkRepository dmTkRepository { get; }
@@ -83,6 +84,7 @@ namespace Data.Repository
             kVCTPCTRepository = new KVCTPCTRepository(_kTTMDbContext);
             tamUngRepository = new TamUngRepository(_kTTMDbContext);
             tT621Repository = new TT621Repository(_kTTMDbContext);
+            tonQuyRepository = new TonQuyRepository(_kTTMDbContext);
 
             // DanhMucKT
             dmTkRepository = new DmTkRepository(_danhMucKTContext);
@@ -146,6 +148,8 @@ namespace Data.Repository
         public ITamUngRepository tamUngRepository { get; }
 
         public ITT621Repository tT621Repository { get; }
+
+        public ITonQuyRepository tonQuyRepository { get; }
 
         public async Task<int> Complete()
         {

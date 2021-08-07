@@ -57,6 +57,7 @@ namespace KTTM
             services.AddTransient<IKVCTPCTRepository, KVCTPCTRepository>();
             services.AddTransient<ITamUngRepository, TamUngRepository>();
             services.AddTransient<ITT621Repository, TT621Repository>();
+            services.AddTransient<ITonQuyRepository, TonQuyRepository>();
 
             // DanhMucKT
             services.AddTransient<IDmTkRepository, DmTkRepository>();
@@ -84,6 +85,7 @@ namespace KTTM
             services.AddTransient<ITamUngService, TamUngService>();
             services.AddTransient<ITT621Service, TT621Service>();
             services.AddTransient<IBaoCaoService, BaoCaoService>();
+            services.AddTransient<ITonQuyService, TonQuyService>();
 
             // FOR session
             services.AddSession(options =>

@@ -39,6 +39,10 @@ namespace KTTM.Controllers
             BaoCaoVM = new BaoCaoViewModel();
         }
 
+        public BaoCaosController() // for tonquyController call
+        {
+        }
+
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> InPhieu(string soCT, int page)
@@ -212,6 +216,143 @@ namespace KTTM.Controllers
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        internal ExcelPackage BaoCaoQuyTienVND(string searchFromDate, string searchToDate)
+        {
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            ExcelPackage ExcelApp = new ExcelPackage();
+            ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
+            // Định dạng chiều dài cho cột
+            xlSheet.Column(1).Width = 40;// SỐ CT
+            xlSheet.Column(2).Width = 40;// DIỄN GIẢI
+            xlSheet.Column(3).Width = 30;// HỌ TÊN
+            xlSheet.Column(4).Width = 20;// TÀI KHOẢN ĐỐI ỨNG
+            xlSheet.Column(5).Width = 35;// SỐ TIỀN
+
+            xlSheet.Cells[1, 1].Value = "CÔNG TY TNHH MTV DVLH SAIGONTOURIST";
+            xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[1, 1, 1, 2].Merge = true;
+            
+            xlSheet.Cells[1, 3].Value = "CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+            xlSheet.Cells[1, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[1, 3, 1, 5].Merge = true;
+
+            string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ TIỀN MẶT VNĐ ";
+            string stringTuNgay = "Từ ngày " + searchFromDate + " đến ngày " + searchToDate;
+            xlSheet.Cells[3, 1].Value = stringSoQuy;
+            xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
+            xlSheet.Cells[3, 1, 3, 5].Merge = true;
+            xlSheet.Cells[4, 1].Value = stringTuNgay;
+            xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+            //xlSheet.Cells[4, 1].Style.Font.Bold = true;
+            //xlSheet.Cells[4, 1].Style.Font.Italic = true;
+            xlSheet.Cells[4, 1, 4, 5].Merge = true;
+            setCenterAligment(3, 1, 4, 5, xlSheet);
+
+            // Tạo header
+            xlSheet.Cells[6, 1].Value = "SỐ CT";
+            xlSheet.Cells[6, 1, 6, 2].Merge = true;
+
+            xlSheet.Cells[6, 2].Value = "DIỄN GIẢI";
+            xlSheet.Cells[6, 3].Value = "HỌ TÊN";
+            xlSheet.Cells[6, 4].Value = "TÀI KHOẢN ĐỐI ỨNG";
+            xlSheet.Cells[6, 5].Value = "SỐ TIỀN";
+
+            xlSheet.Cells[5, 1, 10, 12].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            setBorder(5, 1, 5, 10, xlSheet);
+            setCenterAligment(5, 1, 5, 10, xlSheet);
+
+            // do du lieu tu table
+            int dong = 6;
+
+            //du lieu
+            //int iRowIndex = 6;
+
+            Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");// ColorTranslator.FromHtml("#D3D3D3");
+            Color colorTotalRow = ColorTranslator.FromHtml("#66ccff");
+            Color colorThanhLy = ColorTranslator.FromHtml("#7FFF00");
+            Color colorChuaThanhLy = ColorTranslator.FromHtml("#FFDEAD");
+
+            int idem = 1;
+
+            if (tT621s_By_TamUng.Count > 0)
+            {
+                foreach (var item in tT621s_By_TamUng)
+                {
+
+                    xlSheet.Cells[dong, 1].Value = item.DienGiai;
+                    TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 2].Value = item.SoTienNT;
+                    TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 3].Value = item.LoaiTien;
+                    TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 4].Value = item.TyGia;
+                    TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 5].Value = item.SoTien;
+                    TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 6].Value = item.TKNo;
+                    TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 7].Value = item.MaKhNo;
+                    TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 8].Value = item.TenKH;
+                    TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 9].Value = item.Sgtcode;
+                    TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 10].Value = item.SoCTGoc;
+                    TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    //setBorder(5, 1, dong, 10, xlSheet);
+                    NumberFormat(dong, 2, dong + 1, 2, xlSheet);
+                    NumberFormat(dong, 5, dong + 1, 5, xlSheet);
+
+                    dong++;
+                    idem++;
+
+                }
+
+                xlSheet.Cells[dong, 1].Value = "Tổng cộng:";
+                xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                xlSheet.Cells[dong, 2].Formula = "SUM(B6:B" + (dong - 1) + ")";
+                xlSheet.Cells[dong, 5].Formula = "SUM(E6:E" + (dong - 1) + ")";
+
+                //NumberFormat(dong, 3, dong, 4, xlSheet);
+                //setFontBold(dong, 1, dong, 10, 12, xlSheet);
+                setBorder(dong, 1, dong, 10, xlSheet);
+
+                //xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";
+                //xlSheet.Cells[dong + 2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
+                //xlSheet.Cells[dong + 2, 4].Value = "Kế toán trưởng";
+                //xlSheet.Cells[dong + 2, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
+
+                //setCenterAligment(dong + 2, 1, dong + 2, 4, xlSheet);
+            }
+            else
+            {
+                //SetAlert("Phiếu này không có chi tiết nào.", "warning");
+                return NoContent();
             }
         }
 
