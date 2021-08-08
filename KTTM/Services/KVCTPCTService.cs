@@ -4,6 +4,7 @@ using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.Repository;
 using Data.ViewModels;
+using KTTM.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,8 @@ namespace KTTM.Services
         IEnumerable<ListViewModel> LoaiHDGocs();
         string AutoSgtcode(string param);
         Task<KVCTPCT> FindByIdInclude(long kVCTPCTId_PhieuTC);
+        Task<IEnumerable<KVCTPCT>> FinByDate(string searchFromDate, string searchToDate);
+        List<KVCTPCT_Model_GroupBy_SoCT> KVCTPCT_Model_GroupBy_SoCTs(IEnumerable<KVCTPCT> kVCTPCTs);
     }
     public class KVCTPCTService : IKVCTPCTService
     {
@@ -464,5 +467,102 @@ namespace KTTM.Services
             return kVCTPCTs.FirstOrDefault();
         }
 
+        public async Task<IEnumerable<KVCTPCT>> FinByDate(string searchFromDate, string searchToDate)
+        {
+
+            List<KVCTPCT> list = new List<KVCTPCT>();
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                    toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                    if (fromDate > toDate)
+                    {
+                        return null; //
+                    }
+
+                    var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.KVPCT.NgayCT >= fromDate &&
+                                       y.KVPCT.NgayCT < toDate.AddDays(1));
+                    list = kVCTPCTs.ToList();
+
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        //list = list.Where(x => x.NgayCT >= fromDate).ToList();
+                        var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.KVPCT.NgayCT >= fromDate);
+                        list = kVCTPCTs.ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.KVPCT.NgayCT < toDate.AddDays(1));
+                        list = kVCTPCTs.ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+            }
+            // search date
+
+            return list;
+        }
+
+        public List<KVCTPCT_Model_GroupBy_SoCT> KVCTPCT_Model_GroupBy_SoCTs(IEnumerable<KVCTPCT> kVCTPCTs)
+        {
+
+            var result1 = (from p in kVCTPCTs
+                           group p by p.KVPCTId into g
+                           select new KVCTPCT_Model_GroupBy_SoCT()
+                           {
+                               SoCT = g.Key,
+                               KVCTPCTs = g.ToList()
+                           }).ToList();
+            foreach (var item in result1)
+            {
+                item.TongCong = item.KVCTPCTs.Sum(x => x.SoTien);
+            }
+            foreach (var item in result1)
+            {
+                //item.CongPhatSinh_Thu += item.KVCTPCTs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
+                if(item.KVCTPCTs.FirstOrDefault().KVPCT.MFieu == "T")
+                {
+                    item.CongPhatSinh_Thu += item.KVCTPCTs.Sum(x => x.SoTien);
+                }
+                else
+                {
+                    item.CongPhatSinh_Chi += item.KVCTPCTs.Sum(x => x.SoTien);
+                }
+            }
+
+            return result1;
+        }
     }
 }

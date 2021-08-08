@@ -29,7 +29,7 @@ namespace KTTM.Controllers
 
         // TinhTonQuy
         [HttpPost]
-        public IActionResult TinhTonQuy(string searchFromDate, string searchToDate)
+        public async Task<IActionResult> TinhTonQuy(string searchFromDate, string searchToDate)
         {
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
@@ -46,6 +46,14 @@ namespace KTTM.Controllers
                 // dao ngay thang
                 DateTime fromDate = DateTime.Parse(searchFromDate); // NgayCT
                 DateTime toDate = DateTime.Parse(searchToDate); // NgayCT
+                if (fromDate < DateTime.Parse("01/06/2021"))
+                {
+                    return Json(new
+                    {
+                        status = "nullDate",
+                        message = "Không đồng ý tồn quỹ trước 01/06/2021"
+                    });
+                }
 
                 if (fromDate > toDate) // dao nguoc lai
                 {
@@ -57,8 +65,7 @@ namespace KTTM.Controllers
                 }
 
                 BaoCaosController baoCaosController = new BaoCaosController();
-                ExcelPackage ExcelApp = baoCaosController.BaoCaoQuyTienVND(searchFromDate, searchToDate);
-
+                ExcelPackage ExcelApp = await baoCaosController.BaoCaoQuyTienVND(searchFromDate, searchToDate);
 
                 byte[] fileContents;
                 try
