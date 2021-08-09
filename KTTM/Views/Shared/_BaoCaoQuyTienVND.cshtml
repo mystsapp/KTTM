@@ -73,7 +73,7 @@
         }
         else {
             $.post('/BaoCaos/CheckNgayTonQuy', { tuNgay: tuNgay, denNgay: denNgay }, function (response) {
-                console.log(response);
+                
                 if (!response.status) {
                     toastr.warning(response.message, "Thông báo!");
                 }
