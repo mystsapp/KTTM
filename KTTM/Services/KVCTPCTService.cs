@@ -549,17 +549,25 @@ namespace KTTM.Services
             {
                 item.TongCong = item.KVCTPCTs.Sum(x => x.SoTien);
             }
+            decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0;
             foreach (var item in result1)
             {
                 //item.CongPhatSinh_Thu += item.KVCTPCTs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
-                if(item.KVCTPCTs.FirstOrDefault().KVPCT.MFieu == "T")
+                if(item.SoCT.Contains("T"))
                 {
-                    item.CongPhatSinh_Thu += item.KVCTPCTs.Sum(x => x.SoTien);
+                    congPhatSinh_Thu += item.TongCong;
+                    
                 }
                 else
                 {
-                    item.CongPhatSinh_Chi += item.KVCTPCTs.Sum(x => x.SoTien);
+                    congPhatSinh_Chi += item.TongCong;
+                    
                 }
+            }
+            foreach (var item in result1)
+            {
+                item.CongPhatSinh_Thu = congPhatSinh_Thu;
+                item.CongPhatSinh_Chi = congPhatSinh_Chi;
             }
 
             return result1;
