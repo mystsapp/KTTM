@@ -223,51 +223,27 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<IActionResult> BaoCaoQuyTienVND(string searchFromDate, string searchToDate)
         {
-            ViewBag.searchFromDate = searchFromDate;
-            ViewBag.searchToDate = searchToDate;
-            if (string.IsNullOrEmpty(searchFromDate) || string.IsNullOrEmpty(searchToDate)) //
-            {
-                return Json(new
-                {
-                    status = "nullDate",
-                    message = "Ngày tháng không được để trống"
-                });
-            }
-            else
-            {
-                // dao ngay thang
-                DateTime fromDate = DateTime.Parse(searchFromDate); // NgayCT
-                DateTime toDate = DateTime.Parse(searchToDate); // NgayCT
-                if (fromDate < DateTime.Parse("01/06/2021"))
-                {
-                    return Json(new
-                    {
-                        status = "nullDate",
-                        message = "Không đồng ý tồn quỹ trước 01/06/2021"
-                    });
-                }
 
-                if (fromDate > toDate) // dao nguoc lai
-                {
-                    string tmp = searchFromDate;
-                    searchFromDate = searchToDate;
-                    searchToDate = tmp;
-                    ViewBag.searchFromDate = searchFromDate;
-                    ViewBag.searchToDate = searchToDate;
-                }
-
-            }
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             var tonQuies = _tonQuyService.FindTonQuy_By_Date("01/06/2021", searchFromDate);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-            IEnumerable<KVCTPCT> kVCTPCTs = await _kVCTPCTService.FinByDate(searchFromDate, searchToDate);
-
+            IEnumerable<KVCTPCT> kVCTPCTs = await _kVCTPCTService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
             List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
             if (kVCTPCTs.Count() > 0)
             {
                 kVCTPCT_Model_GroupBy_SoCTs = _kVCTPCTService.KVCTPCT_Model_GroupBy_SoCTs(kVCTPCTs); // groupby name (makh)
 
+            }
+            else
+            {
+                kVCTPCT_Model_GroupBy_SoCTs.Add(new KVCTPCT_Model_GroupBy_SoCT()
+                {
+                    CongPhatSinh_Thu = 0,
+                    CongPhatSinh_Chi = 0
+                });
             }
 
             ExcelPackage ExcelApp = new ExcelPackage();
@@ -281,9 +257,10 @@ namespace KTTM.Controllers
             xlSheet.Column(6).Width = 15;
             xlSheet.Column(7).Width = 15;
 
-            xlSheet.Cells[1, 1].Value = "CÔNG TY TNHH MTV DVLH SAIGONTOURIST";
+            xlSheet.Cells[1, 1].Value = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
+            xlSheet.Cells[1, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[1, 1, 1, 3].Merge = true;
+            xlSheet.Cells[1, 1, 2, 3].Merge = true;
 
             xlSheet.Cells[1, 5].Value = "CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM";
             xlSheet.Cells[1, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
@@ -353,7 +330,7 @@ namespace KTTM.Controllers
             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
             dong++;
 
-            if (kVCTPCT_Model_GroupBy_SoCTs.Count > 0)
+            if (kVCTPCTs.Count() > 0)
             {
                 foreach (var item in kVCTPCT_Model_GroupBy_SoCTs)
                 {
@@ -457,40 +434,50 @@ namespace KTTM.Controllers
 
                     dong++;
                 }
-
-                xlSheet.Cells[dong, 3].Value = "CỘNG PHÁT SINH:";
-                xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                xlSheet.Cells[dong, 6].Value = kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu;
-                xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                xlSheet.Cells[dong, 7].Value = kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
-                xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                dong++;
-                xlSheet.Cells[dong, 3].Value = "TỒN CUỐI:";
-                xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                xlSheet.Cells[dong, 6].Value = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
-                xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-
-                NumberFormat(dong - 1, 6, dong, 7, xlSheet);
-                //setFontBold(dong, 1, dong, 10, 12, xlSheet);
-                setBorder(6, 1, dong, 7, xlSheet);
-                dong++;
-
-                xlSheet.Cells[dong, 3].Value = "Kế toán";
-                xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-                xlSheet.Cells[dong, 4].Value = "Thủ quỹ";
-                xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-                xlSheet.Cells[dong, 5].Value = "Kế toán trưởng";
-                xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-                xlSheet.Cells[dong, 5, dong, 7].Merge = true;
-
-                setCenterAligment(dong, 1, dong, 7, xlSheet);
-
             }
-            else
+
+            xlSheet.Cells[dong, 3].Value = "CỘNG PHÁT SINH:";
+            xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+            xlSheet.Cells[dong, 6].Value = kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu;
+            xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+            xlSheet.Cells[dong, 7].Value = kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
+            xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+            dong++;
+            xlSheet.Cells[dong, 3].Value = "TỒN CUỐI:";
+            xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+            decimal tonCuoi = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
+            xlSheet.Cells[dong, 6].Value = tonCuoi;
+            xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+
+            NumberFormat(dong - 1, 6, dong, 7, xlSheet);
+            //setFontBold(dong, 1, dong, 10, 12, xlSheet);
+            setBorder(6, 1, dong, 7, xlSheet);
+            dong++;
+
+            xlSheet.Cells[dong, 3].Value = "Kế toán";
+            xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+            xlSheet.Cells[dong, 4].Value = "Thủ quỹ";
+            xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+            xlSheet.Cells[dong, 5].Value = "Kế toán trưởng";
+            xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+            xlSheet.Cells[dong, 5, dong, 7].Merge = true;
+
+            setCenterAligment(dong, 1, dong, 7, xlSheet);
+
+            // ghi log va save tonquy tbl
+            TonQuy tonQuy1 = new TonQuy()
             {
-                //SetAlert("Phiếu này không có chi tiết nào.", "warning");
-                return Json(false);
-            }
+                LoaiTien = "VND",
+                TyGia = 1,
+                LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+                NgayCT = DateTime.Parse(searchToDate), // 
+                NgayTao = DateTime.Now,
+                NguoiTao = user.Hoten,
+                SoTien = tonCuoi,
+                SoTienNT = tonCuoi
+            };
+            await _tonQuyService.CreateAsync(tonQuy1);
+            //}
 
             byte[] fileContents;
             try
@@ -1463,6 +1450,36 @@ namespace KTTM.Controllers
                                                                                x.BoPhan == "VS" ||
                                                                                x.BoPhan == "IB" ||
                                                                                x.BoPhan == "XE");
+        }
+
+        public JsonResult CheckNgayTonQuy(string tuNgay, string denNgay)
+        {
+            DateTime fromDate = DateTime.Parse(tuNgay);
+            DateTime compareDate = DateTime.Parse("01/06/2021");
+
+            if (fromDate < compareDate)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Không đồng ý tồn quỹ trước 01/06/2021"
+                });
+            }
+
+            DateTime toDate = DateTime.Parse(denNgay);
+            if (fromDate > toDate) // dao nguoc lai
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Từ ngày <b> không được lớn hơn </b> đến ngày"
+                });
+            }
+            return Json(new
+            {
+                status = true,
+                message = "Good job!"
+            });
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

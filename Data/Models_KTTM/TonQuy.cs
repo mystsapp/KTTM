@@ -31,5 +31,17 @@ namespace Data.Models_KTTM
         [Column(TypeName = "decimal(18,2)")]
         public decimal TyGia { get; set; }
 
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
+
+        [DisplayName("Người tạo")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "nvarchar(50)")]
+        public string NguoiTao { get; set; }
+
+        //[DisplayName("Ngày khoá")]
+        [Column(TypeName = "datetime")]
+        public DateTime? NgayTao { get; set; }
+
     }
 }

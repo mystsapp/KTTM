@@ -14,5 +14,6 @@ namespace KTTM.Models
         public decimal CongPhatSinh_Thu { get; set; }
         public decimal CongPhatSinh_Chi { get; set; }
         public decimal TonCuoi { get; set; }
+        
     }
 }

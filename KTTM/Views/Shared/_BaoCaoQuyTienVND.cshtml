@@ -57,22 +57,34 @@
 <partial name="_TonQuy_Modal.cshtml" />
 
 <script>
-    
+
+    shortcut.add("Enter", function () {
+
+        $('#btnBaoCaoQuyTienVND').click()
+
+    });
+
     // btnBaoCaoQuyTienVND
     $('#btnBaoCaoQuyTienVND').off('click').on('click', function () {
-        //tuNgay = $('#txtTuNgay').val();
-        //denNgay = $('#txtDenNgay').val();
-
-        //url = '/TonQuies/TinhTonQuy'
-        //$.post(url, { searchFromDate: tuNgay, searchToDate: denNgay }, function (response) {
-        //    if (response.status === 'nullDate') {
-        //        //toastr.warning('return false');
-        //        toastr.warning(response.message);
-        //    }
-        //})
-
-        var abc = $('#frmTinhTonQuy').submit();
-        console(abc);
+        tuNgay = $('#txtTuNgay').val();
+        denNgay = $('#txtDenNgay').val();
+        if (tuNgay === '' || denNgay === '') {
+            toastr.warning("Ngày không được để trống", "Thông báo!");
+        }
+        else {
+            $.post('/BaoCaos/CheckNgayTonQuy', { tuNgay: tuNgay, denNgay: denNgay }, function (response) {
+                console.log(response);
+                if (!response.status) {
+                    toastr.warning(response.message, "Thông báo!");
+                }
+                else {
+                    
+                    $('#frmTinhTonQuy').submit();
+                }
+            })
+            
+        }
+        
     })
 
     // btnTonQuies
@@ -86,9 +98,9 @@
     function GetTonQuies(tuNgay, denNgay) {
         url = '/TonQuies/GetTonQuies_Partial';
         $.get(url, { searchFromDate: tuNgay, searchToDate: denNgay }, function (response) {
-            
+
             if (response.status === 'nullDate') {
-                
+
                 toastr.warning(response.message);
             }
             else { // true

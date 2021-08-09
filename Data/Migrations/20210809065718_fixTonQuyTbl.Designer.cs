@@ -4,14 +4,16 @@ using Data.Models_KTTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    partial class KTTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210809065718_fixTonQuyTbl")]
+    partial class fixTonQuyTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -556,7 +558,7 @@ namespace Data.Migrations
 
                     b.Property<string>("NguoiTao")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal>("SoTien")
                         .HasColumnType("decimal(18,2)");

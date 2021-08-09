@@ -488,7 +488,7 @@ namespace KTTM.Services
 
                     var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.KVPCT.NgayCT >= fromDate &&
                                        y.KVPCT.NgayCT < toDate.AddDays(1));
-                    list = kVCTPCTs.ToList();
+                    list = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
 
                 }
                 catch (Exception)
@@ -507,7 +507,7 @@ namespace KTTM.Services
                         fromDate = DateTime.Parse(searchFromDate);
                         //list = list.Where(x => x.NgayCT >= fromDate).ToList();
                         var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.KVPCT.NgayCT >= fromDate);
-                        list = kVCTPCTs.ToList();
+                        list = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
                     }
                     catch (Exception)
                     {
@@ -521,7 +521,7 @@ namespace KTTM.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPCT, y => y.KVPCT.NgayCT < toDate.AddDays(1));
-                        list = kVCTPCTs.ToList();
+                        list = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
                     }
                     catch (Exception)
                     {
@@ -548,6 +548,7 @@ namespace KTTM.Services
             foreach (var item in result1)
             {
                 item.TongCong = item.KVCTPCTs.Sum(x => x.SoTien);
+                
             }
             decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0;
             foreach (var item in result1)

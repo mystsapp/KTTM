@@ -10,6 +10,7 @@ namespace KTTM.Services
     public interface ITonQuyService
     {
         IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate);
+        Task CreateAsync(TonQuy tonQuy);
     }
     public class TonQuyService : ITonQuyService
     {
@@ -18,6 +19,12 @@ namespace KTTM.Services
         public TonQuyService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public async Task CreateAsync(TonQuy tonQuy)
+        {
+            _unitOfWork.tonQuyRepository.Create(tonQuy);
+            await _unitOfWork.Complete();
         }
 
         public IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate)
