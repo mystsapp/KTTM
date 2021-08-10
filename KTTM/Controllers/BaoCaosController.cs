@@ -223,11 +223,11 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<IActionResult> BaoCaoQuyTienVND(string searchFromDate, string searchToDate)
         {
-
+            
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            var tonQuies = _tonQuyService.FindTonQuy_By_Date("01/06/2021", searchToDate);
+            string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
+            var tonQuies = _tonQuyService.FindTonQuy_By_Date("01/06/2021", toDate);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             IEnumerable<KVCTPCT> kVCTPCTs = await _kVCTPCTService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
@@ -477,7 +477,21 @@ namespace KTTM.Controllers
                 SoTienNT = tonCuoi
             };
 
-            await _tonQuyService.CreateAsync(tonQuy1);
+            var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
+            if (tonQuies1.Count > 0) // co ton tai
+            {
+                var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+                tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+                tonQuy2.SoTien = tonCuoi;
+                tonQuy2.SoTienNT = tonCuoi;
+
+                await _tonQuyService.UpdateAsync(tonQuy2);
+            }
+            else
+            {
+                await _tonQuyService.CreateAsync(tonQuy1);
+
+            }
 
             //}
 
@@ -1454,7 +1468,7 @@ namespace KTTM.Controllers
                                                                                x.BoPhan == "XE");
         }
 
-        public JsonResult CheckNgayTonQuy(string tuNgay, string denNgay)
+        public async Task<JsonResult> CheckNgayTonQuy(string tuNgay, string denNgay)
         {
             DateTime fromDate = DateTime.Parse(tuNgay);
             DateTime compareDate = DateTime.Parse("01/06/2021");
@@ -1479,25 +1493,25 @@ namespace KTTM.Controllers
             }
 
             // tonquy truoc ngay fromdate => xem co ton dau` ko ( tranh truong hop chua tinh ton dau cho vai phieu )
-            bool boolDate = _tonQuyService.CheckTonDauStatus();
-            if (!boolDate)
+            string kVCTPCTs1 = await _tonQuyService.CheckTonDauStatus(DateTime.Parse(tuNgay));
+            if (!string.IsNullOrEmpty(kVCTPCTs1))
             {
                 return Json(new
                 {
                     status = false,
-                    message = "Ngày " + fromDate.AddDays(-1).ToString("dd/MM/yyyy") + " chưa tính tồn quỹ"
+                    message = "Ngày " + kVCTPCTs1 + " chưa tính tồn quỹ"
                 });
             }
 
-            bool boolDate1 = _tonQuyService.Find_Equal_By_Date(toDate);
-            if (boolDate1) // co rồi
-            {
-                return Json(new
-                {
-                    status = false,
-                    message = "Ngày " + toDate.ToString("dd/MM/yyyy") + " đã tính tồn quỹ"
-                });
-            }
+            //bool boolDate1 = _tonQuyService.Find_Equal_By_Date(toDate);
+            //if (boolDate1) // co rồi
+            //{
+            //    return Json(new
+            //    {
+            //        status = false,
+            //        message = "Ngày " + toDate.ToString("dd/MM/yyyy") + " đã tính tồn quỹ"
+            //    });
+            //}
 
 
             return Json(new
