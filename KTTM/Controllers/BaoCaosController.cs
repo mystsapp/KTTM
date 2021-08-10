@@ -1468,6 +1468,59 @@ namespace KTTM.Controllers
                                                                                x.BoPhan == "XE");
         }
 
+        public async Task<JsonResult> CheckNgayTonQuy_NT(string tuNgay, string denNgay, string loaiTien)
+        {
+            DateTime fromDate = DateTime.Parse(tuNgay);
+            DateTime compareDate = DateTime.Parse("01/06/2021");
+
+            if (fromDate < compareDate)
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Không đồng ý tồn quỹ trước 01/06/2021"
+                });
+            }
+
+            DateTime toDate = DateTime.Parse(denNgay);
+            if (fromDate > toDate) // dao nguoc lai
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Từ ngày <b> không được lớn hơn </b> đến ngày"
+                });
+            }
+
+            // tonquy truoc ngay fromdate => xem co ton dau` ko ( tranh truong hop chua tinh ton dau cho vai phieu )
+            string kVCTPCTs1 = await _tonQuyService.CheckTonDauStatus_NT(DateTime.Parse(tuNgay), loaiTien);
+            if (!string.IsNullOrEmpty(kVCTPCTs1))
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Ngày " + kVCTPCTs1 + " chưa tính tồn quỹ"
+                });
+            }
+
+            //bool boolDate1 = _tonQuyService.Find_Equal_By_Date(toDate);
+            //if (boolDate1) // co rồi
+            //{
+            //    return Json(new
+            //    {
+            //        status = false,
+            //        message = "Ngày " + toDate.ToString("dd/MM/yyyy") + " đã tính tồn quỹ"
+            //    });
+            //}
+
+
+            return Json(new
+            {
+                status = true,
+                message = "Good job!"
+            });
+        }
+        
         public async Task<JsonResult> CheckNgayTonQuy(string tuNgay, string denNgay)
         {
             DateTime fromDate = DateTime.Parse(tuNgay);

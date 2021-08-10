@@ -91,6 +91,45 @@ namespace KTTM.Controllers
         //}
 
         // GetTonQuies_Partial
+        public IActionResult GetTonQuiesNT_Partial(string searchFromDate, string searchToDate)
+        {
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+            if (string.IsNullOrEmpty(searchFromDate) || string.IsNullOrEmpty(searchToDate)) //
+            {
+                return Json(new
+                {
+                    status = "nullDate",
+                    message = "Ngày tháng không được để trống"
+                });
+            }
+
+            // dao ngay thang
+            DateTime fromDate = DateTime.Parse(searchFromDate); // NgayCT
+            DateTime toDate = DateTime.Parse(searchToDate); // NgayCT
+
+            if (fromDate > toDate) // dao nguoc lai
+            {
+                string tmp = searchFromDate;
+                searchFromDate = searchToDate;
+                searchToDate = tmp;
+                ViewBag.searchFromDate = searchFromDate;
+                ViewBag.searchToDate = searchToDate;
+            }
+
+            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate);
+
+            if (TonQuyVM.TonQuies == null)
+            {
+
+                return Json(new
+                {
+                    status = "null"
+                });
+            }
+
+            return PartialView(TonQuyVM);
+        }
         public IActionResult GetTonQuies_Partial(string searchFromDate, string searchToDate)
         {
             ViewBag.searchFromDate = searchFromDate;

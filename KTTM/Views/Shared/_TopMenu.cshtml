@@ -48,6 +48,13 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
 <script>
+    // baoCaoQuyTienNT
+    $('#baoCaoQuyTienNT').off('click').on('click', function () {
+
+        $('#baoCaoQuyTienNT_Modal').modal('show');
+        $('#baoCaoQuyTienNT_Modal').draggable();
+
+    })
     // baoCaoQuyTienVND
     $('#baoCaoQuyTienVND').off('click').on('click', function () {
 
