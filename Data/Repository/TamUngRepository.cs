@@ -22,12 +22,12 @@ namespace Data.Repository
 
         public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
         {
-            return _context.TamUngs.Where(x => x.Phong == boPhan && x.ConLaiNT > 0).Include(x => x.KVCTPCT).ThenInclude(x => x.KVPCT);
+            return _context.TamUngs.Where(x => x.Phong == boPhan && x.ConLaiNT > 0).Include(x => x.KVCTPTC).ThenInclude(x => x.KVPTC);
         }
         
         public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong()
         {
-            return _context.TamUngs.Where(x => x.ConLaiNT > 0).Include(x => x.KVCTPCT).ThenInclude(x => x.KVPCT);
+            return _context.TamUngs.Where(x => x.ConLaiNT > 0).Include(x => x.KVCTPTC).ThenInclude(x => x.KVPTC);
         }
         
     }

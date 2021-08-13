@@ -13,17 +13,17 @@ namespace KTTM.Controllers
     public class TonQuiesController : BaseController
     {
         private readonly ITonQuyService _tonQuyService;
-        private readonly IKVPCTService _kVPCTService;
-        private readonly IKVCTPCTService _kVCTPCTService;
+        private readonly IKVPTCService _kVPTCService;
+        private readonly IKVCTPTCService _kVCTPTCService;
 
         [BindProperty]
         public TonQuyViewModel TonQuyVM { get; set; }
 
-        public TonQuiesController(ITonQuyService tonQuyService, IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService)
+        public TonQuiesController(ITonQuyService tonQuyService, IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService)
         {
             _tonQuyService = tonQuyService;
-            _kVPCTService = kVPCTService;
-            _kVCTPCTService = kVCTPCTService;
+            _kVPTCService = kVPTCService;
+            _kVCTPTCService = kVCTPTCService;
             TonQuyVM = new TonQuyViewModel()
             {
                 TonQuy = new Data.Models_KTTM.TonQuy()

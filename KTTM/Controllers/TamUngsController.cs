@@ -14,18 +14,18 @@ namespace KTTM.Controllers
     public class TamUngsController : BaseController
     {
         private readonly ITamUngService _tamUngService;
-        private readonly IKVCTPCTService _kVCTPCTService;
-        private readonly IKVPCTService _kVPCTService;
+        private readonly IKVCTPTCService _kVCTPTCService;
+        private readonly IKVPTCService _kVPTCService;
 
         [BindProperty]
         public TamUngViewModel TamUngVM { get; set; }
-        public TamUngsController(ITamUngService tamUngService, IKVCTPCTService kVCTPCTService, IKVPCTService kVPCTService)
+        public TamUngsController(ITamUngService tamUngService, IKVCTPTCService kVCTPTCService, IKVPTCService kVPTCService)
         {
             TamUngVM = new TamUngViewModel();
 
             _tamUngService = tamUngService;
-            _kVCTPCTService = kVCTPCTService;
-            _kVPCTService = kVPCTService;
+            _kVCTPTCService = kVCTPTCService;
+            _kVPTCService = kVPTCService;
         }
         public IActionResult Index()
         {
@@ -47,7 +47,7 @@ namespace KTTM.Controllers
                 });
             }
 
-            var kVCTPCT = await _kVCTPCTService.GetById(id);
+            var kVCTPCT = await _kVCTPTCService.GetById(id);
             if (kVCTPCT == null)
             {
                 return Json(new
@@ -57,7 +57,7 @@ namespace KTTM.Controllers
                 });
             }
 
-            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
+            var kVPCT = await _kVPTCService.GetBySoCT(kVCTPCT.KVPTCId);
 
             string loaiTienUng;
             if (kVPCT.NgoaiTe == "VN")
@@ -75,14 +75,14 @@ namespace KTTM.Controllers
             tamUng.MaKhNo = kVCTPCT.MaKhNo;
             tamUng.SoCT = _tamUngService.GetSoCT(loaiTienUng);
             tamUng.NgayCT = DateTime.Now; // ??
-            tamUng.PhieuChi = kVCTPCT.KVPCTId; // soCT ben KVPCT
+            tamUng.PhieuChi = kVCTPCT.KVPTCId; // soCT ben KVPCT
             tamUng.DienGiai = kVCTPCT.DienGiai;
             tamUng.LoaiTien = kVCTPCT.LoaiTien;
-            tamUng.SoTien = kVCTPCT.SoTien;
-            tamUng.SoTienNT = kVCTPCT.SoTienNT;
-            tamUng.ConLai = kVCTPCT.SoTien;
-            tamUng.ConLaiNT = kVCTPCT.SoTienNT;
-            tamUng.TyGia = kVCTPCT.TyGia;
+            tamUng.SoTien = kVCTPCT.SoTien.Value;
+            tamUng.SoTienNT = kVCTPCT.SoTienNT.Value;
+            tamUng.ConLai = kVCTPCT.SoTien.Value;
+            tamUng.ConLaiNT = kVCTPCT.SoTienNT.Value;
+            tamUng.TyGia = kVCTPCT.TyGia.Value;
             tamUng.TKNo = kVCTPCT.TKNo;
             tamUng.TKCo = kVCTPCT.TKCo;
             tamUng.Phong = kVPCT.Phong;
@@ -108,7 +108,7 @@ namespace KTTM.Controllers
 
                 // cap nhat cot tamung trong kvctpct
                 kVCTPCT.TamUng = tamUng.SoCT; // so tamung
-                await _kVCTPCTService.UpdateAsync(kVCTPCT);
+                await _kVCTPTCService.UpdateAsync(kVCTPCT);
 
                 return Json(new
                 {
@@ -148,8 +148,8 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<JsonResult> CheckTamUng(long kVCTPCTId)
         {
-            var kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId);
-            var kVPCT = await _kVPCTService.GetBySoCT(kVCTPCT.KVPCTId);
+            var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
+            var kVPCT = await _kVPTCService.GetBySoCT(kVCTPCT.KVPTCId);
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
             if (tamUng == null) // chưa them
                 if (kVPCT.MFieu == "C" && kVCTPCT.TKNo.Trim() == "1411")
@@ -162,7 +162,7 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<JsonResult> CheckTT141(long kVCTPCTId)
         {
-            var kVCTPCT = await _kVCTPCTService.GetById(kVCTPCTId);
+            var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
             
             if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411")
             {

@@ -13,32 +13,87 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Data.Models_KTTM_Anhson;
 
 namespace KTTM.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IKVPCTService _kVPCTService;
-        private readonly IKVCTPCTService _kVCTPCTService;
+        private readonly IKVPTCService _kVPTCService;
+        private readonly IKVCTPTCService _kVCTPTCService;
+        private readonly kttm_anhSonContext _kttm_AnhSonContext;
+        private readonly ITamUngService _tamUngService;
 
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
-        public HomeController(IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService)
+        public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService, kttm_anhSonContext kttm_AnhSonContext, ITamUngService tamUngService)
         {
-            _kVPCTService = kVPCTService;
-            _kVCTPCTService = kVCTPCTService;
+            _kVPTCService = kVPTCService;
+            _kVCTPTCService = kVCTPTCService;
+            _kttm_AnhSonContext = kttm_AnhSonContext;
+            _tamUngService = tamUngService;
             HomeVM = new HomeViewModel()
             {
-                KVPCT = new Data.Models_KTTM.KVPCT()
+                KVPTC = new Data.Models_KTTM.KVPTC()
             };
         }
 
         //-----------LayDataCashierPartial------------
-        
+
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, string soCT, int page = 1)
         {
-            
+            //var list = _kttm_AnhSonContext.Tamungs.ToList();
+            //var listKVCTPCT = _kVCTPCTService.GetAll().ToList();
+
+            //List<TamUng> tamUngs = new List<TamUng>();
+            //foreach (var kvctptc in listKVCTPCT)
+            //{
+
+            //    list = list.Where(x => x.Phieuchi == kvctptc.KVPCTId).ToList();
+            //    if(list.Count > 0)
+            //    {
+            //        foreach(var tamUng in list)
+            //        {
+            //            tamUngs.Add(new TamUng()
+            //            {
+            //                ConLai = tamUng.Conlai,
+            //                ConLaiNT = tamUng.Conlaint,
+            //                DienGiai = tamUng.Diengiai.Trim(),
+            //                Id = kvctptc.Id,
+            //                LoaiTien = tamUng.Loaitien.Trim(),
+            //                LogFile = "==== chuyển từ data anh Sơn.",
+            //                MaKhNo = tamUng.Makhno.Trim(),
+            //                NgayCT = tamUng.Ngayct,
+            //                PhieuChi = tamUng.Phieuchi.Trim(),
+            //                PhieuTT = tamUng.Phieutt.Trim(),
+            //                Phong = tamUng.Phong.Trim(),
+            //                SoCT = tamUng.Soct.Trim(),
+            //                SoTien = tamUng.Sotien,
+            //                SoTienNT = tamUng.Sotiennt,
+            //                TKCo = tamUng.Tkco.Trim(),
+            //                TKNo = tamUng.Tkno.Trim(),
+            //                TTTP = tamUng.Tttp,
+            //                TyGia = tamUng.Tygia
+
+            //            });
+            //        }
+            //        await _tamUngService.CreateRangeAsync(tamUngs);
+            //    }
+
+            //}
+
+            //var kvpcts = _kVPTCService.GetAll();
+            //var kvctpcts = _kttm_AnhSonContext.Kvctptcs.ToList();
+
+            //List<KVCTPCT> kVCTPCTs1 = new List<KVCTPCT>();
+
+            //foreach(var kvpct in kvpcts)
+            //{
+            //    var kvctptcs = kvctpcts.Where(x => x.Soct == kvpct.SoCT).ToList();
+            //    if(kvctpcts)
+            //}
+
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;
 
@@ -49,13 +104,13 @@ namespace KTTM.Controllers
 
             if (!string.IsNullOrEmpty(soCT)) // for redirect with soct
             {
-                HomeVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
+                HomeVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
             }
             else
             {
-                HomeVM.KVPCT = new KVPCT();
+                HomeVM.KVPTC = new KVPTC();
             }
-            HomeVM.KVPTCDtos = await _kVPCTService.ListKVPTC(searchString, searchFromDate, searchToDate, boolSgtcode, page);
+            HomeVM.KVPTCDtos = await _kVPTCService.ListKVPTC(searchString, searchFromDate, searchToDate, boolSgtcode, page);
             return View(HomeVM);
         }
 
@@ -70,15 +125,15 @@ namespace KTTM.Controllers
             //}
 
             HomeVM.StrUrl = strUrl;
-            HomeVM.KVPCT.NgayCT = DateTime.Now;
-            HomeVM.KVPCT.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
-            HomeVM.KVPCT.Create = DateTime.Now;
-            HomeVM.KVPCT.LapPhieu = user.Username;
+            HomeVM.KVPTC.NgayCT = DateTime.Now;
+            HomeVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
+            HomeVM.KVPTC.Create = DateTime.Now;
+            HomeVM.KVPTC.LapPhieu = user.Username;
 
-            HomeVM.LoaiTiens = _kVPCTService.ListLoaiTien();
-            HomeVM.LoaiPhieus = _kVPCTService.ListLoaiPhieu();
-            //HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
-            HomeVM.Phongbans = _kVCTPCTService.GetAll_PhongBans();
+            HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
+            HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
+            //HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
+            HomeVM.Phongbans = _kVCTPTCService.GetAll_PhongBans();
 
             return View(HomeVM);
         }
@@ -93,49 +148,49 @@ namespace KTTM.Controllers
             {
                 HomeVM = new HomeViewModel()
                 {
-                    KVPCT = new KVPCT(),
-                    LoaiTiens = _kVPCTService.ListLoaiTien(),
-                    LoaiPhieus = _kVPCTService.ListLoaiPhieu(),
-                    //Phongbans = _kVPCTService.GetAllPhongBan(),
-                    Phongbans = _kVCTPCTService.GetAll_PhongBans(),
+                    KVPTC = new KVPTC(),
+                    LoaiTiens = _kVPTCService.ListLoaiTien(),
+                    LoaiPhieus = _kVPTCService.ListLoaiPhieu(),
+                    //Phongbans = _kVPTCService.GetAllPhongBan(),
+                    Phongbans = _kVCTPTCService.GetAll_PhongBans(),
                     StrUrl = strUrl
                 };
 
                 return View(HomeVM);
             }
 
-            HomeVM.KVPCT.Create = DateTime.Now;
-            HomeVM.KVPCT.LapPhieu = user.Username;
+            HomeVM.KVPTC.Create = DateTime.Now;
+            HomeVM.KVPTC.LapPhieu = user.Username;
 
             // next SoCT --> bat buoc phai co'
-            switch (HomeVM.KVPCT.MFieu)
+            switch (HomeVM.KVPTC.MFieu)
             {
                 case "T": // thu
-                    switch (HomeVM.KVPCT.NgoaiTe)
+                    switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("QT"); // thu VND
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QT"); // thu VND
                             break;
                         default:
-                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("NT"); // thu NgoaiTe
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NT"); // thu NgoaiTe
                             break;
                     }
                     break;
                 default: // chi
-                    switch (HomeVM.KVPCT.NgoaiTe)
+                    switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("QC"); // chi VND
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC"); // chi VND
                             break;
                         default:
-                            HomeVM.KVPCT.SoCT = _kVPCTService.GetSoCT("NC"); // chi NgoaiTe
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NC"); // chi NgoaiTe
                             break;
                     }
                     break;
-            }            
+            }
             // next SoCT
 
-            HomeVM.KVPCT.LapPhieu = user.Username;
+            HomeVM.KVPTC.LapPhieu = user.Username;
 
             //// May tinh
             //var computerName = Environment.MachineName;
@@ -154,11 +209,11 @@ namespace KTTM.Controllers
 
 
             // ghi log
-            HomeVM.KVPCT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            HomeVM.KVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
             try
             {
-                await _kVPCTService.CreateAsync(HomeVM.KVPCT); // save
+                await _kVPTCService.CreateAsync(HomeVM.KVPTC); // save
 
                 SetAlert("Thêm mới thành công.", "success");
 
@@ -175,7 +230,7 @@ namespace KTTM.Controllers
         {
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-            
+
             HomeVM.StrUrl = strUrl;
             if (string.IsNullOrEmpty(soCT))
             {
@@ -183,18 +238,18 @@ namespace KTTM.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            HomeVM.KVPCT = await _kVPCTService.GetBySoCT(soCT);
-            
-            if (HomeVM.KVPCT == null)
+            HomeVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
+
+            if (HomeVM.KVPTC == null)
             {
                 ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            HomeVM.LoaiTiens = _kVPCTService.ListLoaiTien();
-            HomeVM.LoaiPhieus = _kVPCTService.ListLoaiPhieu();
-            //HomeVM.Phongbans = _kVPCTService.GetAllPhongBan();
-            HomeVM.Phongbans = _kVCTPCTService.GetAll_PhongBans();
+            HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
+            HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
+            //HomeVM.Phongbans = _kVPTCService.GetAllPhongBan();
+            HomeVM.Phongbans = _kVCTPTCService.GetAll_PhongBans();
 
             return View(HomeVM);
         }
@@ -208,7 +263,7 @@ namespace KTTM.Controllers
 
             string temp = "", log = "";
 
-            if (soCT != HomeVM.KVPCT.SoCT)
+            if (soCT != HomeVM.KVPTC.SoCT)
             {
                 ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");
@@ -216,27 +271,27 @@ namespace KTTM.Controllers
 
             if (ModelState.IsValid)
             {
-                HomeVM.KVPCT.NgaySua = DateTime.Now;
-                HomeVM.KVPCT.NguoiSua = user.Username;
+                HomeVM.KVPTC.NgaySua = DateTime.Now;
+                HomeVM.KVPTC.NguoiSua = user.Username;
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
-                var t = _kVPCTService.GetBySoCTAsNoTracking(soCT);
+                var t = _kVPTCService.GetBySoCTAsNoTracking(soCT);
 
-                if (t.HoTen != HomeVM.KVPCT.HoTen)
+                if (t.HoTen != HomeVM.KVPTC.HoTen)
                 {
-                    temp += String.Format("- Họ tên thay đổi: {0}->{1}", t.HoTen, HomeVM.KVPCT.HoTen);
+                    temp += String.Format("- Họ tên thay đổi: {0}->{1}", t.HoTen, HomeVM.KVPTC.HoTen);
                 }
 
-                if (t.Phong != HomeVM.KVPCT.Phong)
+                if (t.Phong != HomeVM.KVPTC.Phong)
                 {
-                    temp += String.Format("- Phòng thay đổi: {0}->{1}", t.Phong, HomeVM.KVPCT.Phong);
+                    temp += String.Format("- Phòng thay đổi: {0}->{1}", t.Phong, HomeVM.KVPTC.Phong);
                 }
-                
-                if (t.DonVi != HomeVM.KVPCT.DonVi)
+
+                if (t.DonVi != HomeVM.KVPTC.DonVi)
                 {
-                    temp += String.Format("- Đơn vị thay đổi: {0}->{1}", t.DonVi, HomeVM.KVPCT.DonVi);
+                    temp += String.Format("- Đơn vị thay đổi: {0}->{1}", t.DonVi, HomeVM.KVPTC.DonVi);
                 }
 
                 #endregion
@@ -249,12 +304,12 @@ namespace KTTM.Controllers
                     log += System.Environment.NewLine;
                     log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
-                    HomeVM.KVPCT.LogFile = t.LogFile;
+                    HomeVM.KVPTC.LogFile = t.LogFile;
                 }
 
                 try
                 {
-                    await _kVPCTService.UpdateAsync(HomeVM.KVPCT);
+                    await _kVPTCService.UpdateAsync(HomeVM.KVPTC);
                     SetAlert("Cập nhật thành công", "success");
 
                     return Redirect(strUrl);
@@ -262,7 +317,7 @@ namespace KTTM.Controllers
                 catch (Exception ex)
                 {
                     SetAlert(ex.Message, "error");
-                    
+
                     return View(HomeVM);
                 }
             }

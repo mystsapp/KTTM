@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Data.Models_KTTM
 {
-    public class KVPCT
+    public class KVPTC
     {
         [Key]
         [DisplayName("Số phiếu")]
@@ -46,7 +46,7 @@ namespace Data.Models_KTTM
         //[DisplayName("Ngày tạo")]
         [Column(TypeName = "datetime")]
         [Required(ErrorMessage = "Ngày không được để trống")]
-        public DateTime Create { get; set; }
+        public DateTime? Create { get; set; }
 
         //[DisplayName("Số biên nhận")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]

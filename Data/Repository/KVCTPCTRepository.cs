@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Data.Repository
 {
-    public interface IKVCTPCTRepository : IRepository<KVCTPCT>
+    public interface IKVCTPCTRepository : IRepository<KVCTPTC>
     {
     }
-    public class KVCTPCTRepository : Repository_KTTM<KVCTPCT>, IKVCTPCTRepository
+    public class KVCTPCTRepository : Repository_KTTM<KVCTPTC>, IKVCTPCTRepository
     {
         public KVCTPCTRepository(KTTMDbContext context) : base(context)
         {

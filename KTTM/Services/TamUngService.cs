@@ -17,6 +17,7 @@ namespace KTTM.Services
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi);
         Task CreateAsync(TamUng tamUng);
+        Task CreateRangeAsync(IEnumerable<TamUng> tamUngs);
         Task UpdateAsync(TamUng tamUng);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh);
         IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan);
@@ -67,7 +68,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + item.KVCTPCT.TenKH,
+                    Name = item.MaKhNo + " " + item.KVCTPTC.TenKH,
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });
@@ -83,7 +84,7 @@ namespace KTTM.Services
             foreach (var item in result1)
             {
 
-                item.TongCong = item.TamUngModels.Sum(x => x.VND);
+                item.TongCong = item.TamUngModels.Sum(x => x.VND.Value);
 
             }
             return result1;
@@ -103,7 +104,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + item.KVCTPCT.TenKH,
+                    Name = item.MaKhNo + " " + item.KVCTPTC.TenKH,
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });
@@ -124,7 +125,7 @@ namespace KTTM.Services
             foreach (var item in result1)
             {
 
-                item.TongCong = item.TamUngModels.Sum(x => x.VND);
+                item.TongCong = item.TamUngModels.Sum(x => x.VND.Value);
 
             }
 
@@ -141,7 +142,7 @@ namespace KTTM.Services
 
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh)
         {
-            var tamUngs = await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPCT, y => y.MaKhNo == maKh && y.ConLai > 0);
+            var tamUngs = await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPTC, y => y.MaKhNo == maKh && y.ConLai > 0);
             return tamUngs;
         }
 
@@ -165,7 +166,7 @@ namespace KTTM.Services
 
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi)
         {
-            return await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPCT, y => y.PhieuChi == phieuChi);
+            return await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPTC, y => y.PhieuChi == phieuChi);
         }
 
         public async Task<TamUng> GetByIdAsync(long id)
@@ -212,5 +213,10 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
+        public async Task CreateRangeAsync(IEnumerable<TamUng> tamUngs)
+        {
+            await _unitOfWork.tamUngRepository.CreateRange(tamUngs);
+            await _unitOfWork.Complete();
+        }
     }
 }

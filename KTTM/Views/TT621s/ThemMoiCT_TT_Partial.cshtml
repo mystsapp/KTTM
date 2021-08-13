@@ -28,10 +28,10 @@
 
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> @*tamungid khi khi click vao list tamung  trong TT621Create*@
-                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> @*dung de luu PhieuTC trong tt621*@
-                        <input type="hidden" asp-for="KVCTPCT.SoTienNT">
-                        <input type="hidden" asp-for="KVCTPCT.TKNo"> <!-- for form valid in tt621 post-->
-                        <input type="hidden" asp-for="KVCTPCT.TKCo"> <!-- for form valid in tt621 post-->
+                        <input type="hidden" asp-for="KVCTPTC.KVPTCId"> @*dung de luu PhieuTC trong tt621*@
+                        <input type="hidden" asp-for="KVCTPTC.SoTienNT">
+                        <input type="hidden" asp-for="KVCTPTC.TKNo"> <!-- for form valid in tt621 post-->
+                        <input type="hidden" asp-for="KVCTPTC.TKCo"> <!-- for form valid in tt621 post-->
 
                         <fieldset class="groupbox-border ">
                             <legend class="groupbox-border">Thông tin về tài chánh </legend>
@@ -140,7 +140,7 @@
                             <legend class="groupbox-border">Thông tin về công nợ đoàn </legend>
 
                             <div class=" row">
-                                @if (Model.KVCTPCT.KVPCT.MFieu == "T")
+                                @if (Model.KVCTPTC.KVPTC.MFieu == "T")
                                 {
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhNo" class="control-label "></label>
@@ -208,7 +208,7 @@
                             </div>
 
                             <div class=" row">
-                                @if (Model.KVCTPCT.KVPCT.MFieu == "T")
+                                @if (Model.KVCTPTC.KVPTC.MFieu == "T")
                                 {
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
@@ -450,7 +450,7 @@
 
     $('#txtMaKhCo_ThemMoi').blur(function () {
 
-        var tkCo = '@Model.KVCTPCT.TKCo';
+        var tkCo = '@Model.KVCTPTC.TKCo';
 
             //if (tkCo !== "1411") {
                 maKhtext = $(this).val();
@@ -461,7 +461,7 @@
 
         $('#ddlNgoaiTe').change(function () {
             loaiTien = $(this).val();
-            loaiPhieu = '@Model.KVCTPCT.KVPCT.MFieu';
+            loaiPhieu = '@Model.KVCTPTC.KVPTC.MFieu';
             serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
         })
 
@@ -595,7 +595,7 @@
 
                             indexController.Load_KVCTPCTPartial(soCT);*@
                         tamUngId = $('#hidTamUngId').val();
-                        soTienNT = @Model.KVCTPCT.SoTienNT;
+                        soTienNT = @Model.KVCTPTC.SoTienNT;
                         createController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
                         createController.GetCommentText_By_TamUng(tamUngId, soTienNT); // get comment text
                         createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT); // check nut ketchuyen

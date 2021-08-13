@@ -46,59 +46,59 @@
                 <div class="pr-4 pl-4 text-sm">
 
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    <input type="hidden" asp-for="KVPCT.SoCT" />
-                    <input type="hidden" asp-for="KVPCT.NgayCT" />
-                    <input type="hidden" asp-for="KVPCT.Create" />
-                    <input type="hidden" asp-for="KVPCT.LapPhieu" />
+                    <input type="hidden" asp-for="KVPTC.SoCT" />
+                    <input type="hidden" asp-for="KVPTC.NgayCT" />
+                    <input type="hidden" asp-for="KVPTC.Create" />
+                    <input type="hidden" asp-for="KVPTC.LapPhieu" />
 
                     <div class="form-group row">
 
                         <div class="col-md-3">
-                            <label asp-for="KVPCT.SoCT" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
-                            <input asp-for="KVPCT.SoCT" class="form-control form-control-sm " readonly />
+                            <label asp-for="KVPTC.SoCT" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
+                            <input asp-for="KVPTC.SoCT" class="form-control form-control-sm " readonly />
                         </div>
 
                     </div>
                     <div class="form-group row">
 
                         <div class="col-md-3">
-                            <label asp-for="KVPCT.NgayCT" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
-                            <input type="text" asp-for="KVPCT.NgayCT" class="form-control form-control-sm maskInput" asp-format="{0:dd/MM/yyyy}" id="txtNgayCT" readonly />
+                            <label asp-for="KVPTC.NgayCT" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
+                            <input type="text" asp-for="KVPTC.NgayCT" class="form-control form-control-sm maskInput" asp-format="{0:dd/MM/yyyy}" id="txtNgayCT" readonly />
 
                         </div>
 
                         <div class="col-md-1">
-                            <label asp-for="KVPCT.MFieu" class="control-label"></label>
-                            @*<select asp-for="KVPCT.MFieu" class="form-control form-control-sm "
+                            <label asp-for="KVPTC.MFieu" class="control-label"></label>
+                            @*<select asp-for="KVPTC.MFieu" class="form-control form-control-sm "
                                         asp-items="@(new SelectList(Model.LoaiPhieus, "Name", "Name"))" id="ddlMFieu">
                                 </select>*@
-                            <input asp-for="KVPCT.MFieu" class="form-control form-control-sm " readonly />
-                            <span asp-validation-for="KVPCT.MFieu" class="text-danger"></span>
+                            <input asp-for="KVPTC.MFieu" class="form-control form-control-sm " readonly />
+                            <span asp-validation-for="KVPTC.MFieu" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <!-- qltour -->
-                            <label asp-for="KVPCT.NgoaiTe" class="control-label"></label>
-                            @*<select asp-for="KVPCT.NgoaiTe" class="form-control form-control-sm "
+                            <label asp-for="KVPTC.NgoaiTe" class="control-label"></label>
+                            @*<select asp-for="KVPTC.NgoaiTe" class="form-control form-control-sm "
                                         asp-items="@(new SelectList(Model.LoaiTiens, "Name", "Name"))" id="ddlNgoaiTe">
                                 </select>*@
-                            <input asp-for="KVPCT.NgoaiTe" class="form-control form-control-sm " readonly />
-                            <span asp-validation-for="KVPCT.NgoaiTe" class="text-danger"></span>
+                            <input asp-for="KVPTC.NgoaiTe" class="form-control form-control-sm " readonly />
+                            <span asp-validation-for="KVPTC.NgoaiTe" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
-                            <label asp-for="KVPCT.HoTen" class="control-label"></label>
-                            <input asp-for="KVPCT.HoTen" class="form-control form-control-sm" id="txtHoTen" />
-                            <span asp-validation-for="KVPCT.HoTen" class="text-danger"></span>
+                            <label asp-for="KVPTC.HoTen" class="control-label"></label>
+                            <input asp-for="KVPTC.HoTen" class="form-control form-control-sm" id="txtHoTen" />
+                            <span asp-validation-for="KVPTC.HoTen" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <!-- qltour -->
-                            <label asp-for="KVPCT.Phong" class="control-label"></label>
-                            <select asp-for="KVPCT.Phong" class="form-control form-control-sm input-sm select2"
+                            <label asp-for="KVPTC.Phong" class="control-label"></label>
+                            <select asp-for="KVPTC.Phong" class="form-control form-control-sm input-sm select2"
                                     asp-items="@(new SelectList(Model.Phongbans, "BoPhan", "TenBoPhan"))" id="ddlPhongBan">
                             </select>
-                            <span asp-validation-for="KVPCT.Phong" class="text-danger"></span>
+                            <span asp-validation-for="KVPTC.Phong" class="text-danger"></span>
                         </div>
 
                     </div>
@@ -107,15 +107,15 @@
                     <div class="form-group row">
 
                         <div class="col-md-9">
-                            <label asp-for="KVPCT.DonVi" class="control-label"></label>
-                            <input asp-for="KVPCT.DonVi" class="form-control form-control-sm" id="txtDonVi" />
-                            <span asp-validation-for="KVPCT.DonVi" class="text-danger"></span>
+                            <label asp-for="KVPTC.DonVi" class="control-label"></label>
+                            <input asp-for="KVPTC.DonVi" class="form-control form-control-sm" id="txtDonVi" />
+                            <span asp-validation-for="KVPTC.DonVi" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
-                            <label asp-for="KVPCT.LapPhieu" class="control-label "></label>
-                            <input readonly asp-for="KVPCT.LapPhieu" class="form-control form-control-sm" id="txtLapPhieu" />
-                            <span asp-validation-for="KVPCT.LapPhieu" class="text-danger"></span>
+                            <label asp-for="KVPTC.LapPhieu" class="control-label "></label>
+                            <input readonly asp-for="KVPTC.LapPhieu" class="form-control form-control-sm" id="txtLapPhieu" />
+                            <span asp-validation-for="KVPTC.LapPhieu" class="text-danger"></span>
                         </div>
 
                         @*

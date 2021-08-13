@@ -19,7 +19,7 @@ namespace Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Data.Models_KTTM.KVCTPCT", b =>
+            modelBuilder.Entity("Data.Models_KTTM.KVCTPTC", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
 
-                    b.Property<decimal>("DSKhongVAT")
+                    b.Property<decimal?>("DSKhongVAT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DiaChi")
@@ -53,7 +53,7 @@ namespace Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<bool>("DieuChinh")
+                    b.Property<bool?>("DieuChinh")
                         .HasColumnType("bit");
 
                     b.Property<string>("HTTC")
@@ -71,7 +71,7 @@ namespace Data.Migrations
                     b.Property<DateTime?>("KC141")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("KVPCTId")
+                    b.Property<string>("KVPTCId")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
@@ -168,10 +168,10 @@ namespace Data.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
-                    b.Property<decimal>("SoTien")
+                    b.Property<decimal?>("SoTien")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("SoTienNT")
+                    b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SoXe")
@@ -200,26 +200,27 @@ namespace Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<decimal>("TyGia")
+                    b.Property<decimal?>("TyGia")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("VAT")
+                    b.Property<decimal?>("VAT")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KVPCTId");
+                    b.HasIndex("KVPTCId");
 
-                    b.ToTable("KVCTPCTs");
+                    b.ToTable("KVCTPTCs");
                 });
 
-            modelBuilder.Entity("Data.Models_KTTM.KVPCT", b =>
+            modelBuilder.Entity("Data.Models_KTTM.KVPTC", b =>
                 {
                     b.Property<string>("SoCT")
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<DateTime>("Create")
+                    b.Property<DateTime?>("Create")
+                        .IsRequired()
                         .HasColumnType("datetime");
 
                     b.Property<string>("DonVi")
@@ -273,7 +274,7 @@ namespace Data.Migrations
 
                     b.HasKey("SoCT");
 
-                    b.ToTable("KVPCTs");
+                    b.ToTable("KVPTCs");
                 });
 
             modelBuilder.Entity("Data.Models_KTTM.TT621", b =>
@@ -451,17 +452,22 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnType("bigint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("ConLai")
+                    b.Property<decimal?>("ConLai")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ConLaiNT")
+                    b.Property<decimal?>("ConLaiNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DienGiai")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<long?>("KVCTPTCId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("LoaiTien")
                         .HasMaxLength(3)
@@ -508,10 +514,10 @@ namespace Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<decimal>("SoTien")
+                    b.Property<decimal?>("SoTien")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("SoTienNT")
+                    b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TKCo")
@@ -522,13 +528,15 @@ namespace Data.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
-                    b.Property<bool>("TTTP")
+                    b.Property<bool?>("TTTP")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("TyGia")
+                    b.Property<decimal?>("TyGia")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("KVCTPTCId");
 
                     b.ToTable("TamUngs");
                 });
@@ -572,15 +580,15 @@ namespace Data.Migrations
                     b.ToTable("TonQuies");
                 });
 
-            modelBuilder.Entity("Data.Models_KTTM.KVCTPCT", b =>
+            modelBuilder.Entity("Data.Models_KTTM.KVCTPTC", b =>
                 {
-                    b.HasOne("Data.Models_KTTM.KVPCT", "KVPCT")
+                    b.HasOne("Data.Models_KTTM.KVPTC", "KVPTC")
                         .WithMany()
-                        .HasForeignKey("KVPCTId")
+                        .HasForeignKey("KVPTCId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("KVPCT");
+                    b.Navigation("KVPTC");
                 });
 
             modelBuilder.Entity("Data.Models_KTTM.TT621", b =>
@@ -596,13 +604,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
                 {
-                    b.HasOne("Data.Models_KTTM.KVCTPCT", "KVCTPCT")
+                    b.HasOne("Data.Models_KTTM.KVCTPTC", "KVCTPTC")
                         .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("KVCTPTCId");
 
-                    b.Navigation("KVCTPCT");
+                    b.Navigation("KVCTPTC");
                 });
 #pragma warning restore 612, 618
         }

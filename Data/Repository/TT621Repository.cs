@@ -24,15 +24,15 @@ namespace Data.Repository
 
         public IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId)
         {
-            return _context.TT621s.Where(x => x.TamUngId == tamUngId).Include(x => x.TamUng).ThenInclude(x => x.KVCTPCT);
+            return _context.TT621s.Where(x => x.TamUngId == tamUngId).Include(x => x.TamUng).ThenInclude(x => x.KVCTPTC);
         }
 
         public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(DateTime fromDate, DateTime toDate)
         {
             return _context.TT621s.Where(x => x.NgayCT >= fromDate && x.NgayCT < toDate.AddDays(1))
                                   .Include(x => x.TamUng)
-                                  .ThenInclude(x => x.KVCTPCT)
-                                  .ThenInclude(x => x.KVPCT);
+                                  .ThenInclude(x => x.KVCTPTC)
+                                  .ThenInclude(x => x.KVPTC);
             
         }
 
@@ -40,8 +40,8 @@ namespace Data.Repository
         {
             return _context.TT621s.Where(x => x.NgayCT >= fromDate)
                                   .Include(x => x.TamUng)
-                                  .ThenInclude(x => x.KVCTPCT)
-                                  .ThenInclude(x => x.KVPCT);
+                                  .ThenInclude(x => x.KVCTPTC)
+                                  .ThenInclude(x => x.KVPTC);
             
         }
         
@@ -49,8 +49,8 @@ namespace Data.Repository
         {
             return _context.TT621s.Where(x => x.NgayCT < toDate.AddDays(1))
                                   .Include(x => x.TamUng)
-                                  .ThenInclude(x => x.KVCTPCT)
-                                  .ThenInclude(x => x.KVPCT);
+                                  .ThenInclude(x => x.KVCTPTC)
+                                  .ThenInclude(x => x.KVPTC);
             
         }
 

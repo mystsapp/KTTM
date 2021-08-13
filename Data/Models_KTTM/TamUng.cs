@@ -11,7 +11,7 @@ namespace Data.Models_KTTM
     {
         [Key, ForeignKey("KVCTPCT")]
         public long Id { get; set; }
-        public virtual KVCTPCT KVCTPCT { get; set; }
+        public virtual KVCTPTC KVCTPTC { get; set; }
 
         [DisplayName("Mã KH nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
@@ -40,23 +40,23 @@ namespace Data.Models_KTTM
 
         [DisplayName("Số tiền")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SoTien { get; set; }
+        public decimal? SoTien { get; set; }
 
         [DisplayName("Số tiền NT")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SoTienNT { get; set; }
+        public decimal? SoTienNT { get; set; }
 
         [DisplayName("Nợ VNĐ")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal ConLai { get; set; }
+        public decimal? ConLai { get; set; }
 
         [DisplayName("Còn nợ NT")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal ConLaiNT { get; set; }
+        public decimal? ConLaiNT { get; set; }
 
         [DisplayName("Tỷ giá")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TyGia { get; set; }
+        public decimal? TyGia { get; set; }
 
         [DisplayName("TK Nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
@@ -70,7 +70,7 @@ namespace Data.Models_KTTM
         [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "nvarchar(20)")]
         public string Phong { get; set; }
 
-        public bool TTTP { get; set; }
+        public bool? TTTP { get; set; }
 
         //[DisplayName("Phòng")]
         [MaxLength(80, ErrorMessage = "Chiều dài tối đa 80 ký tự"), Column(TypeName = "nvarchar(80)")]

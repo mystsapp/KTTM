@@ -11,9 +11,9 @@ namespace KTTM.Models
 {
     public class KVCTPCTViewModel
     {
-        public KVPCT KVPCT { get; set; }
-        public KVCTPCT KVCTPCT { get; set; }
-        public IEnumerable<KVCTPCT> KVCTPCTs { get; set; }
+        public KVPTC KVPTC { get; set; }
+        public KVCTPTC KVCTPTC { get; set; }
+        public IEnumerable<KVCTPTC> KVCTPCTs { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; }
         public IEnumerable<ViewDmHttc> DmHttcs { get; set; }        
         public IEnumerable<DmTk> DmTks_TkNo { get; set; }

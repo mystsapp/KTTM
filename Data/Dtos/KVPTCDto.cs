@@ -31,7 +31,7 @@ namespace Data.Dtos
         [DisplayName("Người lập phiếu")]
         public string LapPhieu { get; set; }
 
-        public DateTime Create { get; set; }
+        public DateTime? Create { get; set; }
 
         public string MayTinh { get; set; }
 

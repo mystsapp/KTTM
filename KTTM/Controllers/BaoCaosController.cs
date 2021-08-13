@@ -20,8 +20,8 @@ namespace KTTM.Controllers
 {
     public class BaoCaosController : BaseController
     {
-        private readonly IKVPCTService _kVPCTService;
-        private readonly IKVCTPCTService _kVCTPCTService;
+        private readonly IKVPTCService _kVPTCService;
+        private readonly IKVCTPTCService _kVCTPTCService;
         private readonly ITT621Service _tT621Service;
         private readonly ITamUngService _tamUngService;
         private readonly IBaoCaoService _baoCaoService;
@@ -30,12 +30,12 @@ namespace KTTM.Controllers
         [BindProperty]
         public BaoCaoViewModel BaoCaoVM { get; set; }
 
-        public BaoCaosController(IKVPCTService kVPCTService, IKVCTPCTService kVCTPCTService,
+        public BaoCaosController(IKVPTCService kVPCTService, IKVCTPTCService kVCTPCTService,
                                  ITT621Service tT621Service, ITamUngService tamUngService,
                                  IBaoCaoService baoCaoService, ITonQuyService tonQuyService)
         {
-            _kVPCTService = kVPCTService;
-            _kVCTPCTService = kVCTPCTService;
+            _kVPTCService = kVPCTService;
+            _kVCTPTCService = kVCTPCTService;
             _tT621Service = tT621Service;
             _tamUngService = tamUngService;
             _baoCaoService = baoCaoService;
@@ -48,8 +48,8 @@ namespace KTTM.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> InPhieu(string soCT, int page)
         {
-            KVPCT kVPCT = await _kVPCTService.GetBySoCT(soCT);
-            string loaiphieu = kVPCT.MFieu == "T" ? "THU" : "CHI";
+            KVPTC kVPTC = await _kVPTCService.GetBySoCT(soCT);
+            string loaiphieu = kVPTC.MFieu == "T" ? "THU" : "CHI";
 
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -81,7 +81,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[2, 3, 2, 5].Merge = true;
             setCenterAligment(2, 3, 2, 5, xlSheet);
 
-            xlSheet.Cells[3, 1].Value = "BẢNG KÊ CHI TIẾT PHIẾU " + loaiphieu + " " + kVPCT.SoCT;
+            xlSheet.Cells[3, 1].Value = "BẢNG KÊ CHI TIẾT PHIẾU " + loaiphieu + " " + kVPTC.SoCT;
             xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
             xlSheet.Cells[3, 1, 3, 5].Merge = true;
             setCenterAligment(3, 1, 3, 10, xlSheet);
@@ -101,7 +101,7 @@ namespace KTTM.Controllers
             int dong = 6;
 
             //// moi load vao
-            var kVCTPCTs = await _kVCTPCTService.List_KVCTPCT_By_SoCT(soCT);
+            var kVCTPCTs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
 
             //du lieu
             //int iRowIndex = 6;
@@ -122,7 +122,7 @@ namespace KTTM.Controllers
                     TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    if (kVPCT.MFieu == "T")
+                    if (kVPTC.MFieu == "T")
                     {
                         xlSheet.Cells[dong, 2].Value = item.TKCo;
                     }
@@ -212,7 +212,7 @@ namespace KTTM.Controllers
                 return File(
                 fileContents: fileContents,
                 contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                fileDownloadName: "BangKe_" + kVPCT.SoCT + "_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
+                fileDownloadName: "BangKe_" + kVPTC.SoCT + "_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
             }
             catch (Exception)
             {
@@ -229,12 +229,12 @@ namespace KTTM.Controllers
             string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
             var tonQuies = _tonQuyService.FindTonQuy_By_Date("01/06/2021", toDate);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-            IEnumerable<KVCTPCT> kVCTPCTs = await _kVCTPCTService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
+            IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
             List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
-            if (kVCTPCTs.Count() > 0)
+            if (kVCTPTCs.Count() > 0)
             {
-                kVCTPCT_Model_GroupBy_SoCTs = _kVCTPCTService.KVCTPCT_Model_GroupBy_SoCTs(kVCTPCTs); // groupby name (makh)
+                kVCTPCT_Model_GroupBy_SoCTs = _kVCTPTCService.KVCTPCT_Model_GroupBy_SoCTs(kVCTPTCs); // groupby name (makh)
 
             }
             else
@@ -330,7 +330,7 @@ namespace KTTM.Controllers
             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
             dong++;
 
-            if (kVCTPCTs.Count() > 0)
+            if (kVCTPTCs.Count() > 0)
             {
                 foreach (var item in kVCTPCT_Model_GroupBy_SoCTs)
                 {
@@ -338,15 +338,15 @@ namespace KTTM.Controllers
                     foreach (var kvctpct in item.KVCTPCTs)
                     {
 
-                        if (kvctpct.KVPCT.MFieu == "T")
+                        if (kvctpct.KVPTC.MFieu == "T")
                         {
-                            xlSheet.Cells[dong, 1].Value = kvctpct.KVPCTId;
+                            xlSheet.Cells[dong, 1].Value = kvctpct.KVPTCId;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
                         else
                         {
-                            xlSheet.Cells[dong, 2].Value = kvctpct.KVPCTId;
+                            xlSheet.Cells[dong, 2].Value = kvctpct.KVPTCId;
                             TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
@@ -369,13 +369,13 @@ namespace KTTM.Controllers
                         TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                        xlSheet.Cells[dong, 5].Value = kvctpct.KVPCT.MFieu == "T" ? kvctpct.TKCo : kvctpct.TKNo;
+                        xlSheet.Cells[dong, 5].Value = kvctpct.KVPTC.MFieu == "T" ? kvctpct.TKCo : kvctpct.TKNo;
                         TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                         if (item.KVCTPCTs.Count() == 1)
                         {
-                            if (kvctpct.KVPCT.MFieu == "T")
+                            if (kvctpct.KVPTC.MFieu == "T")
                             {
                                 xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
@@ -392,7 +392,7 @@ namespace KTTM.Controllers
                         }
                         else
                         {
-                            if (kvctpct.KVPCT.MFieu == "T")
+                            if (kvctpct.KVPTC.MFieu == "T")
                             {
                                 xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
@@ -1261,7 +1261,7 @@ namespace KTTM.Controllers
             TT621 tT621 = tT621s.Where(x => x.Id == id_TT).FirstOrDefault();
             List<TT621> tT621s_By_TamUng = _tT621Service.FindTT621s_IncludeTwice(tT621.TamUngId).ToList();
 
-            string loaiphieu = tT621.TamUng.KVCTPCT.KVPCT.MFieu == "T" ? "THU" : "CHI";
+            string loaiphieu = tT621.TamUng.KVCTPTC.KVPTC.MFieu == "T" ? "THU" : "CHI";
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -1292,7 +1292,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[3, 1, 3, 10].Merge = true;
             setCenterAligment(3, 1, 3, 10, xlSheet);
 
-            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + tT621.TamUng.KVCTPCT.KVPCTId + " - " +
+            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + tT621.TamUng.KVCTPTC.KVPTCId + " - " +
                 "Nhân viên: " + maKhCo_TT + " " + tT621.TenKH;
             xlSheet.Cells[4, 1].Value = stringNgay;
             xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
@@ -1455,7 +1455,7 @@ namespace KTTM.Controllers
 
         private IEnumerable<Data.Models_DanhMucKT.PhongBan> GetPhongBans_Where()
         {
-            return _kVCTPCTService.GetAll_PhongBans().Where(x => x.BoPhan == "ND" ||
+            return _kVCTPTCService.GetAll_PhongBans().Where(x => x.BoPhan == "ND" ||
                                                                                x.BoPhan == "HK" ||
                                                                                x.BoPhan == "HC" ||
                                                                                x.BoPhan == "HD" ||

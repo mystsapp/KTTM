@@ -14,9 +14,9 @@ using X.PagedList;
 
 namespace KTTM.Services
 {
-    public interface IKVPCTService
+    public interface IKVPTCService
     {
-        IEnumerable<KVPCT> GetAll();
+        IEnumerable<KVPTC> GetAll();
         IEnumerable<Ngoaite> GetAllNgoaiTe();
         IEnumerable<Phongban> GetAllPhongBan();
         Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page);
@@ -24,24 +24,25 @@ namespace KTTM.Services
         IEnumerable<ListViewModel> ListLoaiPhieu();
         IEnumerable<ListViewModel> ListLoaiTien();
         string GetSoCT(string param);
-        Task CreateAsync(KVPCT kVPCT);
-        Task<KVPCT> GetBySoCT(string soCT);
-        KVPCT GetBySoCTAsNoTracking(string soCT);
-        Task UpdateAsync(KVPCT kVPCT);
+        Task CreateAsync(KVPTC kVPCT);
+        Task CreateRangeAsync(List<KVPTC> kVPCTs);
+        Task<KVPTC> GetBySoCT(string soCT);
+        KVPTC GetBySoCTAsNoTracking(string soCT);
+        Task UpdateAsync(KVPTC kVPCT);
 
         IEnumerable<TkCongNo> GetAllTkCongNo();
 
     }
-    public class KVPCTService : IKVPCTService
+    public class KVPTCService : IKVPTCService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public KVPCTService(IUnitOfWork unitOfWork)
+        public KVPTCService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<KVPCT> GetAll()
+        public IEnumerable<KVPTC> GetAll()
         {
             return _unitOfWork.kVPCTRepository.GetAll();
         }
@@ -56,12 +57,12 @@ namespace KTTM.Services
             return _unitOfWork.phongBanRepository.GetAll();
         }
 
-        public async Task<KVPCT> GetBySoCT(string soCT)
+        public async Task<KVPTC> GetBySoCT(string soCT)
         {
             return await _unitOfWork.kVPCTRepository.GetByIdAsync(soCT);
         }
 
-        public KVPCT GetBySoCTAsNoTracking(string soCT)
+        public KVPTC GetBySoCTAsNoTracking(string soCT)
         {
             return _unitOfWork.kVPCTRepository.GetByIdAsNoTracking(x => x.SoCT == soCT);
         }
@@ -110,7 +111,7 @@ namespace KTTM.Services
             // retrieve list from database/whereverand
 
             var list = new List<KVPTCDto>();
-            var kVPCTs = new List<KVPCT>();
+            var kVPCTs = new List<KVPTC>();
             //var kVPCTs = GetAll();
 
             //if (kVPCTs == null)
@@ -122,14 +123,14 @@ namespace KTTM.Services
             if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
 
-                List<KVCTPCT> kVCTPCTs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
+                List<KVCTPTC> kVCTPCTs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
 
                 if (kVCTPCTs.Count() > 0)
                 {
-                    List<KVPCT> kVPCTs1 = new List<KVPCT>();
+                    List<KVPTC> kVPCTs1 = new List<KVPTC>();
                     foreach (var item in kVCTPCTs)
                     {
-                        KVPCT kVPCT = await GetBySoCT(item.KVPCTId);
+                        KVPTC kVPCT = await GetBySoCT(item.KVPTCId);
                         kVPCTs1.Add(kVPCT);
                     }
                     if (kVPCTs1.Count > 0)
@@ -300,13 +301,13 @@ namespace KTTM.Services
             };
         }
 
-        public async Task CreateAsync(KVPCT kVPCT)
+        public async Task CreateAsync(KVPTC kVPCT)
         {
             _unitOfWork.kVPCTRepository.Create(kVPCT);
             await _unitOfWork.Complete();
         }
 
-        public async Task UpdateAsync(KVPCT kVPCT)
+        public async Task UpdateAsync(KVPTC kVPCT)
         {
             _unitOfWork.kVPCTRepository.Update(kVPCT);
             await _unitOfWork.Complete();
@@ -315,6 +316,12 @@ namespace KTTM.Services
         public IEnumerable<TkCongNo> GetAllTkCongNo()
         {
             return _unitOfWork.tkCongNoRepository.GetAll();
+        }
+
+        public async Task CreateRangeAsync(List<KVPTC> kVPCTs)
+        {
+            await _unitOfWork.kVPCTRepository.CreateRange(kVPCTs);
+            await _unitOfWork.Complete();
         }
     }
 }

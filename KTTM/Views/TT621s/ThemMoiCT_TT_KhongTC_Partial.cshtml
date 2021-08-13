@@ -28,11 +28,11 @@
 
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <input type="hidden" asp-for="TamUngId" id="hidTamUngId" /> @*tamungid khi khi click vao list tamung  trong TT621Create*@
-                        <input type="hidden" asp-for="KVCTPCT.KVPCTId"> @*dung de luu PhieuTC trong tt621*@
-                        <input type="hidden" asp-for="KVCTPCT.SoTienNT">
-                        <input type="hidden" asp-for="KVCTPCT.TKNo">
+                        <input type="hidden" asp-for="KVCTPTC.KVPTCId"> @*dung de luu PhieuTC trong tt621*@
+                        <input type="hidden" asp-for="KVCTPTC.SoTienNT">
+                        <input type="hidden" asp-for="KVCTPTC.TKNo">
                          @*for form valid in tt621 post*@
-                        <input type="hidden" asp-for="KVCTPCT.TKCo">  @*for form valid in tt621 post*@
+                        <input type="hidden" asp-for="KVCTPTC.TKCo">  @*for form valid in tt621 post*@
                         <input type="hidden" asp-for="TT621.TKCo" value="1111000000">  @*for form valid in tt621 post*@
 
                         <fieldset class="groupbox-border ">

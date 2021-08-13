@@ -7,17 +7,17 @@ using System.Text;
 
 namespace Data.Models_KTTM
 {
-    public class KVCTPCT
+    public class KVCTPTC
     {
         public long Id { get; set; }
 
-        [DisplayName("KVPCT")]
+        [DisplayName("KVPTC")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         [Required(ErrorMessage = "Trường này không được để trống")]
-        public string KVPCTId { get; set; }
+        public string KVPTCId { get; set; }
 
-        [ForeignKey("KVPCTId")]
-        public virtual KVPCT KVPCT { get; set; }
+        [ForeignKey("KVPTCId")]
+        public virtual KVPTC KVPTC { get; set; }
 
         [DisplayName("HTTC")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
@@ -50,7 +50,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("Số tiền NT")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SoTienNT { get; set; }
+        public decimal? SoTienNT { get; set; }
 
         [DisplayName("Loại tiền")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
@@ -58,11 +58,11 @@ namespace Data.Models_KTTM
 
         [DisplayName("Tỷ giá")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TyGia { get; set; }
+        public decimal? TyGia { get; set; }
 
         [DisplayName("Số tiền")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SoTien { get; set; }
+        public decimal? SoTien { get; set; }
 
         [MaxLength(5, ErrorMessage = "Chiều dài tối đa 5 ký tự"), Column(TypeName = "varchar(5)")]
         public string MaKh { get; set; } //
@@ -103,11 +103,11 @@ namespace Data.Models_KTTM
         public DateTime? NgayCTGoc { get; set; } //?
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal VAT { get; set; }
+        public decimal? VAT { get; set; }
         
         [DisplayName("Doanh số chưa thuế")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal DSKhongVAT { get; set; } //
+        public decimal? DSKhongVAT { get; set; } //
 
         [DisplayName("Bộ phận")]
         [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
@@ -145,7 +145,7 @@ namespace Data.Models_KTTM
         public string MauSoHD { get; set; }
         
         [DisplayName("Điều chỉnh")]
-        public bool DieuChinh { get; set; } //
+        public bool? DieuChinh { get; set; } //
 
         [DisplayName("KC141")]
         [Column(TypeName = "datetime")]

@@ -107,10 +107,10 @@
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoXe)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.HTTC)</td>
-                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTienNT.ToString("N0"))</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
-                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKNo)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKCo)</td>
@@ -128,7 +128,7 @@
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MauSoHD)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MsThue)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.VAT)</td>
-                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
+                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.DSKhongVAT.Value.ToString("N0"))</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.BoPhan)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.STT)</td>
                         <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TenKH)</td>
@@ -173,7 +173,7 @@
     $('.btnXoaDong').off('click').on('click',function () {
 
         var page = @Model.Page;
-        var soCT = '@Model.KVPCT.SoCT';
+        var soCT = '@Model.KVPTC.SoCT';
 
         id = $(this).data('id');
 
@@ -193,7 +193,7 @@
     $('#btnTamUng').off('click').on('click', function () {
 
         var page = @Model.Page;
-        var soCT = '@Model.KVPCT.SoCT';
+        var soCT = '@Model.KVPTC.SoCT';
 
         // kiem tra xem phieuchi nay da co tamung nao chua
         var url = '/TamUngs/CheckTamUng_In_PhieuChi';

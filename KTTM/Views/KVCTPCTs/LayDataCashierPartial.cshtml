@@ -3,9 +3,9 @@
 
 <form id="frmLayDataCashierPartial" asp-action="LayDataCashierPartial" method="post" autocomplete="off">
 
-    <input type="hidden" asp-for="KVPCT.SoCT" />
-    <input type="hidden" asp-for="KVPCT.MFieu" />
-    <input type="hidden" asp-for="KVPCT.NgayCT" />
+    <input type="hidden" asp-for="KVPTC.SoCT" />
+    <input type="hidden" asp-for="KVPTC.MFieu" />
+    <input type="hidden" asp-for="KVPTC.NgayCT" />
     <input type="hidden" asp-for="StrUrl" />
     <input type="hidden" asp-for="Page" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -43,7 +43,7 @@
     <div class=" row text-sm">
 
         <div class="col-md-12">
-            @if (Model.KVPCT.MFieu == "T")
+            @if (Model.KVPTC.MFieu == "T")
             {
                 <label class="control-label">Tk có</label>
             }

@@ -10,9 +10,9 @@ namespace KTTM.Models
 {
     public class HomeViewModel
     {
-        public KVPCT KVPCT { get; set; }
+        public KVPTC KVPTC { get; set; }
         public IPagedList<KVPTCDto> KVPTCDtos { get; set; }
-        public IEnumerable<KVCTPCT> KVCTPCTs { get; set; }
+        public IEnumerable<KVCTPTC> KVCTPCTs { get; set; }
         public IEnumerable<ListViewModel> LoaiTiens { get; set; }
         public IEnumerable<PhongBan> Phongbans { get; set; }
         public IEnumerable<ListViewModel> LoaiPhieus { get; set; }

@@ -56,10 +56,10 @@ namespace KTTM.Services
             {
                 DienGiaiP = kVCTPCT.DienGiaiP,
                 HTTC = kVCTPCT.HTTC,
-                SoTienNT = kVCTPCT.SoTienNT,
+                SoTienNT = kVCTPCT.SoTienNT.Value,
                 LoaiTien = kVCTPCT.LoaiTien,
-                TyGia = kVCTPCT.TyGia,
-                SoTien = kVCTPCT.SoTien,
+                TyGia = kVCTPCT.TyGia.Value,
+                SoTien = kVCTPCT.SoTien.Value,
                 TKNo = kVCTPCT.TKNo,
                 TKCo = kVCTPCT.TKCo,
                 DienGiai = kVCTPCT.DienGiai,
@@ -76,9 +76,9 @@ namespace KTTM.Services
                 KyHieu = kVCTPCT.KyHieu,
                 MauSoHD = kVCTPCT.MauSoHD,
                 MsThue = kVCTPCT.MsThue,
-                VAT = kVCTPCT.VAT,
-                DSKhongVAT = kVCTPCT.DSKhongVAT,
-                DieuChinh = kVCTPCT.DieuChinh,
+                VAT = kVCTPCT.VAT.Value,
+                DSKhongVAT = kVCTPCT.DSKhongVAT.Value,
+                DieuChinh = kVCTPCT.DieuChinh.Value,
                 TenKH = kVCTPCT.TenKH,
                 DiaChi = kVCTPCT.DiaChi,
                 MatHang = kVCTPCT.MatHang,
@@ -95,7 +95,7 @@ namespace KTTM.Services
 
         public TT621Dto ConvertTT621ToTT621Dto(TT621 tT621)
         {
-            var kVPCTId = _unitOfWork.kVCTPCTRepository.GetById(tT621.TamUngId).KVPCTId;
+            var kVPCTId = _unitOfWork.kVCTPCTRepository.GetById(tT621.TamUngId).KVPTCId;
             var kVPCT = _unitOfWork.kVPCTRepository.GetById(kVPCTId);
             TT621Dto tT621Dto = new TT621Dto()
             {
@@ -215,7 +215,7 @@ namespace KTTM.Services
         {
             var tamUng = _unitOfWork.tamUngRepository.GetByIdAsNoTracking(x => x.Id == tamUngId);
             decimal soTienNTTrongTT621_TheoTamUng = GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
-            decimal soTienNT_CanKetChuyen = tamUng.SoTienNT - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
+            decimal soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
 
             return soTienNT_CanKetChuyen;
         }

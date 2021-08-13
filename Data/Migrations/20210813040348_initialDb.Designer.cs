@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    [Migration("20210705024744_twoTbl1")]
-    partial class twoTbl1
+    [Migration("20210813040348_initialDb")]
+    partial class initialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,58 +21,7 @@ namespace Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Data.Models_KTTM.KVCLTG", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CoQuay")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("DienGiai")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("MaKhCo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("MaKhNo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<DateTime?>("NgayCT")
-                        .IsRequired()
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("NoQuay")
-                        .HasMaxLength(3)
-                        .HasColumnType("varchar(3)");
-
-                    b.Property<string>("SoCT")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<decimal>("SoTien")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TKCo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.Property<string>("TKNo")
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("KVCLTGs");
-                });
-
-            modelBuilder.Entity("Data.Models_KTTM.KVCTPCT", b =>
+            modelBuilder.Entity("Data.Models_KTTM.KVCTPTC", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +40,7 @@ namespace Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
 
-                    b.Property<decimal>("DSKhongVAT")
+                    b.Property<decimal?>("DSKhongVAT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DiaChi")
@@ -106,7 +55,7 @@ namespace Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<bool>("DieuChinh")
+                    b.Property<bool?>("DieuChinh")
                         .HasColumnType("bit");
 
                     b.Property<string>("HTTC")
@@ -124,7 +73,7 @@ namespace Data.Migrations
                     b.Property<DateTime?>("KC141")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("KVPCTId")
+                    b.Property<string>("KVPTCId")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
@@ -221,10 +170,10 @@ namespace Data.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
-                    b.Property<decimal>("SoTien")
+                    b.Property<decimal?>("SoTien")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("SoTienNT")
+                    b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SoXe")
@@ -232,10 +181,12 @@ namespace Data.Migrations
                         .HasColumnType("varchar(8)");
 
                     b.Property<string>("TKCo")
+                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
                     b.Property<string>("TKNo")
+                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
@@ -251,26 +202,27 @@ namespace Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<decimal>("TyGia")
+                    b.Property<decimal?>("TyGia")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("VAT")
+                    b.Property<decimal?>("VAT")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KVPCTId");
+                    b.HasIndex("KVPTCId");
 
-                    b.ToTable("KVCTPCTs");
+                    b.ToTable("KVCTPTCs");
                 });
 
-            modelBuilder.Entity("Data.Models_KTTM.KVPCT", b =>
+            modelBuilder.Entity("Data.Models_KTTM.KVPTC", b =>
                 {
                     b.Property<string>("SoCT")
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<DateTime>("Create")
+                    b.Property<DateTime?>("Create")
+                        .IsRequired()
                         .HasColumnType("datetime");
 
                     b.Property<string>("DonVi")
@@ -324,7 +276,179 @@ namespace Data.Migrations
 
                     b.HasKey("SoCT");
 
-                    b.ToTable("KVPCTs");
+                    b.ToTable("KVPTCs");
+                });
+
+            modelBuilder.Entity("Data.Models_KTTM.TT621", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BoPhan")
+                        .HasMaxLength(2)
+                        .HasColumnType("varchar(2)");
+
+                    b.Property<string>("CoQuay")
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<decimal>("DSKhongVAT")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DiaChi")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("DienGiai")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("DienGiaiP")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("DieuChinh")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("GhiSo")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("HTTC")
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<string>("HoaDonDT")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("KyHieu")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("KyHieuHD")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("LapPhieu")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LoaiHDGoc")
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<string>("LoaiTien")
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<string>("LogFile")
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("MaKhCo")
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<string>("MaKhNo")
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<string>("MatHang")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("MauSoHD")
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
+
+                    b.Property<string>("MsThue")
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<DateTime?>("NgayCT")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("NgayCTGoc")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("NgaySua")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("NgayTao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("NguoiSua")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("NguoiTao")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("NoQuay")
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
+
+                    b.Property<string>("PhieuTC")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("PhieuTU")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("Sgtcode")
+                        .HasMaxLength(17)
+                        .HasColumnType("varchar(17)");
+
+                    b.Property<string>("SoCT")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("SoCTGoc")
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<decimal>("SoTien")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SoTienNT")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("SoXe")
+                        .HasMaxLength(8)
+                        .HasColumnType("varchar(8)");
+
+                    b.Property<string>("TKCo")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<string>("TKNo")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
+
+                    b.Property<long>("TamUngId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("TenKH")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("TyGia")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("VAT")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TamUngId");
+
+                    b.ToTable("TT621s");
                 });
 
             modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
@@ -334,15 +458,18 @@ namespace Data.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("ConLai")
+                    b.Property<decimal?>("ConLai")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Conlaint")
+                    b.Property<decimal?>("ConLaiNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DienGiai")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<long?>("KVCTPTCId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("LoaiTien")
                         .HasMaxLength(3)
@@ -389,10 +516,10 @@ namespace Data.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<decimal>("SoTien")
+                    b.Property<decimal?>("SoTien")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("SoTienNT")
+                    b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TKCo")
@@ -403,13 +530,15 @@ namespace Data.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
-                    b.Property<bool>("TTTP")
+                    b.Property<bool?>("TTTP")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("TyGia")
+                    b.Property<decimal?>("TyGia")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("KVCTPTCId");
 
                     b.ToTable("TamUngs");
                 });
@@ -425,9 +554,19 @@ namespace Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
 
+                    b.Property<string>("LogFile")
+                        .HasColumnType("nvarchar(MAX)");
+
                     b.Property<DateTime?>("NgayCT")
                         .IsRequired()
                         .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("NgayTao")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("NguoiTao")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("SoTien")
                         .HasColumnType("decimal(18,2)");
@@ -443,15 +582,35 @@ namespace Data.Migrations
                     b.ToTable("TonQuies");
                 });
 
-            modelBuilder.Entity("Data.Models_KTTM.KVCTPCT", b =>
+            modelBuilder.Entity("Data.Models_KTTM.KVCTPTC", b =>
                 {
-                    b.HasOne("Data.Models_KTTM.KVPCT", "KVPCT")
+                    b.HasOne("Data.Models_KTTM.KVPTC", "KVPTC")
                         .WithMany()
-                        .HasForeignKey("KVPCTId")
+                        .HasForeignKey("KVPTCId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("KVPCT");
+                    b.Navigation("KVPTC");
+                });
+
+            modelBuilder.Entity("Data.Models_KTTM.TT621", b =>
+                {
+                    b.HasOne("Data.Models_KTTM.TamUng", "TamUng")
+                        .WithMany()
+                        .HasForeignKey("TamUngId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TamUng");
+                });
+
+            modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
+                {
+                    b.HasOne("Data.Models_KTTM.KVCTPTC", "KVCTPTC")
+                        .WithMany()
+                        .HasForeignKey("KVCTPTCId");
+
+                    b.Navigation("KVCTPTC");
                 });
 #pragma warning restore 612, 618
         }
