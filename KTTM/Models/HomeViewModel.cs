@@ -12,7 +12,7 @@ namespace KTTM.Models
     {
         public KVPTC KVPTC { get; set; }
         public IPagedList<KVPTCDto> KVPTCDtos { get; set; }
-        public IEnumerable<KVCTPTC> KVCTPCTs { get; set; }
+        public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }
         public IEnumerable<ListViewModel> LoaiTiens { get; set; }
         public IEnumerable<PhongBan> Phongbans { get; set; }
         public IEnumerable<ListViewModel> LoaiPhieus { get; set; }

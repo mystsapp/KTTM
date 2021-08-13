@@ -68,10 +68,10 @@ namespace KTTM.Controllers
         //        }
         //        var tonQuies = _tonQuyService.FindTonQuy_By_Date("01/06/2021", searchFromDate);
         //        var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-        //        IEnumerable<KVCTPCT> kVCTPCTs = await _kVCTPCTService.FinByDate(searchFromDate, searchToDate);
+        //        IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate);
 
         //        BaoCaosController baoCaosController = new BaoCaosController();                
-        //        ExcelPackage ExcelApp = await baoCaosController.BaoCaoQuyTienVND(searchFromDate, searchToDate, tonQuy, kVCTPCTs);
+        //        ExcelPackage ExcelApp = await baoCaosController.BaoCaoQuyTienVND(searchFromDate, searchToDate, tonQuy, kVCTPTCs);
 
         //        byte[] fileContents;
         //        try

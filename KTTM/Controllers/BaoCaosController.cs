@@ -30,12 +30,12 @@ namespace KTTM.Controllers
         [BindProperty]
         public BaoCaoViewModel BaoCaoVM { get; set; }
 
-        public BaoCaosController(IKVPTCService kVPCTService, IKVCTPTCService kVCTPCTService,
+        public BaoCaosController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService,
                                  ITT621Service tT621Service, ITamUngService tamUngService,
                                  IBaoCaoService baoCaoService, ITonQuyService tonQuyService)
         {
-            _kVPTCService = kVPCTService;
-            _kVCTPTCService = kVCTPCTService;
+            _kVPTCService = kVPTCService;
+            _kVCTPTCService = kVCTPTCService;
             _tT621Service = tT621Service;
             _tamUngService = tamUngService;
             _baoCaoService = baoCaoService;
@@ -101,7 +101,7 @@ namespace KTTM.Controllers
             int dong = 6;
 
             //// moi load vao
-            var kVCTPCTs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
+            var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
 
             //du lieu
             //int iRowIndex = 6;
@@ -113,10 +113,10 @@ namespace KTTM.Controllers
 
             int idem = 1;
 
-            if (kVCTPCTs.Count() > 0)
+            if (kVCTPTCs.Count() > 0)
             {
 
-                foreach (var item in kVCTPCTs)
+                foreach (var item in kVCTPTCs)
                 {
                     xlSheet.Cells[dong, 1].Value = item.DienGiai;
                     TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
@@ -234,7 +234,7 @@ namespace KTTM.Controllers
             List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
             if (kVCTPTCs.Count() > 0)
             {
-                kVCTPCT_Model_GroupBy_SoCTs = _kVCTPTCService.KVCTPCT_Model_GroupBy_SoCTs(kVCTPTCs); // groupby name (makh)
+                kVCTPCT_Model_GroupBy_SoCTs = _kVCTPTCService.KVCTPTC_Model_GroupBy_SoCTs(kVCTPTCs); // groupby name (makh)
 
             }
             else
@@ -335,7 +335,7 @@ namespace KTTM.Controllers
                 foreach (var item in kVCTPCT_Model_GroupBy_SoCTs)
                 {
 
-                    foreach (var kvctpct in item.KVCTPCTs)
+                    foreach (var kvctpct in item.KVCTPTCs)
                     {
 
                         if (kvctpct.KVPTC.MFieu == "T")
@@ -350,7 +350,7 @@ namespace KTTM.Controllers
                             TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
-                        if (item.KVCTPCTs.Count() == 1)
+                        if (item.KVCTPTCs.Count() == 1)
                         {
                             xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
@@ -373,7 +373,7 @@ namespace KTTM.Controllers
                         TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                        if (item.KVCTPCTs.Count() == 1)
+                        if (item.KVCTPTCs.Count() == 1)
                         {
                             if (kvctpct.KVPTC.MFieu == "T")
                             {
@@ -414,7 +414,7 @@ namespace KTTM.Controllers
                         idem++;
 
                     }
-                    if (item.KVCTPCTs.Count() > 1)
+                    if (item.KVCTPTCs.Count() > 1)
                     {
                         xlSheet.Cells[dong, 3].Value = "Tổng cộng phiếu: " + item.SoCT;
 
@@ -1493,13 +1493,13 @@ namespace KTTM.Controllers
             }
 
             // tonquy truoc ngay fromdate => xem co ton dau` ko ( tranh truong hop chua tinh ton dau cho vai phieu )
-            string kVCTPCTs1 = await _tonQuyService.CheckTonDauStatus_NT(DateTime.Parse(tuNgay), loaiTien);
-            if (!string.IsNullOrEmpty(kVCTPCTs1))
+            string kVCTPTCs1 = await _tonQuyService.CheckTonDauStatus_NT(DateTime.Parse(tuNgay), loaiTien);
+            if (!string.IsNullOrEmpty(kVCTPTCs1))
             {
                 return Json(new
                 {
                     status = false,
-                    message = "Ngày " + kVCTPCTs1 + " chưa tính tồn quỹ"
+                    message = "Ngày " + kVCTPTCs1 + " chưa tính tồn quỹ"
                 });
             }
 
@@ -1546,13 +1546,13 @@ namespace KTTM.Controllers
             }
 
             // tonquy truoc ngay fromdate => xem co ton dau` ko ( tranh truong hop chua tinh ton dau cho vai phieu )
-            string kVCTPCTs1 = await _tonQuyService.CheckTonDauStatus(DateTime.Parse(tuNgay));
-            if (!string.IsNullOrEmpty(kVCTPCTs1))
+            string kVCTPTCs1 = await _tonQuyService.CheckTonDauStatus(DateTime.Parse(tuNgay));
+            if (!string.IsNullOrEmpty(kVCTPTCs1))
             {
                 return Json(new
                 {
                     status = false,
-                    message = "Ngày " + kVCTPCTs1 + " chưa tính tồn quỹ"
+                    message = "Ngày " + kVCTPTCs1 + " chưa tính tồn quỹ"
                 });
             }
 

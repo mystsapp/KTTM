@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    [Migration("20210813040348_initialDb")]
+    [Migration("20210813074204_initialDb")]
     partial class initialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -454,9 +454,7 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models_KTTM.TamUng", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
 
                     b.Property<decimal?>("ConLai")
                         .HasColumnType("decimal(18,2)");
@@ -467,9 +465,6 @@ namespace Data.Migrations
                     b.Property<string>("DienGiai")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<long?>("KVCTPTCId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("LoaiTien")
                         .HasMaxLength(3)
@@ -537,8 +532,6 @@ namespace Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("KVCTPTCId");
 
                     b.ToTable("TamUngs");
                 });
@@ -608,7 +601,9 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Models_KTTM.KVCTPTC", "KVCTPTC")
                         .WithMany()
-                        .HasForeignKey("KVCTPTCId");
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("KVCTPTC");
                 });

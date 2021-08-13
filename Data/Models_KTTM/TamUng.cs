@@ -9,7 +9,7 @@ namespace Data.Models_KTTM
 {
     public class TamUng
     {
-        [Key, ForeignKey("KVCTPCT")]
+        [Key, ForeignKey("KVCTPTC")]
         public long Id { get; set; }
         public virtual KVCTPTC KVCTPTC { get; set; }
 

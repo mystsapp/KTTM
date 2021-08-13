@@ -405,7 +405,7 @@
 
             maKhtext = $(this).val();
 
-        $.get('/KVCTPCTs/GetKhachHangs_By_Code', { code: maKhtext }, function (response) {
+        $.get('/KVCTPTCs/GetKhachHangs_By_Code', { code: maKhtext }, function (response) {
             if (response.status) {
                 var data = response.data;
                 // console.log(data);
@@ -492,7 +492,7 @@
         tkCo = $('#ddlTkCo').val();
 
         $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
+            url: '/KVCTPTCs/Get_TenTk_By_Tk',
             type: 'GET',
             data: {
                 tk: tkNo
@@ -553,7 +553,7 @@
         var option = '';
 
         $.ajax({
-            url: '/KVCTPCTs/Get_DienGiai_By_TkNo',
+            url: '/KVCTPTCs/Get_DienGiai_By_TkNo',
             type: 'GET',
             data: {
                 tkNo: tkNo

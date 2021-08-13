@@ -37,14 +37,14 @@ namespace KTTM.Services
             TonQuy tonQuy = tonQuies1.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             
             // lay tat ca chi tiet truóc tuNgay(fromDate)
-            var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < fromDate.AddDays(1));
-            kVCTPCTs = kVCTPCTs.Where(x => x.LoaiTien == loaiTien).ToList();
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < fromDate.AddDays(1));
+            kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == loaiTien).ToList();
             string stringDate = "";
 
             // tonQuy.NgayCT (sau cung nhat) < nhung chi tiet < tuNggay (fromdate)
             for (DateTime i = tonQuy.NgayCT.Value.AddDays(1); i < fromDate; i = i.AddDays(1)) // chay tu ngay tonquy den fromday
             {
-                var boolK = kVCTPCTs.ToList().Exists(x => x.KVPTC.NgayCT.Value.ToShortDateString() == i.ToShortDateString());
+                var boolK = kVCTPTCs.ToList().Exists(x => x.KVPTC.NgayCT.Value.ToShortDateString() == i.ToShortDateString());
                 if (boolK)
                 {
                     stringDate += i.ToString("dd/MM/yyyy") + "-" ;
@@ -66,14 +66,14 @@ namespace KTTM.Services
             TonQuy tonQuy = tonQuies1.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             
             // lay tat ca chi tiet truóc tuNgay(fromDate)
-            var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < fromDate.AddDays(1));
-            kVCTPCTs = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < fromDate.AddDays(1));
+            kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
             string stringDate = "";
 
             // tonQuy.NgayCT (sau cung nhat) < nhung chi tiet < tuNggay (fromdate)
             for (DateTime i = tonQuy.NgayCT.Value.AddDays(1); i < fromDate; i = i.AddDays(1)) // chay tu ngay tonquy den fromday
             {
-                var boolK = kVCTPCTs.ToList().Exists(x => x.KVPTC.NgayCT.Value.ToShortDateString() == i.ToShortDateString());
+                var boolK = kVCTPTCs.ToList().Exists(x => x.KVPTC.NgayCT.Value.ToShortDateString() == i.ToShortDateString());
                 if (boolK)
                 {
                     stringDate += i.ToString("dd/MM/yyyy") + "-" ;

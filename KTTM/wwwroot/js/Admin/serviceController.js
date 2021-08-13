@@ -49,7 +49,7 @@ var serviceController = {
 
         $.ajax({
             type: "GET",
-            url: "/KVCTPCTs/TinhSoTien",
+            url: "/KVCTPTCs/TinhSoTien",
             data: { soTienNT: soTienNT, tyGia: tyGia },
             dataType: "json",
             success: function (response) {
@@ -71,7 +71,7 @@ var serviceController = {
         var option = '';
 
         $.ajax({
-            url: '/KVCTPCTs/Get_DienGiai_By_TkNo_TkCo',
+            url: '/KVCTPTCs/Get_DienGiai_By_TkNo_TkCo',
             type: 'GET',
             data: {
                 tkNo: tkNo,
@@ -96,7 +96,7 @@ var serviceController = {
         });
     },
     AutoSgtcode: function (param) {
-        $.get('/KVCTPCTs/AutoSgtcode', { param: param }, function (response) {
+        $.get('/KVCTPTCs/AutoSgtcode', { param: param }, function (response) {
             if (response.status) {
                 $('#txtSgtcode').val(response.data);
             }
@@ -105,7 +105,7 @@ var serviceController = {
     DdlTkNo: function (tkNo) {
 
         $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
+            url: '/KVCTPTCs/Get_TenTk_By_Tk',
             type: 'GET',
             data: {
                 tk: tkNo
@@ -122,7 +122,7 @@ var serviceController = {
     DdlTkCo: function (tkCo) {
 
         $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
+            url: '/KVCTPTCs/Get_TenTk_By_Tk',
             type: 'GET',
             data: {
                 tk: tkCo
@@ -155,7 +155,7 @@ var serviceController = {
 
         $.ajax({
             type: "GET",
-            url: "/KVCTPCTs/TinhDsKhongVat",
+            url: "/KVCTPTCs/TinhDsKhongVat",
             data: { vat: vat, soTien: soTien },
             dataType: "json",
             success: function (response) {

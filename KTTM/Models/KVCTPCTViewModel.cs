@@ -13,7 +13,7 @@ namespace KTTM.Models
     {
         public KVPTC KVPTC { get; set; }
         public KVCTPTC KVCTPTC { get; set; }
-        public IEnumerable<KVCTPTC> KVCTPCTs { get; set; }
+        public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; }
         public IEnumerable<ViewDmHttc> DmHttcs { get; set; }        
         public IEnumerable<DmTk> DmTks_TkNo { get; set; }

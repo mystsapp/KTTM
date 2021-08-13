@@ -234,7 +234,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/KVCTPCTs/TinhSoTien",
+            url: "/KVCTPTCs/TinhSoTien",
             data: { soTienNT: soTienNT, tyGia: tyGia },
             dataType: "json",
             success: function (response) {
@@ -258,7 +258,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/KVCTPCTs/TinhSoTien",
+            url: "/KVCTPTCs/TinhSoTien",
             data: { soTienNT: soTienNT, tyGia: tyGia },
             dataType: "json",
             success: function (response) {
@@ -284,7 +284,7 @@
             var kVCTPCT = $('#frm_KVCTPCT_Create').serialize();
             $.ajax({
                 type: "POST",
-                url: "/KVCTPCTs/KVCTPCT_Create_Partial",
+                url: "/KVCTPTCs/KVCTPCT_Create_Partial",
                 data: kVCTPCT,
                 dataType: "json",
                 success: function (response) {

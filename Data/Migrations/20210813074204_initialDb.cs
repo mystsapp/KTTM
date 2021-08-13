@@ -121,9 +121,7 @@ namespace Data.Migrations
                 name: "TamUngs",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    KVCTPTCId = table.Column<long>(type: "bigint", nullable: true),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     MaKhNo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
                     SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     NgayCT = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -150,11 +148,11 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_TamUngs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TamUngs_KVCTPTCs_KVCTPTCId",
-                        column: x => x.KVCTPTCId,
+                        name: "FK_TamUngs_KVCTPTCs_Id",
+                        column: x => x.Id,
                         principalTable: "KVCTPTCs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,11 +219,6 @@ namespace Data.Migrations
                 name: "IX_KVCTPTCs_KVPTCId",
                 table: "KVCTPTCs",
                 column: "KVPTCId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TamUngs_KVCTPTCId",
-                table: "TamUngs",
-                column: "KVCTPTCId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TT621s_TamUngId",

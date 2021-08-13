@@ -35,8 +35,8 @@ namespace KTTM.Services
         IEnumerable<PhongBan> GetAll_PhongBans();
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
-        IEnumerable<KVCTPTC> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
-        Task CreateRange(IEnumerable<KVCTPTC> kVCTPCTs);
+        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
+        Task CreateRange(IEnumerable<KVCTPTC> kVCTPTCs);
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         IEnumerable<KVCTPTC> GetAll();
         Task<KVCTPTC> GetById(long id);
@@ -52,7 +52,7 @@ namespace KTTM.Services
         string AutoSgtcode(string param);
         Task<KVCTPTC> FindByIdInclude(long kVCTPCTId_PhieuTC);
         Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate);
-        List<KVCTPCT_Model_GroupBy_SoCT> KVCTPCT_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPCTs);
+        List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
     }
     public class KVCTPTCService : IKVCTPTCService
     {
@@ -174,7 +174,7 @@ namespace KTTM.Services
             return dgiais1;
         }
 
-        public IEnumerable<KVCTPTC> GetKVCTPCTs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
+        public IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
 
             var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
@@ -185,7 +185,7 @@ namespace KTTM.Services
             // ghi log
             string logFile = "-User kéo từ cashier: " + username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
-            List<KVCTPTC> kVCTPCTs = new List<KVCTPTC>();
+            List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
             if (ntbills != null)
             {
@@ -213,69 +213,69 @@ namespace KTTM.Services
 
                     foreach (var item1 in ctbills)
                     {
-                        KVCTPTC kVCTPCT = new KVCTPTC();
+                        KVCTPTC kVCTPTC = new KVCTPTC();
 
                         // THONG TIN VE TAI CHINH
-                        kVCTPCT.KVPTCId = soCT;
-                        kVCTPCT.DienGiaiP = dienGiaiP;
-                        kVCTPCT.SoTienNT = item1.Sotiennt;
-                        kVCTPCT.LoaiTien = item1.Loaitien;
-                        kVCTPCT.TyGia = item1.Tygia;
-                        kVCTPCT.SoTien = item1.Sotien;
+                        kVCTPTC.KVPTCId = soCT;
+                        kVCTPTC.DienGiaiP = dienGiaiP;
+                        kVCTPTC.SoTienNT = item1.Sotiennt;
+                        kVCTPTC.LoaiTien = item1.Loaitien;
+                        kVCTPTC.TyGia = item1.Tygia;
+                        kVCTPTC.SoTien = item1.Sotien;
 
                         // THONG TIN VE CONG NO DOAN
                         if (loaiPhieu == "T")
                         {
                             var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-                            kVCTPCT.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-                            kVCTPCT.TKNo = "1111000000";
-                            kVCTPCT.TKCo = tk;
-                            kVCTPCT.MaKhCo = maKh;
-                            kVCTPCT.CoQuay = boPhan;
+                            kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            kVCTPTC.TKNo = "1111000000";
+                            kVCTPTC.TKCo = tk;
+                            kVCTPTC.MaKhCo = maKh;
+                            kVCTPTC.CoQuay = boPhan;
                         }
                         else
                         {
                             var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-                            kVCTPCT.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-                            kVCTPCT.TKNo = tk;
-                            kVCTPCT.TKCo = "1111000000";
-                            kVCTPCT.MaKhNo = maKh;
-                            kVCTPCT.NoQuay = boPhan;
+                            kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            kVCTPTC.TKNo = tk;
+                            kVCTPTC.TKCo = "1111000000";
+                            kVCTPTC.MaKhNo = maKh;
+                            kVCTPTC.NoQuay = boPhan;
                         }
 
-                        kVCTPCT.BoPhan = boPhan;
-                        kVCTPCT.Sgtcode = item1.Sgtcode;
-                        kVCTPCT.CardNumber = item1.Cardnumber;
-                        kVCTPCT.SalesSlip = item1.Saleslip;
+                        kVCTPTC.BoPhan = boPhan;
+                        kVCTPTC.Sgtcode = item1.Sgtcode;
+                        kVCTPTC.CardNumber = item1.Cardnumber;
+                        kVCTPTC.SalesSlip = item1.Saleslip;
 
                         // THONG TIN VE THUE
-                        kVCTPCT.LoaiHDGoc = loaiHDGoc;
-                        kVCTPCT.SoCTGoc = soCTGoc;
-                        kVCTPCT.NgayCTGoc = ngayBill;
+                        kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                        kVCTPTC.SoCTGoc = soCTGoc;
+                        kVCTPTC.NgayCTGoc = ngayBill;
 
-                        kVCTPCT.KyHieu = kyHieu;
-                        kVCTPCT.MauSoHD = mauSo;
-                        kVCTPCT.MsThue = msThue;
-                        kVCTPCT.MaKh = maKh;
-                        kVCTPCT.TenKH = tenKh;
-                        kVCTPCT.DiaChi = diaChi;
+                        kVCTPTC.KyHieu = kyHieu;
+                        kVCTPTC.MauSoHD = mauSo;
+                        kVCTPTC.MsThue = msThue;
+                        kVCTPTC.MaKh = maKh;
+                        kVCTPTC.TenKH = tenKh;
+                        kVCTPTC.DiaChi = diaChi;
 
-                        kVCTPCT.NguoiTao = nguoiTao;
-                        kVCTPCT.NgayTao = ngayTao;
-                        kVCTPCT.LogFile = logFile;
+                        kVCTPTC.NguoiTao = nguoiTao;
+                        kVCTPTC.NgayTao = ngayTao;
+                        kVCTPTC.LogFile = logFile;
 
-                        kVCTPCTs.Add(kVCTPCT);
+                        kVCTPTCs.Add(kVCTPTC);
                     }
 
                 }
 
             }
-            return kVCTPCTs;
+            return kVCTPTCs;
         }
 
-        public async Task CreateRange(IEnumerable<KVCTPTC> kVCTPCTs)
+        public async Task CreateRange(IEnumerable<KVCTPTC> kVCTPTCs)
         {
-            await _unitOfWork.kVCTPCTRepository.CreateRange(kVCTPCTs);
+            await _unitOfWork.kVCTPCTRepository.CreateRange(kVCTPTCs);
             await _unitOfWork.Complete();
         }
 
@@ -464,8 +464,8 @@ namespace KTTM.Services
 
         public async Task<KVCTPTC> FindByIdInclude(long kVCTPCTId_PhieuTC)
         {
-            var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.Id == kVCTPCTId_PhieuTC);
-            return kVCTPCTs.FirstOrDefault();
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.Id == kVCTPCTId_PhieuTC);
+            return kVCTPTCs.FirstOrDefault();
         }
 
         public async Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate)
@@ -487,9 +487,9 @@ namespace KTTM.Services
                         return null; //
                     }
 
-                    var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate &&
+                    var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate &&
                                        y.KVPTC.NgayCT < toDate.AddDays(1));
-                    list = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
+                    list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
 
                 }
                 catch (Exception)
@@ -507,8 +507,8 @@ namespace KTTM.Services
                     {
                         fromDate = DateTime.Parse(searchFromDate);
                         //list = list.Where(x => x.NgayCT >= fromDate).ToList();
-                        var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate);
-                        list = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
+                        var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate);
+                        list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
                     }
                     catch (Exception)
                     {
@@ -521,8 +521,8 @@ namespace KTTM.Services
                     try
                     {
                         toDate = DateTime.Parse(searchToDate);
-                        var kVCTPCTs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < toDate.AddDays(1));
-                        list = kVCTPCTs.Where(x => x.LoaiTien == "VND").ToList();
+                        var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < toDate.AddDays(1));
+                        list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
                     }
                     catch (Exception)
                     {
@@ -536,25 +536,25 @@ namespace KTTM.Services
             return list;
         }
 
-        public List<KVCTPCT_Model_GroupBy_SoCT> KVCTPCT_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPCTs)
+        public List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs)
         {
 
-            var result1 = (from p in kVCTPCTs
+            var result1 = (from p in kVCTPTCs
                            group p by p.KVPTCId into g
                            select new KVCTPCT_Model_GroupBy_SoCT()
                            {
                                SoCT = g.Key,
-                               KVCTPCTs = g.ToList()
+                               KVCTPTCs = g.ToList()
                            }).ToList();
             foreach (var item in result1)
             {
-                item.TongCong = item.KVCTPCTs.Sum(x => x.SoTien.Value);
+                item.TongCong = item.KVCTPTCs.Sum(x => x.SoTien.Value);
                 
             }
             decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0;
             foreach (var item in result1)
             {
-                //item.CongPhatSinh_Thu += item.KVCTPCTs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
+                //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
                 if(item.SoCT.Contains("T"))
                 {
                     congPhatSinh_Thu += item.TongCong;

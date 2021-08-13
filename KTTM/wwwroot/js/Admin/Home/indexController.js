@@ -68,7 +68,7 @@ var indexController = {
 
             soCT = $('#hidCashier').val();
             strUrl = $('.layDataCashier').data('url');
-            $.get('/KVCTPCTs/LayDataCashierPartial', { id: soCT, strUrl: strUrl, page: page }, function (data) {
+            $.get('/KVCTPTCs/LayDataCashierPartial', { id: soCT, strUrl: strUrl, page: page }, function (data) {
 
                 $('#layDataCashier').modal('show');
                 $('.layDataCashier_Body').html(data);
@@ -162,7 +162,7 @@ var indexController = {
             $('#KVCTPCT_Tbl').hide(500);
             $('#KVCTPCT_Edit_Partial').hide(500);
 
-            var url = '/KVCTPCTs/KVCTPCT_Create_Partial';
+            var url = '/KVCTPTCs/KVCTPCT_Create_Partial';
             $.get(url, { kvpctid: kvpctid }, function (response) {
 
                 $('#KVCTPCT_Create_Partial').show(500);
@@ -180,7 +180,7 @@ var indexController = {
     },
     Load_KVCTPCTPartial: function (soCT, page) {
 
-        var url = '/KVCTPCTs/KVCTPCTPartial';
+        var url = '/KVCTPTCs/KVCTPTCPartial';
         $.get(url, { soCT: soCT, page: page }, function (response) {
 
             $('#KVCTPCT_Tbl').html(response);
@@ -222,7 +222,7 @@ var indexController = {
     KhachHang_By_Code: function (code, txtMaKh) {
 
         $.ajax({
-            url: '/KVCTPCTs/GetKhachHangs_By_Code',
+            url: '/KVCTPTCs/GetKhachHangs_By_Code',
             type: 'GET',
             data: { code: code },
             dataType: 'json',

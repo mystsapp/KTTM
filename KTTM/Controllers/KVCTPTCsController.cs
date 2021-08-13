@@ -39,11 +39,11 @@ namespace KTTM.Controllers
             return View();
         }
 
-        public async Task<IActionResult> KVCTPCTPartial(string soCT, int page)
+        public async Task<IActionResult> KVCTPTCPartial(string soCT, int page)
         {
             // KVCTPCT
             KVCTPCTVM.Page = page;
-            KVCTPCTVM.KVCTPCTs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
+            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
             KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
 
             return PartialView(KVCTPCTVM);
@@ -277,12 +277,12 @@ namespace KTTM.Controllers
             }
 
             // data tu cashier
-            var kVCTPCTs = _kVCTPTCService.GetKVCTPCTs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
+            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
             // ghi log ben service
 
             try
             {
-                await _kVCTPTCService.CreateRange(kVCTPCTs);
+                await _kVCTPTCService.CreateRange(kVCTPTCs);
 
                 // save to cashier
                 var kVPCT = await _kVPTCService.GetBySoCT(soCT);

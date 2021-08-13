@@ -416,7 +416,7 @@
 
             maKhtext = $(this).val();
 
-        $.get('/KVCTPCTs/GetKhachHangs_By_Code', { code: maKhtext }, function (response) {
+        $.get('/KVCTPTCs/GetKhachHangs_By_Code', { code: maKhtext }, function (response) {
             if (response.status) {
                 var data = response.data;
                  console.log(data);
@@ -514,7 +514,7 @@
         tkCo = '@Model.TT621.TKCo';
 
         $.ajax({
-            url: '/KVCTPCTs/Get_TenTk_By_Tk',
+            url: '/KVCTPTCs/Get_TenTk_By_Tk',
             type: 'GET',
             data: {
                 tk: tkNo

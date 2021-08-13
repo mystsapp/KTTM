@@ -44,7 +44,7 @@ namespace KTTM.Controllers
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, string soCT, int page = 1)
         {
             //var list = _kttm_AnhSonContext.Tamungs.ToList();
-            //var listKVCTPCT = _kVCTPCTService.GetAll().ToList();
+            //var listKVCTPTC = _kVCTPTCService.GetAll().ToList();
 
             //List<TamUng> tamUngs = new List<TamUng>();
             //foreach (var kvctptc in listKVCTPCT)
@@ -83,16 +83,92 @@ namespace KTTM.Controllers
 
             //}
 
-            //var kvpcts = _kVPTCService.GetAll();
-            //var kvctpcts = _kttm_AnhSonContext.Kvctptcs.ToList();
+            //var kvptcs = _kVPTCService.GetAll();
+            //var kvctptcs = _kttm_AnhSonContext.Kvctptcs.ToList();
 
-            //List<KVCTPCT> kVCTPCTs1 = new List<KVCTPCT>();
+            //List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
-            //foreach(var kvpct in kvpcts)
+            //foreach (var kvptc in kvptcs)
             //{
-            //    var kvctptcs = kvctpcts.Where(x => x.Soct == kvpct.SoCT).ToList();
-            //    if(kvctpcts)
+            //    var kvctptcs1 = kvctptcs.Where(x => x.Soct == kvptc.SoCT).ToList();
+            //    if (kvctptcs1.Count > 0)
+            //    {
+            //        foreach (var item in kvctptcs1)
+            //        {
+            //            kVCTPTCs.Add(new KVCTPTC()
+            //            {
+            //                BoPhan = item.Bophan.Trim(),
+            //                CardNumber = item.Cardnumber.Trim(),
+            //                CoQuay = item.Coquay.Trim(),
+            //                DiaChi = item.Diachi.Trim(),
+            //                DienGiai = item.Diengiai.Trim(),
+            //                DienGiaiP = item.Diengiaip.Trim(),
+            //                DieuChinh = item.Dieuchinh,
+            //                DSKhongVAT = item.Dskhongvat,
+            //                HoaDonDT = item.Hoadondt.Trim(),
+            //                HTTC = item.Httc.Trim(),
+            //                HTTT = item.Httt.Trim(),
+            //                KC141 = item.Kc141,
+            //                KhoangMuc = item.Khoanmuc.Trim(),
+            //                KVPTCId = item.Soct.Trim(),
+            //                KyHieu = item.Kyhieu.Trim(),
+            //                LoaiHDGoc = item.Loaihdgoc.Trim(),
+            //                LoaiTien = item.Loaitien.Trim(),
+            //                LogFile = "==== chuyển từ data anh Sơn.",
+            //                MaKh = item.Makh.Trim(),
+            //                MaKhCo = item.Makhco.Trim(),
+            //                MaKhNo = item.Makhno.Trim(),
+            //                MatHang = item.Mathang.Trim(),
+            //                MauSoHD = item.Mausohd.Trim(),
+            //                MsThue = item.Msthue.Trim(),
+            //                NgayCTGoc = item.Ngayctgoc,
+            //                NoQuay = item.Noquay.Trim(),
+            //                SalesSlip = item.Salesslip.Trim(),
+            //                Sgtcode = item.Sgtcode.Trim(),
+            //                SoCTGoc = item.Soctgoc.Trim(),
+            //                SoTien = item.Sotien,
+            //                SoTienNT = item.Sotiennt,
+            //                SoXe = item.Soxe.Trim(),
+            //                STT = item.Stt.Trim(),
+            //                TamUng = item.Tamung.Trim(),
+            //                TenKH = item.Tenkh.Trim(),
+            //                TKCo = item.Tkco.Trim(),
+            //                TKNo = item.Tkno.Trim(),
+            //                TyGia = item.Tygia,
+            //                VAT = item.Vat
+            //            });
+            //        }
+
+            //    }
             //}
+
+            //string abc = "";
+
+            //await _kVCTPTCService.CreateRange(kVCTPTCs);
+
+            //var kvptcAnhSon = _kttm_AnhSonContext.Kvptcs.ToList();
+            //List<KVPTC> kVPTCs = new List<KVPTC>();
+            //foreach(var item in kvptcAnhSon)
+            //{
+            //    kVPTCs.Add(new KVPTC()
+            //    {
+            //        Create = item.Create,
+            //        DonVi = item.Donvi.Trim(),
+            //        HoTen = item.Hoten.Trim(),
+            //        LapPhieu = item.Lapphieu.Trim(),
+            //        Lock = item.Lock,
+            //        Locker = item.Locker.Trim(),
+            //        LogFile = "==== chuyển từ data anh Sơn.",
+            //        MayTinh = item.Maytinh.Trim(),
+            //        MFieu = item.Mfieu.Trim(),
+            //        NgayCT = item.Ngayct,
+            //        NgoaiTe = item.Ngoaite.Trim(),
+            //        Phong = item.Phong.Trim(),
+            //        SoCT = item.Soct.Trim()
+            //    });
+            //}
+
+            //await _kVPTCService.CreateRangeAsync(kVPTCs);
 
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;

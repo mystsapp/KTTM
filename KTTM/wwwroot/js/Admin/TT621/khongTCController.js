@@ -260,7 +260,7 @@ var khongTCController = {
     //KhachHang_By_Code: function (code, txtMaKh) {
 
     //    $.ajax({
-    //        url: '/KVCTPCTs/GetKhachHangs_By_Code',
+    //        url: '/KVCTPTCs/GetKhachHangs_By_Code',
     //        type: 'GET',
     //        data: { code: code },
     //        dataType: 'json',

@@ -25,7 +25,7 @@ namespace KTTM.Services
         IEnumerable<ListViewModel> ListLoaiTien();
         string GetSoCT(string param);
         Task CreateAsync(KVPTC kVPCT);
-        Task CreateRangeAsync(List<KVPTC> kVPCTs);
+        Task CreateRangeAsync(List<KVPTC> kVPTCs);
         Task<KVPTC> GetBySoCT(string soCT);
         KVPTC GetBySoCTAsNoTracking(string soCT);
         Task UpdateAsync(KVPTC kVPCT);
@@ -111,31 +111,31 @@ namespace KTTM.Services
             // retrieve list from database/whereverand
 
             var list = new List<KVPTCDto>();
-            var kVPCTs = new List<KVPTC>();
-            //var kVPCTs = GetAll();
+            var kVPTCs = new List<KVPTC>();
+            //var kVPTCs = GetAll();
 
-            //if (kVPCTs == null)
+            //if (kVPTCs == null)
             //{
             //    return null;
             //}
 
-            // search for sgtcode in kvctpct
+            // search for sgtcode in kvctptC
             if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
 
-                List<KVCTPTC> kVCTPCTs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
+                List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
 
-                if (kVCTPCTs.Count() > 0)
+                if (kVCTPTCs.Count() > 0)
                 {
-                    List<KVPTC> kVPCTs1 = new List<KVPTC>();
-                    foreach (var item in kVCTPCTs)
+                    List<KVPTC> kVPTCs1 = new List<KVPTC>();
+                    foreach (var item in kVCTPTCs)
                     {
                         KVPTC kVPCT = await GetBySoCT(item.KVPTCId);
-                        kVPCTs1.Add(kVPCT);
+                        kVPTCs1.Add(kVPCT);
                     }
-                    if (kVPCTs1.Count > 0)
+                    if (kVPTCs1.Count > 0)
                     {
-                        kVPCTs = kVPCTs1.Distinct().ToList();
+                        kVPTCs = kVPTCs1.Distinct().ToList();
                     }
                 }
 
@@ -143,7 +143,7 @@ namespace KTTM.Services
 
             else if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
-                kVPCTs = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
+                kVPTCs = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
                                        (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
@@ -153,7 +153,7 @@ namespace KTTM.Services
                                        (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
 
-                //kVPCTs = kVPCTs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
+                //kVPTCs = kVPTCs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
                 //                       (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
                 //                       (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
                 //                       (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
@@ -167,15 +167,15 @@ namespace KTTM.Services
             }
             else
             {
-                kVPCTs = GetAll().ToList();
+                kVPTCs = GetAll().ToList();
 
-                if (kVPCTs == null)
+                if (kVPTCs == null)
                 {
                     return null;
                 }
             }
 
-            foreach (var item in kVPCTs)
+            foreach (var item in kVPTCs)
             {
                 var kVPTCDto = new KVPTCDto();
 
@@ -318,9 +318,9 @@ namespace KTTM.Services
             return _unitOfWork.tkCongNoRepository.GetAll();
         }
 
-        public async Task CreateRangeAsync(List<KVPTC> kVPCTs)
+        public async Task CreateRangeAsync(List<KVPTC> kVPTCs)
         {
-            await _unitOfWork.kVPCTRepository.CreateRange(kVPCTs);
+            await _unitOfWork.kVPCTRepository.CreateRange(kVPTCs);
             await _unitOfWork.Complete();
         }
     }
