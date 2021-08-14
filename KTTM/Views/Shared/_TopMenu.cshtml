@@ -58,11 +58,8 @@
     // baoCaoQuyTienVND
     $('#baoCaoQuyTienVND').off('click').on('click', function () {
 
-        $.get('/BaoCaos/BaoCaoQuyTienVND_Partial', function (data) {
-            $('#baoCaoQuyTienVND_Partial').html(data);
-            $('#baoCaoQuyTienVND_Partial').show();
-            $('#baoCaoQuyTienVND_Partial').draggable();
-        })
+        $('#baoCaoQuyTienVND_Modal').modal('show');
+        $('#baoCaoQuyTienVND_Modal').draggable();
         
     })
 

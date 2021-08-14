@@ -220,14 +220,6 @@ namespace KTTM.Controllers
             }
         }
 
-        public IActionResult BaoCaoQuyTienVND_Partial()
-        {
-            ViewBag.tuNgay = DateTime.Now.ToString("dd/MM/yyyy");
-            ViewBag.denNgay = DateTime.Now.ToString("dd/MM/yyyy");
-
-            return PartialView();
-        }
-
         [HttpPost]
         public async Task<IActionResult> BaoCaoQuyTienVND(string searchFromDate, string searchToDate)
         {
@@ -235,7 +227,7 @@ namespace KTTM.Controllers
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
             string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
-            var tonQuies = _tonQuyService.FindTonQuy_By_Date("03/01/2020", toDate);
+            var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
@@ -279,7 +271,15 @@ namespace KTTM.Controllers
             xlSheet.Cells[2, 5, 2, 7].Merge = true;
 
             string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ TIỀN MẶT VNĐ ";
-            string stringTuNgay = "Từ ngày " + searchFromDate + " đến ngày " + searchToDate;
+            string stringTuNgay;
+            if(searchFromDate != searchToDate)
+            {
+                stringTuNgay = "Từ ngày " + searchFromDate + " đến ngày " + searchToDate;
+            }
+            else
+            {
+                stringTuNgay = "Ngày " + searchFromDate;
+            }
             xlSheet.Cells[3, 1].Value = stringSoQuy;
             xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
             xlSheet.Cells[3, 1, 3, 7].Merge = true;
@@ -333,9 +333,10 @@ namespace KTTM.Controllers
 
             xlSheet.Cells[dong, 3].Value = "TỒN ĐẦU";
             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-
+            
             xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+            NumberFormat(dong, 6, dong, 6, xlSheet);
             dong++;
 
             if (kVCTPTCs.Count() > 0)
@@ -345,7 +346,6 @@ namespace KTTM.Controllers
 
                     foreach (var kvctpct in item.KVCTPTCs)
                     {
-
                         if (kvctpct.KVPTC.MFieu == "T")
                         {
                             xlSheet.Cells[dong, 1].Value = kvctpct.KVPTCId;
@@ -396,6 +396,8 @@ namespace KTTM.Controllers
 
                             }
 
+                            xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
+                            TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
                         else
@@ -412,19 +414,24 @@ namespace KTTM.Controllers
                                 TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                             }
+                            xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
+                            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
 
+                            dong++;
                         }
                         //setBorder(5, 1, dong, 10, xlSheet);
                         NumberFormat(dong, 6, dong + 1, 7, xlSheet);
 
-                        dong++;
+                        //dong++;
                         idem++;
+
 
                     }
                     if (item.KVCTPTCs.Count() > 1)
                     {
                         xlSheet.Cells[dong, 3].Value = "Tổng cộng phiếu: " + item.SoCT;
+                        TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                         if (item.SoCT.Contains("T"))
                         {
@@ -472,34 +479,34 @@ namespace KTTM.Controllers
 
             setCenterAligment(dong, 1, dong, 7, xlSheet);
 
-            // ghi log va save tonquy tbl
-            TonQuy tonQuy1 = new TonQuy()
-            {
-                LoaiTien = "VND",
-                TyGia = 1,
-                LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
-                NgayCT = DateTime.Parse(searchToDate), // 
-                NgayTao = DateTime.Now,
-                NguoiTao = user.Hoten,
-                SoTien = tonCuoi,
-                SoTienNT = tonCuoi
-            };
+            //// ghi log va save tonquy tbl
+            //TonQuy tonQuy1 = new TonQuy()
+            //{
+            //    LoaiTien = "VND",
+            //    TyGia = 1,
+            //    LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+            //    NgayCT = DateTime.Parse(searchToDate), // 
+            //    NgayTao = DateTime.Now,
+            //    NguoiTao = user.Hoten,
+            //    SoTien = tonCuoi,
+            //    SoTienNT = tonCuoi
+            //};
 
-            var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
-            if (tonQuies1.Count > 0) // co ton tai
-            {
-                var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
-                tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
-                tonQuy2.SoTien = tonCuoi;
-                tonQuy2.SoTienNT = tonCuoi;
+            //var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
+            //if (tonQuies1.Count > 0) // co ton tai
+            //{
+            //    var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+            //    tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+            //    tonQuy2.SoTien = tonCuoi;
+            //    tonQuy2.SoTienNT = tonCuoi;
 
-                await _tonQuyService.UpdateAsync(tonQuy2);
-            }
-            else
-            {
-                await _tonQuyService.CreateAsync(tonQuy1);
+            //    await _tonQuyService.UpdateAsync(tonQuy2);
+            //}
+            //else
+            //{
+            //    await _tonQuyService.CreateAsync(tonQuy1);
 
-            }
+            //}
 
             //}
 
@@ -1539,7 +1546,7 @@ namespace KTTM.Controllers
                 return Json(new
                 {
                     status = false,
-                    message = "Không đồng ý tồn quỹ trước 01/06/2021"
+                    message = "Không đồng ý tồn quỹ trước 03/01/2021"
                 });
             }
 

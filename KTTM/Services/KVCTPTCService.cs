@@ -490,6 +490,9 @@ namespace KTTM.Services
                     var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate &&
                                        y.KVPTC.NgayCT < toDate.AddDays(1));
                     list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
+                    list = list.OrderBy(x => x.KVPTCId.Substring(4, 2)).ToList();
+                    //list = list.OrderBy(x => x.KVPTCId.Substring(6, 4)).ToList();
+                    //list = list.OrderBy(x => x.KVPTCId.Substring(0, 4)).ToList();
 
                 }
                 catch (Exception)
@@ -548,6 +551,7 @@ namespace KTTM.Services
                            }).ToList();
             foreach (var item in result1)
             {
+                
                 item.TongCong = item.KVCTPTCs.Sum(x => x.SoTien.Value);
                 
             }

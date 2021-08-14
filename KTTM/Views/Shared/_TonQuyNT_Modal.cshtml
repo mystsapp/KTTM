@@ -5,14 +5,14 @@
         <div class="modal-content ">
             <div class="modal-header bg-secondary">
                 <h6 class="modal-title"><i class="fas fa-file text-info"></i> Danh sách</h6>
-                <button type="button" class="close pr-4 pt-3" @*data-dismiss="modal"*@ id="btnCloseTonQuyModel_Dismiss" aria-label="Close">
+                <button type="button" class="close pr-4 pt-3" @*data-dismiss="modal"*@ id="btnCloseTonQuyNTModel_Dismiss" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body tonQuy_Modal_Body ">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark " @*data-dismiss="modal"*@ id="btnModal_TonQuy_Dismiss" title="Thoát"><i class="fas fa-power-off"></i></button>
+                <button type="button" class="btn btn-outline-dark " @*data-dismiss="modal"*@ id="btnModal_TonQuyNT_Dismiss" title="Thoát"><i class="fas fa-power-off"></i></button>
                 @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
             </div>
         </div>
@@ -25,10 +25,12 @@
 <script>
     $('#btnModal_TonQuy_Dismiss').click(function () {
         $('#tonQuy_Modal').modal('hide');
+        $('#baoCaoQuyTienNT_Modal').modal('show');
         
     })
     $('#btnCloseTonQuyModel_Dismiss').click(function () {
         $('#tonQuy_Modal').modal('hide');
+        $('#baoCaoQuyTienNT_Modal').modal('show');
     })
     
 </script>

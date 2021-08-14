@@ -21,8 +21,8 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <input class="form-control form-control-sm maskInput" id="txtTuNgay" name="searchFromDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
-
+                                    <input class="form-control form-control-sm maskInput" id="txtFromDate" name="searchFromDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                                    <input type="hidden" id="hidTuNgay" />
                                 </div>
 
                                 <div class="col-md-2">
@@ -30,8 +30,8 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <input class="form-control form-control-sm maskInput" id="txtDenNgay" name="searchToDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
-
+                                    <input class="form-control form-control-sm maskInput" id="txtToDate" name="searchToDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                                    <input type="hidden" id="hidDenNgay" />
                                 </div>
                             </div>
 
@@ -55,7 +55,7 @@
 </div>
 
 <partial name="_TonQuy_Modal.cshtml" />
-
+<script src="~/js/Admin/Home/baoCaoQuyTienVNDController.js"></script>
 <script>
 
     shortcut.add("Enter", function () {
@@ -63,11 +63,12 @@
         $('#btnBaoCaoQuyTienVND').click()
 
     });
-
+    
     // btnBaoCaoQuyTienVND
     $('#btnBaoCaoQuyTienVND').off('click').on('click', function () {
-        tuNgay = $('#txtTuNgay').val();
-        denNgay = $('#txtDenNgay').val();
+        tuNgay = $('#txtFromDate').val();
+        denNgay = $('#txtToDate').val();
+
         if (tuNgay === '' || denNgay === '') {
             toastr.warning("Ngày không được để trống", "Thông báo!");
         }
