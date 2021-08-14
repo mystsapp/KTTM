@@ -16,6 +16,7 @@ namespace KTTM.Services
         Task<string> CheckTonDauStatus(DateTime fromDate);
         Task<string> CheckTonDauStatus_NT(DateTime fromDate, string loaiTien);
         TonQuy GetById(long id);
+        Task CreateRangeAsync(List<TonQuy> tonQuies);
     }
     public class TonQuyService : ITonQuyService
     {
@@ -175,6 +176,12 @@ namespace KTTM.Services
         public async Task UpdateAsync(TonQuy tonQuy)
         {
             _unitOfWork.tonQuyRepository.Update(tonQuy);
+            await _unitOfWork.Complete();
+        }
+
+        public async Task CreateRangeAsync(List<TonQuy> tonQuies)
+        {
+            await _unitOfWork.tonQuyRepository.CreateRange(tonQuies);
             await _unitOfWork.Complete();
         }
     }

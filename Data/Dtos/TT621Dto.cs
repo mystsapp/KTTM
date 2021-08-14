@@ -24,11 +24,11 @@ namespace Data.Dtos
 
         public string LoaiTien { get; set; }
 
-        public decimal SoTien { get; set; }
+        public decimal? SoTien { get; set; }
 
-        public decimal SoTienNT { get; set; }
+        public decimal? SoTienNT { get; set; }
 
-        public decimal TyGia { get; set; }
+        public decimal? TyGia { get; set; }
 
         public string TKNo { get; set; }
 
@@ -52,9 +52,9 @@ namespace Data.Dtos
 
         public string KyHieuHD { get; set; }
 
-        public decimal VAT { get; set; }
+        public decimal? VAT { get; set; }
 
-        public decimal DSKhongVAT { get; set; } //
+        public decimal? DSKhongVAT { get; set; } //
 
         public string BoPhan { get; set; } // phongban ?
 
@@ -74,7 +74,7 @@ namespace Data.Dtos
 
         public string MatHang { get; set; } //
 
-        public bool DieuChinh { get; set; } //
+        public bool? DieuChinh { get; set; } //
 
         public string LapPhieu { get; set; }
 

@@ -28,6 +28,7 @@ namespace KTTM.Services
         IEnumerable<TT621> GetAll();
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate);
         IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
+        Task CreateRangeAsync(List<TT621> tT621s);
     }
     public class TT621Service : ITT621Service
     {
@@ -194,7 +195,7 @@ namespace KTTM.Services
             decimal soTienNT_TrongTT621_TheoTamUng = 0;
             if (tT621s.Count() > 0)
             {
-                soTienNT_TrongTT621_TheoTamUng = tT621s.Sum(x => x.SoTienNT);
+                soTienNT_TrongTT621_TheoTamUng = tT621s.Sum(x => x.SoTienNT.Value);
             }
 
             return soTienNT_TrongTT621_TheoTamUng;
@@ -307,6 +308,12 @@ namespace KTTM.Services
         public IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId)
         {
             return _unitOfWork.tT621Repository.FindTT621s_IncludeTwice(tamUngId);
+        }
+
+        public async Task CreateRangeAsync(List<TT621> tT621s)
+        {
+            await _unitOfWork.tT621Repository.CreateRange(tT621s);
+            await _unitOfWork.Complete();
         }
     }
 }

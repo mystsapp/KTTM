@@ -47,15 +47,15 @@ namespace Data.Models_KTTM
 
         [DisplayName("Số tiền")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SoTien { get; set; }
+        public decimal? SoTien { get; set; }
 
         [DisplayName("Số tiền NT")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SoTienNT { get; set; }
+        public decimal? SoTienNT { get; set; }
 
         [DisplayName("Tỷ giá")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal TyGia { get; set; }
+        public decimal? TyGia { get; set; }
 
         [DisplayName("TK Nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
@@ -103,11 +103,11 @@ namespace Data.Models_KTTM
         public string KyHieuHD { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal VAT { get; set; }
+        public decimal? VAT { get; set; }
 
         [DisplayName("Doanh số chưa thuế")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal DSKhongVAT { get; set; } //
+        public decimal? DSKhongVAT { get; set; } //
 
         [DisplayName("Bộ phận")]
         [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
@@ -146,7 +146,7 @@ namespace Data.Models_KTTM
         public string MatHang { get; set; } //
 
         [DisplayName("Điều chỉnh")]
-        public bool DieuChinh { get; set; } //
+        public bool? DieuChinh { get; set; } //
 
         [DisplayName("Người lập phiếu")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "nvarchar(50)")]

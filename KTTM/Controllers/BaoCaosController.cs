@@ -220,6 +220,14 @@ namespace KTTM.Controllers
             }
         }
 
+        public IActionResult BaoCaoQuyTienVND_Partial()
+        {
+            ViewBag.tuNgay = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.denNgay = DateTime.Now.ToString("dd/MM/yyyy");
+
+            return PartialView();
+        }
+
         [HttpPost]
         public async Task<IActionResult> BaoCaoQuyTienVND(string searchFromDate, string searchToDate)
         {
@@ -227,7 +235,7 @@ namespace KTTM.Controllers
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
             string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
-            var tonQuies = _tonQuyService.FindTonQuy_By_Date("01/06/2021", toDate);
+            var tonQuies = _tonQuyService.FindTonQuy_By_Date("03/01/2020", toDate);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
@@ -1524,7 +1532,7 @@ namespace KTTM.Controllers
         public async Task<JsonResult> CheckNgayTonQuy(string tuNgay, string denNgay)
         {
             DateTime fromDate = DateTime.Parse(tuNgay);
-            DateTime compareDate = DateTime.Parse("01/06/2021");
+            DateTime compareDate = DateTime.Parse("03/01/2020");
 
             if (fromDate < compareDate)
             {

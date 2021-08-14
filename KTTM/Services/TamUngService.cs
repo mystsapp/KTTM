@@ -12,6 +12,7 @@ namespace KTTM.Services
 {
     public interface ITamUngService
     {
+        IEnumerable<TamUng> GetAll();
         string GetSoCT(string param);
         Task<TamUng> GetByIdAsync(long id);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh);
@@ -217,6 +218,11 @@ namespace KTTM.Services
         {
             await _unitOfWork.tamUngRepository.CreateRange(tamUngs);
             await _unitOfWork.Complete();
+        }
+
+        public IEnumerable<TamUng> GetAll()
+        {
+            return _unitOfWork.tamUngRepository.GetAll();
         }
     }
 }
