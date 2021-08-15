@@ -226,8 +226,10 @@ namespace KTTM.Controllers
             
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-            string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
-            var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
+            //string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
+            string fromDate = DateTime.Parse(searchFromDate).AddDays(-1).ToString("dd/MM/yyyy");
+            //var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
+            var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
@@ -336,7 +338,7 @@ namespace KTTM.Controllers
             
             xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-            NumberFormat(dong, 6, dong, 6, xlSheet);
+            //NumberFormat(dong, 6, dong, 6, xlSheet);
             dong++;
 
             if (kVCTPTCs.Count() > 0)
@@ -346,7 +348,7 @@ namespace KTTM.Controllers
 
                     foreach (var kvctpct in item.KVCTPTCs)
                     {
-                        if (kvctpct.KVPTC.MFieu == "T")
+                        if (item.SoCT.Contains("QT"))
                         {
                             xlSheet.Cells[dong, 1].Value = kvctpct.KVPTCId;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
@@ -377,13 +379,13 @@ namespace KTTM.Controllers
                         TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                        xlSheet.Cells[dong, 5].Value = kvctpct.KVPTC.MFieu == "T" ? kvctpct.TKCo : kvctpct.TKNo;
+                        xlSheet.Cells[dong, 5].Value = item.SoCT.Contains("QT") ? kvctpct.TKCo : kvctpct.TKNo;
                         TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                         if (item.KVCTPTCs.Count() == 1)
                         {
-                            if (kvctpct.KVPTC.MFieu == "T")
+                            if (item.SoCT.Contains("QT"))
                             {
                                 xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
@@ -396,13 +398,13 @@ namespace KTTM.Controllers
 
                             }
 
-                            xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
-                            TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            //xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
+                            //TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
                         else
                         {
-                            if (kvctpct.KVPTC.MFieu == "T")
+                            if (item.SoCT.Contains("QT"))
                             {
                                 xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
@@ -414,14 +416,14 @@ namespace KTTM.Controllers
                                 TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                             }
-                            xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
-                            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            //xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
+                            //TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
 
                             dong++;
                         }
                         //setBorder(5, 1, dong, 10, xlSheet);
-                        NumberFormat(dong, 6, dong + 1, 7, xlSheet);
+                        //NumberFormat(dong, 6, dong + 1, 7, xlSheet);
 
                         //dong++;
                         idem++;
@@ -433,7 +435,7 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 3].Value = "Tổng cộng phiếu: " + item.SoCT;
                         TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                        if (item.SoCT.Contains("T"))
+                        if (item.SoCT.Contains("QT"))
                         {
                             xlSheet.Cells[dong, 6].Value = item.TongCong;
                             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
@@ -464,7 +466,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[dong, 6].Value = tonCuoi;
             xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
-            NumberFormat(dong - 1, 6, dong, 7, xlSheet);
+            NumberFormat(8, 6, dong, 7, xlSheet);
             //setFontBold(dong, 1, dong, 10, 12, xlSheet);
             setBorder(6, 1, dong, 7, xlSheet);
             dong++;

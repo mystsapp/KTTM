@@ -470,7 +470,7 @@ namespace KTTM.Services
 
         public async Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate)
         {
-
+            //var abc = "0001NC2020".Substring(0, 4);
             List<KVCTPTC> list = new List<KVCTPTC>();
             // search date
             DateTime fromDate, toDate;
@@ -488,11 +488,17 @@ namespace KTTM.Services
                     }
 
                     var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate &&
-                                       y.KVPTC.NgayCT < toDate.AddDays(1));
-                    list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
+                                                                                                         y.KVPTC.NgayCT < toDate.AddDays(1));
+
+                    var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND");
+                    var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
+                    
+                    kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
+                    //list = kVCTPTCs.Where(x => x.TKNo.StartsWith("11120000") && x.TKCo == "1111000000").ToList();
+                    list = kVCTPTCs.OrderBy(x => x.KVPTCId.Substring(0, 4)).ToList();
                     list = list.OrderBy(x => x.KVPTCId.Substring(4, 2)).ToList();
                     //list = list.OrderBy(x => x.KVPTCId.Substring(6, 4)).ToList();
-                    //list = list.OrderBy(x => x.KVPTCId.Substring(0, 4)).ToList();
+
 
                 }
                 catch (Exception)
@@ -559,7 +565,7 @@ namespace KTTM.Services
             foreach (var item in result1)
             {
                 //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
-                if(item.SoCT.Contains("T"))
+                if(item.SoCT.Contains("QT"))
                 {
                     congPhatSinh_Thu += item.TongCong;
                     

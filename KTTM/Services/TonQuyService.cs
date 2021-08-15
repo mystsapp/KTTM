@@ -154,7 +154,7 @@ namespace KTTM.Services
             }
             // search date
 
-            return list;
+            return list.OrderByDescending(x => x.NgayCT);
         }
 
         public List<TonQuy> Find_Equal_By_Date(DateTime dateTime)

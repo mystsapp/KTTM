@@ -52,11 +52,11 @@
 
                     <tr class="tonquies-cursor-pointer ">
 
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.NgayCT)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>
                         <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.SoTien)</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.SoTienNT)</td>
-                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.Raw(item.SoTienNT.ToString("N0"))</td>
+                        <td class="tdVal_Supplier" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
 
                     </tr>
 
@@ -74,6 +74,8 @@
 
 
 <script>
+    $(".maskInput").mask("99/99/9999");
+
     $('#btnSearchTonQuy').click(function () {
         debugger
         tuNgay = $('#txtTuNgay_TonQuy').val();
