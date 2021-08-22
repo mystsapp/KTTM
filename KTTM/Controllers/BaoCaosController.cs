@@ -351,13 +351,13 @@ namespace KTTM.Controllers
                     {
                         if (item.SoCT.Contains("QT"))
                         {
-                            xlSheet.Cells[dong, 1].Value = kvctpct.KVPTCId;
+                            xlSheet.Cells[dong, 1].Value = kvctpct.SoCT;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
                         else
                         {
-                            xlSheet.Cells[dong, 2].Value = kvctpct.KVPTCId;
+                            xlSheet.Cells[dong, 2].Value = kvctpct.SoCT;
                             TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                         }
@@ -724,7 +724,7 @@ namespace KTTM.Controllers
                 xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12));
                 dong++;
                 DateTime denNgayDate = DateTime.Parse(denNgay);
-                xlSheet.Cells[dong, 5].Value = "Ngày: " + denNgayDate.Date + " tháng " + denNgayDate.Month + " năm " + denNgayDate.Year;
+                xlSheet.Cells[dong, 5].Value = "Ngày " + denNgayDate.Day + " tháng " + denNgayDate.Month + " năm " + denNgayDate.Year;
                 xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12));
                 xlSheet.Cells[dong, 5, dong, 7].Merge = true;
                 dong++;
@@ -957,7 +957,7 @@ namespace KTTM.Controllers
                     xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12));
                     dong++;
                     DateTime denNgayDate = DateTime.Parse(denNgay);
-                    xlSheet.Cells[dong, 5].Value = "Ngày: " + denNgayDate.Date + " tháng " + denNgayDate.Month + " năm " + denNgayDate.Year;
+                    xlSheet.Cells[dong, 5].Value = "Ngày: " + denNgayDate.Day + " tháng " + denNgayDate.Month + " năm " + denNgayDate.Year;
                     xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12));
                     xlSheet.Cells[dong, 5, dong, 7].Merge = true;
                     dong++;
@@ -1163,7 +1163,7 @@ namespace KTTM.Controllers
                 xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12));
                 dong++;
                 DateTime denNgayDate = DateTime.Parse(denNgay);
-                xlSheet.Cells[dong, 5].Value = "Ngày: " + denNgayDate.Date + " tháng " + denNgayDate.Month + " năm " + denNgayDate.Year;
+                xlSheet.Cells[dong, 5].Value = "Ngày " + denNgayDate.Day + " tháng " + denNgayDate.Month + " năm " + denNgayDate.Year;
                 xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12));
                 xlSheet.Cells[dong, 5, dong, 7].Merge = true;
                 dong++;
@@ -1319,7 +1319,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[3, 1, 3, 10].Merge = true;
             setCenterAligment(3, 1, 3, 10, xlSheet);
 
-            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + tT621.TamUng.KVCTPTC.KVPTCId + " - " +
+            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + tT621.TamUng.KVCTPTC.SoCT + " - " +
                 "Nhân viên: " + maKhCo_TT + " " + tT621.TenKH;
             xlSheet.Cells[4, 1].Value = stringNgay;
             xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));

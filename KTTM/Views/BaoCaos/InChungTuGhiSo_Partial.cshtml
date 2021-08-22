@@ -29,7 +29,7 @@
                     <button type="button" class="btn btn-primary btn-sm" id="btnInChungTuSearch" title="Tìm kiếm">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button type="button" class="btn btn-success btn-sm" id="btnInChungTu" title="In chứng từ">
+                    <button type="button" class="btn btn-success btn-sm" id="btnInChungTu" title="In chứng từ" disabled>
                         <i class="fas fa-print"></i>
                     </button>
                 </div>
@@ -105,10 +105,26 @@
 
     // btnInChungTu
     $('#btnInChungTu').off('click').on('click', function () {
-    
+        //tuNgay = $('#txtTuNgay').val();
+        //denNgay = $('#txtDenNgay').val();
+
+        //$('#hidTuNgay').val(tuNgay);
+        //$('#hidDenNgay').val(denNgay);
+
         $('#frm_InChungTuGhiSoExcel').submit();
     })
+    $('#txtTuNgay').click(function () {
+        $('#btnInChungTu').attr('disabled', true); // disabled btnInChungTu
+    })
+    $('#txtDenNgay').click(function () {
+        $('#btnInChungTu').attr('disabled', true); // disabled btnInChungTu
+    })
+    $('#btnInChungTuSearch').click(function () {
+        $('#btnInChungTu').attr('disabled', true); // disabled btnInChungTu
+    })
     $('.khachhangs-cursor-pointer').click(function () {
+
+        $('#btnInChungTu').attr('disabled', false); // enabled btnInChungTu
 
         // giu trang thai
         if ($(this).hasClass("hoverClass"))
