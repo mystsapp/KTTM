@@ -7,6 +7,7 @@ namespace Data.Dtos
 {
     public class KVPTCDto
     {
+        public Guid Id { get; set; }
         [DisplayName("Số phiếu")]
         public string SoCT { get; set; }
 

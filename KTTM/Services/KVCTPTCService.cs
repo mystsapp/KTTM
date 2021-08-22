@@ -15,7 +15,7 @@ namespace KTTM.Services
 {
     public interface IKVCTPTCService
     {
-        Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT);
+        Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_KVPTCid(Guid KVPTCid);
         IEnumerable<Ngoaite> GetAll_NgoaiTes();
         IEnumerable<DmHttc> GetAll_DmHttc();
         IEnumerable<ViewDmHttc> GetAll_DmHttc_View();
@@ -35,7 +35,7 @@ namespace KTTM.Services
         IEnumerable<PhongBan> GetAll_PhongBans();
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
-        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
+        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
         Task CreateRange(IEnumerable<KVCTPTC> kVCTPTCs);
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
         IEnumerable<KVCTPTC> GetAll();
@@ -63,9 +63,9 @@ namespace KTTM.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT)
+        public async Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_KVPTCid(Guid KVPTCid)
         {
-            return await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.KVPTCId == soCT);
+            return await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.KVPTCId == KVPTCid);
         }
 
         public IEnumerable<Ngoaite> GetAll_NgoaiTes()
@@ -174,7 +174,7 @@ namespace KTTM.Services
             return dgiais1;
         }
 
-        public IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
+        public IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
 
             var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
@@ -216,7 +216,8 @@ namespace KTTM.Services
                         KVCTPTC kVCTPTC = new KVCTPTC();
 
                         // THONG TIN VE TAI CHINH
-                        kVCTPTC.KVPTCId = soCT;
+                        kVCTPTC.KVPTCId = kVPTCId;
+                        kVCTPTC.SoCT = soCT;
                         kVCTPTC.DienGiaiP = dienGiaiP;
                         kVCTPTC.SoTienNT = item1.Sotiennt;
                         kVCTPTC.LoaiTien = item1.Loaitien;
@@ -495,8 +496,8 @@ namespace KTTM.Services
                     
                     kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
                     //list = kVCTPTCs.Where(x => x.TKNo.StartsWith("11120000") && x.TKCo == "1111000000").ToList();
-                    list = kVCTPTCs.OrderBy(x => x.KVPTCId.Substring(0, 4)).ToList();
-                    list = list.OrderBy(x => x.KVPTCId.Substring(4, 2)).ToList();
+                    list = kVCTPTCs.OrderBy(x => x.SoCT.Substring(0, 4)).ToList();
+                    list = list.OrderBy(x => x.SoCT.Substring(4, 2)).ToList();
                     //list = list.OrderBy(x => x.KVPTCId.Substring(6, 4)).ToList();
 
 
@@ -549,7 +550,7 @@ namespace KTTM.Services
         {
 
             var result1 = (from p in kVCTPTCs
-                           group p by p.KVPTCId into g
+                           group p by p.SoCT into g
                            select new KVCTPCT_Model_GroupBy_SoCT()
                            {
                                SoCT = g.Key,

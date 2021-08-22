@@ -12,12 +12,15 @@ namespace Data.Models_KTTM
         public long Id { get; set; }
 
         [DisplayName("KVPTC")]
-        [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         [Required(ErrorMessage = "Trường này không được để trống")]
-        public string KVPTCId { get; set; }
+        public Guid KVPTCId { get; set; }
 
         [ForeignKey("KVPTCId")]
         public virtual KVPTC KVPTC { get; set; }
+
+        [DisplayName("Số phiếu")]
+        [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
+        public string SoCT { get; set; }
 
         [DisplayName("HTTC")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]

@@ -39,17 +39,17 @@ namespace KTTM.Controllers
             return View();
         }
 
-        public async Task<IActionResult> KVCTPTCPartial(string soCT, int page)
+        public async Task<IActionResult> KVCTPTCPartial(Guid KVPTCid, int page)
         {
             // KVCTPCT
             KVCTPCTVM.Page = page;
-            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
+            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(KVPTCid);
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCid);
 
             return PartialView(KVCTPCTVM);
         }
 
-        public async Task<IActionResult> ThemDong(string soCT, string strUrl, int page, long id_Dong_Da_Click)
+        public async Task<IActionResult> ThemDong(Guid KVPTCId, string strUrl, int page, long id_Dong_Da_Click)
         {
             if (!ModelState.IsValid) // check id_Dong_Da_Click valid (da gang' = 0 trong home/index)
             {
@@ -62,10 +62,13 @@ namespace KTTM.Controllers
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVCTPTC.KVPTCId = soCT;
+            KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
             KVCTPCTVM.KVCTPTC.TyGia = 1;
             KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
-            if (KVCTPCTVM.KVCTPTC.KVPTCId.Contains("C"))
+
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+
+            if (KVCTPCTVM.KVPTC.MFieu == "C")
             {
                 KVCTPCTVM.KVCTPTC.TKCo = "1111000000";
             }
@@ -73,7 +76,6 @@ namespace KTTM.Controllers
             {
                 KVCTPCTVM.KVCTPTC.TKNo = "1111000000";
             }
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
             
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
@@ -90,7 +92,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page; // page for redirect
 
-            // R + btnThemdong
+            // btnThemdong + copy dong da click
             if (id_Dong_Da_Click > 0)
             {
                 var dongCu = await _kVCTPTCService.GetById(id_Dong_Da_Click);
@@ -121,17 +123,17 @@ namespace KTTM.Controllers
         }
 
         // ThemDong_ContextMenu
-        public async Task<IActionResult> ThemDong_ContextMenu(string soCT, int page)
+        public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page)
         {
             ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVCTPTC.KVPTCId = soCT;
+            KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
             KVCTPCTVM.KVCTPTC.TyGia = 1;
             KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
             
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
@@ -152,7 +154,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("ThemDong_ContextMenu")]
-        public async Task<IActionResult> ThemDong_ContextMenu_Post(string soCT, int page)
+        public async Task<IActionResult> ThemDong_ContextMenu_Post(Guid KVPTCId, int page)
         {
             //var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
             
@@ -163,7 +165,7 @@ namespace KTTM.Controllers
             {
 
                 // not valid
-                KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(KVCTPCTVM.KVCTPTC.KVPTCId);
+                KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
                 KVCTPCTVM.Page = page;
                 KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
                 KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
@@ -176,6 +178,7 @@ namespace KTTM.Controllers
                 return View(KVCTPCTVM);
             }
 
+            KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
@@ -189,7 +192,7 @@ namespace KTTM.Controllers
                 await _kVCTPTCService.Create(KVCTPCTVM.KVCTPTC);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return BackIndex(soCT, KVCTPCTVM.Page); // redirect to Home/Index/?soCT
+                return BackIndex(KVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?soCT
             }
             catch (Exception ex)
             {
@@ -201,7 +204,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("ThemDong")]
-        public async Task<IActionResult> ThemDong_Post(string soCT, int page)
+        public async Task<IActionResult> ThemDong_Post(Guid KVPTCId, int page)
         {
             // var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
             // from login session
@@ -211,7 +214,7 @@ namespace KTTM.Controllers
             {
 
                 // not valid
-                KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(KVCTPCTVM.KVCTPTC.KVPTCId);
+                KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
                 KVCTPCTVM.Page = page;
                 KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
                 KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
@@ -224,6 +227,7 @@ namespace KTTM.Controllers
                 return View(KVCTPCTVM);
             }
 
+            KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
@@ -238,7 +242,7 @@ namespace KTTM.Controllers
                 await _kVCTPTCService.Create(KVCTPCTVM.KVCTPTC);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return BackIndex(soCT, KVCTPCTVM.Page); // redirect to Home/Index/?soCT
+                return BackIndex(KVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
             }
             catch (Exception ex)
             {
@@ -250,14 +254,14 @@ namespace KTTM.Controllers
         }
 
         //-----------LayDataCashierPartial------------
-        public async Task<IActionResult> LayDataCashierPartial(string id, string strUrl, int page)
+        public async Task<IActionResult> LayDataCashierPartial(Guid kVPTCId, string strUrl, int page)
         {
-            if (string.IsNullOrEmpty(id))
+            if (kVPTCId == null)
                 return NotFound();
 
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page;
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(id);
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
             KVCTPCTVM.DmTks_Cashier = _kVCTPTCService.GetAll_DmTk_Cashier();
 
             return PartialView(KVCTPCTVM);
@@ -266,7 +270,7 @@ namespace KTTM.Controllers
         [HttpPost, ActionName("LayDataCashierPartial")]
         public async Task<IActionResult> LayDataCashierPartial_Post()
         {
-            var soCT = KVCTPCTVM.KVPTC.SoCT;
+            var kVPTCId = KVCTPCTVM.KVPTC.Id;
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -277,7 +281,7 @@ namespace KTTM.Controllers
             }
 
             // data tu cashier
-            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, soCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
+            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
             // ghi log ben service
 
             try
@@ -285,15 +289,15 @@ namespace KTTM.Controllers
                 await _kVCTPTCService.CreateRange(kVCTPTCs);
 
                 // save to cashier
-                var kVPCT = await _kVPTCService.GetBySoCT(soCT);
+                var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
                 var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, user.Macn);
-                noptien.Phieuthu = soCT;
+                noptien.Phieuthu = KVCTPCTVM.KVPTC.SoCT;
                 noptien.Ngaypt = kVPCT.NgayCT;
                 //noptien.Ghichu = kVPCT.ghichu; ??
                 await _kVCTPTCService.UpdateAsync_NopTien(noptien);
 
                 SetAlert("Thêm mới thành công.", "success");
-                return BackIndex(soCT, KVCTPCTVM.Page); // redirect to Home/Index/?soCT
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
             }
             catch (Exception ex)
             {
@@ -334,7 +338,7 @@ namespace KTTM.Controllers
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
             KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(KVCTPCTVM.KVCTPTC.KVPTCId);
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
@@ -621,7 +625,7 @@ namespace KTTM.Controllers
 
             // not valid
             KVCTPCTVM.KVCTPTC = await _kVCTPTCService.GetById(id);
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetBySoCT(KVCTPCTVM.KVCTPTC.KVPTCId);
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
             KVCTPCTVM.Page = page;
             KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
@@ -670,9 +674,9 @@ namespace KTTM.Controllers
         }
 
 
-        public IActionResult BackIndex(string soCT, int page)
+        public IActionResult BackIndex(Guid KVPTCId, int page)
         {
-            return RedirectToAction(nameof(Index), "Home", new { soCT = soCT, page });
+            return RedirectToAction(nameof(Index), "Home", new { id = KVPTCId, page });
         }
 
         public JsonResult GetKhachHangs_By_Code(string code)

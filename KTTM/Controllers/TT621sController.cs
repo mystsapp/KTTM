@@ -36,7 +36,7 @@ namespace KTTM.Controllers
             _tT621Service = tT621Service;
             _kVPTCService = kVPTCService;
         }
-        public async Task<IActionResult> KhongTC_141(string kvpctId, string strUrl, string page, string maKh, string tenKh)
+        public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, string page, string maKh, string tenKh)
         {
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
@@ -44,9 +44,9 @@ namespace KTTM.Controllers
             ViewBag.maKh = maKh;
             ViewBag.tenKh = tenKh;
 
-            if (!string.IsNullOrEmpty(kvpctId)) // nguoi ta có chọn 1 dóng phiếu nào đó
+            if (kvptcId != null) // nguoi ta có chọn 1 dóng phiếu nào đó
             {
-                TT621VM.KVPTC = await _kVPTCService.GetBySoCT(kvpctId);
+                TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(kvptcId);
             }
 
             if (!string.IsNullOrEmpty(maKh))
@@ -132,18 +132,18 @@ namespace KTTM.Controllers
         }
 
         ////////////////////////////////////////////// TT141 //////////////////////////////////////////////
-        public async Task<IActionResult> TT621Create(long kvctpctId, string strUrl, string page)
+        public async Task<IActionResult> TT621Create(long kvctptcId, string strUrl, string page)
         {
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
 
-            if (kvctpctId == 0)
+            if (kvctptcId == 0)
             {
                 ViewBag.ErrorMessage = "Chi tiết này không tồn tại";
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            var kVCTPCT = await _kVCTPTCService.GetById(kvctpctId);
+            var kVCTPCT = await _kVCTPTCService.GetById(kvctptcId);
 
             if (kVCTPCT == null)
             {
@@ -163,7 +163,7 @@ namespace KTTM.Controllers
                 TT621VM.CommentText = jsonResult.Result.Value.ToString();
             }
 
-            TT621VM.KVPTC = await _kVPTCService.GetBySoCT(TT621VM.KVCTPTC.KVPTCId);
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
             return View(TT621VM);
         }
@@ -931,7 +931,7 @@ namespace KTTM.Controllers
             }
 
             // PhieuTC: tuy vao loai phieu lam TT
-            TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.KVPTCId; // SoCT ben KVPCT
+            TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.SoCT; // SoCT ben KVPCT or KVCTPTC.SoCT
 
             // phieuTU
             TT621VM.TT621.PhieuTU = tamUng.SoCT;
@@ -1109,7 +1109,7 @@ namespace KTTM.Controllers
             KVCTPTC kVCTPCT = new KVCTPTC();
             if(kVCTPCTId_PhieuTC == 0) // trường hợp TT 141 Khong TC: khong phieu TC
             {
-                kVCTPCT.KVPTCId = "KHONG PTC";// m.phieutc='KHONG PTC'
+                kVCTPCT.SoCT = "KHONG PTC";// m.phieutc='KHONG PTC'
 
             }
             else
@@ -1124,7 +1124,7 @@ namespace KTTM.Controllers
             {
                 tamUng.ConLaiNT = 0;
                 tamUng.ConLai = 0;
-                tamUng.PhieuTT = kVCTPCT.KVPTCId;
+                tamUng.PhieuTT = kVCTPCT.SoCT;
                 await _tamUngService.UpdateAsync(tamUng);
 
                 return Json(true);

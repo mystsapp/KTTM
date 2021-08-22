@@ -92,19 +92,19 @@
                                     <button type="button" class="btn btn-outline-danger btn-sm" id="btnTamUng" disabled title="Tạm ứng">Tạm ứng</button>
                                     <input type="hidden" id="hidTamUng" />
                                     
-                                    <input type="hidden" id="hidKVCTPCTId" name="kvctpctId" />
-                                    <input type="hidden" id="hidKVPCTId" name="kvpctId" /> <!--for khongTC_141-->
+                                    <input type="hidden" id="hidKVCTPCTId" name="kvctptcId" />
+                                    <input type="hidden" id="hidKVPCTId" name="kvptcId" /> <!--for khongTC_141-->
                                     <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                                     <input type="hidden" value="@Model.Page" name="page" />
                                     <button type="submit" class="btn btn-outline-warning btn-sm" disabled id="btnTT141" title="TT 141">TT 141</button>
                                     <button type="submit" class="btn btn-outline-dark btn-sm" id="btn141KhongTC" title="141 Không TC" formaction="/TT621s/KhongTC_141" formmethod="get">141 Không TC</button>
-                                    <input type="hidden" id="hidCashier" />
+                                    @*<input type="hidden" id="hidCashier" />*@
                                     <button type="button" class="btn btn-outline-info btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
 
                                     <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInPhieu" title="TT 141"><i class="fas fa-print"></i> In phiếu</button>
                                     <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInCTPhieu" title="TT 141"><i class="fas fa-print"></i> In CT phiếu</button>
 
-                                    <button type="submit" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i> Excel</button>
+                                    <button type="button" class="btn btn-outline-success btn-sm" formaction="/Home/KhongTC141" formmethod="post" title="Excel"><i class="fas fa-file-excel"></i> Excel</button>
 
                                 </div>
                             </form>
@@ -114,18 +114,18 @@
             </div>
 
             <form id="frmInPhieu" asp-action="InPhieu" asp-controller="BaoCaos" method="post">
-                <input type="hidden" id="hidSoCT_InPhieu" name="soCT" />
+                <input type="hidden" id="hidId_InPhieu" name="kVPTCId" />
                 <input type="hidden" value="@Model.Page" name="page" />
             </form>
 
             <form id="frmThemDong" asp-action="ThemDong" asp-controller="KVCTPTCs" method="get">
-                <input type="hidden" id="hidThemDongSoCT" name="soCT" />
+                <input type="hidden" id="hidThemDongId" name="KVPTCId" />
                 <input type="hidden" value="@Model.StrUrl" name="strUrl" />
                 <input type="hidden" value="@Model.Page" name="page" />
                 <input type="hidden" id="hidIdCu" name="id_Dong_Da_Click" value="0" />
             </form>
             <form id="frmThemDong_ContextMenu" asp-action="ThemDong_ContextMenu" asp-controller="KVCTPTCs" method="get">
-                <input type="hidden" id="hidThemDongSoCT_ContextMenu" name="soCT" />
+                <input type="hidden" id="hidThemDongId_ContextMenu" name="KVPTCId" />
                 <input type="hidden" value="@Model.StrUrl" name="strUrl" />
                 <input type="hidden" value="@Model.Page" name="page" />
             </form>
@@ -153,22 +153,22 @@
                             @foreach (var item in Model.KVPTCDtos)
                             {
 
-                                <tr class="cursor-pointer @item.SoCT" @*data-huy="@item.HuyTour"*@ onclick="KVCTPCT_Tbl()">
+                                <tr class="cursor-pointer @item.Id" @*data-huy="@item.HuyTour"*@ onclick="KVCTPCT_Tbl()">
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
 
-                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-soCT="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             @*<span class="text-dark"> | </span>
 
                                                 <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <!-- ko cho xóa -->
                                             @*<span class="text-dark"> | </span>*@
-                                            <span SoCT="confirmDeleteSpan_@item.SoCT" style="display: none">
+                                            <span SoCT="confirmDeleteSpan_@item.Id" style="display: none">
                                                 <!--ajax check invoices-->
                                                 <span class="text-dark invoiceTrue">Hủy?</span>
-                                                <button type="button" class="btn btn-danger btn-xs btnHuyTour" data-SoCT="@item.SoCT" data-url="@Model.StrUrl">Yes</button>
-                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.SoCT', false)">No</button>
+                                                <button type="button" class="btn btn-danger btn-xs btnHuyTour" data-SoCT="@item.Id" data-url="@Model.StrUrl">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                             </span>
 
                                             @*<span SoCT="deleteSpan_@item.SoCT">
@@ -186,14 +186,14 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.MFieu)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.NgoaiTe)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.HoTen)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.Phong)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.DonVi)</td>
-                                    <td class="tdVal" data-id="@item.SoCT" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.LapPhieu)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.MFieu)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.NgoaiTe)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.HoTen)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.DonVi)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.LapPhieu)</td>
 
                                 </tr>
 
@@ -249,22 +249,22 @@
     <script src="~/js/Admin/Home/indexController.js"></script>
     <script>
 
-        var soCT_Redirect = '@Model.KVPTC.SoCT'; //soct sau khi redirect ve //////////////////////////////////////////////
+        var id_Redirect = '@Model.KVPTC.Id'; //Id sau khi redirect ve //////////////////////////////////////////////
 
         //var tr_click = $('#phieuTbl ' + soCT);
-        if (soCT_Redirect !== '') {
+        if (id_Redirect !== '') {
 
-            var soCT_Redirect_Class = $('.' + soCT_Redirect);
+            var id_Redirect_Class = $('.' + id_Redirect);
 
-            if (soCT_Redirect_Class.hasClass("hoverClass")) {
-                soCT_Redirect_Class.removeClass("hoverClass");
+            if (id_Redirect_Class.hasClass("hoverClass")) {
+                id_Redirect_Class.removeClass("hoverClass");
             }
             else {
-                soCT_Redirect_Class.removeClass("hoverClass");
-                soCT_Redirect_Class.addClass("hoverClass");
+                id_Redirect_Class.removeClass("hoverClass");
+                id_Redirect_Class.addClass("hoverClass");
             }
 
-            indexController.TdVal_Click(soCT_Redirect);
+            indexController.TdVal_Click(id_Redirect);
         }
 
         function confirmDelete(uniqueId, isDeleteClicked) {

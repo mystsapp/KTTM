@@ -14,7 +14,7 @@
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                 <i class="fas fa-minus"></i>
             </button>
-            <a class="btn btn-tool" asp-action="BackIndex" asp-route-soCT="@Model.KVPTC.SoCT" asp-route-page="@Model.Page">
+            <a class="btn btn-tool" asp-action="BackIndex" asp-route-id="@Model.KVPTC.Id" asp-route-page="@Model.Page">
                 <i class="fas fa-times"></i>
             </a>
         </div>
@@ -26,6 +26,7 @@
 
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input type="hidden" asp-for="KVCTPTC.KVPTCId" />
+                <input type="hidden" asp-for="KVPTC.SoCT" />
                 <input type="hidden" asp-for="StrUrl" />
                 <input type="hidden" asp-for="KVCTPTC.TKCo" value="1111000000" />
 
@@ -354,7 +355,7 @@
 
                 <div class=" pt-1 pb-1">
                     <button type="button" class="btn btn-primary btn-sm" id="btnKVCTPCTCreatePartial_Save"><i class="fas fa-save"></i> Save</button>
-                    <a class="btn btn-success btn-sm" asp-action="BackIndex" asp-route-soCT="@Model.KVPTC.SoCT" asp-route-page="@Model.Page"><i class="fas fa-backward "></i> Back</a>
+                    <a class="btn btn-success btn-sm" asp-action="BackIndex" asp-route-id="@Model.KVPTC.Id" asp-route-page="@Model.Page"><i class="fas fa-backward "></i> Back</a>
                 </div>
             </div>
         </form>

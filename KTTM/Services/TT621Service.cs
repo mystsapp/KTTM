@@ -23,7 +23,7 @@ namespace KTTM.Services
         Task<TT621> FindById_Include(long id);
         TT621 GetByIdAsNoTracking(long tt621Id);
         decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create);
-        TT621Dto ConvertTT621ToTT621Dto(TT621 tT621);
+        Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621);
         IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
         IEnumerable<TT621> GetAll();
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate);
@@ -94,10 +94,10 @@ namespace KTTM.Services
             return await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng, y => y.TamUngId == tamUngId);
         }
 
-        public TT621Dto ConvertTT621ToTT621Dto(TT621 tT621)
+        public async Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621)
         {
             var kVPCTId = _unitOfWork.kVCTPCTRepository.GetById(tT621.TamUngId).KVPTCId;
-            var kVPCT = _unitOfWork.kVPCTRepository.GetById(kVPCTId);
+            var kVPCT = await _unitOfWork.kVPCTRepository.GetByGuidIdAsync(kVPCTId);
             TT621Dto tT621Dto = new TT621Dto()
             {
                 BoPhan = tT621.BoPhan,

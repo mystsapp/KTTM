@@ -45,7 +45,7 @@ namespace KTTM.Controllers
 
         //-----------LayDataCashierPartial------------
 
-        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, string soCT, int page = 1)
+        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, Guid id, int page = 1)
         {
             //List<Tonquy> tonquiesAnhSon = _kttm_AnhSonContext.Tonquies.ToList();
             //List<TonQuy> tonQuies = new List<TonQuy>();
@@ -266,9 +266,9 @@ namespace KTTM.Controllers
             ViewBag.searchToDate = searchToDate;
             ViewBag.boolSgtcode = boolSgtcode;
 
-            if (!string.IsNullOrEmpty(soCT)) // for redirect with soct
+            if (id == null) // for redirect with id
             {
-                HomeVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
+                HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
             }
             else
             {
@@ -333,10 +333,10 @@ namespace KTTM.Controllers
                     switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QT"); // thu VND
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QT", user.Macn); // thu VND
                             break;
                         default:
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NT"); // thu NgoaiTe
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NT", user.Macn); // thu NgoaiTe
                             break;
                     }
                     break;
@@ -344,10 +344,10 @@ namespace KTTM.Controllers
                     switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC"); // chi VND
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
                             break;
                         default:
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NC"); // chi NgoaiTe
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NC", user.Macn); // chi NgoaiTe
                             break;
                     }
                     break;
@@ -390,19 +390,19 @@ namespace KTTM.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(string soCT, string strUrl)
+        public async Task<IActionResult> Edit(Guid id, string strUrl)
         {
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             HomeVM.StrUrl = strUrl;
-            if (string.IsNullOrEmpty(soCT))
+            if (id == null)
             {
                 ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-            HomeVM.KVPTC = await _kVPTCService.GetBySoCT(soCT);
+            HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
 
             if (HomeVM.KVPTC == null)
             {
@@ -420,14 +420,14 @@ namespace KTTM.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(string soCT, string strUrl)
+        public async Task<IActionResult> EditPost(Guid id, string strUrl)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             string temp = "", log = "";
 
-            if (soCT != HomeVM.KVPTC.SoCT)
+            if (id != HomeVM.KVPTC.Id)
             {
                 ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");
@@ -441,7 +441,7 @@ namespace KTTM.Controllers
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
-                var t = _kVPTCService.GetBySoCTAsNoTracking(soCT);
+                var t = _kVPTCService.GetByIdAsNoTracking(id);
 
                 if (t.HoTen != HomeVM.KVPTC.HoTen)
                 {

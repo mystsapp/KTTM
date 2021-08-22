@@ -53,10 +53,10 @@ var indexController = {
             $('#btnTT141').attr('disabled', true); // whien click onother row ==> off btnTT141
             $('#btnTamUng').attr('disabled', true); // whien click onother row ==> off btnTamUng
 
-            soCT = $(this).data('id');
+            id = $(this).data('id'); // KVPTC id
             loaiPhieu = $(this).data('loaiphieu');
 
-            indexController.TdVal_Click(soCT, loaiPhieu);
+            indexController.TdVal_Click(id, loaiPhieu);
 
         });
         // phieu click --> load kvctpct
@@ -66,9 +66,9 @@ var indexController = {
 
             var page = $('.active span').text();
 
-            soCT = $('#hidCashier').val();
+            kvptcId = $('#hidKVPCTId').val();
             strUrl = $('.layDataCashier').data('url');
-            $.get('/KVCTPTCs/LayDataCashierPartial', { id: soCT, strUrl: strUrl, page: page }, function (data) {
+            $.get('/KVCTPTCs/LayDataCashierPartial', { kVPTCId: kvptcId, strUrl: strUrl, page: page }, function (data) {
 
                 $('#layDataCashier').modal('show');
                 $('.layDataCashier_Body').html(data);
@@ -178,10 +178,10 @@ var indexController = {
         })
 
     },
-    Load_KVCTPCTPartial: function (soCT, page) {
+    Load_KVCTPCTPartial: function (id, page) { // KVPTC id
 
         var url = '/KVCTPTCs/KVCTPTCPartial';
-        $.get(url, { soCT: soCT, page: page }, function (response) {
+        $.get(url, { KVPTCid: id, page: page }, function (response) {
 
             $('#KVCTPCT_Tbl').html(response);
             $('#KVCTPCT_Tbl').show(500);
@@ -189,7 +189,7 @@ var indexController = {
         });
 
     },
-    TdVal_Click: function (soCT, loaiPhieu) {
+    TdVal_Click: function (id, loaiPhieu) { // KVPTC id
 
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
@@ -197,13 +197,13 @@ var indexController = {
 
         // gang' soCT cho btnThemDong
         $('#btnThemDong').attr('disabled', false);
-        $('#hidThemDongSoCT').val(soCT);
-        $('#hidThemDongSoCT_ContextMenu').val(soCT);
-        $('#hidKVPCTId').val(soCT);
+        $('#hidThemDongId').val(id);
+        $('#hidThemDongId_ContextMenu').val(id);
+        $('#hidKVPCTId').val(id);
 
         // gang' soCT cho btnInphieu
         $('#btnInPhieu').attr('disabled', false);
-        $('#hidSoCT_InPhieu').val(soCT);
+        $('#hidId_InPhieu').val(id);
 
         // page
         var page = $('.active span').text();
@@ -216,7 +216,7 @@ var indexController = {
         $('#KVCTPCT_Create_Partial').hide(500);
         $('#KVCTPCT_Edit_Partial').hide(500);
 
-        indexController.Load_KVCTPCTPartial(soCT, page);
+        indexController.Load_KVCTPCTPartial(id, page); // KVPTC id
 
     },
     KhachHang_By_Code: function (code, txtMaKh) {

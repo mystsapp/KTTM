@@ -46,9 +46,9 @@ namespace KTTM.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> InPhieu(string soCT, int page)
+        public async Task<IActionResult> InPhieu(Guid kVPTCId, int page)
         {
-            KVPTC kVPTC = await _kVPTCService.GetBySoCT(soCT);
+            KVPTC kVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
             string loaiphieu = kVPTC.MFieu == "T" ? "THU" : "CHI";
 
             // from session
@@ -101,7 +101,7 @@ namespace KTTM.Controllers
             int dong = 6;
 
             //// moi load vao
-            var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_SoCT(soCT);
+            var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(kVPTCId);
 
             //du lieu
             //int iRowIndex = 6;
@@ -170,7 +170,7 @@ namespace KTTM.Controllers
             else
             {
                 SetAlert("Phiếu này không có chi tiết nào.", "warning");
-                return RedirectToAction(nameof(Index), "Home", new { soCT, page });
+                return RedirectToAction(nameof(Index), "Home", new { id = kVPTCId, page });
             }
 
             //dong++;

@@ -57,7 +57,7 @@ namespace KTTM.Controllers
                 });
             }
 
-            var kVPCT = await _kVPTCService.GetBySoCT(kVCTPCT.KVPTCId);
+            var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVCTPCT.KVPTCId);
 
             string loaiTienUng;
             if (kVPCT.NgoaiTe == "VN")
@@ -75,7 +75,7 @@ namespace KTTM.Controllers
             tamUng.MaKhNo = kVCTPCT.MaKhNo;
             tamUng.SoCT = _tamUngService.GetSoCT(loaiTienUng);
             tamUng.NgayCT = DateTime.Now; // ??
-            tamUng.PhieuChi = kVCTPCT.KVPTCId; // soCT ben KVPCT
+            tamUng.PhieuChi = kVCTPCT.SoCT; // soCT ben KVPCT
             tamUng.DienGiai = kVCTPCT.DienGiaiP;
             tamUng.LoaiTien = kVCTPCT.LoaiTien;
             tamUng.SoTien = kVCTPCT.SoTien.Value;
@@ -149,7 +149,7 @@ namespace KTTM.Controllers
         public async Task<JsonResult> CheckTamUng(long kVCTPCTId)
         {
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
-            var kVPCT = await _kVPTCService.GetBySoCT(kVCTPCT.KVPTCId);
+            var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVCTPCT.KVPTCId);
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
             if (tamUng == null) // chưa them
                 if (kVPCT.MFieu == "C" && kVCTPCT.TKNo.Trim() == "1411")

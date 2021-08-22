@@ -23,11 +23,11 @@ namespace KTTM.Services
 
         IEnumerable<ListViewModel> ListLoaiPhieu();
         IEnumerable<ListViewModel> ListLoaiTien();
-        string GetSoCT(string param);
+        string GetSoCT(string param, string maCn);
         Task CreateAsync(KVPTC kVPCT);
         Task CreateRangeAsync(List<KVPTC> kVPTCs);
-        Task<KVPTC> GetBySoCT(string soCT);
-        KVPTC GetBySoCTAsNoTracking(string soCT);
+        Task<KVPTC> GetByGuidIdAsync(Guid id);
+        KVPTC GetByIdAsNoTracking(Guid id);
         Task UpdateAsync(KVPTC kVPCT);
 
         IEnumerable<TkCongNo> GetAllTkCongNo();
@@ -57,17 +57,17 @@ namespace KTTM.Services
             return _unitOfWork.phongBanRepository.GetAll();
         }
 
-        public async Task<KVPTC> GetBySoCT(string soCT)
+        public async Task<KVPTC> GetByGuidIdAsync(Guid id)
         {
-            return await _unitOfWork.kVPCTRepository.GetByIdAsync(soCT);
+            return await _unitOfWork.kVPCTRepository.GetByGuidIdAsync(id);
         }
 
-        public KVPTC GetBySoCTAsNoTracking(string soCT)
+        public KVPTC GetByIdAsNoTracking(Guid id)
         {
-            return _unitOfWork.kVPCTRepository.GetByIdAsNoTracking(x => x.SoCT == soCT);
+            return _unitOfWork.kVPCTRepository.GetByIdAsNoTracking(x => x.Id == id);
         }
 
-        public string GetSoCT(string param)
+        public string GetSoCT(string param, string maCn)
         {
             //DateTime dateTime;
             //dateTime = DateTime.Now;
@@ -75,9 +75,10 @@ namespace KTTM.Services
 
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
-            var kVPCT = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(param)) // chi lay nhung soCT cung param: QT, TC, NT, NC
-                                                   .OrderByDescending(x => x.SoCT)
-                                                   .FirstOrDefault();
+            var kVPCT = _unitOfWork.kVPCTRepository
+                                   .Find(x => x.SoCT.Contains(param) && x.MaCn == maCn) // chi lay nhung soCT cung param: QT, TC, NT, NC và cùng CN
+                                   .OrderByDescending(x => x.SoCT)
+                                   .FirstOrDefault();
             if (kVPCT == null || string.IsNullOrEmpty(kVPCT.SoCT))
             {
                 return GetNextId.NextID("", "") + subfix; // 0001
@@ -130,7 +131,7 @@ namespace KTTM.Services
                     List<KVPTC> kVPTCs1 = new List<KVPTC>();
                     foreach (var item in kVCTPTCs)
                     {
-                        KVPTC kVPCT = await GetBySoCT(item.KVPTCId);
+                        KVPTC kVPCT = await GetByGuidIdAsync(item.KVPTCId);
                         kVPTCs1.Add(kVPCT);
                     }
                     if (kVPTCs1.Count > 0)
