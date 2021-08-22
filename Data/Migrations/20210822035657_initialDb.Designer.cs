@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    [Migration("20210813074204_initialDb")]
+    [Migration("20210822035657_initialDb")]
     partial class initialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,10 +73,8 @@ namespace Data.Migrations
                     b.Property<DateTime?>("KC141")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("KVPTCId")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                    b.Property<Guid>("KVPTCId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("KhoangMuc")
                         .HasMaxLength(2)
@@ -166,6 +164,10 @@ namespace Data.Migrations
                         .HasMaxLength(17)
                         .HasColumnType("varchar(17)");
 
+                    b.Property<string>("SoCT")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
                     b.Property<string>("SoCTGoc")
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
@@ -217,9 +219,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models_KTTM.KVPTC", b =>
                 {
-                    b.Property<string>("SoCT")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Create")
                         .IsRequired()
@@ -251,6 +253,10 @@ namespace Data.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("varchar(1)");
 
+                    b.Property<string>("MaCn")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
                     b.Property<string>("MayTinh")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
@@ -274,7 +280,11 @@ namespace Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("SoCT");
+                    b.Property<string>("SoCT")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("KVPTCs");
                 });
@@ -294,7 +304,7 @@ namespace Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
 
-                    b.Property<decimal>("DSKhongVAT")
+                    b.Property<decimal?>("DSKhongVAT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DiaChi")
@@ -309,7 +319,7 @@ namespace Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<bool>("DieuChinh")
+                    b.Property<bool?>("DieuChinh")
                         .HasColumnType("bit");
 
                     b.Property<string>("GhiSo")
@@ -411,10 +421,10 @@ namespace Data.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
 
-                    b.Property<decimal>("SoTien")
+                    b.Property<decimal?>("SoTien")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("SoTienNT")
+                    b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SoXe")
@@ -438,10 +448,10 @@ namespace Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("TyGia")
+                    b.Property<decimal?>("TyGia")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("VAT")
+                    b.Property<decimal?>("VAT")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

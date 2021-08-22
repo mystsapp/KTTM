@@ -148,7 +148,7 @@ namespace Data.Models_KTTM
         public string MauSoHD { get; set; }
         
         [DisplayName("Điều chỉnh")]
-        public bool? DieuChinh { get; set; } //
+        public bool DieuChinh { get; set; } //
 
         [DisplayName("KC141")]
         [Column(TypeName = "datetime")]

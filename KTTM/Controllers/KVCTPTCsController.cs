@@ -228,6 +228,8 @@ namespace KTTM.Controllers
             }
 
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
+            KVCTPCTVM.KVCTPTC.VAT = KVCTPCTVM.KVCTPTC.VAT ?? 0;
+            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
@@ -309,7 +311,7 @@ namespace KTTM.Controllers
         }
 
         // Edit_KVCTPCT
-        public async Task<IActionResult> Edit_KVCTPCT(long id, int page)
+        public async Task<IActionResult> Edit_KVCTPTC(long id, int page)
         {
             KVCTPCTVM.Page = page;
             // from session
@@ -357,9 +359,9 @@ namespace KTTM.Controllers
         }
 
 
-        [HttpPost, ActionName("Edit_KVCTPCT")]
+        [HttpPost, ActionName("Edit_KVCTPTC")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_KVCTPCT_Post(long id, int page)
+        public async Task<IActionResult> Edit_KVCTPTC_Post(long id, int page)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -674,9 +676,9 @@ namespace KTTM.Controllers
         }
 
 
-        public IActionResult BackIndex(Guid KVPTCId, int page)
+        public IActionResult BackIndex(Guid id, int page)
         {
-            return RedirectToAction(nameof(Index), "Home", new { id = KVPTCId, page });
+            return RedirectToAction(nameof(Index), "Home", new { id = id, page });
         }
 
         public JsonResult GetKhachHangs_By_Code(string code)

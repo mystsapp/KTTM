@@ -79,7 +79,7 @@ namespace KTTM.Services
                 MsThue = kVCTPCT.MsThue,
                 VAT = kVCTPCT.VAT.Value,
                 DSKhongVAT = kVCTPCT.DSKhongVAT.Value,
-                DieuChinh = kVCTPCT.DieuChinh.Value,
+                DieuChinh = kVCTPCT.DieuChinh,
                 TenKH = kVCTPCT.TenKH,
                 DiaChi = kVCTPCT.DiaChi,
                 MatHang = kVCTPCT.MatHang,

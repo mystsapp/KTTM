@@ -11,7 +11,9 @@ namespace Data.Migrations
                 name: "KVPTCs",
                 columns: table => new
                 {
-                    SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    MaCn = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     NgayCT = table.Column<DateTime>(type: "datetime", nullable: false),
                     MFieu = table.Column<string>(type: "varchar(1)", maxLength: 1, nullable: true),
                     NgoaiTe = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
@@ -29,7 +31,7 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KVPTCs", x => x.SoCT);
+                    table.PrimaryKey("PK_KVPTCs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +60,8 @@ namespace Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    KVPTCId = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    KVPTCId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     HTTC = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
                     DienGiai = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     TKNo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false),
@@ -113,7 +116,7 @@ namespace Data.Migrations
                         name: "FK_KVCTPTCs_KVPTCs_KVPTCId",
                         column: x => x.KVPTCId,
                         principalTable: "KVPTCs",
-                        principalColumn: "SoCT",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -169,9 +172,9 @@ namespace Data.Migrations
                     PhieuTU = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     DienGiai = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     LoaiTien = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
-                    SoTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    SoTienNT = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TyGia = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SoTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SoTienNT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    TyGia = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     TKNo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false),
                     TKCo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false),
                     MaKhCo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
@@ -183,8 +186,8 @@ namespace Data.Migrations
                     LoaiHDGoc = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
                     SoCTGoc = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
                     KyHieuHD = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
-                    VAT = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DSKhongVAT = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    VAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    DSKhongVAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     BoPhan = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: true),
                     NoQuay = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
                     CoQuay = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
@@ -194,7 +197,7 @@ namespace Data.Migrations
                     KyHieu = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     MauSoHD = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
                     MatHang = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    DieuChinh = table.Column<bool>(type: "bit", nullable: false),
+                    DieuChinh = table.Column<bool>(type: "bit", nullable: true),
                     LapPhieu = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DienGiaiP = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     HoaDonDT = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),

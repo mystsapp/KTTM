@@ -31,6 +31,7 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input type="hidden" asp-for="KVCTPTC.KVPTCId" />
                 <input type="hidden" asp-for="KVPTC.SoCT" />
+                <input type="hidden" asp-for="KVPTC.NgayCT" />
                 <input type="hidden" asp-for="StrUrl" />
                 <!--Thông tin về tài chánh-->
                 <fieldset class="groupbox-border ">
@@ -346,7 +347,7 @@
                         <div class="col-md-3">
                             <label asp-for="KVCTPTC.DieuChinh" class="control-label "></label>
                             <br />
-                            <input asp-for="KVCTPTC.DieuChinh" id="ckDieuChinh" />
+                            <input asp-for="KVCTPTC.DieuChinh" id="ckDieuChinh" type="checkbox"/>
                             <span asp-validation-for="KVCTPTC.DieuChinh" class="text-danger"></span>
                         </div>
 

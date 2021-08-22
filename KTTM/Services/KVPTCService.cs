@@ -180,6 +180,7 @@ namespace KTTM.Services
             {
                 var kVPTCDto = new KVPTCDto();
 
+                kVPTCDto.Id = item.Id;
                 kVPTCDto.SoCT = item.SoCT;
                 kVPTCDto.NgayCT = item.NgayCT.Value;
                 kVPTCDto.MFieu = item.MFieu;

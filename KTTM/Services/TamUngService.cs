@@ -16,7 +16,7 @@ namespace KTTM.Services
         string GetSoCT(string param);
         Task<TamUng> GetByIdAsync(long id);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh);
-        Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi);
+        Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi, string maCn);
         Task CreateAsync(TamUng tamUng);
         Task CreateRangeAsync(IEnumerable<TamUng> tamUngs);
         Task UpdateAsync(TamUng tamUng);
@@ -165,9 +165,9 @@ namespace KTTM.Services
             return tamUngs1;
         }
 
-        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi)
+        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi, string maCn)
         {
-            return await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPTC, y => y.PhieuChi == phieuChi);
+            return await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPTC, y => y.PhieuChi == phieuChi && y.MaCn == maCn);
         }
 
         public async Task<TamUng> GetByIdAsync(long id)

@@ -38,7 +38,7 @@ namespace KTTM.Controllers
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            if (id == 0)
+            if (id == 0)// kVCTPTCId
             {
                 return Json(new
                 {
@@ -47,7 +47,7 @@ namespace KTTM.Controllers
                 });
             }
 
-            var kVCTPCT = await _kVCTPTCService.GetById(id);
+            var kVCTPCT = await _kVCTPTCService.GetById(id); 
             if (kVCTPCT == null)
             {
                 return Json(new
@@ -86,6 +86,7 @@ namespace KTTM.Controllers
             tamUng.TKNo = kVCTPCT.TKNo;
             tamUng.TKCo = kVCTPCT.TKCo;
             tamUng.Phong = kVPCT.Phong;
+            tamUng.MaCn = kVPCT.MaCn;
             //tamUng.TTTP ??
             tamUng.PhieuTT = ""; // soCT ben KVPCT khi thanh toan;
 
@@ -127,10 +128,10 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CheckTamUng_In_PhieuChi(string KVPCTId)
+        public async Task<JsonResult> CheckTamUng_In_PhieuChi(string soCT, string maCn)
         {
 
-            var tamUngs_By_PhieuChi = await _tamUngService.Find_TamUngs_By_PhieuChi_Include(KVPCTId);
+            var tamUngs_By_PhieuChi = await _tamUngService.Find_TamUngs_By_PhieuChi_Include(soCT, maCn);
             if (tamUngs_By_PhieuChi.Count() > 0) // da ton tai 1 cai' tamung nao do'
             {
                 return Json(new

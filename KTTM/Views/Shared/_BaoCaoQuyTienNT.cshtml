@@ -60,7 +60,7 @@
 
     shortcut.add("Enter", function () {
 
-        $('#btnBaoCaoQuyTienNT').click()
+        //$('#btnBaoCaoQuyTienNT').click()
 
     });
 
@@ -68,7 +68,7 @@
     $('#btnBaoCaoQuyTienNT').off('click').on('click', function () {
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
-        loaiTien ////////////////////////////////////////////////////////////////////////////////
+        loaiTien = ''; ////////////////////////////////////////////////////////////////////////////////
         if (tuNgay === '' || denNgay === '') {
             toastr.warning("Ngày không được để trống", "Thông báo!");
         }

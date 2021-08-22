@@ -78,7 +78,7 @@
                                     <span id="confirmDeleteSpan_@item.Id" style="display: none">
 
                                         <span class="text-dark ">Xoá?</span>
-                                        <button type="button" class="btn btn-danger btn-xs btnXoaDong" data-id="@item.Id">Yes</button>
+                                        <button type="button" class="btn btn-danger btn-xs btnXoaDong" data-kvptcid="@Model.KVPTC.Id" data-id="@item.Id">Yes</button>
                                         <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                     </span>
                                     <span id="deleteSpan_@item.Id">
@@ -173,16 +173,16 @@
     $('.btnXoaDong').off('click').on('click',function () {
 
         var page = @Model.Page;
-        var soCT = '@Model.KVPTC.SoCT';
+        var kvptcId = '@Model.KVPTC.Id';
 
         id = $(this).data('id');
 
         var url = '/KVCTPTCs/Delete';
         $.post(url, { id: id }, function (response) {
-
+            debugger
             if (response) {
                 toastr.success('Xoá thành công', 'Xoá!');
-                indexController.Load_KVCTPCTPartial(soCT, page);
+                indexController.Load_KVCTPCTPartial(kvptcId, page);
             }
         });
 
@@ -194,10 +194,12 @@
 
         var page = @Model.Page;
         var soCT = '@Model.KVPTC.SoCT';
+        var maCn = '@Model.KVPTC.MaCn';
+        var kVPTCId = '@Model.KVPTC.Id';
 
         // kiem tra xem phieuchi nay da co tamung nao chua
         var url = '/TamUngs/CheckTamUng_In_PhieuChi';
-        $.post(url, { KVPCTId: soCT }, function (response) {
+        $.post(url, { soCT: soCT, maCn: maCn }, function (response) {
             //console.log(response);
             if (response.status) {
                 toastr.error(response.message, 'Thêm tạm ứng!');
@@ -209,14 +211,14 @@
                 bootbox.confirm("Bạn có muốn thêm vào <b> tạm ứng </b> không?", function (result) {
                     if (result) {
 
-                        id = $('#hidTamUng').val();
+                        id = $('#hidTamUng').val(); // kVCTPTCId
 
                         var url = '/TamUngs/Create';
                         $.post(url, { id: id }, function (response) {
                             //console.log(response);
                             if (response.status) {
                                 toastr.success('Thêm mới thành công', 'Thêm tạm ứng!');
-                                indexController.Load_KVCTPCTPartial(soCT, page);
+                                indexController.Load_KVCTPCTPartial(kVPTCId, page);
                             }
                             else {
                                 toastr.error(response.message, 'Thêm tạm ứng!')

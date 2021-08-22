@@ -13,6 +13,10 @@ namespace Data.Models_KTTM
         public long Id { get; set; }
         public virtual KVCTPTC KVCTPTC { get; set; }
 
+        [DisplayName("Chi nhánh")]
+        [MaxLength(5, ErrorMessage = "Chiều dài tối đa 5 ký tự"), Column(TypeName = "varchar(5)")]
+        public string MaCn { get; set; }
+
         [DisplayName("Mã KH nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhNo { get; set; } 

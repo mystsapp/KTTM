@@ -47,6 +47,10 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, Guid id, int page = 1)
         {
+            if(id == Guid.Empty)
+            {
+                ViewBag.id = "";
+            }
             //List<Tonquy> tonquiesAnhSon = _kttm_AnhSonContext.Tonquies.ToList();
             //List<TonQuy> tonQuies = new List<TonQuy>();
             //foreach(var item in tonquiesAnhSon)
@@ -266,9 +270,10 @@ namespace KTTM.Controllers
             ViewBag.searchToDate = searchToDate;
             ViewBag.boolSgtcode = boolSgtcode;
 
-            if (id == null) // for redirect with id
+            if (id != Guid.Empty) // for redirect with id
             {
                 HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
+                ViewBag.id = HomeVM.KVPTC.Id;
             }
             else
             {
@@ -282,11 +287,6 @@ namespace KTTM.Controllers
         {
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            //if (user.Role.RoleName == "KeToans")
-            //{
-            //    return View("~/Views/Shared/AccessDenied.cshtml");
-            //}
 
             HomeVM.StrUrl = strUrl;
             HomeVM.KVPTC.NgayCT = DateTime.Now;
@@ -325,6 +325,7 @@ namespace KTTM.Controllers
 
             HomeVM.KVPTC.Create = DateTime.Now;
             HomeVM.KVPTC.LapPhieu = user.Username;
+            HomeVM.KVPTC.MaCn = user.Macn;
 
             // next SoCT --> bat buoc phai co'
             switch (HomeVM.KVPTC.MFieu)
@@ -396,7 +397,7 @@ namespace KTTM.Controllers
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             HomeVM.StrUrl = strUrl;
-            if (id == null)
+            if (id == Guid.Empty)
             {
                 ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");

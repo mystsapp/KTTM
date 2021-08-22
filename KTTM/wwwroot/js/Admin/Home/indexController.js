@@ -182,7 +182,7 @@ var indexController = {
 
         var url = '/KVCTPTCs/KVCTPTCPartial';
         $.get(url, { KVPTCid: id, page: page }, function (response) {
-
+            
             $('#KVCTPCT_Tbl').html(response);
             $('#KVCTPCT_Tbl').show(500);
 
@@ -193,7 +193,7 @@ var indexController = {
 
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
-        $('#hidCashier').val(soCT);
+        //$('#hidCashier').val(id);
 
         // gang' soCT cho btnThemDong
         $('#btnThemDong').attr('disabled', false);

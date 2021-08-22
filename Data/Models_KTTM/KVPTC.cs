@@ -51,7 +51,6 @@ namespace Data.Models_KTTM
 
         //[DisplayName("Ngày tạo")]
         [Column(TypeName = "datetime")]
-        [Required(ErrorMessage = "Ngày không được để trống")]
         public DateTime? Create { get; set; }
 
         //[DisplayName("Số biên nhận")]
