@@ -11,8 +11,8 @@ namespace Data.Repository
 {
     public interface ITamUngRepository : IRepository<TamUng>
     {
-        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan);
-        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong();
+        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan, string maCn);
+        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string maCn);
     }
     public class TamUngRepository : Repository_KTTM<TamUng>, ITamUngRepository
     {
@@ -20,14 +20,16 @@ namespace Data.Repository
         {
         }
 
-        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
+        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan, string maCn)
         {
-            return _context.TamUngs.Where(x => x.Phong == boPhan && x.ConLaiNT > 0).Include(x => x.KVCTPTC).ThenInclude(x => x.KVPTC);
+            var tamUngs = _context.TamUngs.Where(x => x.Phong == boPhan && x.ConLaiNT > 0).Include(x => x.KVCTPTC).ThenInclude(x => x.KVPTC).ToList();
+            tamUngs = tamUngs.Where(x => x.MaCn == maCn).ToList();
+            return tamUngs;
         }
         
-        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong()
+        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string maCn)
         {
-            return _context.TamUngs.Where(x => x.ConLaiNT > 0).Include(x => x.KVCTPTC).ThenInclude(x => x.KVPTC);
+            return _context.TamUngs.Where(x => x.ConLaiNT > 0 && x.MaCn == maCn).Include(x => x.KVCTPTC).ThenInclude(x => x.KVPTC);
         }
         
     }

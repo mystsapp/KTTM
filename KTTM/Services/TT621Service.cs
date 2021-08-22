@@ -26,7 +26,7 @@ namespace KTTM.Services
         Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621);
         IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
         IEnumerable<TT621> GetAll();
-        IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate);
+        IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn);
         IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
         Task CreateRangeAsync(List<TT621> tT621s);
     }
@@ -241,7 +241,7 @@ namespace KTTM.Services
             return _unitOfWork.tT621Repository.GetAll();
         }
 
-        public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate)
+        public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn)
         {
 
             List<TT621> list = new List<TT621>();
@@ -261,6 +261,7 @@ namespace KTTM.Services
                     }
 
                     list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date(fromDate, toDate).ToList();
+                    list = list.Where(x => x.MaCn == maCn).ToList();
                 }
                 catch (Exception)
                 {
@@ -278,6 +279,7 @@ namespace KTTM.Services
                         fromDate = DateTime.Parse(searchFromDate);
                         //list = list.Where(x => x.NgayCT >= fromDate).ToList();
                         list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date(fromDate, "").ToList();
+                        list = list.Where(x => x.MaCn == maCn).ToList();
                     }
                     catch (Exception)
                     {
@@ -292,6 +294,7 @@ namespace KTTM.Services
                         toDate = DateTime.Parse(searchToDate);
                         //list = list.Where(x => x.NgayCT < toDate.AddDays(1)).ToList();
                         list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date("", toDate).ToList();
+                        list = list.Where(x => x.MaCn == maCn).ToList();
                     }
                     catch (Exception)
                     {

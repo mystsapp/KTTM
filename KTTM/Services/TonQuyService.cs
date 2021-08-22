@@ -9,12 +9,12 @@ namespace KTTM.Services
 {
     public interface ITonQuyService
     {
-        IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate);
+        IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn);
         Task CreateAsync(TonQuy tonQuy);
         Task UpdateAsync(TonQuy tonQuy);
         List<TonQuy> Find_Equal_By_Date(DateTime dateTime);
-        Task<string> CheckTonDauStatus(DateTime fromDate);
-        Task<string> CheckTonDauStatus_NT(DateTime fromDate, string loaiTien);
+        Task<string> CheckTonDauStatus(DateTime fromDate, string maCn);
+        Task<string> CheckTonDauStatus_NT(DateTime fromDate, string loaiTien, string maCn);
         TonQuy GetById(long id);
         Task CreateRangeAsync(List<TonQuy> tonQuies);
     }
@@ -27,13 +27,13 @@ namespace KTTM.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> CheckTonDauStatus_NT(DateTime fromDate, string loaiTien)
+        public async Task<string> CheckTonDauStatus_NT(DateTime fromDate, string loaiTien, string maCn)
         {
             //var date = DateTime.Now.AddDays(1);
             // ds tonquy truoc tuNgay
             List<TonQuy> tonQuies1 = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT <= fromDate 
                                                                          && x.LoaiTien == loaiTien).ToList();
-            
+            tonQuies1 = tonQuies1.Where(x => x.MaCn == maCn).ToList();
             // tonquy sau cung nhat
             TonQuy tonQuy = tonQuies1.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             
@@ -56,13 +56,14 @@ namespace KTTM.Services
 
         }
         
-        public async Task<string> CheckTonDauStatus(DateTime fromDate)
+        public async Task<string> CheckTonDauStatus(DateTime fromDate, string maCn)
         {
             //var date = DateTime.Now.AddDays(1);
             // ds tonquy truoc tuNgay
             List<TonQuy> tonQuies1 = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT <= fromDate 
                                                                          && x.LoaiTien == "VND").ToList();
-            
+            tonQuies1 = tonQuies1.Where(x => x.MaCn == maCn).ToList();
+
             // tonquy sau cung nhat
             TonQuy tonQuy = tonQuies1.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             
@@ -91,7 +92,7 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
-        public IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate)
+        public IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn)
         {
 
             List<TonQuy> list = new List<TonQuy>();
@@ -112,7 +113,7 @@ namespace KTTM.Services
 
                     list = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT >= fromDate &&
                                        x.NgayCT < toDate.AddDays(1)).ToList();
-                    
+                    list = list.Where(x => x.MaCn == maCn).ToList();
                 }
                 catch (Exception)
                 {
@@ -129,7 +130,7 @@ namespace KTTM.Services
                     {
                         fromDate = DateTime.Parse(searchFromDate);
                         list = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT >= fromDate).ToList();
-                        
+                        list = list.Where(x => x.MaCn == maCn).ToList();
                     }
                     catch (Exception)
                     {
@@ -143,7 +144,7 @@ namespace KTTM.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         list = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT < toDate.AddDays(1)).ToList();
-                        
+                        list = list.Where(x => x.MaCn == maCn).ToList();
                     }
                     catch (Exception)
                     {

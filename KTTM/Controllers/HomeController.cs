@@ -477,7 +477,8 @@ namespace KTTM.Controllers
                     await _kVPTCService.UpdateAsync(HomeVM.KVPTC);
                     SetAlert("Cập nhật thành công", "success");
 
-                    return Redirect(strUrl);
+                    //return Redirect(strUrl);
+                    return RedirectToAction(nameof(Index), new { id = id });
                 }
                 catch (Exception ex)
                 {

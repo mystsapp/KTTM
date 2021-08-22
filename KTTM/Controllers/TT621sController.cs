@@ -38,13 +38,16 @@ namespace KTTM.Controllers
         }
         public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, string page, string maKh, string tenKh)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
 
             ViewBag.maKh = maKh;
             ViewBag.tenKh = tenKh;
 
-            if (kvptcId != null) // nguoi ta có chọn 1 dóng phiếu nào đó
+            if (kvptcId != Guid.Empty) // nguoi ta có chọn 1 dóng phiếu nào đó
             {
                 TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(kvptcId);
             }
@@ -52,7 +55,7 @@ namespace KTTM.Controllers
             if (!string.IsNullOrEmpty(maKh))
             {
                 // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
-                TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include_KhongTC(maKh);
+                TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include_KhongTC(maKh, user.Macn);
                 TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
 
                 // get commenttext
@@ -134,6 +137,10 @@ namespace KTTM.Controllers
         ////////////////////////////////////////////// TT141 //////////////////////////////////////////////
         public async Task<IActionResult> TT621Create(long kvctptcId, string strUrl, string page)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;
 
@@ -153,7 +160,7 @@ namespace KTTM.Controllers
 
             TT621VM.KVCTPTC = kVCTPCT;
             // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
-            TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh); // MaKh == MaKhNo
+            TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh, user.Macn); // MaKh == MaKhNo
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
 
             // get commenttext

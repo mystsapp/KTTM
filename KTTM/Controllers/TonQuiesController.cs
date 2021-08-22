@@ -1,4 +1,6 @@
 ﻿using Data.Models_KTTM;
+using Data.Models_QLTaiKhoan;
+using Data.Utilities;
 using KTTM.Models;
 using KTTM.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -93,6 +95,10 @@ namespace KTTM.Controllers
         // GetTonQuies_Partial
         public IActionResult GetTonQuiesNT_Partial(string searchFromDate, string searchToDate)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
             if (string.IsNullOrEmpty(searchFromDate) || string.IsNullOrEmpty(searchToDate)) //
@@ -117,7 +123,7 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate);
+            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate, user.Macn);
 
             if (TonQuyVM.TonQuies == null)
             {
@@ -132,6 +138,10 @@ namespace KTTM.Controllers
         }
         public IActionResult GetTonQuies_Partial(string searchFromDate, string searchToDate)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
             if (string.IsNullOrEmpty(searchFromDate) || string.IsNullOrEmpty(searchToDate)) //
@@ -156,7 +166,7 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate);
+            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate, user.Macn);
 
             if (TonQuyVM.TonQuies == null)
             {

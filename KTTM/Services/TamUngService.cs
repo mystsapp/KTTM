@@ -15,13 +15,13 @@ namespace KTTM.Services
         IEnumerable<TamUng> GetAll();
         string GetSoCT(string param);
         Task<TamUng> GetByIdAsync(long id);
-        Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh);
+        Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh, string maCn);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi, string maCn);
         Task CreateAsync(TamUng tamUng);
         Task CreateRangeAsync(IEnumerable<TamUng> tamUngs);
         Task UpdateAsync(TamUng tamUng);
-        Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh);
-        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan);
+        Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh, string maCn);
+        IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan, string maCn);
         IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs);
         IEnumerable<TamUngModel_GroupBy_Name_Phong> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs);
     }
@@ -40,16 +40,16 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
-        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan)
+        public IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string boPhan, string maCn)
         {
             List<TamUng> tamUngs = new List<TamUng>();
             if (string.IsNullOrEmpty(boPhan))
             {
-                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong().ToList(); // getall with conlaiNT > 0
+                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(maCn).ToList(); // getall with conlaiNT > 0
             }
             else
             {
-                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan).ToList(); // by phong with conlaiNT > 0
+                tamUngs = _unitOfWork.tamUngRepository.FindTamUngs_IncludeTwice_By_Phong(boPhan, maCn).ToList(); // by phong with conlaiNT > 0
             }
 
             return tamUngs;
@@ -141,15 +141,16 @@ namespace KTTM.Services
             return result2;
         }
 
-        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh)
+        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh, string maCn)
         {
-            var tamUngs = await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPTC, y => y.MaKhNo == maKh && y.ConLai > 0);
+            var tamUngs = await _unitOfWork.tamUngRepository.FindIncludeOneAsync(x => x.KVCTPTC, y => y.MaKhNo == maKh && y.MaCn == maCn);
+            tamUngs = tamUngs.Where(x => x.ConLai > 0);
             return tamUngs;
         }
 
-        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh)
+        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include_KhongTC(string maKh, string maCn)
         {
-            var tamUngs = await Find_TamUngs_By_MaKh_Include(maKh);
+            var tamUngs = await Find_TamUngs_By_MaKh_Include(maKh, maCn);
             var tamUngs1 = tamUngs.ToList();
 
             foreach (var item in tamUngs1.Reverse<TamUng>())

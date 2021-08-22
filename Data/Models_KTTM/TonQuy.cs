@@ -10,6 +10,11 @@ namespace Data.Models_KTTM
     public class TonQuy
     {
         public long Id { get; set; }
+
+        [DisplayName("Chi nhánh")]
+        [MaxLength(5, ErrorMessage = "Chiều dài tối đa 5 ký tự"), Column(TypeName = "varchar(5)")]
+        public string MaCn { get; set; }
+
         [DisplayName("Ngày CT")]
         [Column(TypeName = "datetime")]
         [Required(ErrorMessage = "Ngày không được để trống")]

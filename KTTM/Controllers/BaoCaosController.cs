@@ -226,10 +226,11 @@ namespace KTTM.Controllers
             
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             //string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
             string fromDate = DateTime.Parse(searchFromDate).AddDays(-1).ToString("dd/MM/yyyy");
             //var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
-            var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate);
+            var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
 
@@ -491,7 +492,8 @@ namespace KTTM.Controllers
                 NgayTao = DateTime.Now,
                 NguoiTao = user.Hoten,
                 SoTien = tonCuoi,
-                SoTienNT = tonCuoi
+                SoTienNT = tonCuoi,
+                MaCn = user.Macn
             };
 
             var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
@@ -562,6 +564,10 @@ namespace KTTM.Controllers
         [HttpPost]
         public IActionResult TheoDoiTUNoiBoTk141_Partial_Excel_In(string tuNgay, string denNgay, int id_BoPhan)
         {
+
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             PhongBan phongBan = new PhongBan();
             if (id_BoPhan == 0)
             {
@@ -571,15 +577,12 @@ namespace KTTM.Controllers
             {
                 phongBan = _baoCaoService.GetPhongBanById(id_BoPhan);
             }
-            IEnumerable<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan);
+            IEnumerable<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan, user.Macn);
             List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
             if (tamUngs.Count() > 0)
             {
                 tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs).ToList();
             }
-
-            // from session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             ExcelPackage ExcelApp = new ExcelPackage();
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
@@ -809,7 +812,7 @@ namespace KTTM.Controllers
 
             foreach (var phongBan in phongBans)
             {
-                List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan).ToList();
+                List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan, user.Macn).ToList();
 
                 List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
                 if (tamUngs.Count() > 0)
@@ -995,19 +998,20 @@ namespace KTTM.Controllers
         [HttpPost]
         public IActionResult TheoDoiTUNoiBoTk141_Partial_Excel_TatCa1Sheet(string tuNgay, string denNgay)
         {
+
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             PhongBan phongBan = new PhongBan();
             List<PhongBan> phongBans = GetPhongBans_Where().ToList();
 
-            List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong("").ToList();
+            List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong("", user.Macn).ToList();
             List<TamUngModel_GroupBy_Name_Phong> tamUngModel_GroupBy_Name_Phongs = new List<TamUngModel_GroupBy_Name_Phong>();
             if (tamUngs.Count() > 0)
             {
                 tamUngModel_GroupBy_Name_Phongs = _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs).ToList(); // groupby name (makh)
 
             }
-
-            // from session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             ExcelPackage ExcelApp = new ExcelPackage();
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
@@ -1236,6 +1240,10 @@ namespace KTTM.Controllers
         // InChungTuGhiSo_Partial
         public IActionResult InChungTuGhiSo_Partial(string searchFromDate, string searchToDate)
         {
+
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate)) // moi load vao
@@ -1257,7 +1265,7 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate);
+            BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate, user.Macn);
 
             if (BaoCaoVM.TT621s == null)
             {
@@ -1274,14 +1282,16 @@ namespace KTTM.Controllers
         public IActionResult InChungTuGhiSoExcel(string tuNgay, string denNgay,
                                                              long id_TT, string soCT_TT, string ngayCT_TT, string maKhCo_TT, string phieuTC_TT)
         {
-            IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay);
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay, user.Macn);
             TT621 tT621 = tT621s.Where(x => x.Id == id_TT).FirstOrDefault();
             List<TT621> tT621s_By_TamUng = _tT621Service.FindTT621s_IncludeTwice(tT621.TamUngId).ToList();
 
             string loaiphieu = tT621.TamUng.KVCTPTC.KVPTC.MFieu == "T" ? "THU" : "CHI";
-            // from session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
-
+            
             ExcelPackage ExcelApp = new ExcelPackage();
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
             // Định dạng chiều dài cho cột
@@ -1487,6 +1497,10 @@ namespace KTTM.Controllers
 
         public async Task<JsonResult> CheckNgayTonQuy_NT(string tuNgay, string denNgay, string loaiTien)
         {
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             DateTime fromDate = DateTime.Parse(tuNgay);
             DateTime compareDate = DateTime.Parse("01/06/2021");
 
@@ -1510,7 +1524,7 @@ namespace KTTM.Controllers
             }
 
             // tonquy truoc ngay fromdate => xem co ton dau` ko ( tranh truong hop chua tinh ton dau cho vai phieu )
-            string kVCTPTCs1 = await _tonQuyService.CheckTonDauStatus_NT(DateTime.Parse(tuNgay), loaiTien);
+            string kVCTPTCs1 = await _tonQuyService.CheckTonDauStatus_NT(DateTime.Parse(tuNgay), loaiTien, user.Macn);
             if (!string.IsNullOrEmpty(kVCTPTCs1))
             {
                 return Json(new
@@ -1540,6 +1554,10 @@ namespace KTTM.Controllers
         
         public async Task<JsonResult> CheckNgayTonQuy(string tuNgay, string denNgay)
         {
+
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             DateTime fromDate = DateTime.Parse(tuNgay);
             DateTime compareDate = DateTime.Parse("03/01/2020");
 
@@ -1548,7 +1566,7 @@ namespace KTTM.Controllers
                 return Json(new
                 {
                     status = false,
-                    message = "Không đồng ý tồn quỹ trước 03/01/2021"
+                    message = "Không đồng ý tồn quỹ trước 03/01/2020"
                 });
             }
 
@@ -1563,7 +1581,7 @@ namespace KTTM.Controllers
             }
 
             // tonquy truoc ngay fromdate => xem co ton dau` ko ( tranh truong hop chua tinh ton dau cho vai phieu )
-            string kVCTPTCs1 = await _tonQuyService.CheckTonDauStatus(DateTime.Parse(tuNgay));
+            string kVCTPTCs1 = await _tonQuyService.CheckTonDauStatus(DateTime.Parse(tuNgay), user.Macn);
             if (!string.IsNullOrEmpty(kVCTPTCs1))
             {
                 return Json(new

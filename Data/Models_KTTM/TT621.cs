@@ -12,6 +12,10 @@ namespace Data.Models_KTTM
         
         public long Id { get; set; }
 
+        [DisplayName("Chi nhánh")]
+        [MaxLength(5, ErrorMessage = "Chiều dài tối đa 5 ký tự"), Column(TypeName = "varchar(5)")]
+        public string MaCn { get; set; }
+
         public long TamUngId { get; set; }
 
         [ForeignKey("TamUngId")]
@@ -146,7 +150,7 @@ namespace Data.Models_KTTM
         public string MatHang { get; set; } //
 
         [DisplayName("Điều chỉnh")]
-        public bool? DieuChinh { get; set; } //
+        public bool DieuChinh { get; set; } //
 
         [DisplayName("Người lập phiếu")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "nvarchar(50)")]
