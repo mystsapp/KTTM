@@ -7,7 +7,7 @@ using Data.Models_Cashier;
 using Data.Models_DanhMucKT;
 using Data.Models_HDVATOB;
 using Data.Models_KTTM;
-using Data.Models_KTTM_Anhson;
+using Data.Models_KTTM_1;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
 using Data.Repository;
@@ -42,7 +42,7 @@ namespace KTTM
             services.AddDbContext<DanhMucKTContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DanhMucKTConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qlcashierContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLCashierConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HdVATObConnection"))/*.EnableSensitiveDataLogging()*/);
-            services.AddDbContext<kttm_anhSonContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Kttm_anhSonConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<KTTM_1Context>(options => options.UseSqlServer(Configuration.GetConnectionString("Kttm_1Connection"))/*.EnableSensitiveDataLogging()*/);
 
             // qltaikhoan
             services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();

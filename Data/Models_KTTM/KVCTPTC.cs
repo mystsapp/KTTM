@@ -22,6 +22,10 @@ namespace Data.Models_KTTM
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string SoCT { get; set; }
 
+        [DisplayName("Chi nhánh")]
+        [MaxLength(5, ErrorMessage = "Chiều dài tối đa 5 ký tự"), Column(TypeName = "varchar(5)")]
+        public string MaCn { get; set; }
+
         [DisplayName("HTTC")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string HTTC { get; set; } 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    [Migration("20210822095450_addCNchoTonQuy")]
-    partial class addCNchoTonQuy
+    [Migration("20210823033250_initialDb")]
+    partial class initialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,10 @@ namespace Data.Migrations
 
                     b.Property<string>("LogFile")
                         .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("MaCn")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
 
                     b.Property<string>("MaKh")
                         .HasMaxLength(5)
@@ -355,6 +359,10 @@ namespace Data.Migrations
 
                     b.Property<string>("LogFile")
                         .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("MaCn")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
 
                     b.Property<string>("MaKhCo")
                         .HasMaxLength(12)

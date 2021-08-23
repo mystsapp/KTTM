@@ -13,15 +13,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Data.Models_KTTM_Anhson;
+using Data.Models_KTTM_1;
 
 namespace KTTM.Controllers
 {
     public class HomeController : BaseController
     {
+        private readonly KTTM_1Context _kTTM_1Context;
         private readonly IKVPTCService _kVPTCService;
         private readonly IKVCTPTCService _kVCTPTCService;
-        private readonly kttm_anhSonContext _kttm_AnhSonContext;
         private readonly ITamUngService _tamUngService;
         private readonly ITT621Service _tT621Service;
         private readonly ITonQuyService _tonQuyService;
@@ -29,11 +29,11 @@ namespace KTTM.Controllers
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
-        public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService, kttm_anhSonContext kttm_AnhSonContext, ITamUngService tamUngService, ITT621Service tT621Service, ITonQuyService tonQuyService)
+        public HomeController(KTTM_1Context kTTM_1Context, IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService, ITamUngService tamUngService, ITT621Service tT621Service, ITonQuyService tonQuyService)
         {
+            _kTTM_1Context = kTTM_1Context;
             _kVPTCService = kVPTCService;
             _kVCTPTCService = kVCTPTCService;
-            _kttm_AnhSonContext = kttm_AnhSonContext;
             _tamUngService = tamUngService;
             _tT621Service = tT621Service;
             _tonQuyService = tonQuyService;
@@ -51,75 +51,78 @@ namespace KTTM.Controllers
             {
                 ViewBag.id = "";
             }
-            //List<Tonquy> tonquiesAnhSon = _kttm_AnhSonContext.Tonquies.ToList();
-            //List<TonQuy> tonQuies = new List<TonQuy>();
-            //foreach(var item in tonquiesAnhSon)
+
+            //List<Data.Models_KTTM_1.TonQuy> tonquiesAnhSon = _kTTM_1Context.TonQuies.ToList();
+            //List<Data.Models_KTTM.TonQuy> tonQuies = new List<Data.Models_KTTM.TonQuy>();
+            //foreach (var item in tonquiesAnhSon)
             //{
-            //    tonQuies.Add(new TonQuy()
+            //    tonQuies.Add(new Data.Models_KTTM.TonQuy()
             //    {
-            //        LoaiTien = item.Loaitien.Trim(),
+            //        LoaiTien = item.LoaiTien.Trim(),
             //        LogFile = "==== chuyển từ data anh Sơn.",
-            //        NgayCT = item.Ngayct,
-            //        SoTien = item.Sotien.Value,
-            //        SoTienNT = item.Sotiennt.Value,
-            //        TyGia = item.Tygia.Value
+            //        NgayCT = item.NgayCt,
+            //        SoTien = item.SoTien,
+            //        SoTienNT = item.SoTienNt,
+            //        TyGia = item.TyGia,
+            //        MaCn = "STS"
             //    });
             //}
             //var abc = "";
             //await _tonQuyService.CreateRangeAsync(tonQuies);
 
 
-            //List<TamUng> tamUngs = _tamUngService.GetAll().ToList();
-            //List<Tt621> tt621sAnhSon = _kttm_AnhSonContext.Tt621s.ToList();
+            //List<Data.Models_KTTM.TamUng> tamUngs = _tamUngService.GetAll().ToList();
+            //List<Tt621> tt621sAnhSon = _kTTM_1Context.Tt621s.ToList();
             //List<TT621> tT621s = new List<TT621>();
 
             //foreach (var tamUng in tamUngs)
             //{
-            //    IEnumerable<Tt621> tt621sAnhSon1 = tt621sAnhSon.Where(x => x.Phieutu.Trim() == tamUng.SoCT.Trim());
+            //    IEnumerable<Tt621> tt621sAnhSon1 = tt621sAnhSon.Where(x => x.PhieuTu.Trim() == tamUng.SoCT.Trim());
             //    if (tt621sAnhSon1.Count() > 0)
             //    {
             //        foreach (var item in tt621sAnhSon1)
             //        {
             //            tT621s.Add(new TT621()
             //            {
-            //                BoPhan = item.Bophan.Trim(),
-            //                CoQuay = item.Coquay.Trim(),
-            //                DiaChi = item.Diachi.Trim(),
-            //                DienGiai = item.Diengiai.Trim(),
-            //                DienGiaiP = item.Diengiaip.Trim(),
-            //                DieuChinh = item.Dieuchinh,
-            //                DSKhongVAT = item.Dskhongvat,
-            //                GhiSo = item.Ghiso.Trim(),
-            //                HoaDonDT = item.Hoadondt.Trim(),
+            //                BoPhan = item.BoPhan.Trim(),
+            //                CoQuay = item.CoQuay.Trim(),
+            //                DiaChi = item.DiaChi.Trim(),
+            //                DienGiai = item.DienGiai.Trim(),
+            //                DienGiaiP = item.DienGiaiP.Trim(),
+            //                DieuChinh = item.DieuChinh,
+            //                DSKhongVAT = item.DskhongVat,
+            //                GhiSo = item.GhiSo.Trim(),
+            //                HoaDonDT = item.HoaDonDt.Trim(),
             //                HTTC = item.Httc.Trim(),
-            //                KyHieu = item.Kyhieu.Trim(),
-            //                KyHieuHD = item.Kyhieuhd.Trim(),
-            //                LapPhieu = item.Lapphieu.Trim(),
-            //                LoaiHDGoc = item.Loaihdgoc.Trim(),
-            //                LoaiTien = item.Loaitien.Trim(),
+            //                KyHieu = item.KyHieu.Trim(),
+            //                KyHieuHD = item.KyHieuHd.Trim(),
+            //                LapPhieu = item.LapPhieu.Trim(),
+            //                LoaiHDGoc = item.LoaiHdgoc.Trim(),
+            //                LoaiTien = item.LoaiTien.Trim(),
             //                LogFile = "==== chuyển từ data anh Sơn",
-            //                MaKhCo = item.Makhco.Trim(),
-            //                MaKhNo = item.Makhno.Trim(),
-            //                MatHang = item.Mathang.Trim(),
-            //                MauSoHD = item.Mausohd.Trim(),
-            //                MsThue = item.Msthue.Trim(),
-            //                NgayCT = item.Ngayct,
-            //                NgayCTGoc = item.Ngayctgoc,
-            //                NoQuay = item.Noquay.Trim(),
-            //                PhieuTC = item.Phieutc.Trim(),
-            //                PhieuTU = item.Phieutu.Trim(),
+            //                MaKhCo = item.MaKhCo.Trim(),
+            //                MaKhNo = item.MaKhNo.Trim(),
+            //                MatHang = item.MatHang.Trim(),
+            //                MauSoHD = item.MauSoHd.Trim(),
+            //                MsThue = item.MsThue.Trim(),
+            //                NgayCT = item.NgayCt,
+            //                NgayCTGoc = item.NgayCtgoc,
+            //                NoQuay = item.NoQuay.Trim(),
+            //                PhieuTC = item.PhieuTc.Trim(),
+            //                PhieuTU = item.PhieuTu.Trim(),
             //                Sgtcode = item.Sgtcode.Trim(),
-            //                SoCT = item.Soct.Trim(),
-            //                SoCTGoc = item.Soctgoc.Trim(),
-            //                SoTien = item.Sotien,
-            //                SoTienNT = item.Sotiennt,
-            //                SoXe = item.Soxe.Trim(),
+            //                SoCT = item.SoCt.Trim(),
+            //                SoCTGoc = item.SoCtgoc.Trim(),
+            //                SoTien = item.SoTien,
+            //                SoTienNT = item.SoTienNt,
+            //                SoXe = item.SoXe.Trim(),
             //                TamUngId = tamUng.Id,
-            //                TenKH = item.Tenkh.Trim(),
+            //                TenKH = item.TenKh.Trim(),
             //                TKCo = item.Tkco.Trim(),
             //                TKNo = item.Tkno.Trim(),
-            //                TyGia = item.Tygia,
-            //                VAT = item.Vat
+            //                TyGia = item.TyGia,
+            //                VAT = item.Vat,
+            //                MaCn = tamUng.MaCn
 
             //            });
             //        }
@@ -131,40 +134,41 @@ namespace KTTM.Controllers
             //await _tT621Service.CreateRangeAsync(tT621s);
 
 
-            //var list = _kttm_AnhSonContext.Tamungs.ToList();
+            //var list = _kTTM_1Context.TamUngs.ToList();
             //var listKVCTPTC = _kVCTPTCService.GetAll().ToList();
             //var listKVPTC = _kVPTCService.GetAll().ToList();
 
-            //List<TamUng> tamUngs = new List<TamUng>();
+            //List<Data.Models_KTTM.TamUng> tamUngs = new List<Data.Models_KTTM.TamUng>();
             //foreach (var tamUng in list)
             //{
-            //    var kVCTPTC = listKVCTPTC.Where(x => x.KVPTCId == tamUng.Phieuchi)
+            //    var kVCTPTC = listKVCTPTC.Where(x => x.SoCT == tamUng.PhieuChi)
             //               .Where(x => x.TKNo.Trim() == "1411" || x.TKNo.Trim() == "1412").FirstOrDefault();
             //    //list = list.Where(x => x.Phieuchi == kVPTC.SoCT).ToList();
             //    //.Where(x => x.Tkno.StartsWith("141")).ToList();
             //    if (list.Count > 0)
             //    {
 
-            //        tamUngs.Add(new TamUng()
+            //        tamUngs.Add(new Data.Models_KTTM.TamUng()
             //        {
-            //            ConLai = tamUng.Conlai,
-            //            ConLaiNT = tamUng.Conlaint,
-            //            DienGiai = tamUng.Diengiai.Trim(),
+            //            ConLai = tamUng.ConLai,
+            //            ConLaiNT = tamUng.ConLaiNt,
+            //            DienGiai = tamUng.DienGiai.Trim(),
             //            Id = kVCTPTC.Id,
-            //            LoaiTien = tamUng.Loaitien.Trim(),
+            //            LoaiTien = tamUng.LoaiTien.Trim(),
             //            LogFile = "==== chuyển từ data anh Sơn.",
-            //            MaKhNo = tamUng.Makhno.Trim(),
-            //            NgayCT = tamUng.Ngayct,
-            //            PhieuChi = tamUng.Phieuchi.Trim(),
-            //            PhieuTT = tamUng.Phieutt.Trim(),
+            //            MaKhNo = tamUng.MaKhNo.Trim(),
+            //            NgayCT = tamUng.NgayCt,
+            //            PhieuChi = tamUng.PhieuChi.Trim(),
+            //            PhieuTT = tamUng.PhieuTt.Trim(),
             //            Phong = tamUng.Phong.Trim(),
-            //            SoCT = tamUng.Soct.Trim(),
-            //            SoTien = tamUng.Sotien,
-            //            SoTienNT = tamUng.Sotiennt,
+            //            SoCT = tamUng.SoCt.Trim(),
+            //            SoTien = tamUng.SoTien,
+            //            SoTienNT = tamUng.SoTienNt,
             //            TKCo = tamUng.Tkco.Trim(),
             //            TKNo = tamUng.Tkno.Trim(),
             //            TTTP = tamUng.Tttp,
-            //            TyGia = tamUng.Tygia
+            //            TyGia = tamUng.TyGia,
+            //            MaCn = kVCTPTC.MaCn
 
             //        });
 
@@ -175,59 +179,61 @@ namespace KTTM.Controllers
             //var bac = "";
             //await _tamUngService.CreateRangeAsync(tamUngs);
 
-            //var kvptcs = _kVPTCService.GetAll();
-            //var kvctptcs = _kttm_AnhSonContext.Kvctptcs.ToList();
 
+            //var kvptcs = _kVPTCService.GetAll().ToList();
+            //var kvctptcs = _kTTM_1Context.Kvctptcs.ToList();
             //List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
             //foreach (var kvptc in kvptcs)
             //{
-            //    var kvctptcs1 = kvctptcs.Where(x => x.Soct == kvptc.SoCT).ToList();
+            //    var kvctptcs1 = kvctptcs.Where(x => x.Kvptcid == kvptc.SoCT).ToList();
             //    if (kvctptcs1.Count > 0)
             //    {
             //        foreach (var item in kvctptcs1)
             //        {
             //            kVCTPTCs.Add(new KVCTPTC()
             //            {
-            //                BoPhan = item.Bophan.Trim(),
-            //                CardNumber = item.Cardnumber.Trim(),
-            //                CoQuay = item.Coquay.Trim(),
-            //                DiaChi = item.Diachi.Trim(),
-            //                DienGiai = item.Diengiai.Trim(),
-            //                DienGiaiP = item.Diengiaip.Trim(),
-            //                DieuChinh = item.Dieuchinh,
-            //                DSKhongVAT = item.Dskhongvat,
-            //                HoaDonDT = item.Hoadondt.Trim(),
+            //                BoPhan = item.BoPhan.Trim(),
+            //                CardNumber = item.CardNumber.Trim(),
+            //                CoQuay = item.CoQuay.Trim(),
+            //                DiaChi = item.DiaChi.Trim(),
+            //                DienGiai = item.DienGiai.Trim(),
+            //                DienGiaiP = item.DienGiaiP.Trim(),
+            //                DieuChinh = item.DieuChinh.Value,
+            //                DSKhongVAT = item.DskhongVat,
+            //                HoaDonDT = item.HoaDonDt.Trim(),
             //                HTTC = item.Httc.Trim(),
             //                HTTT = item.Httt.Trim(),
             //                KC141 = item.Kc141,
-            //                KhoangMuc = item.Khoanmuc.Trim(),
-            //                KVPTCId = item.Soct.Trim(),
-            //                KyHieu = item.Kyhieu.Trim(),
-            //                LoaiHDGoc = item.Loaihdgoc.Trim(),
-            //                LoaiTien = item.Loaitien.Trim(),
+            //                KhoangMuc = item.KhoangMuc.Trim(),
+            //                KVPTCId = kvptc.Id,
+            //                KyHieu = item.KyHieu.Trim(),
+            //                LoaiHDGoc = item.LoaiHdgoc.Trim(),
+            //                LoaiTien = item.LoaiTien.Trim(),
             //                LogFile = "==== chuyển từ data anh Sơn.",
-            //                MaKh = item.Makh.Trim(),
-            //                MaKhCo = item.Makhco.Trim(),
-            //                MaKhNo = item.Makhno.Trim(),
-            //                MatHang = item.Mathang.Trim(),
-            //                MauSoHD = item.Mausohd.Trim(),
-            //                MsThue = item.Msthue.Trim(),
-            //                NgayCTGoc = item.Ngayctgoc,
-            //                NoQuay = item.Noquay.Trim(),
-            //                SalesSlip = item.Salesslip.Trim(),
+            //                MaKh = item.MaKh.Trim(),
+            //                MaKhCo = item.MaKhCo.Trim(),
+            //                MaKhNo = item.MaKhNo.Trim(),
+            //                MatHang = item.MatHang.Trim(),
+            //                MauSoHD = item.MauSoHd.Trim(),
+            //                MsThue = item.MsThue.Trim(),
+            //                NgayCTGoc = item.NgayCtgoc,
+            //                NoQuay = item.NoQuay.Trim(),
+            //                SalesSlip = item.SalesSlip.Trim(),
             //                Sgtcode = item.Sgtcode.Trim(),
-            //                SoCTGoc = item.Soctgoc.Trim(),
-            //                SoTien = item.Sotien,
-            //                SoTienNT = item.Sotiennt,
-            //                SoXe = item.Soxe.Trim(),
+            //                SoCTGoc = item.SoCtgoc.Trim(),
+            //                SoTien = item.SoTien,
+            //                SoTienNT = item.SoTienNt,
+            //                SoXe = item.SoXe.Trim(),
+            //                SoCT = kvptc.SoCT.Trim(),
             //                STT = item.Stt.Trim(),
-            //                TamUng = item.Tamung.Trim(),
-            //                TenKH = item.Tenkh.Trim(),
+            //                TamUng = item.TamUng.Trim(),
+            //                TenKH = item.TenKh.Trim(),
             //                TKCo = item.Tkco.Trim(),
             //                TKNo = item.Tkno.Trim(),
-            //                TyGia = item.Tygia,
-            //                VAT = item.Vat
+            //                TyGia = item.TyGia,
+            //                VAT = item.Vat,
+            //                MaCn = kvptc.MaCn
             //            });
             //        }
 
@@ -238,29 +244,33 @@ namespace KTTM.Controllers
 
             //await _kVCTPTCService.CreateRange(kVCTPTCs);
 
-            //var kvptcAnhSon = _kttm_AnhSonContext.Kvptcs.ToList();
+
+            //var kvptcAnhSon = _kTTM_1Context.Kvptcs.ToList();
             //List<KVPTC> kVPTCs = new List<KVPTC>();
-            //foreach(var item in kvptcAnhSon)
+            //foreach (var item in kvptcAnhSon)
             //{
             //    kVPTCs.Add(new KVPTC()
             //    {
             //        Create = item.Create,
-            //        DonVi = item.Donvi.Trim(),
-            //        HoTen = item.Hoten.Trim(),
-            //        LapPhieu = item.Lapphieu.Trim(),
+            //        DonVi = item.DonVi.Trim(),
+            //        HoTen = item.HoTen.Trim(),
+            //        LapPhieu = item.LapPhieu.Trim(),
             //        Lock = item.Lock,
             //        Locker = item.Locker.Trim(),
             //        LogFile = "==== chuyển từ data anh Sơn.",
-            //        MayTinh = item.Maytinh.Trim(),
+            //        MayTinh = item.MayTinh.Trim(),
             //        MFieu = item.Mfieu.Trim(),
-            //        NgayCT = item.Ngayct,
-            //        NgoaiTe = item.Ngoaite.Trim(),
+            //        NgayCT = item.NgayCt,
+            //        NgoaiTe = item.NgoaiTe.Trim(),
             //        Phong = item.Phong.Trim(),
-            //        SoCT = item.Soct.Trim()
+            //        SoCT = item.SoCt.Trim(),
+            //        MaCn = "STS"
             //    });
             //}
 
+            //var abc = "";
             //await _kVPTCService.CreateRangeAsync(kVPTCs);
+
 
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;

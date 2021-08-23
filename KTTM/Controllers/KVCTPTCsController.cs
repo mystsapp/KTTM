@@ -180,6 +180,7 @@ namespace KTTM.Controllers
 
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
@@ -231,6 +232,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.VAT = KVCTPCTVM.KVCTPTC.VAT ?? 0;
             KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();

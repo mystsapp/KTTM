@@ -97,6 +97,10 @@ namespace Data.Migrations
                     b.Property<string>("LogFile")
                         .HasColumnType("nvarchar(MAX)");
 
+                    b.Property<string>("MaCn")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
                     b.Property<string>("MaKh")
                         .HasMaxLength(5)
                         .HasColumnType("varchar(5)");

@@ -51,7 +51,7 @@ namespace KTTM.Services
         IEnumerable<ListViewModel> LoaiHDGocs();
         string AutoSgtcode(string param);
         Task<KVCTPTC> FindByIdInclude(long kVCTPCTId_PhieuTC);
-        Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate);
+        Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate, string maCn);
         List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
     }
     public class KVCTPTCService : IKVCTPTCService
@@ -218,6 +218,7 @@ namespace KTTM.Services
                         // THONG TIN VE TAI CHINH
                         kVCTPTC.KVPTCId = kVPTCId;
                         kVCTPTC.SoCT = soCT;
+                        kVCTPTC.MaCn = maCN;
                         kVCTPTC.DienGiaiP = dienGiaiP;
                         kVCTPTC.SoTienNT = item1.Sotiennt;
                         kVCTPTC.LoaiTien = item1.Loaitien;
@@ -469,7 +470,7 @@ namespace KTTM.Services
             return kVCTPTCs.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate)
+        public async Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate, string maCn)
         {
             //var abc = "0001NC2020".Substring(0, 4);
             List<KVCTPTC> list = new List<KVCTPTC>();
@@ -491,7 +492,7 @@ namespace KTTM.Services
                     var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate &&
                                                                                                          y.KVPTC.NgayCT < toDate.AddDays(1));
 
-                    var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND");
+                    var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
                     var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
                     
                     kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
@@ -518,7 +519,7 @@ namespace KTTM.Services
                         fromDate = DateTime.Parse(searchFromDate);
                         //list = list.Where(x => x.NgayCT >= fromDate).ToList();
                         var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT >= fromDate);
-                        list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
+                        list = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn).ToList();
                     }
                     catch (Exception)
                     {
@@ -532,7 +533,7 @@ namespace KTTM.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < toDate.AddDays(1));
-                        list = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
+                        list = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn).ToList();
                     }
                     catch (Exception)
                     {

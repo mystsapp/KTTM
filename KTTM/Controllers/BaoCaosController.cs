@@ -232,7 +232,7 @@ namespace KTTM.Controllers
             //var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
             var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-            IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate); // loaitien == "VND"
+            IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate, user.Macn); // loaitien == "VND"
 
             List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
             if (kVCTPTCs.Count() > 0)
@@ -577,7 +577,7 @@ namespace KTTM.Controllers
             {
                 phongBan = _baoCaoService.GetPhongBanById(id_BoPhan);
             }
-            IEnumerable<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan, user.Macn);
+            IEnumerable<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.TenBoPhan, user.Macn);
             List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
             if (tamUngs.Count() > 0)
             {

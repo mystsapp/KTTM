@@ -21,7 +21,7 @@ namespace Data.Migrations
                     DonVi = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     Phong = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LapPhieu = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Create = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Create = table.Column<DateTime>(type: "datetime", nullable: true),
                     MayTinh = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
                     Lock = table.Column<DateTime>(type: "datetime", nullable: true),
                     Locker = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -40,6 +40,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    MaCn = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     NgayCT = table.Column<DateTime>(type: "datetime", nullable: false),
                     LoaiTien = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
                     SoTien = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -62,6 +63,7 @@ namespace Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     KVPTCId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    MaCn = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     HTTC = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
                     DienGiai = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     TKNo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false),
@@ -94,7 +96,7 @@ namespace Data.Migrations
                     MatHang = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
                     KyHieu = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     MauSoHD = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
-                    DieuChinh = table.Column<bool>(type: "bit", nullable: true),
+                    DieuChinh = table.Column<bool>(type: "bit", nullable: false),
                     KC141 = table.Column<DateTime>(type: "datetime", nullable: true),
                     TamUng = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     DienGiaiP = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
@@ -125,6 +127,7 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
+                    MaCn = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     MaKhNo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
                     SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     NgayCT = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -164,6 +167,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    MaCn = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     TamUngId = table.Column<long>(type: "bigint", nullable: false),
                     MaKhNo = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
                     SoCT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
@@ -197,7 +201,7 @@ namespace Data.Migrations
                     KyHieu = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     MauSoHD = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: true),
                     MatHang = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true),
-                    DieuChinh = table.Column<bool>(type: "bit", nullable: true),
+                    DieuChinh = table.Column<bool>(type: "bit", nullable: false),
                     LapPhieu = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DienGiaiP = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     HoaDonDT = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
