@@ -193,7 +193,7 @@ namespace KTTM.Services
                 foreach (var item in ntbills)
                 {
                     string boPhan = item.Bophan;
-                    string maKh = item.Coquan;
+                    string maKh = string.IsNullOrEmpty(item.Coquan) ? "50000" : item.Coquan;
                     var viewSupplier = GetAll_KhachHangs_HDVATOB().Where(x => x.Code == maKh).FirstOrDefault();
                     string kyHieu = "", mauSo = "", msThue = "", tenKh = "", diaChi = "";
                     if (viewSupplier != null)

@@ -13,13 +13,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Data.Models_KTTM_1;
+//using Data.Models_KTTM_1;
 
 namespace KTTM.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly KTTM_1Context _kTTM_1Context;
+        //private readonly KTTM_1Context _kTTM_1Context;
         private readonly IKVPTCService _kVPTCService;
         private readonly IKVCTPTCService _kVCTPTCService;
         private readonly ITamUngService _tamUngService;
@@ -29,9 +29,9 @@ namespace KTTM.Controllers
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
-        public HomeController(KTTM_1Context kTTM_1Context, IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService, ITamUngService tamUngService, ITT621Service tT621Service, ITonQuyService tonQuyService)
+        public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService, ITamUngService tamUngService, ITT621Service tT621Service, ITonQuyService tonQuyService)
         {
-            _kTTM_1Context = kTTM_1Context;
+            //_kTTM_1Context = kTTM_1Context;
             _kVPTCService = kVPTCService;
             _kVCTPTCService = kVCTPTCService;
             _tamUngService = tamUngService;
