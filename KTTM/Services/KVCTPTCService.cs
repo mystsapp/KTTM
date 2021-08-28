@@ -16,6 +16,7 @@ namespace KTTM.Services
     public interface IKVCTPTCService
     {
         Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_KVPTCid(Guid KVPTCid);
+        Task<List<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT, string maCn);
         IEnumerable<Ngoaite> GetAll_NgoaiTes();
         IEnumerable<DmHttc> GetAll_DmHttc();
         IEnumerable<ViewDmHttc> GetAll_DmHttc_View();
@@ -66,6 +67,12 @@ namespace KTTM.Services
         public async Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_KVPTCid(Guid KVPTCid)
         {
             return await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.KVPTCId == KVPTCid);
+        }
+        
+        public async Task<List<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT, string maCn)
+        {
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.SoCT == soCT && x.MaCn == maCn);
+            return kVCTPTCs.ToList();
         }
 
         public IEnumerable<Ngoaite> GetAll_NgoaiTes()
@@ -254,6 +261,9 @@ namespace KTTM.Services
                         kVCTPTC.LoaiHDGoc = loaiHDGoc;
                         kVCTPTC.SoCTGoc = soCTGoc;
                         kVCTPTC.NgayCTGoc = ngayBill;
+
+                        kVCTPTC.DSKhongVAT = 0;
+                        kVCTPTC.VAT = 0;
 
                         kVCTPTC.KyHieu = kyHieu;
                         kVCTPTC.MauSoHD = mauSo;

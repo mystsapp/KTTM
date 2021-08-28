@@ -759,7 +759,8 @@ namespace KTTM.Controllers
         }
         public JsonResult TinhDsKhongVat(decimal vat, decimal soTien)
         {
-            var dsKhongVat = soTien - ((vat / 100) * soTien);
+            //var dsKhongVat = soTien - ((vat / 100) * soTien);
+            var dsKhongVat = (soTien * 100) / vat;
             return Json(new
             {
                 status = true,

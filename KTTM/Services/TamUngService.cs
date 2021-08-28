@@ -57,9 +57,11 @@ namespace KTTM.Services
 
         public IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs)
         {
+            
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach (var item in tamUngs)
             {
+                var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
@@ -69,7 +71,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + item.KVCTPTC.TenKH,
+                    Name = item.MaKhNo + " " + supplier.Name,//item.KVCTPTC.TenKH,
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });
@@ -185,7 +187,7 @@ namespace KTTM.Services
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
             //var tamUng = _unitOfWork.tamUngRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
-            var tamUng = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(param)) // chi lay nhung soCT cung param: UN, UV
+            var tamUng = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(subfix)) // chi lay nhung soCT cung param: UN, UV
                                                     .OrderByDescending(x => x.SoCT)
                                                     .FirstOrDefault();
             if (tamUng == null || string.IsNullOrEmpty(tamUng.SoCT))

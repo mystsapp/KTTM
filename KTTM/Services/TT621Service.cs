@@ -26,7 +26,7 @@ namespace KTTM.Services
         Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621);
         IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
         IEnumerable<TT621> GetAll();
-        IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn);
+        IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo);
         IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
         Task CreateRangeAsync(List<TT621> tT621s);
     }
@@ -165,7 +165,7 @@ namespace KTTM.Services
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // TN2015?  TV2015? 
             //var tT621 = _unitOfWork.tT621Repository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
-            var tT621 = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(param)) // chi lay nhung soCT cung param: TV, TN
+            var tT621 = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(subfix)) // chi lay nhung soCT cung param: TV, TN
                                                     .OrderByDescending(x => x.SoCT)
                                                     .FirstOrDefault();
             if (tT621 == null || string.IsNullOrEmpty(tT621.SoCT))
@@ -241,7 +241,7 @@ namespace KTTM.Services
             return _unitOfWork.tT621Repository.GetAll();
         }
 
-        public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn)
+        public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo)
         {
 
             List<TT621> list = new List<TT621>();
@@ -262,6 +262,11 @@ namespace KTTM.Services
 
                     list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date(fromDate, toDate).ToList();
                     list = list.Where(x => x.MaCn == maCn).ToList();
+                    if (!string.IsNullOrEmpty(maKhCo))
+                    {
+                        list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                    }
+                    
                 }
                 catch (Exception)
                 {
@@ -280,6 +285,10 @@ namespace KTTM.Services
                         //list = list.Where(x => x.NgayCT >= fromDate).ToList();
                         list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date(fromDate, "").ToList();
                         list = list.Where(x => x.MaCn == maCn).ToList();
+                        if (!string.IsNullOrEmpty(maKhCo))
+                        {
+                            list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                        }
                     }
                     catch (Exception)
                     {
@@ -295,6 +304,10 @@ namespace KTTM.Services
                         //list = list.Where(x => x.NgayCT < toDate.AddDays(1)).ToList();
                         list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date("", toDate).ToList();
                         list = list.Where(x => x.MaCn == maCn).ToList();
+                        if (!string.IsNullOrEmpty(maKhCo))
+                        {
+                            list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                        }
                     }
                     catch (Exception)
                     {

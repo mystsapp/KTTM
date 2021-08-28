@@ -376,7 +376,7 @@ namespace KTTM.Controllers
 
                         }
 
-                        xlSheet.Cells[dong, 4].Value = kvctpct.TenKH;
+                        xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
                         TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -1238,7 +1238,7 @@ namespace KTTM.Controllers
         }
 
         // InChungTuGhiSo_Partial
-        public IActionResult InChungTuGhiSo_Partial(string searchFromDate, string searchToDate)
+        public IActionResult InChungTuGhiSo_Partial(string searchFromDate, string searchToDate, string maKhCo)
         {
 
             // from session
@@ -1246,6 +1246,7 @@ namespace KTTM.Controllers
 
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
+            ViewBag.maKhCo = maKhCo;
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate)) // moi load vao
             {
                 BaoCaoVM.TT621s = null;
@@ -1265,7 +1266,7 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate, user.Macn);
+            BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate, user.Macn, maKhCo).OrderBy(x => x.NgayCT);
 
             if (BaoCaoVM.TT621s == null)
             {
@@ -1279,18 +1280,19 @@ namespace KTTM.Controllers
         // InChungTuGhiSoExcel
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public IActionResult InChungTuGhiSoExcel(string tuNgay, string denNgay,
-                                                             long id_TT, string soCT_TT, string ngayCT_TT, string maKhCo_TT, string phieuTC_TT)
+        public async Task<IActionResult> InChungTuGhiSoExcel(string tuNgay, string denNgay,
+                                                             long id_TT, string soCT_TT, string ngayCT_TT, string maKhCo_TT, string hoTen_TT, string phieuTC_TT)
         {
 
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay, user.Macn);
+            IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay, user.Macn, "");
             TT621 tT621 = tT621s.Where(x => x.Id == id_TT).FirstOrDefault();
             List<TT621> tT621s_By_TamUng = _tT621Service.FindTT621s_IncludeTwice(tT621.TamUngId).ToList();
+            //List<KVCTPTC> kVCTPTCs_By_SoCT = await _kVCTPTCService.List_KVCTPCT_By_SoCT(phieuTC_TT, user.Macn);
 
-            string loaiphieu = tT621.TamUng.KVCTPTC.KVPTC.MFieu == "T" ? "THU" : "CHI";
+            string loaiphieu = phieuTC_TT.Contains("T") ? "THU" : "CHI";
             
             ExcelPackage ExcelApp = new ExcelPackage();
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
@@ -1319,8 +1321,8 @@ namespace KTTM.Controllers
             xlSheet.Cells[3, 1, 3, 10].Merge = true;
             setCenterAligment(3, 1, 3, 10, xlSheet);
 
-            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + tT621.TamUng.KVCTPTC.SoCT + " - " +
-                "Nhân viên: " + maKhCo_TT + " " + tT621.TenKH;
+            string stringNgay = "Ngày " + ngayCT_TT + " phiếu " + loaiphieu.ToLower() + " số " + phieuTC_TT + " - " +
+                "Nhân viên: " + maKhCo_TT + " " + hoTen_TT;
             xlSheet.Cells[4, 1].Value = stringNgay;
             xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
             //xlSheet.Cells[4, 1].Style.Font.Bold = true;

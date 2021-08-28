@@ -5,25 +5,34 @@
         <div class="row rounded p-2 text-sm" style="padding-bottom:5px; background-color: aliceblue;" id="search">
             @*<div class=" row text-sm">*@
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label>Từ ngày</label>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <input class="form-control form-control-sm maskInput" id="txtTuNgay" value="@ViewBag.searchFromDate" />
 
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label>Đến ngày</label>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <input class="form-control form-control-sm maskInput" id="txtDenNgay" value="@ViewBag.searchToDate" />
 
             </div>
+            
+            <div class="col-md-1">
+                <label>Mã KH có</label>
+            </div>
 
-            <div class="col-md-2 text-sm">
+            <div class="col-md-2 ">
+                <input class="form-control form-control-sm text-uppercase" id="txtMaKhCo" value="@ViewBag.maKhCo" />
+
+            </div>
+
+            <div class="col-md-1 text-sm">
                 @*<label>&nbsp;</label>*@
                 <div class=" btn-block btn-group">
                     <button type="button" class="btn btn-primary btn-sm" id="btnInChungTuSearch" title="Tìm kiếm">
@@ -64,7 +73,7 @@
                         <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                         <td class="tdVal_TT621" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>
                         <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
-                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPTC.KVPTC.LapPhieu)</td>
+                        <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng.KVCTPTC.KVPTC.HoTen)</td>
                         <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>
 
                     </tr>
@@ -79,11 +88,13 @@
 <form asp-action="InChungTuGhiSoExcel" id="frm_InChungTuGhiSoExcel" method="post">
     <input type="hidden" id="hidTuNgay" name="tuNgay" />
     <input type="hidden" id="hidDenNgay" name="denNgay" />
+    <input type="hidden" id="hidMaKhCo" name="maKhCo" />
 
     <input type="hidden" id="hidId_TT" name="id_TT" />
     <input type="hidden" id="hidSoCT_TT" name="soCT_TT" />
     <input type="hidden" id="hidNgayCT_TT" name="ngayCT_TT" />
     <input type="hidden" id="hidMaKhCo_TT" name="maKhCo_TT" />
+    <input type="hidden" id="hidHoTen_TT" name="hoTen_TT" />
     <input type="hidden" id="hidPhieuTC_TT" name="phieuTC_TT" />
 </form>
 
@@ -99,8 +110,9 @@
     $('#btnInChungTuSearch').off('click').on('click', function () {
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
+        maKhCo = $('#txtMaKhCo').val();
 
-        InChungTungGhiSo(tuNgay, denNgay); // _TopMenu
+        InChungTungGhiSo(tuNgay, denNgay, maKhCo); // _TopMenu
     })
 
     // btnInChungTu
@@ -141,7 +153,8 @@
         var soCT_TT = $(this).children().eq(0).html();
         var ngayCT_TT = $(this).children().eq(1).html();
         var maKhCo_TT = $(this).children().eq(2).html();
-        var phieuTC_TT = $(this).children().eq(3).html();
+        var hoTen_TT = $(this).children().eq(3).html();
+        var phieuTC_TT = $(this).children().eq(4).html();
 
         $('#hidTuNgay').val(tuNgay);
         $('#hidDenNgay').val(denNgay);
@@ -150,6 +163,7 @@
         $('#hidSoCT_TT').val(soCT_TT);
         $('#hidNgayCT_TT').val(ngayCT_TT);
         $('#hidMaKhCo_TT').val(maKhCo_TT);
+        $('#hidHoTen_TT').val(hoTen_TT);
         $('#hidPhieuTC_TT').val(phieuTC_TT);
 
         //var code = $(this).children().eq(0).html();

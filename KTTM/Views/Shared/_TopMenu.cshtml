@@ -91,9 +91,9 @@
         InChungTungGhiSo();
     })
 
-    function InChungTungGhiSo(tuNgay, denNgay) {
+    function InChungTungGhiSo(tuNgay, denNgay, maKhCo) {
 
-        $.get('/BaoCaos/InChungTuGhiSo_Partial', { searchFromDate: tuNgay, searchToDate: denNgay }, function (data) {
+        $.get('/BaoCaos/InChungTuGhiSo_Partial', { searchFromDate: tuNgay, searchToDate: denNgay, maKhCo: maKhCo }, function (data) {
 
             if (!data) {
                 toastr.warning("Find by date error!", "Thông báo");
