@@ -202,7 +202,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" readonly />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" readonly />
                                     </div>
 
                                 }
@@ -213,7 +213,7 @@
                                 {
                                     <div class="col-md-3">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
-                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" disabled
+                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm select2" 
                                                 asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@

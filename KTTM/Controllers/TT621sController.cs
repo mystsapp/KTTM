@@ -540,7 +540,7 @@ namespace KTTM.Controllers
             //// lay soct cua tt621
             //if (TT621VM.TT621.LoaiTien == "VND")
             //{
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV");
+                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
             //}
             //else
             //{
@@ -583,6 +583,8 @@ namespace KTTM.Controllers
             TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
             TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuTC);
             TT621VM.TT621 = tT621;
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            TT621VM.TT621.MaKhCo = tamUng.MaKhNo; // makh cua nguoi tamung
 
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
@@ -921,7 +923,7 @@ namespace KTTM.Controllers
                 });
             }
 
-
+            TT621VM.TT621.MaCn = user.Macn;
             TT621VM.TT621.NgayCT = DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
             TT621VM.TT621.NgayTao = DateTime.Now;
@@ -930,11 +932,11 @@ namespace KTTM.Controllers
             // lay soct cua tt621
             if (TT621VM.TT621.LoaiTien == "VND")
             {
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV");
+                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
             }
             else
             {
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN");
+                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN", user.Macn);
             }
 
             // PhieuTC: tuy vao loai phieu lam TT

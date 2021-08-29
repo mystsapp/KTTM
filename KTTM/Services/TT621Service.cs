@@ -18,7 +18,7 @@ namespace KTTM.Services
         Task DeleteAsync(TT621 tT621);
         TT621 GetDummyTT621_By_KVCTPCT(long tamUngId);
         IEnumerable<TT621> FindByTamUngId(long tamUngId);
-        string GetSoCT(string param);
+        string GetSoCT(string param, string maCn);
         decimal GetSoTienNT_TrongTT621_TheoTamUng(long tamUngId);
         Task<TT621> FindById_Include(long id);
         TT621 GetByIdAsNoTracking(long tt621Id);
@@ -156,7 +156,7 @@ namespace KTTM.Services
         }
 
 
-        public string GetSoCT(string param)
+        public string GetSoCT(string param, string maCn)
         {
             //DateTime dateTime;
             //dateTime = DateTime.Now;
@@ -165,9 +165,14 @@ namespace KTTM.Services
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // TN2015?  TV2015? 
             //var tT621 = _unitOfWork.tT621Repository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
-            var tT621 = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(subfix)) // chi lay nhung soCT cung param: TV, TN
-                                                    .OrderByDescending(x => x.SoCT)
-                                                    .FirstOrDefault();
+            var tT621s = _unitOfWork.tT621Repository.Find(x => x.SoCT.Contains(subfix)).ToList(); // chi lay nhung soCT cung param: TV, TN
+                                                    
+            var tT621 = new TT621();
+            if(tT621s.Count() > 0)
+            {
+                tT621s = tT621s.Where(x => x.MaCn == maCn).ToList();
+                tT621 = tT621s.OrderByDescending(x => x.SoCT).FirstOrDefault();
+            }
             if (tT621 == null || string.IsNullOrEmpty(tT621.SoCT))
             {
                 return GetNextId.NextID("", "") + subfix; // 0001
