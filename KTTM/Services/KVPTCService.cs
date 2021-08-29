@@ -76,11 +76,11 @@ namespace KTTM.Services
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
             var kVPCTs = _unitOfWork.kVPCTRepository
-                                   .Find(x => x.SoCT.Trim().Contains(subfix));// chi lay nhung soCT cung param: QT, TC, NT, NC và cùng CN
+                                   .Find(x => x.SoCT.Trim().Contains(subfix)).ToList();// chi lay nhung soCT cung param: QT, TC, NT, NC và cùng CN
             var kVPCT = new KVPTC();
             if (kVPCTs.Count() > 0)
             {
-                kVPCTs = kVPCTs.Where(x => x.MaCn == maCn);
+                kVPCTs = kVPCTs.Where(x => x.MaCn == maCn).ToList();
                 kVPCT = kVPCTs.OrderByDescending(x => x.SoCT).FirstOrDefault();
             }
 

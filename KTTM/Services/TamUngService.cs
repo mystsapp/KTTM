@@ -13,7 +13,7 @@ namespace KTTM.Services
     public interface ITamUngService
     {
         IEnumerable<TamUng> GetAll();
-        string GetSoCT(string param);
+        string GetSoCT(string param, string maCn);
         Task<TamUng> GetByIdAsync(long id);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh, string maCn);
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuChi_Include(string phieuChi, string maCn);
@@ -178,7 +178,7 @@ namespace KTTM.Services
             return await _unitOfWork.tamUngRepository.GetByLongIdAsync(id);
         }
 
-        public string GetSoCT(string param)
+        public string GetSoCT(string param, string maCn)
         {
             //DateTime dateTime;
             //dateTime = DateTime.Now;
@@ -187,9 +187,15 @@ namespace KTTM.Services
             var currentYear = DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
             //var tamUng = _unitOfWork.tamUngRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
-            var tamUng = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.Contains(subfix)) // chi lay nhung soCT cung param: UN, UV
-                                                    .OrderByDescending(x => x.SoCT)
-                                                    .FirstOrDefault();
+            var tamUngs = _unitOfWork.tamUngRepository.Find(x => x.SoCT.Trim().Contains(subfix)).ToList();// // chi lay nhung soCT cung param: UN, UV
+                                                    
+            var tamUng = new TamUng();
+            if(tamUngs.Count() > 0)
+            {
+                tamUngs = tamUngs.Where(x => x.MaCn == maCn).ToList();
+                tamUng = tamUngs.OrderByDescending(x => x.SoCT).FirstOrDefault();
+            }
+
             if (tamUng == null || string.IsNullOrEmpty(tamUng.SoCT))
             {
                 return GetNextId.NextID("", "") + subfix; // 0001

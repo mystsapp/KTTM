@@ -190,7 +190,7 @@ namespace KTTM.Services
             DateTime ngayTao = DateTime.Now;
 
             // ghi log
-            string logFile = "-User kéo từ cashier: " + username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            string logFile = "-User kéo từ cashier: " + username + " , báo cáo số " + baoCaoSo + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
             List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 

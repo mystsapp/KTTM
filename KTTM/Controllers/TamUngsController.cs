@@ -73,7 +73,7 @@ namespace KTTM.Controllers
 
             tamUng.Id = kVCTPCT.Id;
             tamUng.MaKhNo = kVCTPCT.MaKhNo;
-            tamUng.SoCT = _tamUngService.GetSoCT(loaiTienUng);
+            tamUng.SoCT = _tamUngService.GetSoCT(loaiTienUng, user.Macn);
             tamUng.NgayCT = DateTime.Now; // ??
             tamUng.PhieuChi = kVCTPCT.SoCT; // soCT ben KVPCT
             tamUng.DienGiai = kVCTPCT.DienGiaiP;

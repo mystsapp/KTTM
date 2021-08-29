@@ -300,7 +300,7 @@ namespace KTTM.Controllers
                 //noptien.Ghichu = kVPCT.ghichu; ??
                 await _kVCTPTCService.UpdateAsync_NopTien(noptien);
 
-                SetAlert("Thêm mới thành công.", "success");
+                SetAlert("Kéo thành công.", "success");
                 return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
             }
             catch (Exception ex)
