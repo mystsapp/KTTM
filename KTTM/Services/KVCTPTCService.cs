@@ -16,45 +16,84 @@ namespace KTTM.Services
     public interface IKVCTPTCService
     {
         Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_KVPTCid(Guid KVPTCid);
+
         Task<List<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT, string maCn);
+
         IEnumerable<Ngoaite> GetAll_NgoaiTes();
+
         IEnumerable<DmHttc> GetAll_DmHttc();
+
         IEnumerable<ViewDmHttc> GetAll_DmHttc_View();
+
         DmTk Get_DmTk_By_TaiKhoan(string tk);
+
         Task Create(KVCTPTC kVCTPCT);
+
         IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK();
+
         IEnumerable<DmTk> GetAll_TaiKhoan_Except_TkConngNo();
+
         IEnumerable<DmTk> GetAll_DmTk();
+
         IEnumerable<DmTk> GetAll_DmTk_TaiKhoan();
+
         IEnumerable<ViewDmTk> GetAll_DmTk_View();
+
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo);
+
         IEnumerable<Quay> GetAll_Quay();
+
         IEnumerable<ViewQuay> GetAll_Quay_View();
 
         IEnumerable<MatHang> GetAll_MatHangs();
+
         IEnumerable<ViewMatHang> GetAll_MatHangs_View();
+
         IEnumerable<PhongBan> GetAll_PhongBans();
+
         IEnumerable<ViewPhongBan> GetAll_PhongBans_View();
+
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
-        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys  
+
+        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys
+
         Task CreateRange(IEnumerable<KVCTPTC> kVCTPTCs);
+
         IEnumerable<DmTk> GetAll_DmTk_Cashier(); IEnumerable<DmTk> GetAll_DmTk_TienMat();
+
         IEnumerable<KVCTPTC> GetAll();
+
         Task<KVCTPTC> GetById(long id);
+
         IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
+
         IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn);
+
         IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCodeName(string code, string maCn);
+
         IEnumerable<Dgiai> GetAll_DienGiai();
+
         KVCTPTC GetBySoCTAsNoTracking(long id);
+
         Task UpdateAsync(KVCTPTC kVCTPCT);
+
         Task UpdateAsync_NopTien(Noptien noptien);
+
         Task DeleteAsync(KVCTPTC kVCTPCT);
+
         IEnumerable<ListViewModel> LoaiHDGocs();
+
         string AutoSgtcode(string param);
+
         Task<KVCTPTC> FindByIdInclude(long kVCTPCTId_PhieuTC);
+
         Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate, string maCn);
+
+        Task<IEnumerable<KVCTPTC>> FinBy_TonQuy_Date(string searchFromDate, string searchToDate, string maCn);
+
         List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
     }
+
     public class KVCTPTCService : IKVCTPTCService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -68,7 +107,7 @@ namespace KTTM.Services
         {
             return await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.KVPTCId == KVPTCid);
         }
-        
+
         public async Task<List<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT, string maCn)
         {
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.SoCT == soCT && x.MaCn == maCn);
@@ -104,10 +143,9 @@ namespace KTTM.Services
 
         public IEnumerable<DmTk> GetAll_TkCongNo_With_TenTK()
         {
-
             return GetAll_Tk_By_TkCongNo();
-
         }
+
         public IEnumerable<DmTk> GetAll_Tk_By_TkCongNo()
         {
             var dmTks = _unitOfWork.dmTkRepository.GetAll();
@@ -120,11 +158,10 @@ namespace KTTM.Services
         {
             var dmTks = _unitOfWork.dmTkRepository.GetAll();
             var dmTks1 = GetAll_Tk_By_TkCongNo();
-            // peopleList2.Except(peopleList1) c1 
+            // peopleList2.Except(peopleList1) c1
             // var result = peopleList2.Where(p => !peopleList1.Any(p2 => p2.ID == p.ID)); c2
             // var result = peopleList2.Where(p => peopleList1.All(p2 => p2.ID != p.ID)); c3
             return dmTks.Except(dmTks1);
-
         }
 
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
@@ -151,6 +188,7 @@ namespace KTTM.Services
         {
             return _unitOfWork.matHangRepository.GetAll();
         }
+
         public IEnumerable<ViewMatHang> GetAll_MatHangs_View()
         {
             return _unitOfWork.matHangRepository.GetAll_View();
@@ -160,6 +198,7 @@ namespace KTTM.Services
         {
             return _unitOfWork.phongBan_DanhMucKT_Repository.GetAll();
         }
+
         public IEnumerable<ViewPhongBan> GetAll_PhongBans_View()
         {
             return _unitOfWork.phongBan_DanhMucKT_Repository.GetAll_View();
@@ -169,6 +208,7 @@ namespace KTTM.Services
         {
             return _unitOfWork.dmTkRepository.GetAll();
         }
+
         public IEnumerable<ViewDmTk> GetAll_DmTk_View()
         {
             return _unitOfWork.dmTkRepository.GetAll_View();
@@ -183,7 +223,6 @@ namespace KTTM.Services
 
         public IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
         {
-
             var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
 
             string nguoiTao = username;
@@ -196,7 +235,6 @@ namespace KTTM.Services
 
             if (ntbills != null)
             {
-
                 foreach (var item in ntbills)
                 {
                     string boPhan = item.Bophan;
@@ -278,9 +316,7 @@ namespace KTTM.Services
 
                         kVCTPTCs.Add(kVCTPTC);
                     }
-
                 }
-
             }
             return kVCTPTCs;
         }
@@ -353,14 +389,13 @@ namespace KTTM.Services
         public async Task UpdateAsync_NopTien(Noptien noptien)
         {
             await _unitOfWork.nopTienRepository.UpdateAsync(noptien);
-
         }
 
         public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn)
         {
             code ??= "";
             var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn).ToList();
-            
+
             return suppliers;
         }
 
@@ -417,19 +452,21 @@ namespace KTTM.Services
             {
                 return "";
             }
-            
+
             string[] stringArry = param.Split(mark);
 
             switch (mark)
             {
-                case "-":                    
+                case "-":
                     codeNumber = GetCodeNumber(stringArry[1]);
                     sgtcode = "SGT" + stringArry[0] + "-" + currentYear + "-" + codeNumber;
                     break;
+
                 case "/":
                     codeNumber = GetCodeNumber(stringArry[1]);
                     sgtcode = "STN" + stringArry[0] + "-" + currentYear + "-" + codeNumber;
                     break;
+
                 default:
                     string paramSub = param.Substring(param.Length - 2, 2);
                     if (paramSub.ToUpper() == "OB")
@@ -457,15 +494,19 @@ namespace KTTM.Services
                 case 1:
                     codeNumber = "0000" + param;
                     break;
+
                 case 2:
                     codeNumber = "000" + param;
                     break;
+
                 case 3:
                     codeNumber = "00" + param;
                     break;
+
                 case 4:
                     codeNumber = "0" + param;
                     break;
+
                 default:
                     codeNumber = param;
                     break;
@@ -480,6 +521,43 @@ namespace KTTM.Services
             return kVCTPTCs.FirstOrDefault();
         }
 
+        public async Task<IEnumerable<KVCTPTC>> FinBy_TonQuy_Date(string searchFromDate, string searchToDate, string maCn)
+        {
+            // searchFromDate : ngay tonquy sau cung nhat
+            List<KVCTPTC> list = new List<KVCTPTC>();
+            // search date
+            DateTime fromDate, toDate;
+
+            try
+            {
+                fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                if (fromDate > toDate)
+                {
+                    return null; //
+                }
+
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT > fromDate &&
+                                                                                                     y.KVPTC.NgayCT < toDate.AddDays(1));
+
+                var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
+                var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
+
+                kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
+                //list = kVCTPTCs.Where(x => x.TKNo.StartsWith("11120000") && x.TKCo == "1111000000").ToList();
+                list = kVCTPTCs.OrderBy(x => x.SoCT.Substring(0, 4)).ToList();
+                list = list.OrderBy(x => x.SoCT.Substring(4, 2)).ToList();
+                //list = list.OrderBy(x => x.KVPTCId.Substring(6, 4)).ToList();
+
+                return list;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate, string maCn)
         {
             //var abc = "0001NC2020".Substring(0, 4);
@@ -488,7 +566,6 @@ namespace KTTM.Services
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate); // NgayCT
@@ -504,21 +581,17 @@ namespace KTTM.Services
 
                     var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
                     var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
-                    
+
                     kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
                     //list = kVCTPTCs.Where(x => x.TKNo.StartsWith("11120000") && x.TKCo == "1111000000").ToList();
                     list = kVCTPTCs.OrderBy(x => x.SoCT.Substring(0, 4)).ToList();
                     list = list.OrderBy(x => x.SoCT.Substring(4, 2)).ToList();
                     //list = list.OrderBy(x => x.KVPTCId.Substring(6, 4)).ToList();
-
-
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
-
             }
             else
             {
@@ -535,7 +608,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
                 {
@@ -549,7 +621,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
             }
             // search date
@@ -559,7 +630,6 @@ namespace KTTM.Services
 
         public List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs)
         {
-
             var result1 = (from p in kVCTPTCs
                            group p by p.SoCT into g
                            select new KVCTPCT_Model_GroupBy_SoCT()
@@ -569,23 +639,19 @@ namespace KTTM.Services
                            }).ToList();
             foreach (var item in result1)
             {
-                
                 item.TongCong = item.KVCTPTCs.Sum(x => x.SoTien.Value);
-                
             }
             decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0;
             foreach (var item in result1)
             {
                 //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
-                if(item.SoCT.Contains("QT"))
+                if (item.SoCT.Contains("QT"))
                 {
                     congPhatSinh_Thu += item.TongCong;
-                    
                 }
                 else
                 {
                     congPhatSinh_Chi += item.TongCong;
-                    
                 }
             }
             foreach (var item in result1)
