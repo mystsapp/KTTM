@@ -59,7 +59,7 @@
 
 <script>
     $('#btSearch').click(function () {
-        debugger
+        
         var maKhText = $('#txtTimkh').val();
         
         KhachHangSearch(maKhText); // ben Edit_KVCTPCT
@@ -84,11 +84,11 @@
         var taxSign = $(this).children().eq(7).html();
         var taxForm = $(this).children().eq(8).html();
 
-        if ($('#btnKhSearch').data('name') === 'maKhNo') { // search off no
+        if ($('#hidTxtMaKh').val() === 'maKhNo') { // search off no
             $('#txtMaKhNo').val(code);
             $('#txtTenKhNo').val(name);
         }
-        if ($('#btnKhSearch').data('name') === 'maKhCo') { // search off co
+        if ($('#hidTxtMaKh').val() === 'maKhCo') { // search off co
             $('#txtMaKhCo').val(code);
             $('#txtTenKhCo').val(name);
         }

@@ -144,7 +144,7 @@
                                 <div class="input-group">
                                     <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
                                     <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                        <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                     </span>
                                 </div>
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
@@ -159,7 +159,7 @@
                                 <div class="input-group">
                                     <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo">
                                     <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                        <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch_Co" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                     </span>
                                 </div>
                                 <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
@@ -178,7 +178,7 @@
                                 <div class="input-group">
                                     <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
                                     <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                        <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                     </span>
                                 </div>
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
@@ -455,6 +455,8 @@
 </div>
 <!-- khachhang modal-->
 
+<input type="hidden" id="hidTxtMaKh" />
+
 @section Scripts{
 
     <script src="~/js/Admin/Home/indexController.js"></script>
@@ -479,7 +481,7 @@
     <!-- Validation -->
 
     <script>
-        $(".maskInput").mask("99/99/9999");
+        /*$(".maskInput").mask("99/99/9999");*/
 
         // $(document).ready(function (){})
         $(document).ready(function () {
@@ -491,25 +493,30 @@
                 serviceController.DdlTkCo('1111000000');
             }
         });
-        // enter for search
-        shortcut.add("Enter", function () {
-            $('#btnKhSearch').click()
-        });
+        //// enter for search
+        //shortcut.add("Enter", function () {
+        //    $('#btnKhSearch').click()
+        //});
 
-        $('#btnKhSearch').click(function () {
-
+        $('.btnKhSearch').click(function () {
+            
             var maKhtext = '';
+            var txtMaKh = '';
 
             if ($(this).data('name') === 'maKhNo') { // search off no
                 maKhtext = $('#txtMaKhNo').val();
+                txtMaKh = 'maKhNo';
             }
             if ($(this).data('name') === 'maKhCo') { // search off co
                 maKhtext = $('#txtMaKhCo').val();
+                txtMaKh = 'maKhCo';
             }
 
-            KhachHangSearch(maKhtext);
-        })
+            $('#hidTxtMaKh').val(txtMaKh);
 
+            KhachHangSearch(maKhtext, txtMaKh);
+        })
+        
         $('#txtMaKhNo').blur(function () {
 
             maKhtext = $(this).val();
