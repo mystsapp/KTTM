@@ -9,7 +9,6 @@ namespace Data.Models_KTTM
 {
     public class TT621
     {
-        
         public long Id { get; set; }
 
         [DisplayName("Chi nhánh")]
@@ -36,7 +35,7 @@ namespace Data.Models_KTTM
         [DisplayName("Phiếu TC")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string PhieuTC { get; set; }
-        
+
         [DisplayName("Phiếu TU")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string PhieuTU { get; set; }
@@ -81,7 +80,7 @@ namespace Data.Models_KTTM
         [DisplayName("HTTC")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string HTTC { get; set; }
-        
+
         [DisplayName("Ghi sổ")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(50)")]
         public string GhiSo { get; set; }
@@ -99,7 +98,7 @@ namespace Data.Models_KTTM
         public string LoaiHDGoc { get; set; } //
 
         [DisplayName("Số CT Gốc")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string SoCTGoc { get; set; }
 
         [DisplayName("Ký hiệu HĐ")]
@@ -167,8 +166,6 @@ namespace Data.Models_KTTM
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
 
-
-
         [DisplayName("Người tạo")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
         public string NguoiTao { get; set; }
@@ -184,6 +181,5 @@ namespace Data.Models_KTTM
         //[DisplayName("Ngày khoá")]
         [Column(TypeName = "datetime")]
         public DateTime? NgaySua { get; set; }
-
     }
 }

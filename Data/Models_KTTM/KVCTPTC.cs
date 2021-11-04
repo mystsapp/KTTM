@@ -28,8 +28,8 @@ namespace Data.Models_KTTM
 
         [DisplayName("HTTC")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
-        public string HTTC { get; set; } 
-        
+        public string HTTC { get; set; }
+
         [DisplayName("Diễn giải")]
         [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "nvarchar(150)")]
         public string DienGiai { get; set; }
@@ -37,20 +37,20 @@ namespace Data.Models_KTTM
         [DisplayName("TK Nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         [Required(ErrorMessage = "TK không được để trống")]
-        public string TKNo { get; set; } 
+        public string TKNo { get; set; }
 
         [DisplayName("TK Có")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         [Required(ErrorMessage = "TK không được để trống")]
-        public string TKCo { get; set; } 
-        
+        public string TKCo { get; set; }
+
         [MaxLength(17, ErrorMessage = "Chiều dài tối đa 17 ký tự"), MinLength(17, ErrorMessage = "Chiều dài tối thiểu 17 ký tự"), Column(TypeName = "varchar(17)")]
-        public string Sgtcode { get; set; } 
-        
-        [DisplayName("Mã KH nợ") ]
+        public string Sgtcode { get; set; }
+
+        [DisplayName("Mã KH nợ")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhNo { get; set; } //
-        
+
         [DisplayName("Mã KH có")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhCo { get; set; } //
@@ -73,11 +73,11 @@ namespace Data.Models_KTTM
 
         [MaxLength(5, ErrorMessage = "Chiều dài tối đa 5 ký tự"), Column(TypeName = "varchar(5)")]
         public string MaKh { get; set; } //
-        
+
         [DisplayName("Khoãng mục")]
         [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
         public string KhoangMuc { get; set; } //
-        
+
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "nvarchar(2)")]
         public string HTTT { get; set; }
 
@@ -96,13 +96,13 @@ namespace Data.Models_KTTM
         [DisplayName("MS Thuế")]
         [MaxLength(16, ErrorMessage = "Chiều dài tối đa 16 ký tự"), Column(TypeName = "varchar(16)")]
         public string MsThue { get; set; }
-        
+
         [DisplayName("Loại CT Gốc")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string LoaiHDGoc { get; set; } //
-        
+
         [DisplayName("Số CT Gốc")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string SoCTGoc { get; set; }
 
         [DisplayName("Ngày CT Gốc")]
@@ -111,7 +111,7 @@ namespace Data.Models_KTTM
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal? VAT { get; set; }
-        
+
         [DisplayName("Doanh số chưa thuế")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal? DSKhongVAT { get; set; } //
@@ -126,7 +126,7 @@ namespace Data.Models_KTTM
         [DisplayName("Nợ quầy")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string NoQuay { get; set; } //
-        
+
         [DisplayName("Có quầy")]
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string CoQuay { get; set; } //
@@ -134,30 +134,29 @@ namespace Data.Models_KTTM
         [DisplayName("Tên KH")]
         [MaxLength(100, ErrorMessage = "Chiều dài tối đa 100 ký tự"), Column(TypeName = "nvarchar(100)")]
         public string TenKH { get; set; }
-        
+
         [DisplayName("Địa chỉ")]
         [MaxLength(200, ErrorMessage = "Chiều dài tối đa 200 ký tự"), Column(TypeName = "nvarchar(200)")]
         public string DiaChi { get; set; }
-        
+
         [DisplayName("MatHang")]
         [MaxLength(60, ErrorMessage = "Chiều dài tối đa 60 ký tự"), Column(TypeName = "nvarchar(60)")]
         public string MatHang { get; set; } //
-        
+
         [DisplayName("Ký hiệu")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string KyHieu { get; set; }
-        
+
         [DisplayName("Mẫu số HĐ")]
         [MaxLength(11, ErrorMessage = "Chiều dài tối đa 11 ký tự"), Column(TypeName = "varchar(11)")]
         public string MauSoHD { get; set; }
-        
+
         [DisplayName("Điều chỉnh")]
         public bool DieuChinh { get; set; } //
 
         [DisplayName("KC141")]
         [Column(TypeName = "datetime")]
         public DateTime? KC141 { get; set; } //?
-
 
         [DisplayName("Tạm ứng")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
@@ -166,12 +165,10 @@ namespace Data.Models_KTTM
         [DisplayName("Diễn giải phụ")]
         [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "nvarchar(150)")]
         public string DienGiaiP { get; set; } //
-        
+
         [DisplayName("Hoá đơn DT")]
         [MaxLength(120, ErrorMessage = "Chiều dài tối đa 120 ký tự"), Column(TypeName = "nvarchar(120)")]
         public string HoaDonDT { get; set; } //
-
-
 
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
@@ -192,25 +189,20 @@ namespace Data.Models_KTTM
         [Column(TypeName = "datetime")]
         public DateTime? NgaySua { get; set; }
 
-
-
         [DisplayName("Link HDDT")]
         [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "varchar(150)")]
         public string LinkHDDT { get; set; }
 
-
         [DisplayName("Mã tra cứu")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
         public string MaTraCuu { get; set; }
-        
+
         [DisplayName("Tk truy cập")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
         public string TkTruyCap { get; set; }
 
-
         [DisplayName("Password")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
         public string Password { get; set; }
-
     }
 }
