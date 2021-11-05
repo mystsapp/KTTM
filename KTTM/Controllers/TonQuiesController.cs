@@ -123,7 +123,7 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate, user.Macn);
+            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate, user.Macn, true);
 
             if (TonQuyVM.TonQuies == null)
             {

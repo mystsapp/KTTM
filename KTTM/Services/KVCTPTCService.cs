@@ -89,9 +89,11 @@ namespace KTTM.Services
 
         Task<IEnumerable<KVCTPTC>> FinByDate(string searchFromDate, string searchToDate, string maCn);
 
-        Task<IEnumerable<KVCTPTC>> FinBy_TonQuy_Date(string searchFromDate, string searchToDate, string maCn);
+        Task<IEnumerable<KVCTPTC>> FinBy_TonQuy_Date(string searchFromDate, string searchToDate, string maCn, string loaiTien = "");
 
         List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
+
+        List<TonQuy_Model_GroupBy_NgayCT> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -521,7 +523,7 @@ namespace KTTM.Services
             return kVCTPTCs.FirstOrDefault();
         }
 
-        public async Task<IEnumerable<KVCTPTC>> FinBy_TonQuy_Date(string searchFromDate, string searchToDate, string maCn)
+        public async Task<IEnumerable<KVCTPTC>> FinBy_TonQuy_Date(string searchFromDate, string searchToDate, string maCn, string loaiTien = "")
         {
             // searchFromDate : ngay tonquy sau cung nhat
             List<KVCTPTC> list = new List<KVCTPTC>();
@@ -540,11 +542,17 @@ namespace KTTM.Services
 
                 var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT > fromDate &&
                                                                                                      y.KVPTC.NgayCT < toDate.AddDays(1));
+                if (!string.IsNullOrEmpty(loaiTien)) // NT
+                {
+                    kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == loaiTien && x.MaCn == maCn);
+                }
+                else // VND
+                {
+                    var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
+                    var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
+                    kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
+                }
 
-                var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
-                var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
-
-                kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
                 //list = kVCTPTCs.Where(x => x.TKNo.StartsWith("11120000") && x.TKCo == "1111000000").ToList();
                 list = kVCTPTCs.OrderBy(x => x.SoCT.Substring(0, 4)).ToList();
                 list = list.OrderBy(x => x.SoCT.Substring(4, 2)).ToList();
@@ -659,6 +667,19 @@ namespace KTTM.Services
                 item.CongPhatSinh_Thu = congPhatSinh_Thu;
                 item.CongPhatSinh_Chi = congPhatSinh_Chi;
             }
+
+            return result1;
+        }
+
+        public List<TonQuy_Model_GroupBy_NgayCT> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies)
+        {
+            var result1 = (from p in tonQuies
+                           group p by p.NgayCT into g
+                           select new TonQuy_Model_GroupBy_NgayCT()
+                           {
+                               NgayCT = g.Key,
+                               TonQuies = g.ToList()
+                           }).ToList();
 
             return result1;
         }

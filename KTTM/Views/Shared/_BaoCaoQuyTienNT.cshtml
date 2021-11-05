@@ -68,12 +68,12 @@
     $('#btnBaoCaoQuyTienNT').off('click').on('click', function () {
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
-        loaiTien = ''; ////////////////////////////////////////////////////////////////////////////////
+        //loaiTien = ''; ////////////////////////////////////////////////////////////////////////////////
         if (tuNgay === '' || denNgay === '') {
             toastr.warning("Ngày không được để trống", "Thông báo!");
         }
         else {
-            $.post('/BaoCaos/CheckNgayTonQuy_NT', { tuNgay: tuNgay, denNgay: denNgay, loaiTien: loaiTien }, function (response) {
+            $.post('/BaoCaos/CheckNgayTonQuy', { tuNgay: tuNgay, denNgay: denNgay }, function (response) {
                 
                 if (!response.status) {
                     toastr.warning(response.message, "Thông báo!");

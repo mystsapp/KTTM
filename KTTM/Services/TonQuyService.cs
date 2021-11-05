@@ -9,7 +9,7 @@ namespace KTTM.Services
 {
     public interface ITonQuyService
     {
-        IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn);
+        IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn, bool isNT = false);
         Task CreateAsync(TonQuy tonQuy);
         Task UpdateAsync(TonQuy tonQuy);
         List<TonQuy> Find_Equal_By_Date(DateTime dateTime);
@@ -92,7 +92,7 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
-        public IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn)
+        public IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn, bool isNT)
         {
 
             List<TonQuy> list = new List<TonQuy>();
@@ -154,6 +154,15 @@ namespace KTTM.Services
                 }
             }
             // search date
+
+            if (isNT)
+            {
+                list = list.Where(x => x.LoaiTien != "VND").ToList();
+            }
+            else
+            {
+                list = list.Where(x => x.LoaiTien == "VND").ToList();
+            }
 
             return list.OrderByDescending(x => x.NgayCT);
         }

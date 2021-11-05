@@ -173,8 +173,8 @@ var indexController = {
         // create new KVCTPCT
 
         // btnInPhieu
-        $('#btnInPhieu').off('click').on('click', function () {
-            $('#frmInPhieu').submit();
+        $('#btnInCTPhieu').off('click').on('click', function () {
+            $('#frmInCTPhieu').submit();
         })
 
     },
@@ -203,6 +203,7 @@ var indexController = {
 
         // gang' soCT cho btnInphieu
         $('#btnInPhieu').attr('disabled', false);
+        $('#btnInCTPhieu').attr('disabled', false);
         $('#hidId_InPhieu').val(id);
 
         // page
