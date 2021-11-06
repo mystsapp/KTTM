@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+
 //using Data.Models_KTTM_1;
 
 namespace KTTM.Controllers
@@ -21,6 +22,7 @@ namespace KTTM.Controllers
     {
         //private readonly KTTM_1Context _kTTM_1Context;
         private readonly IKVPTCService _kVPTCService;
+
         private readonly IKVCTPTCService _kVCTPTCService;
         private readonly ITamUngService _tamUngService;
         private readonly ITT621Service _tT621Service;
@@ -29,7 +31,9 @@ namespace KTTM.Controllers
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
-        public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService, ITamUngService tamUngService, ITT621Service tT621Service, ITonQuyService tonQuyService)
+        public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService,
+            ITamUngService tamUngService, ITT621Service tT621Service,
+            ITonQuyService tonQuyService)
         {
             //_kTTM_1Context = kTTM_1Context;
             _kVPTCService = kVPTCService;
@@ -47,7 +51,7 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, Guid id, int page = 1)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 ViewBag.id = "";
             }
@@ -69,7 +73,6 @@ namespace KTTM.Controllers
             //}
             //var abc = "";
             //await _tonQuyService.CreateRangeAsync(tonQuies);
-
 
             //List<Data.Models_KTTM.TamUng> tamUngs = _tamUngService.GetAll().ToList();
             //List<Tt621> tt621sAnhSon = _kTTM_1Context.Tt621s.ToList();
@@ -128,11 +131,9 @@ namespace KTTM.Controllers
             //        }
             //    }
 
-
             //}
             //var abc = "";
             //await _tT621Service.CreateRangeAsync(tT621s);
-
 
             //var list = _kTTM_1Context.TamUngs.ToList();
             //var listKVCTPTC = _kVCTPTCService.GetAll().ToList();
@@ -147,7 +148,6 @@ namespace KTTM.Controllers
             //    //.Where(x => x.Tkno.StartsWith("141")).ToList();
             //    if (list.Count > 0)
             //    {
-
             //        tamUngs.Add(new Data.Models_KTTM.TamUng()
             //        {
             //            ConLai = tamUng.ConLai,
@@ -178,7 +178,6 @@ namespace KTTM.Controllers
 
             //var bac = "";
             //await _tamUngService.CreateRangeAsync(tamUngs);
-
 
             //var kvptcs = _kVPTCService.GetAll().ToList();
             //var kvctptcs = _kTTM_1Context.Kvctptcs.ToList();
@@ -244,7 +243,6 @@ namespace KTTM.Controllers
 
             //await _kVCTPTCService.CreateRange(kVCTPTCs);
 
-
             //var kvptcAnhSon = _kTTM_1Context.Kvptcs.ToList();
             //List<KVPTC> kVPTCs = new List<KVPTC>();
             //foreach (var item in kvptcAnhSon)
@@ -270,7 +268,6 @@ namespace KTTM.Controllers
 
             //var abc = "";
             //await _kVPTCService.CreateRangeAsync(kVPTCs);
-
 
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;
@@ -346,17 +343,20 @@ namespace KTTM.Controllers
                         case "VN":
                             HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QT", user.Macn); // thu VND
                             break;
+
                         default:
                             HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NT", user.Macn); // thu NgoaiTe
                             break;
                     }
                     break;
+
                 default: // chi
                     switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
                             HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
                             break;
+
                         default:
                             HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NC", user.Macn); // chi NgoaiTe
                             break;
@@ -373,15 +373,14 @@ namespace KTTM.Controllers
             //var osVersion = Environment.OSVersion;
             //var domainName = Environment.UserDomainName;
 
-            //string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
-            //// Get the IP  
+            //string hostName = Dns.GetHostName(); // Retrive the Name of HOST
+            //// Get the IP
             ////var info = Dns.GetHostByName(hostName).AddressList;//.ToList();
             //var info = Dns.GetHostEntry(hostName).AddressList;
             ////string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
             //string myIP = Dns.GetHostEntry(hostName).AddressList[3].ToString();
 
             //HomeVM.KVPCT.MayTinh = computerName + "|" + userName + "|" + myIP + "|" + domainName;
-
 
             // ghi log
             HomeVM.KVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
@@ -450,7 +449,9 @@ namespace KTTM.Controllers
                 HomeVM.KVPTC.NguoiSua = user.Username;
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
+
                 #region log file
+
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _kVPTCService.GetByIdAsNoTracking(id);
 
@@ -469,11 +470,11 @@ namespace KTTM.Controllers
                     temp += String.Format("- Đơn vị thay đổi: {0}->{1}", t.DonVi, HomeVM.KVPTC.DonVi);
                 }
 
-                #endregion
+                #endregion log file
+
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
-
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
@@ -510,6 +511,5 @@ namespace KTTM.Controllers
             //}
             return Redirect(strUrl);
         }
-
     }
 }

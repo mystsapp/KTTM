@@ -8,6 +8,7 @@ namespace Data.Models_DanhMucKT
     public partial class Tknh
     {
         public string Code { get; set; }
+        public string Chinhanh { get; set; }
         public string TaiKhoan { get; set; }
         public string NganHang { get; set; }
         public string ThanhPho { get; set; }

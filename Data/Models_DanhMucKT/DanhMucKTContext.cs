@@ -22,6 +22,7 @@ namespace Data.Models_DanhMucKT
         public virtual DbSet<DmTk> DmTks { get; set; }
         public virtual DbSet<DvPhi> DvPhis { get; set; }
         public virtual DbSet<MatHang> MatHangs { get; set; }
+        public virtual DbSet<NgoaiTe> NgoaiTes { get; set; }
         public virtual DbSet<PhongBan> PhongBans { get; set; }
         public virtual DbSet<Quay> Quays { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
@@ -37,11 +38,11 @@ namespace Data.Models_DanhMucKT
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=192.168.4.198,1434;database=DanhMucKT;Trusted_Connection=true;User Id=sa;Password=123456;Integrated security=false;MultipleActiveResultSets=true");
-            }
+            //            if (!optionsBuilder.IsConfigured)
+            //            {
+            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+            //                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=DanhMucKT;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
+            //            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -148,6 +149,20 @@ namespace Data.Models_DanhMucKT
                     .HasColumnName("MATHANG");
             });
 
+            modelBuilder.Entity<NgoaiTe>(entity =>
+            {
+                entity.HasKey(e => e.MaNt);
+
+                entity.Property(e => e.MaNt)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("MaNT");
+
+                entity.Property(e => e.TenNt)
+                    .HasMaxLength(100)
+                    .HasColumnName("TenNT");
+            });
+
             modelBuilder.Entity<PhongBan>(entity =>
             {
                 entity.Property(e => e.BoPhan)
@@ -249,6 +264,10 @@ namespace Data.Models_DanhMucKT
             modelBuilder.Entity<Tknh>(entity =>
             {
                 entity.ToTable("TKNHs");
+
+                entity.Property(e => e.Chinhanh)
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Code)
                     .HasMaxLength(5)

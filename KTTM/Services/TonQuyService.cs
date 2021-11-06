@@ -10,14 +10,24 @@ namespace KTTM.Services
     public interface ITonQuyService
     {
         IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn, bool isNT = false);
+
         Task CreateAsync(TonQuy tonQuy);
+
         Task UpdateAsync(TonQuy tonQuy);
+
         List<TonQuy> Find_Equal_By_Date(DateTime dateTime);
+
         Task<string> CheckTonDauStatus(DateTime fromDate, string maCn);
+
         Task<string> CheckTonDauStatus_NT(DateTime fromDate, string loaiTien, string maCn);
+
         TonQuy GetById(long id);
+
+        IEnumerable<TonQuy> GetAll();
+
         Task CreateRangeAsync(List<TonQuy> tonQuies);
     }
+
     public class TonQuyService : ITonQuyService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -31,12 +41,12 @@ namespace KTTM.Services
         {
             //var date = DateTime.Now.AddDays(1);
             // ds tonquy truoc tuNgay
-            List<TonQuy> tonQuies1 = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT <= fromDate 
+            List<TonQuy> tonQuies1 = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT <= fromDate
                                                                          && x.LoaiTien == loaiTien).ToList();
             tonQuies1 = tonQuies1.Where(x => x.MaCn == maCn).ToList();
             // tonquy sau cung nhat
             TonQuy tonQuy = tonQuies1.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-            
+
             // lay tat ca chi tiet truóc tuNgay(fromDate)
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < fromDate.AddDays(1));
             kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == loaiTien).ToList();
@@ -48,25 +58,24 @@ namespace KTTM.Services
                 var boolK = kVCTPTCs.ToList().Exists(x => x.KVPTC.NgayCT.Value.ToShortDateString() == i.ToShortDateString());
                 if (boolK)
                 {
-                    stringDate += i.ToString("dd/MM/yyyy") + "-" ;
+                    stringDate += i.ToString("dd/MM/yyyy") + "-";
                 }
             }
 
             return stringDate;
-
         }
-        
+
         public async Task<string> CheckTonDauStatus(DateTime fromDate, string maCn)
         {
             //var date = DateTime.Now.AddDays(1);
             // ds tonquy truoc tuNgay
-            List<TonQuy> tonQuies1 = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT <= fromDate 
+            List<TonQuy> tonQuies1 = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT <= fromDate
                                                                          && x.LoaiTien == "VND").ToList();
             tonQuies1 = tonQuies1.Where(x => x.MaCn == maCn).ToList();
 
             // tonquy sau cung nhat
             TonQuy tonQuy = tonQuies1.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-            
+
             // lay tat ca chi tiet truóc tuNgay(fromDate)
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT < fromDate.AddDays(1));
             kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == "VND").ToList();
@@ -78,12 +87,11 @@ namespace KTTM.Services
                 var boolK = kVCTPTCs.ToList().Exists(x => x.KVPTC.NgayCT.Value.ToShortDateString() == i.ToShortDateString());
                 if (boolK)
                 {
-                    stringDate += i.ToString("dd/MM/yyyy") + "-" ;
+                    stringDate += i.ToString("dd/MM/yyyy") + "-";
                 }
             }
 
             return stringDate;
-
         }
 
         public async Task CreateAsync(TonQuy tonQuy)
@@ -94,13 +102,11 @@ namespace KTTM.Services
 
         public IEnumerable<TonQuy> FindTonQuy_By_Date(string searchFromDate, string searchToDate, string maCn, bool isNT)
         {
-
             List<TonQuy> list = new List<TonQuy>();
             // search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate); // NgayCT
@@ -117,10 +123,8 @@ namespace KTTM.Services
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
-
             }
             else
             {
@@ -136,7 +140,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate)) // denngay
                 {
@@ -150,7 +153,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
             }
             // search date
@@ -170,7 +172,7 @@ namespace KTTM.Services
         public List<TonQuy> Find_Equal_By_Date(DateTime dateTime)
         {
             var tonQuies = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT.Value.ToShortDateString() == dateTime.ToShortDateString()).ToList();
-            if(tonQuies.Count == 0)
+            if (tonQuies.Count == 0)
             {
                 return tonQuies;
             }
@@ -180,7 +182,6 @@ namespace KTTM.Services
         public TonQuy GetById(long id)
         {
             return _unitOfWork.tonQuyRepository.GetById(id);
-
         }
 
         public async Task UpdateAsync(TonQuy tonQuy)
@@ -193,6 +194,11 @@ namespace KTTM.Services
         {
             await _unitOfWork.tonQuyRepository.CreateRange(tonQuies);
             await _unitOfWork.Complete();
+        }
+
+        public IEnumerable<TonQuy> GetAll()
+        {
+            return _unitOfWork.tonQuyRepository.GetAll();
         }
     }
 }

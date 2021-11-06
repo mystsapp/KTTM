@@ -639,7 +639,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[dong, 3].Value = "TỒN ĐẦU";
             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-            xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
+            // xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
             //NumberFormat(dong, 6, dong, 6, xlSheet);
             dong++;
@@ -750,8 +750,8 @@ namespace KTTM.Controllers
             dong++;
             xlSheet.Cells[dong, 3].Value = "TỒN CUỐI:";
             xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-            decimal tonCuoi = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
-            xlSheet.Cells[dong, 6].Value = tonCuoi;
+            //decimal tonCuoi = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
+            //xlSheet.Cells[dong, 6].Value = tonCuoi;
             xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
             NumberFormat(8, 6, dong, 7, xlSheet);
@@ -778,8 +778,8 @@ namespace KTTM.Controllers
                 NgayCT = DateTime.Parse(searchToDate), //
                 NgayTao = DateTime.Now,
                 NguoiTao = user.Hoten,
-                SoTien = tonCuoi,
-                SoTienNT = tonCuoi,
+                //SoTien = tonCuoi,
+                //SoTienNT = tonCuoi,
                 MaCn = user.Macn
             };
 
@@ -788,8 +788,8 @@ namespace KTTM.Controllers
             {
                 var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
                 tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
-                tonQuy2.SoTien = tonCuoi;
-                tonQuy2.SoTienNT = tonCuoi;
+                //tonQuy2.SoTien = tonCuoi;
+                //tonQuy2.SoTienNT = tonCuoi;
 
                 await _tonQuyService.UpdateAsync(tonQuy2);
             }
