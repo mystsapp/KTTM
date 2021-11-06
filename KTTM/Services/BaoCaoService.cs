@@ -13,7 +13,10 @@ namespace KTTM.Services
     public interface IBaoCaoService
     {
         PhongBan GetPhongBanById(int id);
+
+        IEnumerable<NgoaiTe> GetAllNgoaiTe();
     }
+
     public class BaoCaoService : IBaoCaoService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,6 +24,11 @@ namespace KTTM.Services
         public BaoCaoService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public IEnumerable<NgoaiTe> GetAllNgoaiTe()
+        {
+            return _unitOfWork.ngoaiTe_DanhMucKT_Repository.GetAll();
         }
 
         public PhongBan GetPhongBanById(int id)

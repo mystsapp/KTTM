@@ -13,19 +13,21 @@ namespace Data.Repository
 {
     public interface IUnitOfWork : IDisposable
     {
-
         // qltaikhoan
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
+
         IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
         IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
         ISupplier_QLTaiKhoan_Repository supplier_QLTaiKhoan_Repository { get; }
 
         // qltour
         INgoaiTeRepository ngoaiTeRepository { get; }
+
         IPhongBanRepository phongBanRepository { get; }
 
         // KTTM
         IKVPCTRepository kVPCTRepository { get; }
+
         IKVCTPCTRepository kVCTPCTRepository { get; }
         ITamUngRepository tamUngRepository { get; }
         ITT621Repository tT621Repository { get; }
@@ -33,6 +35,7 @@ namespace Data.Repository
 
         // DanhMucKT
         IDmTkRepository dmTkRepository { get; }
+
         ITkCongNoRepository tkCongNoRepository { get; }
         IDmHttcRepository dmHttcRepository { get; }
         IDGiaiRepository dGiaiRepository { get; }
@@ -40,17 +43,20 @@ namespace Data.Repository
         ISupplier_DanhMucKT_Repository supplier_DanhMucKT_Repository { get; }
         IMatHangRepository matHangRepository { get; }
         IPhongBan_DanhMucKT_Repository phongBan_DanhMucKT_Repository { get; }
+        INgoaiTe_DanhMucKT_Repository ngoaiTe_DanhMucKT_Repository { get; }
 
         // Cashier
         INopTienRepository nopTienRepository { get; }
+
         INtbillRepository ntbillRepository { get; }
         ICtbillRepository ctbillRepository { get; }
 
         // hdvatob
         ISupplier_hdvatob_Repository supplier_Hdvatob_Repository { get; }
-        Task<int> Complete();
 
+        Task<int> Complete();
     }
+
     public class UnitOfWork : IUnitOfWork
     {
         private readonly qltaikhoanContext _qltaikhoanContext;
@@ -95,6 +101,7 @@ namespace Data.Repository
             supplier_DanhMucKT_Repository = new Supplier_DanhMucKT_Repository(_danhMucKTContext);
             matHangRepository = new MatHangRepository(_danhMucKTContext);
             phongBan_DanhMucKT_Repository = new PhongBan_DanhMucKT_Repository(_danhMucKTContext);
+            ngoaiTe_DanhMucKT_Repository = new NgoaiTe_DanhMucKT_Repository(_danhMucKTContext);
 
             // Cashier
             nopTienRepository = new NopTienRepository(_qlcashierContext);
@@ -150,6 +157,8 @@ namespace Data.Repository
         public ITT621Repository tT621Repository { get; }
 
         public ITonQuyRepository tonQuyRepository { get; }
+
+        public INgoaiTe_DanhMucKT_Repository ngoaiTe_DanhMucKT_Repository { get; }
 
         public async Task<int> Complete()
         {

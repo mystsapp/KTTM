@@ -70,6 +70,7 @@ namespace KTTM
             services.AddTransient<ISupplier_DanhMucKT_Repository, Supplier_DanhMucKT_Repository>();
             services.AddTransient<IMatHangRepository, MatHangRepository>();
             services.AddTransient<IPhongBan_DanhMucKT_Repository, PhongBan_DanhMucKT_Repository>();
+            services.AddTransient<INgoaiTe_DanhMucKT_Repository, NgoaiTe_DanhMucKT_Repository>();
 
             // Cashier
             services.AddTransient<INopTienRepository, NopTienRepository>();

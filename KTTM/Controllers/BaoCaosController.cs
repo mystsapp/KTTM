@@ -521,22 +521,20 @@ namespace KTTM.Controllers
             //string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
             string fromDate = DateTime.Parse(searchFromDate).AddDays(-1).ToString("dd/MM/yyyy");
             //var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
-            var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn, true); // tonquy NT
-            var tonQuy_Model_GroupBy_NgayCT = _kVCTPTCService.TonQuy_Model_GroupBy_NgayCTs(tonQuies)
-                .OrderByDescending(x => x.NgayCT).FirstOrDefault(); // 1 NgayCT -> chứa list LoaiTien
-
+            IEnumerable<NgoaiTe> ngoaiTes = _baoCaoService.GetAllNgoaiTe();
             List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
-            foreach (var loaiTien in tonQuy_Model_GroupBy_NgayCT.TonQuies.Select(x => x.LoaiTien))
+            foreach (var ngoaiTe in ngoaiTes)
             {
-                IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService
-                .FinBy_TonQuy_Date(tonQuy_Model_GroupBy_NgayCT.NgayCT.Value.ToShortDateString(),
-                searchToDate, user.Macn, loaiTien); // theo loaitien != "VND"
-
+                // tonquy theo loaitien
+                var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn, ngoaiTe.MaNt);
+                var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
+                IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService.FinBy_TonQuy_Date(
+                    tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
                 if (kVCTPTCs1.Count() > 0)
                 {
                     kVCTPTCs.AddRange(kVCTPTCs1);
                 }
-            }
+            } // group by theo ngoaite
 
             List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
             if (kVCTPTCs.Count() > 0)
@@ -750,7 +748,7 @@ namespace KTTM.Controllers
             dong++;
             xlSheet.Cells[dong, 3].Value = "TỒN CUỐI:";
             xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-            //decimal tonCuoi = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
+            decimal tonCuoi = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
             //xlSheet.Cells[dong, 6].Value = tonCuoi;
             xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
