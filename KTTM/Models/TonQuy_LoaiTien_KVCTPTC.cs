@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace KTTM.Models
 {
-    public class KVCTPCT_Model_GroupBy_LoaiTien
+    public class TonQuy_LoaiTien_KVCTPTC
     {
-        public string LoaiTien { get; set; }
+        public NgoaiTe NgoaiTe { get; set; }
+        public TonQuy TonQuy { get; set; }
         public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }
-
-        //public IEnumerable<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_GroupBy_SoCTs { get; set; }
-        public decimal TongCong { get; set; }
 
         public decimal CongPhatSinh_Thu { get; set; }
         public decimal CongPhatSinh_Chi { get; set; }

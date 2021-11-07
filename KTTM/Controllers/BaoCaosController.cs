@@ -522,32 +522,32 @@ namespace KTTM.Controllers
             string fromDate = DateTime.Parse(searchFromDate).AddDays(-1).ToString("dd/MM/yyyy");
             //var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
             IEnumerable<NgoaiTe> ngoaiTes = _baoCaoService.GetAllNgoaiTe();
-            List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
+            List<TonQuy_LoaiTien_KVCTPTC> tonQuy_LoaiTien_KVCTPTC = new List<TonQuy_LoaiTien_KVCTPTC>();
+
             foreach (var ngoaiTe in ngoaiTes)
             {
                 // tonquy theo loaitien
                 var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn, ngoaiTe.MaNt);
                 var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
-                IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService.FinBy_TonQuy_Date(
-                    tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
-                if (kVCTPTCs1.Count() > 0)
+                if (tonQuy != null)
                 {
-                    kVCTPTCs.AddRange(kVCTPTCs1);
+                    IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService.FinBy_TonQuy_Date(
+                    tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
+
+                    if (kVCTPTCs1.Count() > 0)
+                    {
+                        tonQuy_LoaiTien_KVCTPTC.Add(new TonQuy_LoaiTien_KVCTPTC() { NgoaiTe = ngoaiTe, TonQuy = tonQuy, KVCTPTCs = kVCTPTCs1 });
+                    }
                 }
             } // group by theo ngoaite
 
-            List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
-            if (kVCTPTCs.Count() > 0)
+            foreach (var item in tonQuy_LoaiTien_KVCTPTC)
             {
-                kVCTPCT_Model_GroupBy_SoCTs = _kVCTPTCService.KVCTPTC_Model_GroupBy_SoCTs(kVCTPTCs); // groupby name (makh)
-            }
-            else
-            {
-                kVCTPCT_Model_GroupBy_SoCTs.Add(new KVCTPCT_Model_GroupBy_SoCT()
-                {
-                    CongPhatSinh_Thu = 0,
-                    CongPhatSinh_Chi = 0
-                });
+                item.CongPhatSinh_Thu_NT = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTienNT).Value;
+                item.CongPhatSinh_Thu = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTien).Value;
+
+                item.CongPhatSinh_Chi_NC = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTienNT).Value;
+                item.CongPhatSinh_Chi = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTien).Value;
             }
 
             ExcelPackage ExcelApp = new ExcelPackage();
@@ -560,6 +560,8 @@ namespace KTTM.Controllers
             xlSheet.Column(5).Width = 20;
             xlSheet.Column(6).Width = 15;
             xlSheet.Column(7).Width = 15;
+            xlSheet.Column(8).Width = 15;
+            xlSheet.Column(9).Width = 15;
 
             xlSheet.Cells[1, 1].Value = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
             xlSheet.Cells[1, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -568,11 +570,11 @@ namespace KTTM.Controllers
 
             xlSheet.Cells[1, 5].Value = "CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM";
             xlSheet.Cells[1, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[1, 5, 1, 7].Merge = true;
+            xlSheet.Cells[1, 5, 1, 9].Merge = true;
 
             xlSheet.Cells[2, 5].Value = "Độc Lập - Tự Do - Hạnh Phúc";
             xlSheet.Cells[2, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[2, 5, 2, 7].Merge = true;
+            xlSheet.Cells[2, 5, 2, 9].Merge = true;
 
             string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ TIỀN MẶT VNĐ ";
             string stringTuNgay;
@@ -591,7 +593,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
             //xlSheet.Cells[4, 1].Style.Font.Bold = true;
             //xlSheet.Cells[4, 1].Style.Font.Italic = true;
-            xlSheet.Cells[4, 1, 4, 7].Merge = true;
+            xlSheet.Cells[4, 1, 4, 9].Merge = true;
 
             // Tạo header
             xlSheet.Cells[6, 1].Value = "SỐ CT";
@@ -607,19 +609,24 @@ namespace KTTM.Controllers
             xlSheet.Cells[6, 5].Value = "TÀI KHOẢN ĐỐI ỨNG";
             //xlSheet.Cells[6, 5].Style.WrapText = true;
             xlSheet.Cells[6, 5, 7, 5].Merge = true;
-            xlSheet.Cells[6, 6].Value = "SỐ TIỀN";
+            xlSheet.Cells[6, 6].Value = "SỐ TIỀN NT";
             xlSheet.Cells[6, 6, 6, 7].Merge = true;
             xlSheet.Cells[7, 6].Value = "THU";
             xlSheet.Cells[7, 7].Value = "CHI";
 
-            xlSheet.Cells[6, 1, 7, 7].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[6, 1, 7, 7].Style.WrapText = true;
-            xlSheet.Cells[6, 1, 7, 7].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Alignment is center
-            xlSheet.Cells[6, 1, 7, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // Alignment is center
+            xlSheet.Cells[8, 8].Value = "SỐ TIỀN";
+            xlSheet.Cells[8, 8, 8, 9].Merge = true;
+            xlSheet.Cells[7, 8].Value = "THU";
+            xlSheet.Cells[7, 9].Value = "CHI";
+
+            xlSheet.Cells[6, 1, 7, 9].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[6, 1, 7, 9].Style.WrapText = true;
+            xlSheet.Cells[6, 1, 7, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Alignment is center
+            xlSheet.Cells[6, 1, 7, 9].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // Alignment is center
             //worksheet.Column(8).Style.VerticalAlignment = ExcelVerticalAlignment.Top;
 
-            setBorder(6, 1, 7, 7, xlSheet);
-            setCenterAligment(1, 1, 7, 7, xlSheet);
+            setBorder(6, 1, 7, 9, xlSheet);
+            setCenterAligment(1, 1, 7, 9, xlSheet);
 
             // do du lieu tu table
             int dong = 8;
@@ -634,169 +641,151 @@ namespace KTTM.Controllers
 
             int idem = 1;
 
-            xlSheet.Cells[dong, 3].Value = "TỒN ĐẦU";
-            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+            //xlSheet.Cells[dong, 3].Value = "TỒN ĐẦU";
+            //TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-            // xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
-            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-            //NumberFormat(dong, 6, dong, 6, xlSheet);
-            dong++;
+            //// xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
+            //TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+            ////NumberFormat(dong, 6, dong, 6, xlSheet);
+            //dong++;
 
-            if (kVCTPTCs.Count() > 0)
+            if (tonQuy_LoaiTien_KVCTPTC.Count() > 0)
             {
-                foreach (var item in kVCTPCT_Model_GroupBy_SoCTs)
+                foreach (var item in tonQuy_LoaiTien_KVCTPTC)
                 {
+                    xlSheet.Cells[dong, 3].Value = "TỒN ĐẦU " + item.NgoaiTe.TenNt;
+                    TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
+                    xlSheet.Cells[dong, 6].Value = item.TonQuy.SoTienNT;
+                    TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
+                    xlSheet.Cells[dong, 8].Value = item.TonQuy.SoTien;
+                    TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
                     foreach (var kvctpct in item.KVCTPTCs)
                     {
-                        if (item.SoCT.Contains("QT"))
+                        if (kvctpct.SoCT.Contains("NT"))
                         {
                             xlSheet.Cells[dong, 1].Value = kvctpct.SoCT;
-                            TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 3].Value = kvctpct.KVPTC.NgayCT;
+                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
+                            TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 6].Value = kvctpct.SoTienNT;//.SoTienNT;
+                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 8].Value = kvctpct.SoTien;//.SoTien;
+                            TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
+                            dong++;
+
+                            xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
+                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 5].Value = kvctpct.TKCo;
+                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 6].Value = kvctpct.SoTienNT;//.SoTienNT;
+                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 8].Value = kvctpct.SoTien;//.SoTien;
+                            TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         }
                         else
                         {
                             xlSheet.Cells[dong, 2].Value = kvctpct.SoCT;
-                            TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                        }
-                        if (item.KVCTPTCs.Count() == 1)
-                        {
-                            xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
+                            TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 3].Value = kvctpct.KVPTC.NgayCT;
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-                            // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        }
-                        else
-                        {
-                            xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
-                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        }
-
-                        xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
-                        TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                        //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-
-                        xlSheet.Cells[dong, 5].Value = item.SoCT.Contains("QT") ? kvctpct.TKCo : kvctpct.TKNo;
-                        TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                        //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-
-                        if (item.KVCTPTCs.Count() == 1)
-                        {
-                            if (item.SoCT.Contains("QT"))
-                            {
-                                xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
-                                TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-                            }
-                            else
-                            {
-                                xlSheet.Cells[dong, 7].Value = kvctpct.SoTien;
-                                TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-                            }
-
-                            //xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
-                            //TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                        }
-                        else
-                        {
-                            if (item.SoCT.Contains("QT"))
-                            {
-                                xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
-                                TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            }
-                            else
-                            {
-                                xlSheet.Cells[dong, 7].Value = kvctpct.SoTien;
-                                TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            }
-                            //xlSheet.Cells[dong, 8].Value = kvctpct.KVPTC.NgayCT.Value.ToString("dd/MM/yyyy");
-                            //TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
+                            TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 7].Value = kvctpct.SoTienNT;//.SoTienNT;
+                            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                            xlSheet.Cells[dong, 9].Value = kvctpct.SoTien;//.SoTien;
+                            TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             dong++;
-                        }
-                        //setBorder(5, 1, dong, 10, xlSheet);
-                        //NumberFormat(dong, 6, dong + 1, 7, xlSheet);
 
-                        //dong++;
-                        idem++;
+                            xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
+                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 5].Value = kvctpct.TKCo;
+                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 7].Value = kvctpct.SoTienNT;//.SoTienNT;
+                            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 9].Value = kvctpct.SoTien;//.SoTien;
+                            TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                        }
+
+                        xlSheet.Cells[dong, 3].Value = "CỘNG PHÁT SINH:";
+                        xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+                        xlSheet.Cells[dong, 6].Value = item.CongPhatSinh_Thu_NT;
+                        xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+                        xlSheet.Cells[dong, 7].Value = item.CongPhatSinh_Chi_NC;
+                        xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+
+                        xlSheet.Cells[dong, 8].Value = item.CongPhatSinh_Thu;
+                        xlSheet.Cells[dong, 8].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+                        xlSheet.Cells[dong, 9].Value = item.CongPhatSinh_Chi;
+                        xlSheet.Cells[dong, 9].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+
+                        dong++;
                     }
-                    if (item.KVCTPTCs.Count() > 1)
-                    {
-                        xlSheet.Cells[dong, 3].Value = "Tổng cộng phiếu: " + item.SoCT;
-                        TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                    xlSheet.Cells[dong, 3].Value = "TỒN CUỐI:";
+                    xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
-                        if (item.SoCT.Contains("QT"))
-                        {
-                            xlSheet.Cells[dong, 6].Value = item.TongCong;
-                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-                        }
-                        else
-                        {
-                            xlSheet.Cells[dong, 7].Value = item.TongCong;
-                            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
-                        }
-                    }
+                    decimal tonCuoiNT = item.TonQuy.SoTienNT + item.CongPhatSinh_Thu_NT - item.CongPhatSinh_Chi_NC;
+                    xlSheet.Cells[dong, 6].Value = tonCuoiNT;
+                    xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
-                    dong++;
+                    decimal tonCuoi = item.TonQuy.SoTien + item.CongPhatSinh_Thu - item.CongPhatSinh_Chi;
+                    xlSheet.Cells[dong, 8].Value = tonCuoi;
+                    xlSheet.Cells[dong, 8].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
                 }
             }
-
-            xlSheet.Cells[dong, 3].Value = "CỘNG PHÁT SINH:";
-            xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-            xlSheet.Cells[dong, 6].Value = kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu;
-            xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-            xlSheet.Cells[dong, 7].Value = kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
-            xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
             dong++;
-            xlSheet.Cells[dong, 3].Value = "TỒN CUỐI:";
-            xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-            decimal tonCuoi = tonQuy.SoTien + kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Thu - kVCTPCT_Model_GroupBy_SoCTs.FirstOrDefault().CongPhatSinh_Chi;
-            //xlSheet.Cells[dong, 6].Value = tonCuoi;
-            xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
-            NumberFormat(8, 6, dong, 7, xlSheet);
+            NumberFormat(8, 6, dong, 9, xlSheet);
             //setFontBold(dong, 1, dong, 10, 12, xlSheet);
-            setBorder(6, 1, dong, 7, xlSheet);
+            setBorder(6, 1, dong, 9, xlSheet);
             dong++;
 
-            xlSheet.Cells[dong, 3].Value = "Kế toán";
+            xlSheet.Cells[dong, 3].Value = "Người báo cáo";
             xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-            xlSheet.Cells[dong, 4].Value = "Thủ quỹ";
-            xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-            xlSheet.Cells[dong, 5].Value = "Kế toán trưởng";
+            xlSheet.Cells[dong, 5].Value = "Thủ quỹ";
             xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-            xlSheet.Cells[dong, 5, dong, 7].Merge = true;
+            xlSheet.Cells[dong, 6].Value = "Kế toán trưởng";
+            xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+            xlSheet.Cells[dong, 6, dong, 9].Merge = true;
 
-            setCenterAligment(dong, 1, dong, 7, xlSheet);
+            setCenterAligment(dong, 1, dong, 9, xlSheet);
 
-            // ghi log va save tonquy tbl
-            TonQuy tonQuy1 = new TonQuy()
-            {
-                LoaiTien = "VND",
-                TyGia = 1,
-                LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
-                NgayCT = DateTime.Parse(searchToDate), //
-                NgayTao = DateTime.Now,
-                NguoiTao = user.Hoten,
-                //SoTien = tonCuoi,
-                //SoTienNT = tonCuoi,
-                MaCn = user.Macn
-            };
+            //// ghi log va save tonquy tbl
+            //TonQuy tonQuy1 = new TonQuy()
+            //{
+            //    LoaiTien = "VND",
+            //    TyGia = 1,
+            //    LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+            //    NgayCT = DateTime.Parse(searchToDate), //
+            //    NgayTao = DateTime.Now,
+            //    NguoiTao = user.Hoten,
+            //    //SoTien = tonCuoi,
+            //    //SoTienNT = tonCuoi,
+            //    MaCn = user.Macn
+            //};
 
-            var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
-            if (tonQuies1.Count > 0) // co ton tai
-            {
-                var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
-                tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
-                //tonQuy2.SoTien = tonCuoi;
-                //tonQuy2.SoTienNT = tonCuoi;
+            //var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
+            //if (tonQuies1.Count > 0) // co ton tai
+            //{
+            //    var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+            //    tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+            //    //tonQuy2.SoTien = tonCuoi;
+            //    //tonQuy2.SoTienNT = tonCuoi;
 
-                await _tonQuyService.UpdateAsync(tonQuy2);
-            }
-            else
-            {
-                await _tonQuyService.CreateAsync(tonQuy1);
-            }
-
+            //    await _tonQuyService.UpdateAsync(tonQuy2);
             //}
+            //else
+            //{
+            //    await _tonQuyService.CreateAsync(tonQuy1);
+            //}
+
+            ////}
 
             byte[] fileContents;
             try

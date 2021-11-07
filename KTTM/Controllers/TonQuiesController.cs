@@ -21,7 +21,8 @@ namespace KTTM.Controllers
         [BindProperty]
         public TonQuyViewModel TonQuyVM { get; set; }
 
-        public TonQuiesController(ITonQuyService tonQuyService, IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService)
+        public TonQuiesController(ITonQuyService tonQuyService, IKVPTCService kVPTCService,
+            IKVCTPTCService kVCTPTCService)
         {
             _tonQuyService = tonQuyService;
             _kVPTCService = kVPTCService;
@@ -72,7 +73,7 @@ namespace KTTM.Controllers
         //        var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
         //        IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate);
 
-        //        BaoCaosController baoCaosController = new BaoCaosController();                
+        //        BaoCaosController baoCaosController = new BaoCaosController();
         //        ExcelPackage ExcelApp = await baoCaosController.BaoCaoQuyTienVND(searchFromDate, searchToDate, tonQuy, kVCTPTCs);
 
         //        byte[] fileContents;
@@ -95,7 +96,6 @@ namespace KTTM.Controllers
         // GetTonQuies_Partial
         public IActionResult GetTonQuiesNT_Partial(string searchFromDate, string searchToDate)
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -123,11 +123,16 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            TonQuyVM.TonQuies = _tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate, user.Macn, true);
+            List<TonQuy> tonQuies = new List<TonQuy>();
+            foreach (var item in _tonQuyService.GetAllNgoaiTe())
+            {
+                if (item.MaNt != "VND")
+                    tonQuies.AddRange(_tonQuyService.FindTonQuy_By_Date(searchFromDate, searchToDate, user.Macn, item.MaNt));
+            }
+            TonQuyVM.TonQuies = tonQuies;
 
             if (TonQuyVM.TonQuies == null)
             {
-
                 return Json(new
                 {
                     status = "null"
@@ -136,9 +141,9 @@ namespace KTTM.Controllers
 
             return PartialView(TonQuyVM);
         }
+
         public IActionResult GetTonQuies_Partial(string searchFromDate, string searchToDate)
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -170,7 +175,6 @@ namespace KTTM.Controllers
 
             if (TonQuyVM.TonQuies == null)
             {
-
                 return Json(new
                 {
                     status = "null"

@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Repository;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace KTTM.Services
         IEnumerable<TonQuy> GetAll();
 
         Task CreateRangeAsync(List<TonQuy> tonQuies);
+
+        IEnumerable<NgoaiTe> GetAllNgoaiTe();
     }
 
     public class TonQuyService : ITonQuyService
@@ -199,6 +202,11 @@ namespace KTTM.Services
         public IEnumerable<TonQuy> GetAll()
         {
             return _unitOfWork.tonQuyRepository.GetAll();
+        }
+
+        public IEnumerable<NgoaiTe> GetAllNgoaiTe()
+        {
+            return _unitOfWork.ngoaiTe_DanhMucKT_Repository.GetAll();
         }
     }
 }
