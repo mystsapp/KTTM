@@ -93,7 +93,7 @@ namespace KTTM.Services
 
         List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
 
-        List<TonQuy_Model_GroupBy_NgayCT> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies);
+        List<KVCTPCT_Model_GroupBy_LoaiTien> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -671,17 +671,55 @@ namespace KTTM.Services
             return result1;
         }
 
-        public List<TonQuy_Model_GroupBy_NgayCT> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies)
+        public List<KVCTPCT_Model_GroupBy_LoaiTien> KVCTPTC_Model_GroupBy_LoaiTiens(IEnumerable<KVCTPTC> kVCTPTCs)
         {
-            var result1 = (from p in tonQuies
-                           group p by p.NgayCT into g
-                           select new TonQuy_Model_GroupBy_NgayCT()
+            var result1 = (from p in kVCTPTCs
+                           group p by p.LoaiTien into g
+                           select new KVCTPCT_Model_GroupBy_LoaiTien()
                            {
-                               NgayCT = g.Key,
-                               TonQuies = g.ToList()
+                               LoaiTien = g.Key,
+                               //KVCTPTCs = g.ToList()
+                               KVCTPTC_GroupBy_SoCTs = Get_KVCTPTC_GroupBy_SoCTs(g.ToList())
                            }).ToList();
 
+            foreach (var item in result1)
+            {
+                foreach (var item1 in item.KVCTPTC_GroupBy_SoCTs)
+                {
+                    item1.TongCong = item1.KVCTPTCs.Sum(x => x.SoTien.Value);
+                }
+                decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0;
+                foreach (var item1 in item.KVCTPTC_GroupBy_SoCTs)
+                {
+                    //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
+                    if (item1.SoCT.Contains("NT"))
+                    {
+                        congPhatSinh_Thu += item1.TongCong;
+                    }
+                    else
+                    {
+                        congPhatSinh_Chi += item1.TongCong;
+                    }
+                }
+                foreach (var item1 in item.KVCTPTC_GroupBy_SoCTs)
+                {
+                    item.CongPhatSinh_Thu = congPhatSinh_Thu;
+                    item.CongPhatSinh_Chi = congPhatSinh_Chi;
+                }
+            }
+
             return result1;
+        }
+
+        private IEnumerable<KVCTPCT_Model_GroupBy_SoCT> Get_KVCTPTC_GroupBy_SoCTs(List<KVCTPTC> kVCTPTCs)
+        {
+            return from x in kVCTPTCs
+                   group x by x.SoCT into h
+                   select new KVCTPCT_Model_GroupBy_SoCT()
+                   {
+                       SoCT = h.Key,
+                       KVCTPTCs = h.ToList()
+                   };
         }
 
         public IEnumerable<KVCTPTC> GetAll()
