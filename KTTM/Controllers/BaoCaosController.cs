@@ -1104,20 +1104,21 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 1].Value = item.SoCT + " " +
                             item.KVCTPTCs.FirstOrDefault().KVPTC.NgayCT.Value.ToString("dd/MM/yyyy") + " " +
                             item.KVCTPTCs.FirstOrDefault().KVPTC.HoTen;
-                        TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                        TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                        xlSheet.Cells[dong, 1].Style.WrapText = true;
 
                         if (item.SoCT.Contains("NT"))
                         {
-                            xlSheet.Cells[dong, 3].Value = item.CongPhatSinh_Thu_NT;
+                            xlSheet.Cells[dong, 3].Value = item.TongCong_Thu_NT;
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 5].Value = item.CongPhatSinh_Thu;
+                            xlSheet.Cells[dong, 5].Value = item.TongCong_Thu;
                             TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         }
                         else
                         {
-                            xlSheet.Cells[dong, 4].Value = item.CongPhatSinh_Thu_NT;
+                            xlSheet.Cells[dong, 4].Value = item.TongCong_Chi_NT;
                             TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 6].Value = item.CongPhatSinh_Thu;
+                            xlSheet.Cells[dong, 6].Value = item.TongCong_Chi;
                             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                         }
 
@@ -1126,8 +1127,12 @@ namespace KTTM.Controllers
                         {
                             if (item1.KVPTC.SoCT.Contains("NT"))
                             {
+                                xlSheet.Cells[dong, 1].Value = item1.DienGiai;
+                                TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+
                                 xlSheet.Cells[dong, 2].Value = item1.TKCo;
                                 TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+
                                 xlSheet.Cells[dong, 3].Value = item1.SoTienNT;//.SoTienNT;
                                 TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                                 xlSheet.Cells[dong, 5].Value = item1.SoTien;//.SoTien;
@@ -1135,20 +1140,25 @@ namespace KTTM.Controllers
                             }
                             else
                             {
+                                xlSheet.Cells[dong, 1].Value = item1.DienGiai;
+                                TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+
                                 xlSheet.Cells[dong, 2].Value = item1.TKNo;
                                 TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+
                                 xlSheet.Cells[dong, 4].Value = item1.SoTienNT;//.SoTienNT;
                                 TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                                 xlSheet.Cells[dong, 6].Value = item1.SoTien;//.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
                             }
+                            dong++;
                         }
 
                         dong++;
                     }
                     xlSheet.Cells[dong, 1].Value = "CỘNG PHÁT SINH";
                     xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold | FontStyle.Italic));
-                    var congPhatSinhThu_NT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Thu_NT);
+                    var congPhatSinhThu_NT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.TongCong_Thu_NT);
                     if (congPhatSinhThu_NT != 0)
                     {
                         xlSheet.Cells[dong, 3].Value = congPhatSinhThu_NT;
@@ -1158,7 +1168,7 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 3].Value = "";
                     }
                     xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                    var congPhatSinhChi_NT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Chi_NT);
+                    var congPhatSinhChi_NT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.TongCong_Chi_NT);
                     if (congPhatSinhChi_NT != 0)
                     {
                         xlSheet.Cells[dong, 4].Value = congPhatSinhChi_NT;
@@ -1168,7 +1178,7 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 4].Value = "";
                     }
                     xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                    var congPhatSinhThu = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Thu);
+                    var congPhatSinhThu = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.TongCong_Thu);
                     if (congPhatSinhThu != 0)
                     {
                         xlSheet.Cells[dong, 5].Value = congPhatSinhThu;
@@ -1178,7 +1188,7 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 5].Value = "";
                     }
                     xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
-                    var congPhatSinhChi = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Chi);
+                    var congPhatSinhChi = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.TongCong_Chi);
                     if (congPhatSinhChi != 0)
                     {
                         xlSheet.Cells[dong, 6].Value = congPhatSinhChi;

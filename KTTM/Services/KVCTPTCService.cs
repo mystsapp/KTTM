@@ -683,32 +683,43 @@ namespace KTTM.Services
                            }).ToList();
             foreach (var item in result1)
             {
-                //item.NgayCT = item.KVCTPTCs.FirstOrDefault().KVPTC.NgayCT;
-                item.TongCong = item.KVCTPTCs.Sum(x => x.SoTien.Value);
-                item.TongCong_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
-            }
-            decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0, congPhatSinh_Thu_NT = 0, congPhatSinh_Chi_NT = 0;
-            foreach (var item in result1)
-            {
-                //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
                 if (item.SoCT.Contains("NT"))
                 {
-                    congPhatSinh_Thu_NT += item.KVCTPTCs.Sum(x => x.SoTienNT).Value;
-                    congPhatSinh_Thu += item.KVCTPTCs.Sum(x => x.SoTien).Value;
+                    item.TongCong_Thu = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+                    item.TongCong_Thu_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
                 }
                 else
                 {
-                    congPhatSinh_Chi_NT += item.KVCTPTCs.Sum(x => x.SoTienNT).Value;
-                    congPhatSinh_Chi += item.KVCTPTCs.Sum(x => x.SoTien).Value;
+                    item.TongCong_Chi = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+                    item.TongCong_Chi_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
                 }
             }
-            foreach (var item in result1)
-            {
-                item.CongPhatSinh_Thu_NT = congPhatSinh_Thu_NT;
-                item.CongPhatSinh_Thu = congPhatSinh_Thu;
-                item.CongPhatSinh_Chi_NT = congPhatSinh_Chi_NT;
-                item.CongPhatSinh_Chi = congPhatSinh_Chi;
-            }
+            decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0, congPhatSinh_Thu_NT = 0, congPhatSinh_Chi_NT = 0;
+            //foreach (var item in result1)
+            //{
+            //    //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
+            //    if (item.SoCT.Contains("NT"))
+            //    {
+            //        //congPhatSinh_Thu_NT += item.KVCTPTCs.Sum(x => x.SoTienNT).Value;
+            //        //congPhatSinh_Thu += item.KVCTPTCs.Sum(x => x.SoTien).Value;
+            //        congPhatSinh_Thu_NT += item.TongCong_Thu_NT;
+            //        congPhatSinh_Thu += item.TongCong_Thu;
+            //    }
+            //    else
+            //    {
+            //        //congPhatSinh_Chi_NT += item.KVCTPTCs.Sum(x => x.SoTienNT).Value;
+            //        //congPhatSinh_Chi += item.KVCTPTCs.Sum(x => x.SoTien).Value;
+            //        congPhatSinh_Chi_NT += item.TongCong_Chi_NT;
+            //        congPhatSinh_Chi += item.TongCong_Chi;
+            //    }
+            //}
+            //foreach (var item in result1)
+            //{
+            //    item.CongPhatSinh_Thu_NT = congPhatSinh_Thu_NT;
+            //    item.CongPhatSinh_Thu = congPhatSinh_Thu;
+            //    item.CongPhatSinh_Chi_NT = congPhatSinh_Chi_NT;
+            //    item.CongPhatSinh_Chi = congPhatSinh_Chi;
+            //}
 
             return result1;
         }

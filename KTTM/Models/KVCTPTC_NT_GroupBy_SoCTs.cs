@@ -12,8 +12,11 @@ namespace KTTM.Models
         public DateTime NgayCT { get; set; }
         public string HoTen { get; set; }
         public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }
-        public decimal TongCong { get; set; }
-        public decimal TongCong_NT { get; set; }
+        public decimal TongCong_Thu { get; set; }
+        public decimal TongCong_Thu_NT { get; set; }
+        public decimal TongCong_Chi { get; set; }
+        public decimal TongCong_Chi_NT { get; set; }
+
         public decimal CongPhatSinh_Thu { get; set; }
         public decimal CongPhatSinh_Chi { get; set; }
         public decimal CongPhatSinh_Thu_NT { get; set; }
