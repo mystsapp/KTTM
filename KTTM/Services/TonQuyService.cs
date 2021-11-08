@@ -16,7 +16,7 @@ namespace KTTM.Services
 
         Task UpdateAsync(TonQuy tonQuy);
 
-        List<TonQuy> Find_Equal_By_Date(DateTime dateTime);
+        List<TonQuy> Find_Equal_By_Date(DateTime dateTime, string maCn, string loaiTien);
 
         Task<string> CheckTonDauStatus(DateTime fromDate, string maCn);
 
@@ -172,14 +172,13 @@ namespace KTTM.Services
             return list.OrderByDescending(x => x.NgayCT);
         }
 
-        public List<TonQuy> Find_Equal_By_Date(DateTime dateTime)
+        public List<TonQuy> Find_Equal_By_Date(DateTime dateTime, string maCN, string loaiTien)
         {
-            var tonQuies = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT.Value.ToShortDateString() == dateTime.ToShortDateString()).ToList();
-            if (tonQuies.Count == 0)
-            {
-                return tonQuies;
-            }
-            return tonQuies;
+            var tonQuies = _unitOfWork.tonQuyRepository.Find(x => x.NgayCT.Value.ToShortDateString() == dateTime.ToShortDateString());
+            tonQuies = tonQuies.Where(x => x.MaCn == maCN);
+            tonQuies = tonQuies.Where(x => x.LoaiTien == loaiTien);
+
+            return tonQuies.ToList();
         }
 
         public TonQuy GetById(long id)

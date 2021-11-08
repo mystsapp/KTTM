@@ -6,6 +6,7 @@ using KTTM.Models;
 using KTTM.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -45,7 +46,6 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> InCTPhieu(Guid kVPTCId, int page)
         {
             KVPTC kVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
@@ -479,7 +479,7 @@ namespace KTTM.Controllers
                 MaCn = user.Macn
             };
 
-            var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
+            var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value, user.Macn, "VND");
             if (tonQuies1.Count > 0) // co ton tai
             {
                 var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
@@ -513,10 +513,21 @@ namespace KTTM.Controllers
 
         // BaoCaoQuyTienNT
         [HttpPost]
-        public async Task<IActionResult> BaoCaoQuyTienNT(string searchFromDate, string searchToDate)
+        public async Task<IActionResult> BaoCaoQuyTienNT_1Sheet(string searchFromDate, string searchToDate)
         {
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            // check ngay ton quy
+            var result = CheckNgayTonQuy(searchFromDate, searchToDate);
+            var value = JsonConvert.SerializeObject(result.Result.Value);
+            var viewModel = JsonConvert.DeserializeObject<ViewModel>(value);
+            if (!viewModel.Status)
+            {
+                SetAlert(viewModel.Message, "warning");
+                return LocalRedirect("/");
+            }
+            // check ngay ton quy
 
             //string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
             string fromDate = DateTime.Parse(searchFromDate).AddDays(-1).ToString("dd/MM/yyyy");
@@ -698,7 +709,7 @@ namespace KTTM.Controllers
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             xlSheet.Cells[dong, 3].Value = kvctpct.KVPTC.NgayCT;
-                            DateTimeFormat(dong, 3, dong, 3, xlSheet);
+                            DateFormat(dong, 3, dong, 3, xlSheet);
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
@@ -727,7 +738,7 @@ namespace KTTM.Controllers
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             xlSheet.Cells[dong, 3].Value = kvctpct.KVPTC.NgayCT;
-                            DateTimeFormat(dong, 3, dong, 3, xlSheet);
+                            DateFormat(dong, 3, dong, 3, xlSheet);
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
@@ -823,22 +834,51 @@ namespace KTTM.Controllers
 
                     dong++;
                     dong++;
+
+                    // ghi log va save tonquy tbl
+                    TonQuy tonQuy1 = new TonQuy()
+                    {
+                        LoaiTien = item.TonQuy.LoaiTien,
+                        TyGia = item.TonQuy.TyGia,
+                        LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+                        NgayCT = DateTime.Parse(searchToDate), //
+                        NgayTao = DateTime.Now,
+                        NguoiTao = user.Hoten,
+                        SoTien = tonCuoi,
+                        SoTienNT = tonCuoiNT,
+                        MaCn = user.Macn
+                    };
+
+                    var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value, user.Macn, item.TonQuy.LoaiTien);
+                    if (tonQuies1.Count > 0) // co ton tai
+                    {
+                        var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+                        tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+                        tonQuy2.SoTien = tonCuoi;
+                        tonQuy2.SoTienNT = tonCuoiNT;
+
+                        await _tonQuyService.UpdateAsync(tonQuy2);
+                    }
+                    else
+                    {
+                        await _tonQuyService.CreateAsync(tonQuy1);
+                    }
                 }
             }
-            //dong++;
+            dong++;
 
             NumberFormat(8, 6, dong, 9, xlSheet);
             //setFontBold(dong, 1, dong, 10, 12, xlSheet);
-            setBorder(6, 1, dong--, 9, xlSheet);
+            setBorder(6, 1, dong - 2, 9, xlSheet);
             //dong++;
 
-            xlSheet.Cells[dong, 3].Value = "Người báo cáo";
-            xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-            xlSheet.Cells[dong, 5].Value = "Thủ quỹ";
-            xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+            xlSheet.Cells[dong, 2].Value = "Người báo cáo";
+            xlSheet.Cells[dong, 2].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+            xlSheet.Cells[dong, 4].Value = "Thủ quỹ";
+            xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 11));
             xlSheet.Cells[dong, 6].Value = "Kế toán trưởng";
             xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11));
-            xlSheet.Cells[dong, 6, dong, 9].Merge = true;
+            xlSheet.Cells[dong, 6, dong, 8].Merge = true;
 
             setCenterAligment(dong, 1, dong, 9, xlSheet);
 
@@ -1619,7 +1659,6 @@ namespace KTTM.Controllers
 
         // InChungTuGhiSoExcel
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> InChungTuGhiSoExcel(string tuNgay, string denNgay,
                                                              long id_TT, string soCT_TT, string ngayCT_TT, string maKhCo_TT, string hoTen_TT, string phieuTC_TT)
         {

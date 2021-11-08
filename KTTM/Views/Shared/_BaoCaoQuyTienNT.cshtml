@@ -1,6 +1,7 @@
 ﻿<div class="modal fade" id="baoCaoQuyTienNT_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
-        <form asp-action="BaoCaoQuyTienNT" asp-controller="BaoCaos" id="frmTinhTonQuyNT" method="post">
+        <!-- asp-action="BaoCaoQuyTienNT" asp-controller="BaoCaos" -->
+        <form id="frmTinhTonQuyNT_1Sheet" method="post">
 
             <div class="modal-content ">
                 <div class="modal-header p-1 pl-2 bg-secondary">
@@ -22,7 +23,6 @@
 
                                 <div class="col-md-4">
                                     <input class="form-control form-control-sm maskInput" id="txtTuNgay" name="searchFromDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
-
                                 </div>
 
                                 <div class="col-md-2">
@@ -31,10 +31,10 @@
 
                                 <div class="col-md-4">
                                     <input class="form-control form-control-sm maskInput" id="txtDenNgay" name="searchToDate" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
-
                                 </div>
-                            </div>
 
+                                <input type="hidden" name="strUrl" value="@Context.Request.Host" />
+                            </div>
                         </div>
                     </div>
 
@@ -43,12 +43,12 @@
 
                 <div class="modal-footer p-0 pt-1 pr-2">
                     <button type="button" class="btn btn-secondary btn-sm" id="btnTonQuiesNT" data-dismiss="modal" title="Tồn quỹ"><i class="fas fa-list"></i> </button>
-                    <button type="button" class="btn btn-primary btn-sm" id="btnBaoCaoQuyTienNT"><i class="fas fa-print"></i> Báo cáo</button>
+                    <button type="submit" formaction="/BaoCaos/BaoCaoQuyTienNT_1Sheet" formmethod="post" class="btn btn-primary btn-sm" id="btnBaoCaoQuyTienNT_1Sheet"><i class="fas fa-print"></i> Báo cáo 1 sheet</button>
+                    <button type="button" class="btn btn-info btn-sm" id="btnBaoCaoQuyTienNT"><i class="fas fa-print"></i> Báo cáo</button>
                     <button type="button" class="btn btn-outline-dark btn-sm" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
                 </div>
             </div>
             <!-- /.modal-content -->
-
         </form>
     </div>
     <!-- /.modal-dialog -->
@@ -60,33 +60,33 @@
 
     shortcut.add("Enter", function () {
 
-        //$('#btnBaoCaoQuyTienNT').click()
+        //$('#btnBaoCaoQuyTienNT_1Sheet').click()
 
     });
 
-    // btnBaoCaoQuyTienVND
-    $('#btnBaoCaoQuyTienNT').off('click').on('click', function () {
-        tuNgay = $('#txtTuNgay').val();
-        denNgay = $('#txtDenNgay').val();
-        //loaiTien = ''; ////////////////////////////////////////////////////////////////////////////////
-        if (tuNgay === '' || denNgay === '') {
-            toastr.warning("Ngày không được để trống", "Thông báo!");
-        }
-        else {
-            $.post('/BaoCaos/CheckNgayTonQuy', { tuNgay: tuNgay, denNgay: denNgay }, function (response) {
-                
-                if (!response.status) {
-                    toastr.warning(response.message, "Thông báo!");
-                }
-                else {
-                    
-                    $('#frmTinhTonQuyNT').submit();
-                }
-            })
-            
-        }
-        
-    })
+    //// btnBaoCaoQuyTienVND
+    //$('#btnBaoCaoQuyTienNT_1Sheet').off('click').on('click', function () {
+    //    tuNgay = $('#txtTuNgay').val();
+    //    denNgay = $('#txtDenNgay').val();
+    //    //loaiTien = ''; ////////////////////////////////////////////////////////////////////////////////
+    //    if (tuNgay === '' || denNgay === '') {
+    //        toastr.warning("Ngày không được để trống", "Thông báo!");
+    //    }
+    //    else {
+    //        $.post('/BaoCaos/CheckNgayTonQuy', { tuNgay: tuNgay, denNgay: denNgay }, function (response) {
+
+    //            if (!response.status) {
+    //                toastr.warning(response.message, "Thông báo!");
+    //            }
+    //            else {
+
+    //                $('#frmTinhTonQuyNT_1Sheet').submit();
+    //            }
+    //        })
+
+    //    }
+
+    //})
 
     // btnTonQuies
     $('#btnTonQuiesNT').off('click').on('click', function () {
