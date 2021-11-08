@@ -94,6 +94,7 @@ namespace KTTM.Services
         List<KVCTPCT_Model_GroupBy_SoCT> KVCTPTC_Model_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
 
         //List<KVCTPCT_Model_GroupBy_LoaiTien> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies);
+        List<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -665,6 +666,47 @@ namespace KTTM.Services
             foreach (var item in result1)
             {
                 item.CongPhatSinh_Thu = congPhatSinh_Thu;
+                item.CongPhatSinh_Chi = congPhatSinh_Chi;
+            }
+
+            return result1;
+        }
+
+        public List<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs)
+        {
+            var result1 = (from p in kVCTPTCs
+                           group p by p.SoCT into g
+                           select new KVCTPTC_NT_GroupBy_SoCTs()
+                           {
+                               SoCT = g.Key,
+                               KVCTPTCs = g.ToList()
+                           }).ToList();
+            foreach (var item in result1)
+            {
+                //item.NgayCT = item.KVCTPTCs.FirstOrDefault().KVPTC.NgayCT;
+                item.TongCong = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+                item.TongCong_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
+            }
+            decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0, congPhatSinh_Thu_NT = 0, congPhatSinh_Chi_NT = 0;
+            foreach (var item in result1)
+            {
+                //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
+                if (item.SoCT.Contains("NT"))
+                {
+                    congPhatSinh_Thu_NT += item.KVCTPTCs.Sum(x => x.SoTienNT).Value;
+                    congPhatSinh_Thu += item.KVCTPTCs.Sum(x => x.SoTien).Value;
+                }
+                else
+                {
+                    congPhatSinh_Chi_NT += item.KVCTPTCs.Sum(x => x.SoTienNT).Value;
+                    congPhatSinh_Chi += item.KVCTPTCs.Sum(x => x.SoTien).Value;
+                }
+            }
+            foreach (var item in result1)
+            {
+                item.CongPhatSinh_Thu_NT = congPhatSinh_Thu_NT;
+                item.CongPhatSinh_Thu = congPhatSinh_Thu;
+                item.CongPhatSinh_Chi_NT = congPhatSinh_Chi_NT;
                 item.CongPhatSinh_Chi = congPhatSinh_Chi;
             }
 

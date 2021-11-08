@@ -511,7 +511,7 @@ namespace KTTM.Controllers
             }
         }
 
-        // BaoCaoQuyTienNT
+        // BaoCaoQuyTienNT_1Sheet
         [HttpPost]
         public async Task<IActionResult> BaoCaoQuyTienNT_1Sheet(string searchFromDate, string searchToDate)
         {
@@ -600,7 +600,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[2, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
             xlSheet.Cells[2, 5, 2, 9].Merge = true;
 
-            string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ TIỀN MẶT VNĐ ";
+            string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ NGOẠI TỆ ";
             string stringTuNgay;
             if (searchFromDate != searchToDate)
             {
@@ -630,7 +630,7 @@ namespace KTTM.Controllers
             xlSheet.Cells[6, 4].Value = "HỌ TÊN";
             //xlSheet.Cells[6, 4].Style.WrapText = true;
             xlSheet.Cells[6, 4, 7, 4].Merge = true;
-            xlSheet.Cells[6, 5].Value = "TÀI KHOẢN ĐỐI ỨNG";
+            xlSheet.Cells[6, 5].Value = "TK ĐỐI ỨNG";
             //xlSheet.Cells[6, 5].Style.WrapText = true;
             xlSheet.Cells[6, 5, 7, 5].Merge = true;
             xlSheet.Cells[6, 6].Value = "SỐ TIỀN NT";
@@ -912,6 +912,397 @@ namespace KTTM.Controllers
             //}
 
             ////}
+
+            byte[] fileContents;
+            try
+            {
+                fileContents = ExcelApp.GetAsByteArray();
+                return File(
+                fileContents: fileContents,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: "QuyTienNT_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        // BaoCaoQuyTienNT
+        [HttpPost]
+        public async Task<IActionResult> BaoCaoQuyTienNT(string searchFromDate, string searchToDate)
+        {
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            // check ngay ton quy
+            var result = CheckNgayTonQuy(searchFromDate, searchToDate);
+            var value = JsonConvert.SerializeObject(result.Result.Value);
+            var viewModel = JsonConvert.DeserializeObject<ViewModel>(value);
+            if (!viewModel.Status)
+            {
+                SetAlert(viewModel.Message, "warning");
+                return LocalRedirect("/");
+            }
+            // check ngay ton quy
+
+            //string toDate = DateTime.Parse(searchToDate).AddDays(-1).ToString("dd/MM/yyyy");
+            string fromDate = DateTime.Parse(searchFromDate).AddDays(-1).ToString("dd/MM/yyyy");
+            //var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", toDate);
+            IEnumerable<NgoaiTe> ngoaiTes = _baoCaoService.GetAllNgoaiTe().Where(x => x.MaNt != "VND");
+
+            ExcelPackage ExcelApp = new ExcelPackage();
+
+            foreach (var ngoaiTe in ngoaiTes)
+            {
+                TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT = new TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs();
+
+                // tonquy theo loaitien
+                var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn, ngoaiTe.MaNt);
+                var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
+                if (tonQuy != null)
+                {
+                    IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService.FinBy_TonQuy_Date(
+                    tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
+
+                    tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT = new TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs()
+                    {
+                        NgoaiTe = ngoaiTe,
+                        TonQuy = tonQuy,
+                        KVCTPTC_NT_GroupBy_SoCTs = _kVCTPTCService.KVCTPTC_NT_GroupBy_SoCTs(kVCTPTCs1)
+                    };
+                }
+                else
+                {
+                    tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT = new TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs()
+                    {
+                        NgoaiTe = ngoaiTe,
+                        TonQuy = new TonQuy() /*{ SoTienNT = 0, SoTien = 0 }*/,
+                        KVCTPTC_NT_GroupBy_SoCTs = null
+                    };
+                }
+
+                // export
+                ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add(ngoaiTe.MaNt);
+                // Định dạng chiều dài cho cột
+
+                xlSheet.Column(1).Width = 30; // DIỄN GIẢI
+                xlSheet.Column(2).Width = 15; // TK ĐỐI ỨNG
+                xlSheet.Column(3).Width = 15; // SỐ TIỀN NT THU
+                xlSheet.Column(4).Width = 15; // SỐ TIỀN NT CHI
+                xlSheet.Column(5).Width = 15; // SỐ TIỀN THU
+                xlSheet.Column(6).Width = 15; // SỐ TIỀN THU
+
+                xlSheet.Cells[1, 1].Value = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
+                xlSheet.Cells[1, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                xlSheet.Cells[1, 1].Style.WrapText = true;
+                xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[1, 1, 2, 2].Merge = true;
+
+                xlSheet.Cells[1, 3].Value = "CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM";
+                xlSheet.Cells[1, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[1, 3, 1, 6].Merge = true;
+
+                xlSheet.Cells[2, 3].Value = "Độc Lập - Tự Do - Hạnh Phúc";
+                xlSheet.Cells[2, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[2, 3, 2, 6].Merge = true;
+
+                string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ NGOẠI TỆ " + ngoaiTe.MaNt;
+                string stringTuNgay;
+                if (searchFromDate != searchToDate)
+                {
+                    stringTuNgay = "Từ ngày " + searchFromDate + " đến ngày " + searchToDate;
+                }
+                else
+                {
+                    stringTuNgay = "Ngày " + searchFromDate;
+                }
+                xlSheet.Cells[3, 1].Value = stringSoQuy;
+                xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
+                xlSheet.Cells[3, 1, 3, 6].Merge = true;
+                xlSheet.Cells[4, 1].Value = stringTuNgay;
+                xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                //xlSheet.Cells[4, 1].Style.Font.Bold = true;
+                //xlSheet.Cells[4, 1].Style.Font.Italic = true;
+                xlSheet.Cells[4, 1, 4, 6].Merge = true;
+
+                // Tạo header
+                xlSheet.Cells[6, 1].Value = "DIỄN GIẢI";
+                //xlSheet.Cells[6, 3].Style.WrapText = true;
+                xlSheet.Cells[6, 2].Value = "TK ĐỐI ỨNG";
+                //xlSheet.Cells[6, 4].Style.WrapText = true;
+                xlSheet.Cells[6, 3].Value = "SỐ TIỀN NT";
+                //xlSheet.Cells[6, 5].Style.WrapText = true;
+                xlSheet.Cells[6, 3, 6, 4].Merge = true;
+                xlSheet.Cells[7, 3].Value = "THU";
+                xlSheet.Cells[7, 4].Value = "CHI";
+                xlSheet.Cells[6, 5].Value = "SỐ TIỀN";
+                //xlSheet.Cells[6, 5].Style.WrapText = true;
+                xlSheet.Cells[6, 5, 6, 6].Merge = true;
+                xlSheet.Cells[7, 5].Value = "THU";
+                xlSheet.Cells[7, 6].Value = "CHI";
+
+                xlSheet.Cells[6, 1, 7, 6].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[6, 1, 7, 6].Style.WrapText = true;
+                xlSheet.Cells[6, 1, 7, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Alignment is center
+                xlSheet.Cells[6, 1, 7, 6].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // Alignment is center
+                                                                                                   //worksheet.Column(8).Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+
+                setBorder(6, 1, 7, 6, xlSheet);
+                setCenterAligment(1, 1, 7, 6, xlSheet);
+
+                // do du lieu tu table
+                int dong = 8;
+
+                //du lieu
+                //int iRowIndex = 6;
+
+                Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");// ColorTranslator.FromHtml("#D3D3D3");
+                Color colorTotalRow = ColorTranslator.FromHtml("#66ccff");
+                Color colorThanhLy = ColorTranslator.FromHtml("#7FFF00");
+                Color colorChuaThanhLy = ColorTranslator.FromHtml("#FFDEAD");
+
+                int idem = 1;
+
+                //xlSheet.Cells[dong, 3].Value = "TỒN ĐẦU";
+                //TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
+                //// xlSheet.Cells[dong, 6].Value = tonQuy.SoTien;
+                //TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                ////NumberFormat(dong, 6, dong, 6, xlSheet);
+                //dong++;
+
+                if (tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Count() > 0)
+                {
+                    xlSheet.Cells[dong, 1].Value = "TỒN ĐẦU " + tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.NgoaiTe.TenNt;
+                    TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
+                    if (tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.SoTienNT != 0)
+                    {
+                        xlSheet.Cells[dong, 3].Value = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.SoTienNT;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 3].Value = "";
+                    }
+                    TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+
+                    if (tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.SoTien != 0)
+                    {
+                        xlSheet.Cells[dong, 5].Value = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.SoTien;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 5].Value = "";
+                    }
+                    TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
+                    dong++;
+                    foreach (var item in tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs)
+                    {
+                        //dong++;
+
+                        xlSheet.Cells[dong, 1].Value = item.SoCT + " " +
+                            item.KVCTPTCs.FirstOrDefault().KVPTC.NgayCT.Value.ToString("dd/MM/yyyy") + " " +
+                            item.KVCTPTCs.FirstOrDefault().KVPTC.HoTen;
+                        TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+
+                        if (item.SoCT.Contains("NT"))
+                        {
+                            xlSheet.Cells[dong, 3].Value = item.CongPhatSinh_Thu_NT;
+                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 5].Value = item.CongPhatSinh_Thu;
+                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                        }
+                        else
+                        {
+                            xlSheet.Cells[dong, 4].Value = item.CongPhatSinh_Thu_NT;
+                            TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            xlSheet.Cells[dong, 6].Value = item.CongPhatSinh_Thu;
+                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                        }
+
+                        dong++;
+                        foreach (var item1 in item.KVCTPTCs)
+                        {
+                            if (item1.KVPTC.SoCT.Contains("NT"))
+                            {
+                                xlSheet.Cells[dong, 2].Value = item1.TKCo;
+                                TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 3].Value = item1.SoTienNT;//.SoTienNT;
+                                TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 5].Value = item1.SoTien;//.SoTien;
+                                TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            }
+                            else
+                            {
+                                xlSheet.Cells[dong, 2].Value = item1.TKNo;
+                                TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 4].Value = item1.SoTienNT;//.SoTienNT;
+                                TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 6].Value = item1.SoTien;//.SoTien;
+                                TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            }
+                        }
+
+                        dong++;
+                    }
+                    xlSheet.Cells[dong, 1].Value = "CỘNG PHÁT SINH";
+                    xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold | FontStyle.Italic));
+                    var congPhatSinhThu_NT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Thu_NT);
+                    if (congPhatSinhThu_NT != 0)
+                    {
+                        xlSheet.Cells[dong, 3].Value = congPhatSinhThu_NT;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 3].Value = "";
+                    }
+                    xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+                    var congPhatSinhChi_NT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Chi_NT);
+                    if (congPhatSinhChi_NT != 0)
+                    {
+                        xlSheet.Cells[dong, 4].Value = congPhatSinhChi_NT;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 4].Value = "";
+                    }
+                    xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+                    var congPhatSinhThu = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Thu);
+                    if (congPhatSinhThu != 0)
+                    {
+                        xlSheet.Cells[dong, 5].Value = congPhatSinhThu;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 5].Value = "";
+                    }
+                    xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+                    var congPhatSinhChi = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Sum(x => x.CongPhatSinh_Chi);
+                    if (congPhatSinhChi != 0)
+                    {
+                        xlSheet.Cells[dong, 6].Value = congPhatSinhChi;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 6].Value = "";
+                    }
+                    xlSheet.Cells[dong, 6].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+
+                    dong++;
+
+                    xlSheet.Cells[dong, 1].Value = "TỒN CUỐI";
+                    xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+
+                    decimal tonCuoiNT = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.SoTienNT +
+                                        congPhatSinhThu_NT -
+                                        congPhatSinhChi_NT;
+                    if (tonCuoiNT != 0)
+                    {
+                        xlSheet.Cells[dong, 3].Value = tonCuoiNT;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 3].Value = "";
+                    }
+                    xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
+
+                    decimal tonCuoi = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.SoTien +
+                                      congPhatSinhThu -
+                                      congPhatSinhChi;
+                    if (tonCuoi != 0)
+                    {
+                        xlSheet.Cells[dong, 5].Value = tonCuoi;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 5].Value = "";
+                    }
+                    xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Regular));
+
+                    dong++;
+                    dong++;
+
+                    //// ghi log va save tonquy tbl
+                    //TonQuy tonQuy1 = new TonQuy()
+                    //{
+                    //    LoaiTien = tonQuy_LoaiTien_KVCTPTC.TonQuy.LoaiTien,
+                    //    TyGia = tonQuy_LoaiTien_KVCTPTC.TonQuy.TyGia,
+                    //    LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+                    //    NgayCT = DateTime.Parse(searchToDate), //
+                    //    NgayTao = DateTime.Now,
+                    //    NguoiTao = user.Hoten,
+                    //    SoTien = tonCuoi,
+                    //    SoTienNT = tonCuoiNT,
+                    //    MaCn = user.Macn
+                    //};
+
+                    //var tonQuies1 = _tonQuyService.Find_Equal_By_Date(
+                    //    tonQuy1.NgayCT.Value, user.Macn, tonQuy_LoaiTien_KVCTPTC.TonQuy.LoaiTien);
+                    //if (tonQuies1.Count > 0) // co ton tai
+                    //{
+                    //    var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+                    //    tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+                    //    tonQuy2.SoTien = tonCuoi;
+                    //    tonQuy2.SoTienNT = tonCuoiNT;
+
+                    //    await _tonQuyService.UpdateAsync(tonQuy2);
+                    //}
+                    //else
+                    //{
+                    //    await _tonQuyService.CreateAsync(tonQuy1);
+                    //}
+                }
+                dong++;
+
+                NumberFormat(8, 3, dong, 6, xlSheet);
+                //setFontBold(dong, 1, dong, 10, 12, xlSheet);
+                setBorder(6, 1, dong - 2, 6, xlSheet);
+                //dong++;
+
+                xlSheet.Cells[dong, 1].Value = "Người báo cáo";
+                xlSheet.Cells[dong, 1].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+                xlSheet.Cells[dong, 3].Value = "Thủ quỹ";
+                xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+                xlSheet.Cells[dong, 5].Value = "Kế toán trưởng";
+                xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11));
+                xlSheet.Cells[dong, 5, dong, 6].Merge = true;
+
+                setCenterAligment(dong, 1, dong, 6, xlSheet);
+
+                //// ghi log va save tonquy tbl
+                //TonQuy tonQuy1 = new TonQuy()
+                //{
+                //    LoaiTien = "VND",
+                //    TyGia = 1,
+                //    LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+                //    NgayCT = DateTime.Parse(searchToDate), //
+                //    NgayTao = DateTime.Now,
+                //    NguoiTao = user.Hoten,
+                //    //SoTien = tonCuoi,
+                //    //SoTienNT = tonCuoi,
+                //    MaCn = user.Macn
+                //};
+
+                //var tonQuies1 = _tonQuyService.Find_Equal_By_Date(tonQuy1.NgayCT.Value);
+                //if (tonQuies1.Count > 0) // co ton tai
+                //{
+                //    var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+                //    tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+                //    //tonQuy2.SoTien = tonCuoi;
+                //    //tonQuy2.SoTienNT = tonCuoi;
+
+                //    await _tonQuyService.UpdateAsync(tonQuy2);
+                //}
+                //else
+                //{
+                //    await _tonQuyService.CreateAsync(tonQuy1);
+                //}
+
+                ////}
+
+                // export
+            } // group by theo ngoaite
 
             byte[] fileContents;
             try
