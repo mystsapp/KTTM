@@ -1,0 +1,215 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "InPhieuView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 1;
+}
+
+<style>
+
+    .invoicetable {
+        clear: both;
+        /*border: 1px solid darkgray;*/
+        border-collapse: collapse;
+        margin: auto;
+        width: 100%;
+    }
+
+    .invoicecell {
+        background-color: white;
+        color: black;
+        border: 1px solid darkgray;
+        /*padding: 5px;*/
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            @*<div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Invoice</li>
+                    </ol>
+                </div>*@
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                @*<div class="callout callout-info">
+                        <h5><i class="fas fa-info"></i> Note:</h5>
+                        This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+                    </div>*@
+
+                <!-- Main content -->
+                <div class="invoice p-3 mb-3">
+                    <!-- title row -->
+                    <div class="row">
+                        <div class="col-7 text-center">
+                            <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST</b></span><br />
+                            <span><b>SAIGONTOURIST</b></span>
+                        </div>
+                        <div class="col-5 text-center">
+                            CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />
+                            Độc Lập - Tự Do - Hạnh Phúc
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <br />
+                    <div class="row invoice-info">
+                        <div class="col-sm-3 invoice-col">
+                            @*From
+                                <address>
+                                    <strong>Admin, Inc.</strong><br>
+                                    795 Folsom Ave, Suite 600<br>
+                                    San Francisco, CA 94107<br>
+                                    Phone: (804) 123-5432<br>
+                                    Email: info@almasaeedstudio.com
+                                </address>*@
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6 invoice-col text-center">
+                            @*To
+                                <address>*@
+                            <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                            <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Date.Date tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 invoice-col text-right">
+                            <br />
+                            <strong>Số : @Model.KVPTC.SoCT</strong><br>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- Hang -->
+                    @*<div class="row invoice-info">
+                            CLIENT'S NAME : @Model.Invoice.Tour.TenKH<br />
+                            ADDRESS : @Model.Invoice.Tour.DiaChi<br />
+                            ARRIVAL : @Model.Invoice.Arr DEPARTURE : @Model.Invoice.Dep TOUR CODE : @Model.Invoice.Ref
+                        </div>*@
+                    <br />
+                    <!-- / Hang -->
+                    <!-- Table row -->
+                    <div class="row">
+                        <div class="col-12 table-responsive">
+                            <table class="invoicetable ">
+                                <tr>
+                                    <td>Chi cho:</td>
+                                    <td>@Model.KVPTC.HoTen</td>
+                                    <td class="text-right" colspan="3">C.M.T số ...............................................</td>
+                                </tr>
+                                <tr>
+                                    <td>Đơn vị: </td>
+                                    <td colspan="4">@Model.KVPTC.DonVi</td>
+                                </tr>
+                                <tr>
+                                    <td>Số tiền: </td>
+                                    <td>Tài khoản nợ</td>
+                                    <td>Tài khoản có</td>
+                                    <td>Số tiền</td>
+                                    <td>Số tiền NT</td>
+                                </tr>
+                                @foreach (var item in Model.InPhieuView_Groupby_TkNos)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td>@item.TkNo</td>
+                                        <td>1111000000</td>
+                                        <td>@item.SoTien.ToString("N0")</td>
+                                        <td>@item.SoTienNT.ToString("N0") VND</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td>Về khoãn : </td>
+                                    <td colspan="4">
+                                        @{
+                                            string sgtcodes = "", soCTGocs = "";
+                                            foreach (var item in Model.KVCTPTCs)
+                                            {
+                                                int lastItem = Model.KVCTPTCs.ToList().IndexOf(item);
+                                                if (lastItem != Model.KVCTPTCs.Count() - 1)
+                                                {
+                                                    // this is the last item
+                                                    sgtcodes += item.Sgtcode + " + ";
+                                                    soCTGocs += item.SoCTGoc + ", ";
+                                                }
+                                                else
+                                                {
+                                                    sgtcodes += item.Sgtcode;
+                                                    soCTGocs += item.SoCTGoc;
+                                                }
+                                            }
+                                        }
+                                        @Model.KVCTPTCs.FirstOrDefault().DienGiaiP @sgtcodes
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kèm theo : </td>
+                                    <td colspan="4">Chứng từ @soCTGocs</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tổng cộng :</b></td>
+                                    <td colspan="4"><b> <i class="fas fa-pencil-alt"></i> @Model.InPhieuView_Groupby_TkNos.Sum(x => x.SoTienNT).ToString("N0") đ</b></td>
+                                </tr>
+                                <tr>
+                                    <td><i>Bằng chữ :</i></td>
+                                    <td colspan="4"><i> @ViewBag.bangChu</i></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <br />
+                    <br />
+
+                    <!-- /.row -->
+                    <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-3 text-center">
+                            Thủ trưởng cơ quan
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-2 text-center">
+                            Kế toán trưởng
+                        </div>
+                        <div class="col-3 text-center">
+                            Người nhận tiền
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-2 text-center">
+                            Thủ quỹ
+                        </div>
+                        <div class="col-2 text-center">
+                            Người lập phiếu
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- this row will not appear when printing -->
+                    <div class="row no-print">
+                        <div class="col-12">
+                            <a asp-action="InvoicePdfPrint" asp-route-id="@Model.KVPTC.Id" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                            @*<button type="button" class="btn btn-success float-right">
+                                    <i class="far fa-credit-card"></i> Submit
+                                    Payment
+                                </button>
+                                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                </button>*@
+                        </div>
+                    </div>
+                </div>
+                <!-- /.invoice -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>

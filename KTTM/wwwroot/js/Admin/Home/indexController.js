@@ -6,7 +6,6 @@
 
 var indexController = {
     init: function () {
-
         toastr.options = { // toastr options
             "closeButton": false,
             "debug": false,
@@ -29,10 +28,8 @@ var indexController = {
     },
 
     registerEvent: function () {
-
         // format .numbers
         $('input.numbers').keyup(function (event) {
-
             // Chỉ cho nhập số
             if (event.which >= 37 && event.which <= 40) return;
 
@@ -42,10 +39,8 @@ var indexController = {
         });
 
         $('#btnTimPhieu').off('click').on('click', function () {
-
             $('#timPhieuModal').modal('show');
             $('#timPhieuModal').draggable();
-
         })
 
         // phieu click --> load kvctpct
@@ -57,19 +52,16 @@ var indexController = {
             loaiPhieu = $(this).data('loaiphieu');
 
             indexController.TdVal_Click(id, loaiPhieu);
-
         });
         // phieu click --> load kvctpct
 
         // show cashier modal
         $('.btnCashier').off('click').on('click', function () {
-
             var page = $('.active span').text();
 
             kvptcId = $('#hidKVPCTId').val();
             strUrl = $('.layDataCashier').data('url');
             $.get('/KVCTPTCs/LayDataCashierPartial', { kVPTCId: kvptcId, strUrl: strUrl, page: page }, function (data) {
-
                 $('#layDataCashier').modal('show');
                 $('.layDataCashier_Body').html(data);
                 $('#layDataCashier').draggable();
@@ -106,14 +98,12 @@ var indexController = {
 
         // tdVal_KVCTPCT row click
         $('tr .tdVal_KVCTPCT').click(function () {
-
             kVCTPCTId = $(this).data('id');
             $('#hidKVCTPCTId').val(kVCTPCTId); // for TT141 and 1411KhongTC
 
             // for btnTamUng
             var promise = indexController.CheckTamUng(kVCTPCTId);
             promise.then(function (data) {
-
                 if (data) {
                     $('#btnTamUng').attr('disabled', false);
                     $('#hidTamUng').val(kVCTPCTId);
@@ -126,19 +116,16 @@ var indexController = {
             // for TT141
             var promiseTT141 = indexController.CheckTT141(kVCTPCTId);
             promiseTT141.then(function (data) {
-
                 if (data) {
-
                     $('#btnTT141').attr('disabled', false);
                 }
                 else {
                     $('#btnTT141').attr('disabled', true);
                 }
             }, error => alert(error));
-            
-            // for => copy dong cu cho dong moi
-            $('#hidIdCu').val(kVCTPCTId); 
 
+            // for => copy dong cu cho dong moi
+            $('#hidIdCu').val(kVCTPCTId);
         });
         // tdVal_KVCTPCT row click
 
@@ -150,13 +137,11 @@ var indexController = {
                 $('.ctphieu-cursor-pointer').removeClass("hoverClass");
                 $(this).addClass("hoverClass");
             }
-
         });
         // giu trang thai CT phieu click
 
         // create new KVCTPCT
         $('#btn_New_KVCTPCT').off('click').on('click', function () {
-
             kvpctid = $(this).data('kvpctid');
 
             $('#KVCTPCT_Tbl').hide(500);
@@ -164,33 +149,30 @@ var indexController = {
 
             var url = '/KVCTPTCs/KVCTPCT_Create_Partial';
             $.get(url, { kvpctid: kvpctid }, function (response) {
-
                 $('#KVCTPCT_Create_Partial').show(500);
                 $('#KVCTPCT_Create_Partial').html(response);
-
             });
         });
         // create new KVCTPCT
 
-        // btnInPhieu
+        // btnInCTPhieu
         $('#btnInCTPhieu').off('click').on('click', function () {
             $('#frmInCTPhieu').submit();
         })
 
+        // btnInPhieu
+        $('#btnInPhieu').off('click').on('click', function () {
+            $('#frmInPhieu').submit();
+        })
     },
     Load_KVCTPCTPartial: function (id, page) { // KVPTC id
-
         var url = '/KVCTPTCs/KVCTPTCPartial';
         $.get(url, { KVPTCid: id, page: page }, function (response) {
-            
             $('#KVCTPCT_Tbl').html(response);
             $('#KVCTPCT_Tbl').show(500);
-
         });
-
     },
     TdVal_Click: function (id, loaiPhieu) { // KVPTC id
-
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
         //$('#hidCashier').val(id);
@@ -205,6 +187,7 @@ var indexController = {
         $('#btnInPhieu').attr('disabled', false);
         $('#btnInCTPhieu').attr('disabled', false);
         $('#hidId_InPhieu').val(id);
+        $('#hidId_InCTPhieu').val(id);
 
         // page
         var page = $('.active span').text();
@@ -218,10 +201,8 @@ var indexController = {
         $('#KVCTPCT_Edit_Partial').hide(500);
 
         indexController.Load_KVCTPCTPartial(id, page); // KVPTC id
-
     },
     KhachHang_By_Code: function (code, txtMaKh) {
-
         $.ajax({
             url: '/KVCTPTCs/GetKhachHangs_By_Code',
             type: 'GET',
@@ -246,7 +227,6 @@ var indexController = {
                     $('#txtMsThue').val(data.taxcode);
                     $('#txtTenKH').val(data.name);
                     $('#txtDiaChi').val(data.address);
-
                 }
                 else {// search ko co KH nao het => ...
                     if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no
@@ -266,24 +246,18 @@ var indexController = {
                 }
             }
         });
-
     },
     CheckTamUng: function (kVCTPCTId) {
-
         return $.post('/TamUngs/CheckTamUng', { kVCTPCTId: kVCTPCTId }, function (response) {
             // console.log(response);
             return response;
         })
-
     },
     CheckTT141: function (kVCTPCTId) {
-
         return $.post('/TamUngs/CheckTT141', { kVCTPCTId: kVCTPCTId }, function (response) {
             //console.log(response);
             return response;
         })
-
     }
-   
 };
 indexController.init();

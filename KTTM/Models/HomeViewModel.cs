@@ -1,6 +1,7 @@
 ﻿using Data.Dtos;
 using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
+
 //using Data.Models_QLTour;
 using Data.ViewModels;
 using System.Collections.Generic;
@@ -21,5 +22,6 @@ namespace KTTM.Models
         public string StrUrl { get; set; }
         public int Page { get; set; }
 
+        public IEnumerable<InPhieuView_Groupby_TkNo> InPhieuView_Groupby_TkNos { get; set; }
     }
 }

@@ -953,7 +953,7 @@ namespace KTTM.Controllers
 
             ExcelPackage ExcelApp = new ExcelPackage();
 
-            foreach (var ngoaiTe in ngoaiTes)
+            foreach (var ngoaiTe in ngoaiTes.OrderByDescending(x => x.MaNt))
             {
                 TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT = new TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs();
 
@@ -969,7 +969,7 @@ namespace KTTM.Controllers
                     {
                         NgoaiTe = ngoaiTe,
                         TonQuy = tonQuy,
-                        KVCTPTC_NT_GroupBy_SoCTs = _kVCTPTCService.KVCTPTC_NT_GroupBy_SoCTs(kVCTPTCs1)
+                        KVCTPTC_NT_GroupBy_SoCTs = _kVCTPTCService.KVCTPTC_NT_GroupBy_SoCTs(kVCTPTCs1).OrderBy(x => x.SoCT)
                     };
                 }
                 else
@@ -986,7 +986,7 @@ namespace KTTM.Controllers
                 ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add(ngoaiTe.MaNt);
                 // Định dạng chiều dài cho cột
 
-                xlSheet.Column(1).Width = 30; // DIỄN GIẢI
+                xlSheet.Column(1).Width = 40; // DIỄN GIẢI
                 xlSheet.Column(2).Width = 15; // TK ĐỐI ỨNG
                 xlSheet.Column(3).Width = 15; // SỐ TIỀN NT THU
                 xlSheet.Column(4).Width = 15; // SỐ TIỀN NT CHI
@@ -996,15 +996,15 @@ namespace KTTM.Controllers
                 xlSheet.Cells[1, 1].Value = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
                 xlSheet.Cells[1, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 xlSheet.Cells[1, 1].Style.WrapText = true;
-                xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
                 xlSheet.Cells[1, 1, 2, 2].Merge = true;
 
                 xlSheet.Cells[1, 3].Value = "CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM";
-                xlSheet.Cells[1, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[1, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
                 xlSheet.Cells[1, 3, 1, 6].Merge = true;
 
                 xlSheet.Cells[2, 3].Value = "Độc Lập - Tự Do - Hạnh Phúc";
-                xlSheet.Cells[2, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[2, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
                 xlSheet.Cells[2, 3, 2, 6].Merge = true;
 
                 string stringSoQuy = "SỔ QUỸ KIÊM BÁO CÁO QUỸ NGOẠI TỆ " + ngoaiTe.MaNt;
@@ -1021,16 +1021,16 @@ namespace KTTM.Controllers
                 xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
                 xlSheet.Cells[3, 1, 3, 6].Merge = true;
                 xlSheet.Cells[4, 1].Value = stringTuNgay;
-                xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                xlSheet.Cells[4, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular | FontStyle.Italic));
                 //xlSheet.Cells[4, 1].Style.Font.Bold = true;
                 //xlSheet.Cells[4, 1].Style.Font.Italic = true;
                 xlSheet.Cells[4, 1, 4, 6].Merge = true;
 
                 // Tạo header
                 xlSheet.Cells[6, 1].Value = "DIỄN GIẢI";
-                //xlSheet.Cells[6, 3].Style.WrapText = true;
+                xlSheet.Cells[6, 1, 7, 1].Merge = true;
                 xlSheet.Cells[6, 2].Value = "TK ĐỐI ỨNG";
-                //xlSheet.Cells[6, 4].Style.WrapText = true;
+                xlSheet.Cells[6, 2, 7, 2].Merge = true;
                 xlSheet.Cells[6, 3].Value = "SỐ TIỀN NT";
                 //xlSheet.Cells[6, 5].Style.WrapText = true;
                 xlSheet.Cells[6, 3, 6, 4].Merge = true;
@@ -1042,7 +1042,7 @@ namespace KTTM.Controllers
                 xlSheet.Cells[7, 5].Value = "THU";
                 xlSheet.Cells[7, 6].Value = "CHI";
 
-                xlSheet.Cells[6, 1, 7, 6].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+                xlSheet.Cells[6, 1, 7, 6].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
                 xlSheet.Cells[6, 1, 7, 6].Style.WrapText = true;
                 xlSheet.Cells[6, 1, 7, 6].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Alignment is center
                 xlSheet.Cells[6, 1, 7, 6].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // Alignment is center
@@ -1110,16 +1110,16 @@ namespace KTTM.Controllers
                         if (item.SoCT.Contains("NT"))
                         {
                             xlSheet.Cells[dong, 3].Value = item.TongCong_Thu_NT;
-                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
                             xlSheet.Cells[dong, 5].Value = item.TongCong_Thu;
-                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
                         }
                         else
                         {
                             xlSheet.Cells[dong, 4].Value = item.TongCong_Chi_NT;
-                            TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
                             xlSheet.Cells[dong, 6].Value = item.TongCong_Chi;
-                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
                         }
 
                         dong++;
@@ -1228,9 +1228,8 @@ namespace KTTM.Controllers
                     {
                         xlSheet.Cells[dong, 5].Value = "";
                     }
-                    xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Regular));
+                    xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 11, FontStyle.Bold));
 
-                    dong++;
                     dong++;
 
                     //// ghi log va save tonquy tbl

@@ -5,6 +5,7 @@ using Data.Models_QLTour;
 using Data.Repository;
 using Data.Utilities;
 using Data.ViewModels;
+using KTTM.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,22 +18,34 @@ namespace KTTM.Services
     public interface IKVPTCService
     {
         IEnumerable<KVPTC> GetAll();
+
         IEnumerable<Ngoaite> GetAllNgoaiTe();
+
         IEnumerable<Phongban> GetAllPhongBan();
+
         Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page);
 
         IEnumerable<ListViewModel> ListLoaiPhieu();
+
         IEnumerable<ListViewModel> ListLoaiTien();
+
         string GetSoCT(string param, string maCn);
+
         Task CreateAsync(KVPTC kVPCT);
+
         Task CreateRangeAsync(List<KVPTC> kVPTCs);
+
         Task<KVPTC> GetByGuidIdAsync(Guid id);
+
         KVPTC GetByIdAsNoTracking(Guid id);
+
         Task UpdateAsync(KVPTC kVPCT);
 
         IEnumerable<TkCongNo> GetAllTkCongNo();
 
+        List<InPhieuView_Groupby_TkNo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs);
     }
+
     public class KVPTCService : IKVPTCService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -91,14 +104,12 @@ namespace KTTM.Services
             else
             {
                 var oldYear = kVPCT.SoCT.Substring(6, 4);
-                
+
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
-
                     var oldSoCT = kVPCT.SoCT.Substring(0, 4);
                     return GetNextId.NextID(oldSoCT, "") + subfix;
-
                 }
                 else
                 {
@@ -128,7 +139,6 @@ namespace KTTM.Services
             // search for sgtcode in kvctptC
             if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
-
                 List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
 
                 if (kVCTPTCs.Count() > 0)
@@ -144,9 +154,7 @@ namespace KTTM.Services
                         kVPTCs = kVPTCs1.Distinct().ToList();
                     }
                 }
-
             }
-
             else if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
             {
                 kVPTCs = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
@@ -168,8 +176,6 @@ namespace KTTM.Services
                 //                       (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
                 //                       (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
                 //                       (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
-
-
             }
             else
             {
@@ -209,7 +215,6 @@ namespace KTTM.Services
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate); // NgayCT
@@ -225,10 +230,8 @@ namespace KTTM.Services
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
-
             }
             else
             {
@@ -243,7 +246,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
                 {
@@ -251,13 +253,11 @@ namespace KTTM.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         list = list.Where(x => x.NgayCT < toDate.AddDays(1)).ToList();
-
                     }
                     catch (Exception)
                     {
                         return null;
                     }
-
                 }
             }
             // search date
@@ -285,9 +285,7 @@ namespace KTTM.Services
             if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
                 return null;
 
-
             return listPaged;
-
         }
 
         public IEnumerable<ListViewModel> ListLoaiPhieu()
@@ -329,6 +327,26 @@ namespace KTTM.Services
         {
             await _unitOfWork.kVPCTRepository.CreateRange(kVPTCs);
             await _unitOfWork.Complete();
+        }
+
+        public List<InPhieuView_Groupby_TkNo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs)
+        {
+            var result1 = (from p in kVCTPTCs
+                           group p by p.TKNo into g
+                           select new InPhieuView_Groupby_TkNo()
+                           {
+                               TkNo = g.Key,
+                               KVCTPTCs = g.ToList()
+                           }).ToList();
+            
+            foreach (var item in result1)
+            {
+                
+                item.SoTien = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+                item.SoTienNT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
+            }
+
+            return result1;
         }
     }
 }

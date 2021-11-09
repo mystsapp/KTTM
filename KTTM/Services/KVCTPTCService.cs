@@ -694,7 +694,7 @@ namespace KTTM.Services
                     item.TongCong_Chi_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
                 }
             }
-            decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0, congPhatSinh_Thu_NT = 0, congPhatSinh_Chi_NT = 0;
+            //decimal congPhatSinh_Thu = 0, congPhatSinh_Chi = 0, congPhatSinh_Thu_NT = 0, congPhatSinh_Chi_NT = 0;
             //foreach (var item in result1)
             //{
             //    //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
