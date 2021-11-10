@@ -1232,35 +1232,36 @@ namespace KTTM.Controllers
 
                     dong++;
 
-                    //// ghi log va save tonquy tbl
-                    //TonQuy tonQuy1 = new TonQuy()
-                    //{
-                    //    LoaiTien = tonQuy_LoaiTien_KVCTPTC.TonQuy.LoaiTien,
-                    //    TyGia = tonQuy_LoaiTien_KVCTPTC.TonQuy.TyGia,
-                    //    LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
-                    //    NgayCT = DateTime.Parse(searchToDate), //
-                    //    NgayTao = DateTime.Now,
-                    //    NguoiTao = user.Hoten,
-                    //    SoTien = tonCuoi,
-                    //    SoTienNT = tonCuoiNT,
-                    //    MaCn = user.Macn
-                    //};
+                    // ghi log va save tonquy tbl
+                    TonQuy tonQuy1 = new TonQuy()
+                    {
+                        LoaiTien = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.LoaiTien,
+                        TyGia = tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.TyGia,
+                        LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(), // user.Username
+                        NgayCT = DateTime.Parse(searchToDate), //
+                        NgayTao = DateTime.Now,
+                        NguoiTao = user.Hoten,
+                        SoTien = tonCuoi,
+                        SoTienNT = tonCuoiNT,
+                        MaCn = user.Macn
+                    };
 
-                    //var tonQuies1 = _tonQuyService.Find_Equal_By_Date(
-                    //    tonQuy1.NgayCT.Value, user.Macn, tonQuy_LoaiTien_KVCTPTC.TonQuy.LoaiTien);
-                    //if (tonQuies1.Count > 0) // co ton tai
-                    //{
-                    //    var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
-                    //    tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
-                    //    tonQuy2.SoTien = tonCuoi;
-                    //    tonQuy2.SoTienNT = tonCuoiNT;
+                    var tonQuies1 = _tonQuyService.Find_Equal_By_Date(
+                        tonQuy1.NgayCT.Value, user.Macn, tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.TonQuy.LoaiTien);
+                    if (tonQuies1.Count > 0) // co ton tai
+                    {
+                        var tonQuy2 = _tonQuyService.GetById(tonQuies1.FirstOrDefault().Id);
+                        tonQuy2.LogFile += "==== người chạy lại " + user.Username + " lúc: " + DateTime.Now;
+                        tonQuy2.SoTien = tonCuoi;
+                        tonQuy2.SoTienNT = tonCuoiNT;
 
-                    //    await _tonQuyService.UpdateAsync(tonQuy2);
-                    //}
-                    //else
-                    //{
-                    //    await _tonQuyService.CreateAsync(tonQuy1);
-                    //}
+                        await _tonQuyService.UpdateAsync(tonQuy2);
+                    }
+                    else
+                    {
+                        await _tonQuyService.CreateAsync(tonQuy1);
+                    }
+                    // ghi log va save tonquy tbl
                 }
                 dong++;
 

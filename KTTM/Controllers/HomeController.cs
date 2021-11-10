@@ -520,6 +520,22 @@ namespace KTTM.Controllers
             return View(HomeVM);
         }
 
+        public async Task<IActionResult> InPhieuPrint(Guid id, int page)
+        {
+            HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
+            HomeVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+            HomeVM.Page = page;
+            HomeVM.InPhieuView_Groupby_TkNos = _kVPTCService.InPhieuView_Groupby_TkNos(HomeVM.KVCTPTCs);
+            string tongTienNT = HomeVM.InPhieuView_Groupby_TkNos.Sum(x => x.SoTienNT).ToString();
+            ///// Currency to money
+            string s = SoSangChu.DoiSoSangChu(tongTienNT.Split('.')[0]);
+            string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
+            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            ViewBag.bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
+
+            return View(HomeVM);
+        }
+
         public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
         {
             //if (!string.IsNullOrEmpty(tabActive))

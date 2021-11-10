@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "InPhieuView";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int i = 1;
 }
 
 <style>
@@ -79,7 +78,7 @@
                             @*To
                                 <address>*@
                             <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
-                            <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Date.Date tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
+                            <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Day tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-3 invoice-col text-right">
@@ -197,7 +196,7 @@
                     <!-- this row will not appear when printing -->
                     <div class="row no-print">
                         <div class="col-12">
-                            <a asp-action="InvoicePdfPrint" asp-route-id="@Model.KVPTC.Id" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                            <a asp-action="InPhieuPrint" asp-route-id="@Model.KVPTC.Id" asp-route-page="@Model.Page" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                             @*<button type="button" class="btn btn-success float-right">
                                     <i class="far fa-credit-card"></i> Submit
                                     Payment
