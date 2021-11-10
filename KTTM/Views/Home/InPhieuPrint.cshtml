@@ -36,10 +36,17 @@
             border: 1px solid darkgray;
             /*padding: 5px;*/
         }
+
+        @*@media print{
+   body{
+       font-size:12px;
+       font-family:"Times New Roman";
+   }
+}*@
     </style>
 </head>
 
-<body>
+<body class="text-lg">
     <div class="wrapper">
 
         <section class="content-header">
@@ -67,7 +74,7 @@
                             </div>*@
 
                         <!-- Main content -->
-                        <div class="invoice p-3 mb-3">
+                        <div class="invoice p-3 mb-3 ">
                             <!-- title row -->
                             <div class="row">
                                 <div class="col-7 text-center">
@@ -415,6 +422,8 @@
         setInterval(function () {
             window.addEventListener("load", window.print());
         }, 1000);
+
+            //window.addEventListener("load", window.print());
     </script>
 </body>
 </html>
