@@ -22,6 +22,6 @@ namespace KTTM.Models
         public string StrUrl { get; set; }
         public int Page { get; set; }
 
-        public IEnumerable<InPhieuView_Groupby_TkNo> InPhieuView_Groupby_TkNos { get; set; }
+        public List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNo_TkCos { get; set; }
     }
 }

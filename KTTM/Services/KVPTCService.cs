@@ -43,7 +43,9 @@ namespace KTTM.Services
 
         IEnumerable<TkCongNo> GetAllTkCongNo();
 
-        List<InPhieuView_Groupby_TkNo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs);
+        List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs);
+
+        List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNo_TkCos(IEnumerable<KVCTPTC> kVCTPTCs);
     }
 
     public class KVPTCService : IKVPTCService
@@ -329,19 +331,39 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
-        public List<InPhieuView_Groupby_TkNo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs)
+        public List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs)
         {
             var result1 = (from p in kVCTPTCs
                            group p by p.TKNo into g
-                           select new InPhieuView_Groupby_TkNo()
+                           select new InPhieuView_Groupby_TkNo_TkCo()
                            {
                                TkNo = g.Key,
                                KVCTPTCs = g.ToList()
                            }).ToList();
-            
+
             foreach (var item in result1)
             {
-                
+                item.SoTien = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+                item.SoTienNT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
+            }
+
+            return result1;
+        }
+
+        public List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNo_TkCos(IEnumerable<KVCTPTC> kVCTPTCs)
+        {
+            var result1 = (from p in kVCTPTCs
+                           group p by new { p.TKNo, p.TKCo, p.LoaiTien } into g
+                           select new InPhieuView_Groupby_TkNo_TkCo()
+                           {
+                               TkNo = g.Key.TKNo,
+                               TkCo = g.Key.TKCo,
+                               LoaiTien = g.Key.LoaiTien,
+                               KVCTPTCs = g.ToList()
+                           }).ToList();
+
+            foreach (var item in result1)
+            {
                 item.SoTien = item.KVCTPTCs.Sum(x => x.SoTien.Value);
                 item.SoTienNT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
             }
