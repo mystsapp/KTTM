@@ -40,8 +40,8 @@ namespace Data.Models_Cashier
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=192.168.4.198,1434;database=qlcashier;Trusted_Connection=true;User Id=sa;Password=123456;Integrated security=false;MultipleActiveResultSets=true");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=qlcashier;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
             }
         }
 
@@ -135,6 +135,8 @@ namespace Data.Models_Cashier
                 entity.Property(e => e.Stt)
                     .HasMaxLength(20)
                     .HasColumnName("stt");
+
+                entity.Property(e => e.Thanhtoanthe).HasColumnName("thanhtoanthe");
 
                 entity.Property(e => e.Thuevat)
                     .HasColumnType("decimal(18, 0)")
@@ -230,6 +232,8 @@ namespace Data.Models_Cashier
                 entity.Property(e => e.Stt)
                     .HasMaxLength(12)
                     .HasColumnName("stt");
+
+                entity.Property(e => e.Thanhtoanthe).HasColumnName("thanhtoanthe");
 
                 entity.Property(e => e.Thuevat)
                     .HasColumnType("decimal(18, 0)")

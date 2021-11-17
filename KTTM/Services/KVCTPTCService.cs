@@ -55,7 +55,7 @@ namespace KTTM.Services
 
         IEnumerable<Dgiai> Get_DienGiai_By_TkNo(string tkNo);
 
-        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk); // noptien => two keys
+        IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk, bool tienMat, bool tTThe); // noptien => two keys
 
         Task CreateRange(IEnumerable<KVCTPTC> kVCTPTCs);
 
@@ -224,7 +224,9 @@ namespace KTTM.Services
             return dgiais1;
         }
 
-        public IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId, string soCT, string username, string maCN, string loaiPhieu, string tk) // noptien => two keys
+        public IEnumerable<KVCTPTC> GetKVCTPTCs(string baoCaoSo, Guid kVPTCId,
+            string soCT, string username, string maCN, string loaiPhieu,
+            string tk, bool tienMat, bool tTThe) // noptien => two keys
         {
             var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
 
@@ -253,71 +255,230 @@ namespace KTTM.Services
                         diaChi = viewSupplier.Address;
                     }
                     var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == item.Idntbill);
+                    var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) && string.IsNullOrEmpty(x.Loaicard));
+                    var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
 
                     string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + item.Bill : "CHI BILL " + item.Bill; // ??
                     var loaiHDGoc = "VAT";// item.Loaihd; // ??
                     var soCTGoc = item.Bill; // ??
                     var ngayBill = item.Ngaybill; // ??
 
-                    foreach (var item1 in ctbills)
+                    if (tienMat)
                     {
-                        KVCTPTC kVCTPTC = new KVCTPTC();
-
-                        // THONG TIN VE TAI CHINH
-                        kVCTPTC.KVPTCId = kVPTCId;
-                        kVCTPTC.SoCT = soCT;
-                        kVCTPTC.MaCn = maCN;
-                        kVCTPTC.DienGiaiP = dienGiaiP;
-                        kVCTPTC.SoTienNT = item1.Sotiennt;
-                        kVCTPTC.LoaiTien = item1.Loaitien;
-                        kVCTPTC.TyGia = item1.Tygia;
-                        kVCTPTC.SoTien = item1.Sotien;
-
-                        // THONG TIN VE CONG NO DOAN
-                        if (loaiPhieu == "T")
+                        foreach (var item1 in ctbills_TienMat)
                         {
-                            var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-                            kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-                            kVCTPTC.TKNo = "1111000000";
-                            kVCTPTC.TKCo = tk;
-                            kVCTPTC.MaKhCo = maKh;
-                            kVCTPTC.CoQuay = boPhan;
+                            KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            // THONG TIN VE TAI CHINH
+                            kVCTPTC.KVPTCId = kVPTCId;
+                            kVCTPTC.SoCT = soCT;
+                            kVCTPTC.MaCn = maCN;
+                            kVCTPTC.DienGiaiP = dienGiaiP;
+                            kVCTPTC.SoTienNT = item1.Sotiennt;
+                            kVCTPTC.LoaiTien = item1.Loaitien;
+                            kVCTPTC.TyGia = item1.Tygia;
+                            kVCTPTC.SoTien = item1.Sotien;
+                            kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.LoaiThe = item1.Loaicard;
+
+                            // THONG TIN VE CONG NO DOAN
+                            if (loaiPhieu == "T") // phieu thu
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = "1111000000";
+                                kVCTPTC.TKCo = tk;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                }
+                                kVCTPTC.CoQuay = boPhan;
+
+                                switch (baoCaoSo.Substring())
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+                                }
+                            }
+                            else // phieu chi
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = tk;
+                                kVCTPTC.TKCo = "1111000000";
+                                kVCTPTC.MaKhNo = maKh;
+                                kVCTPTC.NoQuay = boPhan;
+                            }
+
+                            kVCTPTC.BoPhan = boPhan;
+                            kVCTPTC.Sgtcode = item1.Sgtcode;
+                            kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.SalesSlip = item1.Saleslip;
+
+                            // THONG TIN VE THUE
+                            kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            kVCTPTC.SoCTGoc = soCTGoc;
+                            kVCTPTC.NgayCTGoc = ngayBill;
+
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.VAT = 0;
+
+                            kVCTPTC.KyHieu = kyHieu;
+                            kVCTPTC.MauSoHD = mauSo;
+                            kVCTPTC.MsThue = msThue;
+                            kVCTPTC.MaKh = maKh;
+                            kVCTPTC.TenKH = tenKh;
+                            kVCTPTC.DiaChi = diaChi;
+
+                            kVCTPTC.NguoiTao = nguoiTao;
+                            kVCTPTC.NgayTao = ngayTao;
+                            kVCTPTC.LogFile = logFile;
+
+                            kVCTPTCs.Add(kVCTPTC);
                         }
-                        else
+                    }
+
+                    if (tTThe)
+                    {
+                        foreach (var item1 in ctbills_TTThe)
                         {
-                            var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-                            kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-                            kVCTPTC.TKNo = tk;
-                            kVCTPTC.TKCo = "1111000000";
-                            kVCTPTC.MaKhNo = maKh;
-                            kVCTPTC.NoQuay = boPhan;
+                            KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            // THONG TIN VE TAI CHINH
+                            kVCTPTC.KVPTCId = kVPTCId;
+                            kVCTPTC.SoCT = soCT;
+                            kVCTPTC.MaCn = maCN;
+                            kVCTPTC.DienGiaiP = dienGiaiP;
+                            kVCTPTC.SoTienNT = item1.Sotiennt;
+                            kVCTPTC.LoaiTien = item1.Loaitien;
+                            kVCTPTC.TyGia = item1.Tygia;
+                            kVCTPTC.SoTien = item1.Sotien;
+                            kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.LoaiThe = item1.Loaicard;
+
+                            // THONG TIN VE CONG NO DOAN
+                            if (loaiPhieu == "T") // phieu thu
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = "1111000000";
+                                kVCTPTC.TKCo = tk;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                }
+                                kVCTPTC.CoQuay = boPhan;
+                            }
+                            else // phieu chi
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = tk;
+                                kVCTPTC.TKCo = "1111000000";
+                                kVCTPTC.MaKhNo = maKh;
+                                kVCTPTC.NoQuay = boPhan;
+                            }
+
+                            kVCTPTC.BoPhan = boPhan;
+                            kVCTPTC.Sgtcode = item1.Sgtcode;
+                            kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.SalesSlip = item1.Saleslip;
+
+                            // THONG TIN VE THUE
+                            kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            kVCTPTC.SoCTGoc = soCTGoc;
+                            kVCTPTC.NgayCTGoc = ngayBill;
+
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.VAT = 0;
+
+                            kVCTPTC.KyHieu = kyHieu;
+                            kVCTPTC.MauSoHD = mauSo;
+                            kVCTPTC.MsThue = msThue;
+                            kVCTPTC.MaKh = maKh;
+                            kVCTPTC.TenKH = tenKh;
+                            kVCTPTC.DiaChi = diaChi;
+
+                            kVCTPTC.NguoiTao = nguoiTao;
+                            kVCTPTC.NgayTao = ngayTao;
+                            kVCTPTC.LogFile = logFile;
+
+                            kVCTPTCs.Add(kVCTPTC);
                         }
+                    }
 
-                        kVCTPTC.BoPhan = boPhan;
-                        kVCTPTC.Sgtcode = item1.Sgtcode;
-                        kVCTPTC.CardNumber = item1.Cardnumber;
-                        kVCTPTC.SalesSlip = item1.Saleslip;
+                    if (!tienMat && !tTThe) // bỏ tróng -> lấy theo tiền mặt
+                    {
+                        foreach (var item1 in ctbills_TienMat)
+                        {
+                            KVCTPTC kVCTPTC = new KVCTPTC();
 
-                        // THONG TIN VE THUE
-                        kVCTPTC.LoaiHDGoc = loaiHDGoc;
-                        kVCTPTC.SoCTGoc = soCTGoc;
-                        kVCTPTC.NgayCTGoc = ngayBill;
+                            // THONG TIN VE TAI CHINH
+                            kVCTPTC.KVPTCId = kVPTCId;
+                            kVCTPTC.SoCT = soCT;
+                            kVCTPTC.MaCn = maCN;
+                            kVCTPTC.DienGiaiP = dienGiaiP;
+                            kVCTPTC.SoTienNT = item1.Sotiennt;
+                            kVCTPTC.LoaiTien = item1.Loaitien;
+                            kVCTPTC.TyGia = item1.Tygia;
+                            kVCTPTC.SoTien = item1.Sotien;
+                            kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.LoaiThe = item1.Loaicard;
 
-                        kVCTPTC.DSKhongVAT = 0;
-                        kVCTPTC.VAT = 0;
+                            // THONG TIN VE CONG NO DOAN
+                            if (loaiPhieu == "T") // phieu thu
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = "1111000000";
+                                kVCTPTC.TKCo = tk;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                }
+                                kVCTPTC.CoQuay = boPhan;
+                            }
+                            else // phieu chi
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = tk;
+                                kVCTPTC.TKCo = "1111000000";
+                                kVCTPTC.MaKhNo = maKh;
+                                kVCTPTC.NoQuay = boPhan;
+                            }
 
-                        kVCTPTC.KyHieu = kyHieu;
-                        kVCTPTC.MauSoHD = mauSo;
-                        kVCTPTC.MsThue = msThue;
-                        kVCTPTC.MaKh = maKh;
-                        kVCTPTC.TenKH = tenKh;
-                        kVCTPTC.DiaChi = diaChi;
+                            kVCTPTC.BoPhan = boPhan;
+                            kVCTPTC.Sgtcode = item1.Sgtcode;
+                            kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.SalesSlip = item1.Saleslip;
 
-                        kVCTPTC.NguoiTao = nguoiTao;
-                        kVCTPTC.NgayTao = ngayTao;
-                        kVCTPTC.LogFile = logFile;
+                            // THONG TIN VE THUE
+                            kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            kVCTPTC.SoCTGoc = soCTGoc;
+                            kVCTPTC.NgayCTGoc = ngayBill;
 
-                        kVCTPTCs.Add(kVCTPTC);
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.VAT = 0;
+
+                            kVCTPTC.KyHieu = kyHieu;
+                            kVCTPTC.MauSoHD = mauSo;
+                            kVCTPTC.MsThue = msThue;
+                            kVCTPTC.MaKh = maKh;
+                            kVCTPTC.TenKH = tenKh;
+                            kVCTPTC.DiaChi = diaChi;
+
+                            kVCTPTC.NguoiTao = nguoiTao;
+                            kVCTPTC.NgayTao = ngayTao;
+                            kVCTPTC.LogFile = logFile;
+
+                            kVCTPTCs.Add(kVCTPTC);
+                        }
                     }
                 }
             }

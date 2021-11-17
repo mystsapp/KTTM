@@ -85,6 +85,10 @@ namespace Data.Models_KTTM
         [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string CardNumber { get; set; }
 
+        [DisplayName("Loại thẻ")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
+        public string LoaiThe { get; set; }
+
         [DisplayName("SalesSlip")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "nvarchar(10)")]
         public string SalesSlip { get; set; } //

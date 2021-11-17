@@ -23,6 +23,7 @@ namespace KTTM.Controllers
 
         [BindProperty]
         public KVCTPCTViewModel KVCTPCTVM { get; set; }
+
         public KVCTPTCsController(IKVCTPTCService kVCTPTCService, IKVPTCService kVPTCService, IUnitOfWork unitOfWork)
         {
             _kVCTPTCService = kVCTPTCService;
@@ -34,6 +35,7 @@ namespace KTTM.Controllers
                 KVCTPTC = new Data.Models_KTTM.KVCTPTC()
             };
         }
+
         public IActionResult Index()
         {
             return View();
@@ -53,7 +55,6 @@ namespace KTTM.Controllers
         {
             if (!ModelState.IsValid) // check id_Dong_Da_Click valid (da gang' = 0 trong home/index)
             {
-
                 return View();
             }
 
@@ -76,7 +77,7 @@ namespace KTTM.Controllers
             {
                 KVCTPCTVM.KVCTPTC.TKNo = "1111000000";
             }
-            
+
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
@@ -104,7 +105,6 @@ namespace KTTM.Controllers
 
         private void Get_TkNo_TkCo()
         {
-
             DmTk dmTk = new DmTk() { Tkhoan = "" };
             var dmTks_TienMat = _kVCTPTCService.GetAll_DmTk_TienMat().ToList();
             var dmTks_TaiKhoan = _kVCTPTCService.GetAll_DmTk_TaiKhoan().ToList();
@@ -134,7 +134,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.TyGia = 1;
             KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
-            
+
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
@@ -157,13 +157,12 @@ namespace KTTM.Controllers
         public async Task<IActionResult> ThemDong_ContextMenu_Post(Guid KVPTCId, int page)
         {
             //var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
-            
+
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             if (!ModelState.IsValid)
             {
-
                 // not valid
                 KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
                 KVCTPCTVM.Page = page;
@@ -174,7 +173,7 @@ namespace KTTM.Controllers
                 KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
                 KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
                 Get_TkNo_TkCo();
-                
+
                 return View(KVCTPCTVM);
             }
 
@@ -197,11 +196,9 @@ namespace KTTM.Controllers
             }
             catch (Exception ex)
             {
-
                 SetAlert(ex.Message, "error");
                 return View(KVCTPCTVM);
             }
-
         }
 
         [HttpPost, ActionName("ThemDong")]
@@ -213,7 +210,6 @@ namespace KTTM.Controllers
 
             if (!ModelState.IsValid)
             {
-
                 // not valid
                 KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
                 KVCTPCTVM.Page = page;
@@ -224,7 +220,7 @@ namespace KTTM.Controllers
                 KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
                 KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
                 Get_TkNo_TkCo();
-               
+
                 return View(KVCTPCTVM);
             }
 
@@ -250,11 +246,9 @@ namespace KTTM.Controllers
             }
             catch (Exception ex)
             {
-
                 SetAlert(ex.Message, "error");
                 return View(KVCTPCTVM);
             }
-
         }
 
         //-----------LayDataCashierPartial------------
@@ -280,12 +274,14 @@ namespace KTTM.Controllers
 
             if (!ModelState.IsValid)
             {
-
                 return View(KVCTPCTVM);
             }
 
             // data tu cashier
-            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu, KVCTPCTVM.LayDataCashierModel.Tk.Trim());
+            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo,
+                kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu,
+                KVCTPCTVM.LayDataCashierModel.Tk.Trim(), KVCTPCTVM.LayDataCashierModel.TienMat,
+                KVCTPCTVM.LayDataCashierModel.TTThe);
             // ghi log ben service
 
             try
@@ -305,11 +301,9 @@ namespace KTTM.Controllers
             }
             catch (Exception ex)
             {
-
                 SetAlert(ex.Message, "error");
                 return View(KVCTPCTVM);
             }
-
         }
 
         // Edit_KVCTPCT
@@ -360,7 +354,6 @@ namespace KTTM.Controllers
             return View(KVCTPCTVM);
         }
 
-
         [HttpPost, ActionName("Edit_KVCTPTC")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_KVCTPTC_Post(long id, int page)
@@ -381,7 +374,9 @@ namespace KTTM.Controllers
                 KVCTPCTVM.KVCTPTC.NguoiSua = user.Username;
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
+
                 #region log file
+
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _kVCTPTCService.GetBySoCTAsNoTracking(id);
 
@@ -603,7 +598,6 @@ namespace KTTM.Controllers
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
-
                     string log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
@@ -611,7 +605,9 @@ namespace KTTM.Controllers
                     t.LogFile = t.LogFile + log;
                     KVCTPCTVM.KVCTPTC.LogFile = t.LogFile;
                 }
-                #endregion
+
+                #endregion log file
+
                 try
                 {
                     await _kVCTPTCService.UpdateAsync(KVCTPCTVM.KVCTPTC);
@@ -643,10 +639,8 @@ namespace KTTM.Controllers
             KVCTPCTVM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKCo).TenTk;
             KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
 
-
             return View(KVCTPCTVM);
         }
-
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(long id)
@@ -677,7 +671,6 @@ namespace KTTM.Controllers
             }
         }
 
-
         public IActionResult BackIndex(Guid id, int page)
         {
             return RedirectToAction(nameof(Index), "Home", new { id = id, page });
@@ -705,6 +698,7 @@ namespace KTTM.Controllers
                 });
             }
         }
+
         public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
         {
             // from login session
@@ -715,6 +709,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.MaKhText = code;
             return PartialView(KVCTPCTVM);
         }
+
         public JsonResult Get_TenTk_By_Tk(string tk)
         {
             tk ??= "";
@@ -724,6 +719,7 @@ namespace KTTM.Controllers
                 data = dmTk == null ? "" : dmTk.TenTk.Trim()
             });
         }
+
         public JsonResult Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {
             var listViewModels = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
@@ -739,6 +735,7 @@ namespace KTTM.Controllers
                     status = false
                 });
         }
+
         public JsonResult Get_DienGiai_By_TkNo(string tkNo)
         {
             var listViewModels = _kVCTPTCService.Get_DienGiai_By_TkNo(tkNo);
@@ -757,6 +754,7 @@ namespace KTTM.Controllers
                 soTien = soTien.ToString()
             });
         }
+
         public JsonResult TinhDsKhongVat(decimal vat, decimal soTien)
         {
             //var dsKhongVat = soTien - ((vat / 100) * soTien);
@@ -767,6 +765,7 @@ namespace KTTM.Controllers
                 soTien = dsKhongVat.ToString()
             });
         }
+
         public JsonResult TinhThueGTGT(decimal tongTien, decimal chiPhi)
         {
             var thueGTGT = tongTien - chiPhi;

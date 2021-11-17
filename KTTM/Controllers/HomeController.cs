@@ -594,7 +594,7 @@ namespace KTTM.Controllers
             foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
             {
                 string tien = SoSangChu.DoiSoSangChu(item.SoTienNT.ToString().Split('.')[0]);
-                item.SoTienNT_BangChu = char.ToUpper(tien[0]) + s.Substring(1) + " " + item.LoaiTien;
+                item.SoTienNT_BangChu = char.ToUpper(tien[0]) + tien.Substring(1) + " " + item.LoaiTien;
             }
 
             foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
@@ -603,11 +603,11 @@ namespace KTTM.Controllers
                 if (lastItem != HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
                 {
                     // this is the last item
-                    soTienNT_BangChu += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                    soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
                 }
                 else
                 {
-                    soTienNT_BangChu += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+                    soTienNT_BangChu += item.SoTienNT_BangChu;
                 }
             }
             ViewBag.SoTienNT_BangChu = soTienNT_BangChu;

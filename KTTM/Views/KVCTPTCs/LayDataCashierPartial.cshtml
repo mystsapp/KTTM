@@ -29,14 +29,14 @@
     
         <div class="col-md-3 ">
 
-            <input asp-for="LayDataCashierModel.SEC" type="checkbox" id="ckSEC" />
-            <label class="control-labels">SEC</label>
+            <input asp-for="LayDataCashierModel.TTThe" type="checkbox" id="ckTTThe" />
+            <label class="control-labels">TT thẻ</label>
         </div>
     
         <div class="col-md-5 ">
 
-            <input asp-for="LayDataCashierModel.NganPhieu" type="checkbox" id="ckNganPhieu" />
-            <label class="control-labels">Ngân phiếu</label>
+            <input asp-for="LayDataCashierModel.NganHang" type="checkbox" id="ckNganHang" />
+            <label class="control-labels">Ngân hàng</label>
         </div>
     
     </div>
@@ -114,5 +114,22 @@
             // required: "Ngày đến không được để trống"
         }
     });
+
+    
+        $('#ckTienMat').change(function () {
+            $('#ckTTThe').prop('checked', false);
+            $('#ckNganHang').prop('checked', false);
+        });
+        
+        $('#ckTTThe').change(function () {
+            $('#ckTienMat').prop('checked', false);
+            $('#ckNganHang').prop('checked', false);
+        });
+        
+        $('#ckNganHang').change(function () {
+            $('#ckTTThe').prop('checked', false);
+            $('#ckTienMat').prop('checked', false);
+        });
+
 
 </script>

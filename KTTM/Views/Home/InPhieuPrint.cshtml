@@ -37,7 +37,7 @@
             /*padding: 5px;*/
         }
 
-}
+        }
     </style>
 </head>
 
@@ -50,10 +50,10 @@
                     <div class="col-sm-6">
                     </div>
                     @*<div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Invoice</li>
-                            </ol>
+                        <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Invoice</li>
+                        </ol>
                         </div>*@
                 </div>
             </div>
@@ -64,8 +64,8 @@
                 <div class="row">
                     <div class="col-12">
                         @*<div class="callout callout-info">
-                                <h5><i class="fas fa-info"></i> Note:</h5>
-                                This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+                            <h5><i class="fas fa-info"></i> Note:</h5>
+                            This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
                             </div>*@
 
                         <!-- Main content -->
@@ -87,11 +87,11 @@
                                 <div class="col-sm-3 invoice-col">
                                     @*From
                                         <address>
-                                            <strong>Admin, Inc.</strong><br>
-                                            795 Folsom Ave, Suite 600<br>
-                                            San Francisco, CA 94107<br>
-                                            Phone: (804) 123-5432<br>
-                                            Email: info@almasaeedstudio.com
+                                        <strong>Admin, Inc.</strong><br>
+                                        795 Folsom Ave, Suite 600<br>
+                                        San Francisco, CA 94107<br>
+                                        Phone: (804) 123-5432<br>
+                                        Email: info@almasaeedstudio.com
                                         </address>*@
                                 </div>
                                 <!-- /.col -->
@@ -99,39 +99,39 @@
                                     @*To
                                         <address>*@
                                     @{
-                                switch (Model.KVPTC.MFieu)
-                                {
-                                    case "T": // thu
-                                        switch (Model.KVPTC.NgoaiTe)
+                                        switch (Model.KVPTC.MFieu)
                                         {
-                                            case "VN":
-                                                <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
-                                                // thu VND
+                                            case "T": // thu
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
+                                                        // thu VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
+                                                        // thu NgoaiTe
+                                                        break;
+                                                }
                                                 break;
 
-                                            default:
-                                                <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
-                                                // thu NgoaiTe
+                                            default: // chi
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                                                        // chi VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
+                                                        // chi NgoaiTe
+                                                        break;
+                                                }
                                                 break;
                                         }
-                                        break;
-
-                                    default: // chi
-                                        switch (Model.KVPTC.NgoaiTe)
-                                        {
-                                            case "VN":
-                                                <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
-                                                // chi VND
-                                                break;
-
-                                            default:
-                                                <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
-                                                // chi NgoaiTe
-                                                break;
-                                        }
-                                        break;
-                                }
-                            }
+                                    }
 
                                     <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Day tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
                                 </div>
@@ -145,9 +145,9 @@
                             <!-- /.row -->
                             <!-- Hang -->
                             @*<div class="row invoice-info">
-                                    CLIENT'S NAME : @Model.Invoice.Tour.TenKH<br />
-                                    ADDRESS : @Model.Invoice.Tour.DiaChi<br />
-                                    ARRIVAL : @Model.Invoice.Arr DEPARTURE : @Model.Invoice.Dep TOUR CODE : @Model.Invoice.Ref
+                                CLIENT'S NAME : @Model.Invoice.Tour.TenKH<br />
+                                ADDRESS : @Model.Invoice.Tour.DiaChi<br />
+                                ARRIVAL : @Model.Invoice.Arr DEPARTURE : @Model.Invoice.Dep TOUR CODE : @Model.Invoice.Ref
                                 </div>*@
                             <br />
                             <!-- / Hang -->
@@ -156,7 +156,7 @@
                                 <div class="col-12 table-responsive">
                                     <table class="invoicetable ">
                                         <tr>
-                                            <td>Chi cho:</td>
+                                            <td>Họ tên:</td>
                                             <td>@Model.KVPTC.HoTen</td>
                                             <td class="text-right" colspan="3">C.M.T số ...............................................</td>
                                         </tr>
@@ -171,16 +171,19 @@
                                             <td>Số tiền</td>
                                             <td>Số tiền NT</td>
                                         </tr>
+
                                         @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
                                         {
                                             <tr>
                                                 <td></td>
+
                                                 <td>@item.TkNo</td>
-                                                <td>1111000000</td>
+                                                <td>@item.TkCo</td>
                                                 <td>@item.SoTien.ToString("N0")</td>
-                                                <td>@item.SoTienNT.ToString("N0") @item.KVCTPTCs.FirstOrDefault().LoaiTien</td>
+                                                <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
                                             </tr>
                                         }
+
                                         <tr>
                                             <td>Về khoãn : </td>
                                             <td colspan="4">
@@ -211,11 +214,47 @@
                                         </tr>
                                         <tr>
                                             <td><b>Tổng cộng :</b></td>
-                                            <td colspan="4"><b> <i class="fas fa-pencil-alt"></i> @Model.InPhieuView_Groupby_TkNo_TkCos.Sum(x => x.SoTienNT).ToString("N0") đ</b></td>
+                                            <td colspan="4">
+                                        <b>
+                                            <i class="fas fa-pencil-alt"></i>
+                                            @{
+                                                string tongCong = "";
+                                                foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
+                                                {
+                                                    int lastItem = Model.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+                                                    if (lastItem != Model.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                                                    {
+                                                        // this is the last item
+                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                                                    }
+                                                    else
+                                                    {
+                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+
+                                                    }
+
+
+                                                }
+                                            }
+                                            @tongCong
+                                        </b>
+                                    </td>
                                         </tr>
                                         <tr>
                                             <td><i>Bằng chữ :</i></td>
-                                            <td colspan="4"><i> @ViewBag.bangChu</i></td>
+                                            <td colspan="4">
+                                        <i>
+                                            @if(Model.KVPTC.NgoaiTe == "VN")
+                                            {
+                                                @ViewBag.bangChu
+                                            }
+                                            else
+                                            {
+                                                @ViewBag.SoTienNT_BangChu
+                                            }
+
+                                        </i>
+                                    </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -253,11 +292,11 @@
                                 <div class="col-12">
                                     <a asp-action="InPhieuPrint" asp-route-id="Model.KVPTC.Id" asp-page="Model.Page" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>-->
                             @*<button type="button" class="btn btn-success float-right">
-                                    <i class="far fa-credit-card"></i> Submit
-                                    Payment
+                                <i class="far fa-credit-card"></i> Submit
+                                Payment
                                 </button>
                                 <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                                    <i class="fas fa-download"></i> Generate PDF
+                                <i class="fas fa-download"></i> Generate PDF
                                 </button>*@
                             <!--</div>
                             </div>-->
@@ -274,12 +313,12 @@
                 <div class="row">
                     <div class="col-12">
                         @*<div class="callout callout-info">
-                                <h5><i class="fas fa-info"></i> Note:</h5>
-                                This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+                            <h5><i class="fas fa-info"></i> Note:</h5>
+                            This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
                             </div>*@
 
                         <!-- Main content -->
-                        <div class="invoice p-3 mb-3">
+                        <div class="invoice p-3 mb-3 ">
                             <!-- title row -->
                             <div class="row">
                                 <div class="col-7 text-center">
@@ -297,19 +336,53 @@
                                 <div class="col-sm-3 invoice-col">
                                     @*From
                                         <address>
-                                            <strong>Admin, Inc.</strong><br>
-                                            795 Folsom Ave, Suite 600<br>
-                                            San Francisco, CA 94107<br>
-                                            Phone: (804) 123-5432<br>
-                                            Email: info@almasaeedstudio.com
+                                        <strong>Admin, Inc.</strong><br>
+                                        795 Folsom Ave, Suite 600<br>
+                                        San Francisco, CA 94107<br>
+                                        Phone: (804) 123-5432<br>
+                                        Email: info@almasaeedstudio.com
                                         </address>*@
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-6 invoice-col text-center">
                                     @*To
                                         <address>*@
-                                    <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
-                                    <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Date.Date tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
+                                    @{
+                                        switch (Model.KVPTC.MFieu)
+                                        {
+                                            case "T": // thu
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
+                                                        // thu VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
+                                                        // thu NgoaiTe
+                                                        break;
+                                                }
+                                                break;
+
+                                            default: // chi
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                                                        // chi VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
+                                                        // chi NgoaiTe
+                                                        break;
+                                                }
+                                                break;
+                                        }
+                                    }
+
+                                    <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Day tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-sm-3 invoice-col text-right">
@@ -321,9 +394,9 @@
                             <!-- /.row -->
                             <!-- Hang -->
                             @*<div class="row invoice-info">
-                                    CLIENT'S NAME : @Model.Invoice.Tour.TenKH<br />
-                                    ADDRESS : @Model.Invoice.Tour.DiaChi<br />
-                                    ARRIVAL : @Model.Invoice.Arr DEPARTURE : @Model.Invoice.Dep TOUR CODE : @Model.Invoice.Ref
+                                CLIENT'S NAME : @Model.Invoice.Tour.TenKH<br />
+                                ADDRESS : @Model.Invoice.Tour.DiaChi<br />
+                                ARRIVAL : @Model.Invoice.Arr DEPARTURE : @Model.Invoice.Dep TOUR CODE : @Model.Invoice.Ref
                                 </div>*@
                             <br />
                             <!-- / Hang -->
@@ -332,7 +405,7 @@
                                 <div class="col-12 table-responsive">
                                     <table class="invoicetable ">
                                         <tr>
-                                            <td>Chi cho:</td>
+                                            <td>Họ tên:</td>
                                             <td>@Model.KVPTC.HoTen</td>
                                             <td class="text-right" colspan="3">C.M.T số ...............................................</td>
                                         </tr>
@@ -347,16 +420,19 @@
                                             <td>Số tiền</td>
                                             <td>Số tiền NT</td>
                                         </tr>
+
                                         @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
                                         {
                                             <tr>
                                                 <td></td>
+
                                                 <td>@item.TkNo</td>
-                                                <td>1111000000</td>
+                                                <td>@item.TkCo</td>
                                                 <td>@item.SoTien.ToString("N0")</td>
-                                                <td>@item.SoTienNT.ToString("N0") VND</td>
+                                                <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
                                             </tr>
                                         }
+
                                         <tr>
                                             <td>Về khoãn : </td>
                                             <td colspan="4">
@@ -387,11 +463,47 @@
                                         </tr>
                                         <tr>
                                             <td><b>Tổng cộng :</b></td>
-                                            <td colspan="4"><b> <i class="fas fa-pencil-alt"></i> @Model.InPhieuView_Groupby_TkNo_TkCos.Sum(x => x.SoTienNT).ToString("N0") đ</b></td>
+                                            <td colspan="4">
+                                        <b>
+                                            <i class="fas fa-pencil-alt"></i>
+                                            @{
+                                                string tongCong1 = "";
+                                                foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
+                                                {
+                                                    int lastItem = Model.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+                                                    if (lastItem != Model.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                                                    {
+                                                        // this is the last item
+                                                        tongCong1 += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                                                    }
+                                                    else
+                                                    {
+                                                        tongCong1 += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+
+                                                    }
+
+
+                                                }
+                                            }
+                                            @tongCong1
+                                        </b>
+                                    </td>
                                         </tr>
                                         <tr>
                                             <td><i>Bằng chữ :</i></td>
-                                            <td colspan="4"><i> @ViewBag.bangChu</i></td>
+                                            <td colspan="4">
+                                        <i>
+                                            @if(Model.KVPTC.NgoaiTe == "VN")
+                                            {
+                                                @ViewBag.bangChu
+                                            }
+                                            else
+                                            {
+                                                @ViewBag.SoTienNT_BangChu
+                                            }
+
+                                        </i>
+                                    </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -429,11 +541,11 @@
                                 <div class="col-12">
                                     <a asp-action="InPhieuPrint" asp-route-id="Model.KVPTC.Id" asp-page="Model.Page" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>-->
                             @*<button type="button" class="btn btn-success float-right">
-                                    <i class="far fa-credit-card"></i> Submit
-                                    Payment
+                                <i class="far fa-credit-card"></i> Submit
+                                Payment
                                 </button>
                                 <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                                    <i class="fas fa-download"></i> Generate PDF
+                                <i class="fas fa-download"></i> Generate PDF
                                 </button>*@
                             <!--</div>
                             </div>-->

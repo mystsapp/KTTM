@@ -29,5 +29,6 @@ namespace Data.Models_Cashier
         public string Logfile { get; set; }
         public decimal? Idntbill { get; set; }
         public string Nguoithu { get; set; }
+        public bool? Thanhtoanthe { get; set; }
     }
 }
