@@ -288,21 +288,40 @@ namespace KTTM.Services
                                 kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
                                 kVCTPTC.TKNo = "1111000000";
                                 kVCTPTC.TKCo = tk;
+
+                                kVCTPTC.CoQuay = boPhan;
+
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "TWI":
+                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "TND":
+                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "TOB":
+                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "TXE":
+                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        break;
+
+                                    case "TIB":
+                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        break;
+                                }
+
+                                kVCTPTC.MaKhCo = maKh; //maKh;
                                 if (tk == "1368000000")
                                 {
                                     kVCTPTC.MaKhCo = "STNCN"; //maKh;
-                                }
-                                kVCTPTC.CoQuay = boPhan;
-
-                                switch (baoCaoSo.Substring())
-                                {
-                                    case "CHK":
-                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
-                                        break;
-
-                                    case "CHK":
-                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
-                                        break;
                                 }
                             }
                             else // phieu chi
@@ -313,6 +332,33 @@ namespace KTTM.Services
                                 kVCTPTC.TKCo = "1111000000";
                                 kVCTPTC.MaKhNo = maKh;
                                 kVCTPTC.NoQuay = boPhan;
+
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "HHK":
+                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "HWI":
+                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "HND":
+                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "HOB":
+                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "HXE":
+                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        break;
+
+                                    case "HIB":
+                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        break;
+                                }
                             }
 
                             kVCTPTC.BoPhan = boPhan;
@@ -368,11 +414,38 @@ namespace KTTM.Services
                                 kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
                                 kVCTPTC.TKNo = "1111000000";
                                 kVCTPTC.TKCo = tk;
+                                kVCTPTC.MaKhCo = maKh;
                                 if (tk == "1368000000")
                                 {
                                     kVCTPTC.MaKhCo = "STNCN"; //maKh;
                                 }
                                 kVCTPTC.CoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "TWI":
+                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "TND":
+                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "TOB":
+                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "TXE":
+                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        break;
+
+                                    case "TIB":
+                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        break;
+                                }
                             }
                             else // phieu chi
                             {
@@ -382,6 +455,32 @@ namespace KTTM.Services
                                 kVCTPTC.TKCo = "1111000000";
                                 kVCTPTC.MaKhNo = maKh;
                                 kVCTPTC.NoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "HHK":
+                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "HWI":
+                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "HND":
+                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "HOB":
+                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "HXE":
+                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        break;
+
+                                    case "HIB":
+                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        break;
+                                }
                             }
 
                             kVCTPTC.BoPhan = boPhan;
@@ -437,11 +536,38 @@ namespace KTTM.Services
                                 kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
                                 kVCTPTC.TKNo = "1111000000";
                                 kVCTPTC.TKCo = tk;
+                                kVCTPTC.MaKhCo = maKh;
                                 if (tk == "1368000000")
                                 {
                                     kVCTPTC.MaKhCo = "STNCN"; //maKh;
                                 }
                                 kVCTPTC.CoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "TWI":
+                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "TND":
+                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "TOB":
+                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "TXE":
+                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        break;
+
+                                    case "TIB":
+                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        break;
+                                }
                             }
                             else // phieu chi
                             {
@@ -451,6 +577,32 @@ namespace KTTM.Services
                                 kVCTPTC.TKCo = "1111000000";
                                 kVCTPTC.MaKhNo = maKh;
                                 kVCTPTC.NoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "HHK":
+                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "HWI":
+                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "HND":
+                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "HOB":
+                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "HXE":
+                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        break;
+
+                                    case "HIB":
+                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        break;
+                                }
                             }
 
                             kVCTPTC.BoPhan = boPhan;

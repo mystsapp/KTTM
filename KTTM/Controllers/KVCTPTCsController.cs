@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Models_KTTM;
 
 namespace KTTM.Controllers
 {
@@ -278,7 +279,7 @@ namespace KTTM.Controllers
             }
 
             // data tu cashier
-            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo,
+            var kVCTPTCs = _kVCTPTCService.GetKVCTPTCs(KVCTPCTVM.LayDataCashierModel.BaoCaoSo.Trim(),
                 kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu,
                 KVCTPCTVM.LayDataCashierModel.Tk.Trim(), KVCTPCTVM.LayDataCashierModel.TienMat,
                 KVCTPCTVM.LayDataCashierModel.TTThe);
@@ -290,11 +291,71 @@ namespace KTTM.Controllers
 
                 // save to cashier
                 var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
-                var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo, user.Macn);
+                var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo.Trim(), user.Macn);
                 noptien.Phieuthu = KVCTPCTVM.KVPTC.SoCT;
                 noptien.Ngaypt = kVPCT.NgayCT;
                 //noptien.Ghichu = kVPCT.ghichu; ??
                 await _kVCTPTCService.UpdateAsync_NopTien(noptien);
+
+                // TTThe, phieu thu, cap tk(no = 1111000000, co = 1311)
+                // -> tu tao phieu chi cap tk(no = 1131, co =1311110000)
+                if (KVCTPCTVM.LayDataCashierModel.TTThe &&
+                    kVPCT.MFieu == "T" && KVCTPCTVM.LayDataCashierModel.Tk == "1311110000")
+                {
+                    KVCTPCTVM.KVPTC = new KVPTC();
+                    // tao phieuchi
+                    KVCTPCTVM.KVPTC.Create = DateTime.Now;
+                    KVCTPCTVM.KVPTC.LapPhieu = user.Username;
+                    KVCTPCTVM.KVPTC.MaCn = user.Macn;
+                    KVCTPCTVM.KVPTC.MFieu = "C";
+                    KVCTPCTVM.KVPTC.NgayCT = DateTime.Now;
+                    KVCTPCTVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
+                    KVCTPCTVM.KVPTC.NgoaiTe = kVPCT.NgoaiTe;
+                    KVCTPCTVM.KVPTC.HoTen = kVPCT.HoTen;
+                    KVCTPCTVM.KVPTC.Phong = kVPCT.Phong;
+
+                    // next SoCT --> bat buoc phai co'
+                    KVCTPCTVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
+                                                                                   // next SoCT
+
+                    KVCTPCTVM.KVPTC.LapPhieu = user.Username;
+                    // ghi log
+                    KVCTPCTVM.KVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+                    KVPTC kVPTC1 = new KVPTC();
+                    try
+                    {
+                        //await _kVPTCService.CreateAsync(KVCTPCTVM.KVPTC); // save
+                        kVPTC1 = await _kVPTCService.CreateAsync_ReturnEntity(KVCTPCTVM.KVPTC);
+                    }
+                    catch (Exception ex)
+                    {
+                        SetAlert(ex.Message, "error");
+                        return View(KVCTPCTVM);
+                    }
+                    // tao phieuchi
+
+                    // tao ct phieuchi
+                    List<KVCTPTC> kVCTPTCs1 = new List<KVCTPTC>();
+                    List<KVCTPTC> kVCTPTCs2 = kVCTPTCs.ToList();
+
+                    foreach (var item in kVCTPTCs2) // dao cap tk
+                    {
+                        item.Id = 0;
+                        item.TKNo = "1131";
+                        item.TKCo = "1111000000";
+                        item.KVPTCId = kVPTC1.Id;
+                        item.SoCT = kVPTC1.SoCT;
+                        kVCTPTCs1.Add(item);
+                    }
+                    if (kVCTPTCs1.Count > 0)
+                    {
+                        await _kVCTPTCService.CreateRange(kVCTPTCs1);
+                    }
+                    // tao ct phieuchi
+                }
+                // TTThe, phieu thu, cap tk(no = 1111000000, co = 1311)
+                // -> tu tao phieu chi cap tk(no = 1131, co =1111000000)
 
                 SetAlert("Kéo thành công.", "success");
                 return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id

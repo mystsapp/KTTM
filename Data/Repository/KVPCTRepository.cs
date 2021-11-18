@@ -9,8 +9,11 @@ namespace Data.Repository
 {
     public interface IKVPCTRepository : IRepository<KVPTC>
     {
+        Task<KVPTC> CreateAsync(KVPTC entity);
+
         Task<KVPTC> GetByGuidIdAsync(Guid id);
     }
+
     public class KVPCTRepository : Repository_KTTM<KVPTC>, IKVPCTRepository
     {
         public KVPCTRepository(KTTMDbContext context) : base(context)
@@ -21,6 +24,12 @@ namespace Data.Repository
         {
             return await _context.KVPTCs.FindAsync(id);
         }
-    }
 
+        public async Task<KVPTC> CreateAsync(KVPTC entity)
+        {
+            var kvptc = await _context.KVPTCs.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return kvptc.Entity;
+        }
+    }
 }

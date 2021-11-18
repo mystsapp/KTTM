@@ -24,19 +24,19 @@
         <div class="col-md-4 ">
 
             <input asp-for="LayDataCashierModel.TienMat" type="checkbox" id="ckTienMat" checked />
-            <label class="control-labels">tiền mặt</label>
+            <label class="control-labels" for="ckTienMat">tiền mặt</label>
         </div>
     
         <div class="col-md-3 ">
 
             <input asp-for="LayDataCashierModel.TTThe" type="checkbox" id="ckTTThe" />
-            <label class="control-labels">TT thẻ</label>
+            <label class="control-labels" for="ckTTThe">TT thẻ</label>
         </div>
     
         <div class="col-md-5 ">
 
-            <input asp-for="LayDataCashierModel.NganHang" type="checkbox" id="ckNganHang" />
-            <label class="control-labels">Ngân hàng</label>
+            <input asp-for="LayDataCashierModel.NganHang" type="checkbox" id="ckNganHang" disabled/>
+            <label class="control-labels" for="ckNganHang">Ngân hàng</label>
         </div>
     
     </div>
@@ -62,7 +62,7 @@
     </div>
     <div class="modal-footer p-0">
         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
-        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+        <button type="button" id="LayDataCashier_Submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
     </div>
 </form>
 <!-- /.modal-content -->
@@ -70,7 +70,7 @@
 <!-- Validation -->
 <script>
     $('.select2').select2();
-    $('#frmHuyTourPartial').validate({
+    $('#frmLayDataCashierPartial').validate({
         //rules: {
         //    email: {
         //        required: true,
@@ -108,7 +108,7 @@
         }
     });
 
-    $('#txtNgayHuyTour').rules('add', {
+    $('#txtBaoCaoSo').rules('add', {
         required: true,
         messages: {
             // required: "Ngày đến không được để trống"
@@ -131,5 +131,14 @@
             $('#ckTienMat').prop('checked', false);
         });
 
+        
+    $('#LayDataCashier_Submit').off('click').on('click', function () {
+        debugger
+
+        if ($('#frmLayDataCashierPartial').valid()) {
+            $('#frmLayDataCashierPartial').submit();
+        }
+
+    });
 
 </script>

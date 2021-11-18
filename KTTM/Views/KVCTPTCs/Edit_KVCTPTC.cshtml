@@ -332,7 +332,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.NgayCTGoc" class="control-label "></label>
-                            <input type="text" asp-for="KVCTPTC.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
+                            <input type="text" asp-format="{0:dd/MM/yyyy}" asp-for="KVCTPTC.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
                             <span asp-validation-for="KVCTPTC.NgayCTGoc" class="text-danger"></span>
                         </div>
                     </div>
@@ -479,6 +479,8 @@
 </div>
 <!-- khachhang modal-->
 
+<input type="hidden" id="hidTxtMaKh" />
+
 @section Scripts{
     @*<script src="~/js/Admin/KVCTPCT/editController.js"></script>*@
     <script src="~/js/Admin/Home/indexController.js"></script>
@@ -514,15 +516,20 @@
         $('#btnKhSearch').click(function () {
             debugger
             var maKhtext = '';
+            var txtMaKh = '';
 
             if ($(this).data('name') === 'maKhNo') { // search of no
                 maKhtext = $('#txtMaKhNo').val();
+                txtMaKh = 'maKhNo';
             }
             if ($(this).data('name') === 'maKhCo') { // search of co
                 maKhtext = $('#txtMaKhCo').val();
+                txtMaKh = 'maKhCo';
             }
 
-            KhachHangSearch(maKhtext);
+            $('#hidTxtMaKh').val(txtMaKh);
+
+            KhachHangSearch(maKhtext, txtMaKh);
         })
 
         $('#txtMaKhNo').blur(function () {

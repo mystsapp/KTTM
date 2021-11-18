@@ -46,6 +46,8 @@ namespace KTTM.Services
         List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs);
 
         List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNo_TkCos(IEnumerable<KVCTPTC> kVCTPTCs);
+
+        Task<KVPTC> CreateAsync_ReturnEntity(KVPTC kVPTC);
     }
 
     public class KVPTCService : IKVPTCService
@@ -369,6 +371,11 @@ namespace KTTM.Services
             }
 
             return result1;
+        }
+
+        public async Task<KVPTC> CreateAsync_ReturnEntity(KVPTC kVPTC)
+        {
+            return await _unitOfWork.kVPCTRepository.CreateAsync(kVPTC);
         }
     }
 }
