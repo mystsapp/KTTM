@@ -91,7 +91,8 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TKNo" class="control-label"></label>
-                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm select2"
+                                    <!--select2-->
+                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                                     </select>
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>

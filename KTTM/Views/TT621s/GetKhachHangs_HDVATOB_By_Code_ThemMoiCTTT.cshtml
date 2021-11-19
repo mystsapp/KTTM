@@ -79,20 +79,21 @@
         }
 
         var code = $(this).children().eq(0).html();
-        var name = $(this).children().eq(1).html();
-        var city = $(this).children().eq(2).html();
-        var address = $(this).children().eq(3).html();
-        var telephone = $(this).children().eq(4).html();
-        var email = $(this).children().eq(5).html();
-        var taxCode = $(this).children().eq(6).html();
+        var taxCode = $(this).children().eq(1).html();
+        var name = $(this).children().eq(2).html();
+        var city = $(this).children().eq(3).html();
+        var address = $(this).children().eq(4).html();
+        var telephone = $(this).children().eq(5).html();
+        var email = $(this).children().eq(6).html();
+        
         var taxSign = $(this).children().eq(7).html();
         var taxForm = $(this).children().eq(8).html();
 
-        if ($('#btnKhSearch_ThemMoi').data('name') === 'maKhNo') { // search off no
+        if ($('#hidTxtMaKh').val() === 'maKhNo') { // search off no
             $('#txtMaKhNo_ThemMoi').val(code);
             $('#txtTenKhNo_ThemMoi').val(name);
         }
-        else { // search off co
+        if ($('#hidTxtMaKh').val() === 'maKhCo') { // search off co
             $('#txtMaKhCo_ThemMoi').val(code);
             $('#txtTenKhCo_ThemMoi').val(name);
         }

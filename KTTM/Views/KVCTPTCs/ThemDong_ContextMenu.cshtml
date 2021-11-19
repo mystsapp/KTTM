@@ -109,7 +109,8 @@
                         {
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.TKNo" class="control-label"></label>
-                                <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2"
+                                <!--select2-->
+                                <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm "
                                         asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.TKNo" class="text-danger"></span>

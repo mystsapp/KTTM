@@ -89,7 +89,8 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TKNo" class="control-label"></label>
-                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm select2"
+                                    <!--select2-->
+                                    <select asp-for="TT621.TKNo" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                                     </select>
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
@@ -106,7 +107,8 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.TKCo" class="control-label"></label>
-                                    <select asp-for="TT621.TKCo" class="form-control form-control-sm select2"
+                                    <!--select2-->
+                                    <select asp-for="TT621.TKCo" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
                                     </select>
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
@@ -148,14 +150,14 @@
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhNo" class="form-control form-control-sm" id="txtMaKhNo_ThemMoi">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH nợ</label>
-                                        <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" readonly />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhNo_ThemMoi" value="Không có mã khách hàng" readonly />
                                     </div>
 
                                     <div class="col-md-2">
@@ -163,7 +165,7 @@
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo_ThemMoi">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
@@ -202,7 +204,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" readonly />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" readonly />
                                     </div>
 
                                 }
@@ -395,6 +397,9 @@
         </div>
     </section>
 </div>
+
+<input type="hidden" id="hidTxtMaKh" />
+
 <!--Khach hang them moi modal-->
 <partial name="~/Views/Shared/_KhachHangPartial_ThemMoiCTTT.cshtml" />
 
@@ -423,21 +428,26 @@
     // enter for search
     shortcut.add("Enter", function () {
 
-            $('#btnKhSearch_ThemMoi').click()
+            $('.btnKhSearch_ThemMoi').click()
 
     });
 
     // btnKhSearch
-    $('#btnKhSearch_ThemMoi').click(function () {
+    $('.btnKhSearch_ThemMoi').click(function () {
 
         var maKhtext = '';
+        var txtMaKh = '';
 
         if ($(this).data('name') === 'maKhNo') { // search of no
             maKhtext = $('#txtMaKhNo_ThemMoi').val();
+            txtMaKh = 'maKhNo';
         }
         if ($(this).data('name') === 'maKhCo') { // search of co
             maKhtext = $('#txtMaKhCo_ThemMoi').val();
+            txtMaKh = 'maKhCo';
         }
+        
+            $('#hidTxtMaKh').val(txtMaKh);
 
         KhachHangSearch_ThemMoiTT(maKhtext);
     })
