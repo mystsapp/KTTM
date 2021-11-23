@@ -135,8 +135,8 @@
                                     <td>Số tiền</td>
                                     <td>Số tiền NT</td>
                                 </tr>
-
-                                @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
+                                <!--thao: max 4 nhưng tongcong full-->
+                                @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4)) 
                                 {
                                     <tr>
                                         <td></td>
@@ -153,7 +153,7 @@
                                     <td colspan="4">
                                         @{
                                             string sgtcodes = "", soCTGocs = "";
-                                            foreach (var item in Model.KVCTPTCs)
+                                            foreach (var item in Model.KVCTPTCs.Take(4))
                                             {
                                                 int lastItem = Model.KVCTPTCs.ToList().IndexOf(item);
                                                 if (lastItem != Model.KVCTPTCs.Count() - 1)

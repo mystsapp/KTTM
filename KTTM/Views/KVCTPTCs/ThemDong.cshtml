@@ -91,7 +91,7 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.TKNo" class="control-label"></label>
                             <!--select2-->
-                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm " 
+                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2" 
                                     asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                             </select>
                             <span asp-validation-for="KVCTPTC.TKNo" class="text-danger"></span>
@@ -109,7 +109,7 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.TKCo" class="control-label"></label>
                             <!--select2-->
-                            <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm "
+                            <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
                                     asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
                             </select>
                             <span asp-validation-for="KVCTPTC.TKNo" class="text-danger"></span>
@@ -193,14 +193,14 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.MaKhCo" class="control-label "></label>
                                 <div class="input-group">
-                                    <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" readonly>
+                                    <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
                                 </div>
                                 <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label class="control-label ">Tên KH có</label>
-                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" readonly />
+                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" disabled />
                             </div>
 
                         }
@@ -295,7 +295,8 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.LoaiHDGoc" class="control-label "></label>
                             @*<input asp-for="KVCTPTC.LoaiHDGoc" class="form-control form-control-sm" id="txtLoaiHDGoc" />*@
-                            <select asp-for="KVCTPTC.LoaiHDGoc" class="form-control form-control-sm "
+                            <br />
+                            <select asp-for="KVCTPTC.LoaiHDGoc" class=" form-control-sm btn-block"
                                     asp-items="@(new SelectList(Model.LoaiHDGocs, "Name", "Name"))" id="ddlLoaiHDGoc">
                             </select>
                             <span asp-validation-for="KVCTPTC.LoaiHDGoc" class="text-danger"></span>

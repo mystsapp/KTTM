@@ -119,6 +119,8 @@
 
             </div>
 
+            <input type="hidden" id="hidLoaiPhieu" value="@Model.KVPTC.MFieu" />
+
             <div class="pr-2 pl-2">
                 <table class="table mytable text-nowrap text-sm" id="tamUngTble">
                     <thead>
@@ -165,6 +167,7 @@
                     <label class="control-label text-blue">Chi tiết thanh toán </label>
 
                     <input type="hidden" id="hidTamUngId" />
+                    <input type="hidden" id="hidIdCu" value="0" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
 
                     <input type="hidden" id="hidTT621Id" />

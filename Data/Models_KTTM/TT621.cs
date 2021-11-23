@@ -181,5 +181,23 @@ namespace Data.Models_KTTM
         //[DisplayName("Ngày khoá")]
         [Column(TypeName = "datetime")]
         public DateTime? NgaySua { get; set; }
+
+        // Thao
+
+        [DisplayName("Link HDDT")]
+        [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "varchar(150)")]
+        public string LinkHDDT { get; set; }
+
+        [DisplayName("Mã tra cứu")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        public string MaTraCuu { get; set; }
+
+        [DisplayName("Tk truy cập")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        public string TkTruyCap { get; set; }
+
+        [DisplayName("Password")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        public string Password { get; set; }
     }
 }

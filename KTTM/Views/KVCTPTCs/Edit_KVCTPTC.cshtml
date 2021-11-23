@@ -91,7 +91,7 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.TKNo" class="control-label"></label>
                             <!--select2-->
-                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm "
+                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2"
                                     asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
                                 @*asp-items="@(new SelectList(Model.DmTks, "Tkhoan", "Tkhoan"))" id="ddlTkNo">*@
                             </select>
@@ -115,7 +115,7 @@
                             else
                             {
                                 <!--select2-->
-                                <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm "
+                                <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
                                         asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
                                 </select>
                             }
@@ -210,13 +210,13 @@
                                 @*<select asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
                                     </select>*@
-                                <input type="text" class="form-control form-control-sm" readonly />
+                                <input type="text" class="form-control form-control-sm" disabled />
                                 <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label class="control-label ">Tên KH có</label>
-                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" readonly />
+                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" disabled />
                             </div>
 
                         }

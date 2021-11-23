@@ -6,7 +6,6 @@
 
 var createController = {
     init: function () {
-
         //toastr.options = { // toastr options
         //    "closeButton": false,
         //    "debug": false,
@@ -29,10 +28,8 @@ var createController = {
     },
 
     registerEvent: function () {
-
         //// format .numbers
         //$('input.numbers').keyup(function (event) {
-
         //    // Chỉ cho nhập số
         //    if (event.which >= 37 && event.which <= 40) return;
 
@@ -43,7 +40,6 @@ var createController = {
 
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
         $('.tamUngTr').off('click').on('click', function () {
-
             if ($(this).hasClass("hoverClass"))
                 $(this).removeClass("hoverClass");
             else {
@@ -54,6 +50,7 @@ var createController = {
             tamUngId = $(this).data('id');
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
+            loaiPhieu = $('#hidLoaiPhieu').val();
 
             $('#hidTamUngId').val(tamUngId); // for TT141
 
@@ -61,8 +58,8 @@ var createController = {
             //createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT)//////////////////
             $('#btnThemMoiCT').attr('disabled', false); // ko can check lun
 
-            // gang' commentText khi lick tamung            
-            createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
+            // gang' commentText khi lick tamung
+            createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
 
             // Check_KetChuyenBtnStatus
             createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT);
@@ -72,30 +69,26 @@ var createController = {
 
             // an nut btnCapNhatCT
             $('#btnCapNhatCT').attr('disabled', true);
-
         });
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
 
         // btnThemMoiCT
         $('#btnThemMoiCT').off('click').on('click', function () {
-
             tamUngId = $('#hidTamUngId').val();
+            id_Dong_Da_Click = $('#hidIdCu').val();
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
             var url = '/TT621s/ThemMoiCT_TT_Partial';
 
-            $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
-
+            $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click }, function (data) {
                 $('.ThemMoiCT_TT_Body').html(data);
                 $('#ThemMoiCT_TT_Modal').modal('show');
                 $('#ThemMoiCT_TT_Modal').draggable();
             })
-
         })
         // btnThemMoiCT
 
         // btnCapNhatCT
         $('#btnCapNhatCT').off('click').on('click', function () {
-
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
 
@@ -104,7 +97,6 @@ var createController = {
         // btnCapNhatCT
         // btnDelete
         $('#btnDelete').off('click').on('click', function () {
-
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
             tamUngId = $('#hidTamUngId').val();
@@ -112,7 +104,6 @@ var createController = {
 
             bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
                 if (result) {
-
                     $.post('/TT621s/Delete', { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (response) {
                         //console.log(response);
                         if (response.status) {
@@ -127,23 +118,19 @@ var createController = {
                     });
                 }
             });
-
         })
         // btnDelete
 
         // btnKetChuyen
         $('#btnKetChuyen').off('click').on('click', function () {
-
             tamUngId = $('#hidTamUngId').val();
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // TT621Create_View
 
             bootbox.confirm("Bạn có muốn <b> kết chuyển </b> không?", function (result) {
                 if (result) {
-
                     $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
                         if (status) {
-
                             location.reload(); // reload lai trang
                             toastr.success('Kết chuyển thành công', 'Kết chuyển!');
                         }
@@ -153,12 +140,10 @@ var createController = {
                     })
                 }
             });
-
         })
     },
 
     GetTT621s_By_TamUng: function (tamUngId) {
-
         $.ajax({
             url: '/TT621s/GetTT621s_By_TamUng',
             type: 'GET',
@@ -173,9 +158,7 @@ var createController = {
                 var template = $('#data-template').html();
 
                 if (response.status) {
-
                     $.each(data, function (i, item) {
-
                         html += Mustache.render(template, {
                             Id: item.id,
                             DienGiai: item.dienGiai,
@@ -190,14 +173,12 @@ var createController = {
                             MaKhCo: item.maKhCo,
                             PhieuTC: item.phieuTC
                         });
-
                     });
 
                     $('#ctThanhToanBody').html(html);
 
                     // giu trang thai CT TT va gang' TT621 id
                     $('.trTT621').off('click').on('click', function () {
-
                         if ($(this).hasClass("hoverClass"))
                             $(this).removeClass("hoverClass");
                         else {
@@ -206,7 +187,7 @@ var createController = {
                         }
                         tt621Id = $(this).data('id');
                         $('#hidTT621Id').val(tt621Id); // moi lan click tt621 tr se gang' id len hidTT621Id
-
+                        $('#hidIdCu').val(tt621Id); // moi lan click tt621 tr se gang' id len hidIdCu
 
                         phieuTC = $(this).data('phieutc');                             // trong tt621 tbl
                         var soCT_TT621CreateView = $('#kVPCTId_TT621CreateView').val();// trong TT621CreateView
@@ -223,13 +204,10 @@ var createController = {
                         }
 
                         $('#btnDelete').attr('disabled', false);
-
                     })
                 }
                 else {
-
                     $('#ctThanhToanBody').html('');
-
                 }
             }
         });
@@ -237,24 +215,19 @@ var createController = {
 
     Check_KetChuyenBtnStatus: function (tamUngId, soTienNT) {
         $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
-
             $('#btnKetChuyen').attr('disabled', status)
-
         })
     },
 
-    GetCommentText_By_TamUng: function (tamUngId, soTienNT) {
-        $.get('/TT621s/GetCommentText_By_TamUng', { tamUngId: tamUngId, soTienNT: soTienNT }, function (response) {
+    GetCommentText_By_TamUng: function (tamUngId, soTienNT, loaiPhieu) {
+        $.get('/TT621s/GetCommentText_By_TamUng', { tamUngId: tamUngId, soTienNT: soTienNT, loaiPhieu: loaiPhieu }, function (response) {
             $('#txtCommentText').val(response);
         })
-
     },
 
     Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status: function (tamUngId, soTienNT) {
         $.post('/TT621s/Check_BtnThemMoiCTTT_Status', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
-
             $('#btnThemMoiCT').attr('disabled', status);
-
         })
     },
 
@@ -265,18 +238,15 @@ var createController = {
     },
 
     CapNhatCT_TT_Partial: function (tt621Id, kVCTPCTId_PhieuTC) {
-
         var url = '/TT621s/CapNhatCT_TT_Partial';
 
         $.get(url, { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
-
             $('.CapNhatCT_TT_Body').html(data);
             $('#CapNhatCT_TT_Modal').modal('show');
             $('#CapNhatCT_TT_Modal').draggable();
         })
     },
     KhachHang_By_Code: function (code, txtMaKh) {
-
         $.ajax({
             url: '/KVCTPTCs/GetKhachHangs_By_Code',
             type: 'GET',
@@ -301,15 +271,11 @@ var createController = {
                     $('#txtMsThue').val(data.taxcode);
                     $('#txtTenKH').val(data.name);
                     $('#txtDiaChi').val(data.address);
-
                 }
-
             }
         });
-
     },
     KhachHang_By_Code_CapNhat: function (code, txtMaKh) {
-
         $.ajax({
             url: '/KVCTPTCs/GetKhachHangs_By_Code',
             type: 'GET',
@@ -334,13 +300,9 @@ var createController = {
                     $('#txtMsThue').val(data.taxCode);
                     $('#txtTenKH').val(data.name);
                     $('#txtDiaChi').val(data.address);
-
                 }
-
             }
         });
-
     }
-
 };
 createController.init();

@@ -311,7 +311,7 @@ namespace KTTM.Controllers
                     KVCTPCTVM.KVPTC.NgayCT = DateTime.Now;
                     KVCTPCTVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
                     KVCTPCTVM.KVPTC.NgoaiTe = kVPCT.NgoaiTe;
-                    KVCTPCTVM.KVPTC.HoTen = kVPCT.HoTen;
+                    KVCTPCTVM.KVPTC.HoTen = "VCB(CHAU)"; // thao
                     KVCTPCTVM.KVPTC.Phong = kVPCT.Phong;
 
                     // next SoCT --> bat buoc phai co'
@@ -346,6 +346,10 @@ namespace KTTM.Controllers
                         item.TKCo = "1111000000";
                         item.KVPTCId = kVPTC1.Id;
                         item.SoCT = kVPTC1.SoCT;
+                        item.MaKh = ""; // thao
+                        item.BoPhan = "CH"; // thao
+                        item.NoQuay = ""; // thao
+                        item.CoQuay = ""; // thao
                         kVCTPTCs1.Add(item);
                     }
                     if (kVCTPTCs1.Count > 0)

@@ -36,6 +36,7 @@ namespace KTTM.Controllers
             _tT621Service = tT621Service;
             _kVPTCService = kVPTCService;
         }
+
         public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, string page, string maKh, string tenKh)
         {
             // from login session
@@ -61,14 +62,14 @@ namespace KTTM.Controllers
                 // get commenttext
                 if (TT621VM.TamUngs.Count() > 0)
                 {
-                    var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, 0);
+                    var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, 0, "T");
                     TT621VM.CommentText = jsonResult.Result.Value.ToString();
                 }
-
             }
 
             return View(TT621VM);
         }
+
         public JsonResult GetKhachHangs_By_Code_KhongTC(string code)
         {
             // from login session
@@ -91,9 +92,9 @@ namespace KTTM.Controllers
                 });
             }
         }
+
         public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, string page)
         {
-            
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -107,10 +108,9 @@ namespace KTTM.Controllers
 
             return PartialView(TT621VM);
         }
-        
+
         public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC_CapNhat(string code)
         {
-            
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -120,10 +120,9 @@ namespace KTTM.Controllers
 
             return PartialView(TT621VM);
         }
-        
+
         public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC_ThemMoi(string code)
         {
-            
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -137,7 +136,6 @@ namespace KTTM.Controllers
         ////////////////////////////////////////////// TT141 //////////////////////////////////////////////
         public async Task<IActionResult> TT621Create(long kvctptcId, string strUrl, string page)
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -159,6 +157,8 @@ namespace KTTM.Controllers
             }
 
             TT621VM.KVCTPTC = kVCTPCT;
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+
             // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
             TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh, user.Macn); // MaKh == MaKhNo
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
@@ -166,18 +166,15 @@ namespace KTTM.Controllers
             // get commenttext
             if (TT621VM.TamUngs.Count() > 0)
             {
-                var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien.Value);
+                var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien.Value, TT621VM.KVPTC.MFieu);
                 TT621VM.CommentText = jsonResult.Result.Value.ToString();
             }
-
-            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
             return View(TT621VM);
         }
 
         public async Task<IActionResult> CapNhatCT_TT_KhongTC_Partial(long tt621Id) // tamungid == kvctpctid // 1 <-> 1
         {
-
             if (tt621Id == 0)
                 return NotFound();
 
@@ -220,7 +217,6 @@ namespace KTTM.Controllers
         [HttpPost, ActionName("CapNhatCT_TT_KhongTC_Partial")]
         public async Task<IActionResult> CapNhatCT_TT_KhongTC_Partial_Post(long tt621Id)
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -232,10 +228,9 @@ namespace KTTM.Controllers
                     message = "Mã KH nợ không được để trống."
                 });
             }
-            
+
             if (!ModelState.IsValid)
             {
-
                 return View(TT621VM);
             }
 
@@ -247,7 +242,9 @@ namespace KTTM.Controllers
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
 
             // ghi log
+
             #region log file
+
             //var t = _unitOfWork.tourRepository.GetById(id);
             string temp = "";
             TT621 t = _tT621Service.GetByIdAsNoTracking(TT621VM.TT621.Id);
@@ -415,7 +412,6 @@ namespace KTTM.Controllers
             // kiem tra thay doi
             if (temp.Length > 0)
             {
-
                 string log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
@@ -423,7 +419,9 @@ namespace KTTM.Controllers
                 t.LogFile = t.LogFile + log;
                 TT621VM.TT621.LogFile = t.LogFile;
             }
-            #endregion
+
+            #endregion log file
+
             try
             {
                 await _tT621Service.UpdateAsync(TT621VM.TT621);
@@ -435,7 +433,6 @@ namespace KTTM.Controllers
             }
             catch (Exception ex)
             {
-
                 return Json(new
                 {
                     status = false,
@@ -512,7 +509,6 @@ namespace KTTM.Controllers
 
             if (!ModelState.IsValid)
             {
-                
                 return Json(new
                 {
                     status = false,
@@ -520,7 +516,7 @@ namespace KTTM.Controllers
                 });
             }
 
-            //// 
+            ////
             //decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, 0); // TT621VM.KVCTPCT.SoTienNT tu view qua
             //// txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
             //if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
@@ -540,7 +536,7 @@ namespace KTTM.Controllers
             //// lay soct cua tt621
             //if (TT621VM.TT621.LoaiTien == "VND")
             //{
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
+            TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
             //}
             //else
             //{
@@ -570,7 +566,6 @@ namespace KTTM.Controllers
             }
             catch (Exception)
             {
-
                 return Json(new
                 {
                     status = false
@@ -578,7 +573,7 @@ namespace KTTM.Controllers
             }
         }
 
-        public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuTC) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click) // tamungid == kvctpctid // 1 <-> 1
         {
             TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
             TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuTC);
@@ -618,12 +613,18 @@ namespace KTTM.Controllers
 
             TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
 
+            // btnThemdong + copy dong da click
+            if (id_Dong_Da_Click > 0)
+            {
+                var dongCu = _tT621Service.GetByIdAsNoTracking(id_Dong_Da_Click);
+                TT621VM.TT621 = dongCu;
+            }
+
             return PartialView(TT621VM);
         }
 
         public async Task<IActionResult> CapNhatCT_TT_Partial(long tt621Id, long kVCTPCTId_PhieuTC) // tamungid == kvctpctid // 1 <-> 1
         {
-
             if (tt621Id == 0)
                 return NotFound();
 
@@ -666,17 +667,15 @@ namespace KTTM.Controllers
         [HttpPost, ActionName("CapNhatCT_TT_Partial")]
         public async Task<IActionResult> CapNhatCT_TT_Partial_Post(/*long id, */decimal soTienNT_ChuaCapNhat) // soTienNT_ChuaCapNhat: soTienNT cũ
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             if (!ModelState.IsValid)
             {
-
                 return View(TT621VM);
             }
 
-            // 
+            //
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, TT621VM.KVCTPTC.SoTienNT.Value);
             // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
             if (TT621VM.TT621.SoTienNT > soTienNT_ChuaCapNhat + soTienNT_CanKetChuyen)
@@ -694,7 +693,9 @@ namespace KTTM.Controllers
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
 
             // ghi log
+
             #region log file
+
             //var t = _unitOfWork.tourRepository.GetById(id);
             string temp = "";
             TT621 t = _tT621Service.GetByIdAsNoTracking(TT621VM.TT621.Id);
@@ -862,7 +863,6 @@ namespace KTTM.Controllers
             // kiem tra thay doi
             if (temp.Length > 0)
             {
-
                 string log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
@@ -870,7 +870,9 @@ namespace KTTM.Controllers
                 t.LogFile = t.LogFile + log;
                 TT621VM.TT621.LogFile = t.LogFile;
             }
-            #endregion
+
+            #endregion log file
+
             try
             {
                 await _tT621Service.UpdateAsync(TT621VM.TT621);
@@ -882,7 +884,6 @@ namespace KTTM.Controllers
             }
             catch (Exception ex)
             {
-
                 return Json(new
                 {
                     status = false,
@@ -907,11 +908,10 @@ namespace KTTM.Controllers
 
             if (!ModelState.IsValid)
             {
-
                 return View(TT621VM);
             }
 
-            // 
+            //
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, TT621VM.KVCTPTC.SoTienNT.Value); // TT621VM.KVCTPCT.SoTienNT tu view qua
             // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
             if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
@@ -961,14 +961,13 @@ namespace KTTM.Controllers
             }
             catch (Exception)
             {
-
                 return Json(new
                 {
                     status = false
                 });
             }
         }
-        
+
         [HttpPost]
         public async Task<JsonResult> Delete(long tt621Id/*, long kVCTPCTId_PhieuTC*/)
         {
@@ -1011,7 +1010,6 @@ namespace KTTM.Controllers
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code)
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -1024,7 +1022,6 @@ namespace KTTM.Controllers
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT(string code)
         {
-
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
@@ -1037,7 +1034,6 @@ namespace KTTM.Controllers
 
         private void Get_TkNo_TkCo()
         {
-
             DmTk dmTk = new DmTk() { Tkhoan = "" };
             //var dmTks_TienMat = _kVCTPTCService.GetAll_DmTk_TienMat().ToList();
             var dmTks_TaiKhoan = _kVCTPTCService.GetAll_DmTk_TaiKhoan().ToList();
@@ -1049,7 +1045,6 @@ namespace KTTM.Controllers
             TT621VM.DmTks_TkCo = dmTks_TaiKhoan;
             //if (TT621VM.KVCTPCT.KVPCT.MFieu == "T")
             //{
-
             //    TT621VM.DmTks_TkNo = dmTks_TienMat;
             //    TT621VM.DmTks_TkCo = dmTks_TaiKhoan;
             //}
@@ -1060,17 +1055,27 @@ namespace KTTM.Controllers
             //}
         }
 
-        public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT) // tamUngId == kvctpctId
+        public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT, string loaiPhieu) // tamUngId == kvctpctId
         {
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
             decimal soTienNTTrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
-            string commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.Value.ToString("N0") + " số tiền cần kết chuyển 141: "
-                                  + (tamUng.SoTien.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+            string commentText;
+            if (loaiPhieu == "C") // phieu C
+            {
+                commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.Value.ToString("N0") + " số tiền cần kết chuyển 141: "
+                                                  + (tamUng.SoTien.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+            }
+            else // phieu T
+            {
+                commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.Value.ToString("N0") + " số tiền cần kết chuyển 141: "
+                                                  + (tamUng.SoTien.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+            }
+
             return Json(commentText);
         }
+
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
         {
-
             var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
             if (tT621s.Count() > 0)
             {
@@ -1089,43 +1094,38 @@ namespace KTTM.Controllers
         [HttpPost]
         public JsonResult Check_KetChuyenBtnStatus(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
-
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
             if (soTienNT_CanKetChuyen == 0)
             {
                 return Json(false); // btn on
             }
             return Json(true); // btn off
-
         }
 
         [HttpPost]
         public JsonResult Check_BtnThemMoiCTTT_Status(long tamUngId, decimal soTienNT_Tren_TT621Create)
         {
-
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(tamUngId, soTienNT_Tren_TT621Create);
             if (soTienNT_CanKetChuyen <= 0)
             {
                 return Json(true); // btn on
             }
             return Json(false); // btn off
-
         }
 
         [HttpPost]
         public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC, long kVCTPCTId_PhieuTC) // kVCTPCTId_PhieuTC: tren TT621CreateView
         {
             KVCTPTC kVCTPCT = new KVCTPTC();
-            if(kVCTPCTId_PhieuTC == 0) // trường hợp TT 141 Khong TC: khong phieu TC
+            if (kVCTPCTId_PhieuTC == 0) // trường hợp TT 141 Khong TC: khong phieu TC
             {
                 kVCTPCT.SoCT = "KHONG PTC";// m.phieutc='KHONG PTC'
-
             }
             else
             {
                 kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId_PhieuTC);
             }
-            
+
             TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
             decimal soTienNTTrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
 
