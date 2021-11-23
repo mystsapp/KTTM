@@ -163,7 +163,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
-                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo_ThemMoi">
+                                            <input asp-for="TT621.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo_ThemMoi" disabled>
                                             <span class="input-group-btn">
                                                 <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
@@ -173,7 +173,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" disabled/>
                                     </div>
 
                                 }

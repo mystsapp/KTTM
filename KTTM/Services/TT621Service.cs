@@ -13,23 +13,40 @@ namespace KTTM.Services
     public interface ITT621Service
     {
         Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId);
+
         Task CreateAsync(TT621 tT621);
+
         Task UpdateAsync(TT621 tT621);
+
         Task DeleteAsync(TT621 tT621);
+
         TT621 GetDummyTT621_By_KVCTPCT(long tamUngId);
+
         IEnumerable<TT621> FindByTamUngId(long tamUngId);
+
         string GetSoCT(string param, string maCn);
+
         decimal GetSoTienNT_TrongTT621_TheoTamUng(long tamUngId);
+
         Task<TT621> FindById_Include(long id);
+
         TT621 GetByIdAsNoTracking(long tt621Id);
-        decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create);
+
+        decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create, string loaiPhieu);
+
         Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621);
+
         IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
+
         IEnumerable<TT621> GetAll();
+
         IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo);
+
         IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
+
         Task CreateRangeAsync(List<TT621> tT621s);
     }
+
     public class TT621Service : ITT621Service
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -155,7 +172,6 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
-
         public string GetSoCT(string param, string maCn)
         {
             //DateTime dateTime;
@@ -163,12 +179,12 @@ namespace KTTM.Services
             //dateTime = TourVM.Tour.NgayKyHopDong.Value;
 
             var currentYear = DateTime.Now.Year; // ngay hien tai
-            var subfix = param + currentYear.ToString(); // TN2015?  TV2015? 
+            var subfix = param + currentYear.ToString(); // TN2015?  TV2015?
             //var tT621 = _unitOfWork.tT621Repository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
             var tT621s = _unitOfWork.tT621Repository.Find(x => x.SoCT.Contains(subfix)).ToList(); // chi lay nhung soCT cung param: TV, TN
-                                                    
+
             var tT621 = new TT621();
-            if(tT621s.Count() > 0)
+            if (tT621s.Count() > 0)
             {
                 tT621s = tT621s.Where(x => x.MaCn == maCn).ToList();
                 tT621 = tT621s.OrderByDescending(x => x.SoCT).FirstOrDefault();
@@ -217,11 +233,19 @@ namespace KTTM.Services
             return _unitOfWork.tT621Repository.GetByIdAsNoTracking(x => x.Id == tt621Id);
         }
 
-        public decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create)
+        public decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create, string loaiPhieu)
         {
             var tamUng = _unitOfWork.tamUngRepository.GetByIdAsNoTracking(x => x.Id == tamUngId);
             decimal soTienNTTrongTT621_TheoTamUng = GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
-            decimal soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
+            decimal soTienNT_CanKetChuyen;
+            if (loaiPhieu == "C") // phieu C
+            {
+                soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
+            }
+            else // phieu T
+            {
+                soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
+            }
 
             return soTienNT_CanKetChuyen;
         }
@@ -240,7 +264,6 @@ namespace KTTM.Services
             return suppliers;
         }
 
-
         public IEnumerable<TT621> GetAll()
         {
             return _unitOfWork.tT621Repository.GetAll();
@@ -248,13 +271,11 @@ namespace KTTM.Services
 
         public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo)
         {
-
             List<TT621> list = new List<TT621>();
             // search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-                
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate); // NgayCT
@@ -271,14 +292,11 @@ namespace KTTM.Services
                     {
                         list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
                     }
-                    
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
-
             }
             else
             {
@@ -299,7 +317,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
                 {
@@ -318,7 +335,6 @@ namespace KTTM.Services
                     {
                         return null;
                     }
-
                 }
             }
             // search date

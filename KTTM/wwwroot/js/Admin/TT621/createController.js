@@ -62,7 +62,7 @@ var createController = {
             createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
 
             // Check_KetChuyenBtnStatus
-            createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT);
+            createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT, loaiPhieu);
 
             // gang' ds TT141 theo tamung
             createController.GetTT621s_By_TamUng(tamUngId);
@@ -111,6 +111,7 @@ var createController = {
 
                             createController.GetTT621s_By_TamUng(tamUngId);
                             createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
+                            $('#btnDelete').attr('disabled', true); // disabled btnDelete
                         }
                         else {
                             toastr.error(response.message, 'Thêm thanh toán!')
@@ -213,8 +214,8 @@ var createController = {
         });
     },
 
-    Check_KetChuyenBtnStatus: function (tamUngId, soTienNT) {
-        $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (status) {
+    Check_KetChuyenBtnStatus: function (tamUngId, soTienNT, loaiPhieu) {
+        $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT, loaiPhieu: loaiPhieu }, function (status) {
             $('#btnKetChuyen').attr('disabled', status)
         })
     },
@@ -231,8 +232,8 @@ var createController = {
         })
     },
 
-    Gang_SoTienNT_CanKetChuyen: function (tamUngId, soTienNT) {
-        $.get('/TT621s/Gang_SoTienNT_CanKetChuyen', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT }, function (soTien) {
+    Gang_SoTienNT_CanKetChuyen: function (tamUngId, soTienNT, loaiPhieu) {
+        $.get('/TT621s/Gang_SoTienNT_CanKetChuyen', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT, loaiPhieu: loaiPhieu }, function (soTien) {
             $('#hidSoTienNT_CanKetChuyen').val(soTien);
         })
     },
