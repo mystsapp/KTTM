@@ -2048,7 +2048,8 @@ namespace KTTM.Controllers
                 ViewBag.searchToDate = searchToDate;
             }
 
-            BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate, user.Macn, maKhCo).OrderBy(x => x.NgayCT);
+            BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate,
+                user.Macn, maKhCo).OrderBy(x => x.NgayCT);
 
             if (BaoCaoVM.TT621s == null)
             {

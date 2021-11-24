@@ -19,6 +19,7 @@ namespace KTTM.Controllers
 
         [BindProperty]
         public TamUngViewModel TamUngVM { get; set; }
+
         public TamUngsController(ITamUngService tamUngService, IKVCTPTCService kVCTPTCService, IKVPTCService kVPTCService)
         {
             TamUngVM = new TamUngViewModel();
@@ -27,6 +28,7 @@ namespace KTTM.Controllers
             _kVCTPTCService = kVCTPTCService;
             _kVPTCService = kVPTCService;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -47,7 +49,7 @@ namespace KTTM.Controllers
                 });
             }
 
-            var kVCTPCT = await _kVCTPTCService.GetById(id); 
+            var kVCTPCT = await _kVCTPTCService.GetById(id);
             if (kVCTPCT == null)
             {
                 return Json(new
@@ -96,7 +98,6 @@ namespace KTTM.Controllers
             tamUng.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             if (!ModelState.IsValid)
             {
-
                 return Json(new
                 {
                     status = false,
@@ -118,19 +119,16 @@ namespace KTTM.Controllers
             }
             catch (Exception)
             {
-
                 return Json(new
                 {
                     status = false
                 });
             }
-
         }
 
         [HttpPost]
         public async Task<JsonResult> CheckTamUng_In_PhieuChi(string soCT, string maCn)
         {
-
             var tamUngs_By_PhieuChi = await _tamUngService.Find_TamUngs_By_PhieuChi_Include(soCT, maCn);
             if (tamUngs_By_PhieuChi.Count() > 0) // da ton tai 1 cai' tamung nao do'
             {
@@ -153,9 +151,11 @@ namespace KTTM.Controllers
             var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVCTPCT.KVPTCId);
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
             if (tamUng == null) // chưa them
-                if (kVPCT.MFieu == "C" && kVCTPCT.TKNo.Trim() == "1411")
+                if (kVPCT.MFieu == "C")
                 {
-                    return Json(true);
+                    if (kVCTPCT.TKNo.Trim() == "1411" ||
+                        kVCTPCT.TKNo.Trim() == "1412") // tamung VND || NgoaiTe
+                        return Json(true);
                 }
             return Json(false);
         }
@@ -164,13 +164,13 @@ namespace KTTM.Controllers
         public async Task<JsonResult> CheckTT141(long kVCTPCTId)
         {
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
-            
-            if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411")
+
+            if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411" ||
+                kVCTPCT.TKNo == "1412" || kVCTPCT.TKCo.Trim() == "1412") // TT141 VND || NgoaiTe
             {
                 return Json(true);
             }
             return Json(false);
         }
-
     }
 }

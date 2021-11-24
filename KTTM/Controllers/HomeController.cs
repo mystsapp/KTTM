@@ -449,6 +449,7 @@ namespace KTTM.Controllers
             {
                 HomeVM.KVPTC.NgaySua = DateTime.Now;
                 HomeVM.KVPTC.NguoiSua = user.Username;
+                HomeVM.KVPTC.HoTen = HomeVM.KVPTC.HoTen.Trim().ToUpper();
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
 
