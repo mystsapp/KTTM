@@ -159,14 +159,24 @@ namespace KTTM.Controllers
             TT621VM.KVCTPTC = kVCTPCT;
             TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
-            // lay het chi tiet ma co' maKhNo co tkNo = 1411 va tamung.contai > 0 (chua thanh toan het)
-            TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh, user.Macn); // MaKh == MaKhNo
+            // lay het chi tiet ma co' maKhNo co tkNo = 1411 || 1412 va tamung.contai > 0 (chua thanh toan het)
+            if (TT621VM.KVPTC.MFieu == "C")
+            {
+                TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh,
+                user.Macn, kVCTPCT.TKNo); // MaKh == MaKhNo && theo TK (ung VND or NgoaiTe)
+            }
+            else
+            {
+                TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh,
+                user.Macn, kVCTPCT.TKCo); // MaKh == MaKhNo && theo TK (ung VND or NgoaiTe)
+            }
+
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);
 
             // get commenttext
             if (TT621VM.TamUngs.Count() > 0)
             {
-                var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTien.Value, TT621VM.KVPTC.MFieu);
+                var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTienNT.Value, TT621VM.KVPTC.MFieu);
                 TT621VM.CommentText = jsonResult.Result.Value.ToString();
             }
 
@@ -237,6 +247,7 @@ namespace KTTM.Controllers
             // khong cho sua sotienNT
 
             TT621VM.TT621.NguoiSua = user.Username;
+            TT621VM.TT621.DienGiaiP = TT621VM.TT621.DienGiaiP.Trim().ToUpper();
             TT621VM.TT621.NgaySua = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
@@ -530,6 +541,7 @@ namespace KTTM.Controllers
 
             TT621VM.TT621.NgayCT = DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
+            TT621VM.TT621.DienGiaiP = TT621VM.TT621.DienGiaiP.Trim().ToUpper();
             TT621VM.TT621.NgayTao = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
@@ -669,6 +681,7 @@ namespace KTTM.Controllers
             TT621VM.TT621.MaCn = user.Macn;
             TT621VM.TT621.NgayCT = DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
+            TT621VM.TT621.DienGiaiP = TT621VM.TT621.DienGiaiP.Trim().ToUpper();
             TT621VM.TT621.NgayTao = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
@@ -779,6 +792,7 @@ namespace KTTM.Controllers
             }
 
             TT621VM.TT621.NguoiSua = user.Username;
+            TT621VM.TT621.DienGiaiP = TT621VM.TT621.DienGiaiP.Trim().ToUpper();
             TT621VM.TT621.NgaySua = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
@@ -1077,13 +1091,32 @@ namespace KTTM.Controllers
             string commentText;
             if (loaiPhieu == "C") // phieu C
             {
-                commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.Value.ToString("N0") + " số tiền cần kết chuyển 141: "
-                                                  + (tamUng.SoTien.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                if (tamUng.LoaiTien == "VND") // VND
+                {
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
+                                                  + (tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                }
+                else // NgoaiTe
+                {
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0")
+                        + tamUng.LoaiTien
+                        + " số tiền cần kết chuyển 1412: "
+                                                  + (tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                }
             }
             else // phieu T
             {
-                commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTien.Value.ToString("N0") + " số tiền cần kết chuyển 141: "
-                                                  + (tamUng.SoTien.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                if (tamUng.LoaiTien == "VND") // VND
+                {
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
+                                  + (tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                }
+                else // NgoaiTe
+                {
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ "
+                        + tamUng.SoTienNT.Value.ToString("N0") + tamUng.LoaiTien + " số tiền cần kết chuyển 1412: "
+                                  + (tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                }
             }
 
             return Json(commentText);

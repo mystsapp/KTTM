@@ -180,6 +180,7 @@ namespace KTTM.Controllers
 
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
             KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
@@ -230,6 +231,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
+            KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
@@ -437,6 +439,7 @@ namespace KTTM.Controllers
             {
                 KVCTPCTVM.KVCTPTC.NgaySua = DateTime.Now;
                 KVCTPCTVM.KVCTPTC.NguoiSua = user.Username;
+                KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
 
