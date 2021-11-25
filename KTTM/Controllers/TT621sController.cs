@@ -602,6 +602,10 @@ namespace KTTM.Controllers
                 TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value + TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
                 TT621VM.TT621.TKNo = tT621.TKCo; // dao nguoc
                 TT621VM.TT621.TKCo = "1411"; // tT621.TKNo; // dao nguoc
+                if (TT621VM.KVCTPTC.KVPTC.NgoaiTe == "NT")
+                {
+                    TT621VM.TT621.TKCo = "1412"; // tT621.TKNo; // dao nguoc
+                }
             }
             else
             {
@@ -688,6 +692,7 @@ namespace KTTM.Controllers
             // lay soct cua tt621
             if (TT621VM.TT621.LoaiTien == "VND")
             {
+                var tt621_Theo_PhieuTC = await _tT621Service.GetByPhieuTC(TT621VM.KVCTPTC.SoCT);
                 TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
             }
             else

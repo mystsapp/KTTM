@@ -132,6 +132,7 @@ var createController = {
                 if (result) {
                     $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
                         if (status) {
+                            
                             location.reload(); // reload lai trang
                             toastr.success('Kết chuyển thành công', 'Kết chuyển!');
                         }
