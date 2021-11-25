@@ -95,6 +95,8 @@ namespace KTTM.Services
 
         //List<KVCTPCT_Model_GroupBy_LoaiTien> TonQuy_Model_GroupBy_NgayCTs(IEnumerable<TonQuy> tonQuies);
         List<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
+
+        Task<List<KVCTPTC>> FinBy_SoCT(string soCT, string maCn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -1108,6 +1110,12 @@ namespace KTTM.Services
         public IEnumerable<KVCTPTC> GetAll()
         {
             return _unitOfWork.kVCTPCTRepository.GetAll();
+        }
+
+        public async Task<List<KVCTPTC>> FinBy_SoCT(string soCT, string maCn)
+        {
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
+            return kVCTPTCs.ToList();
         }
     }
 }

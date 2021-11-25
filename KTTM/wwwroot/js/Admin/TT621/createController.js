@@ -132,7 +132,6 @@ var createController = {
                 if (result) {
                     $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
                         if (status) {
-                            
                             location.reload(); // reload lai trang
                             toastr.success('Kết chuyển thành công', 'Kết chuyển!');
                         }
@@ -163,6 +162,7 @@ var createController = {
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
                             Id: item.id,
+                            SoCT: item.soCT,
                             DienGiai: item.dienGiai,
                             DienGiaiP: item.dienGiaiP,
                             SoTienNT: numeral(item.soTienNT).format('0,0'),
@@ -200,11 +200,11 @@ var createController = {
                         if (phieuTC.includes("C") && soCT_TT621CreateView.includes("C")) { // cung phieu C cho capnhat
                             $('#btnCapNhatCT').attr('disabled', false);
                         }
-                        if ((!phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) ||
-                            (phieuTC.includes("T") && !soCT_TT621CreateView.includes("T"))) { // khac phieu => ko cho capnhat
-                            $('#btnCapNhatCT').attr('disabled', true);
-                        }
-
+                        //if ((!phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) ||
+                        //    (phieuTC.includes("T") && !soCT_TT621CreateView.includes("T"))) { // khac phieu => ko cho capnhat
+                        //    $('#btnCapNhatCT').attr('disabled', true);
+                        //}
+                        $('#btnCapNhatCT').attr('disabled', false);
                         $('#btnDelete').attr('disabled', false);
                     })
                 }

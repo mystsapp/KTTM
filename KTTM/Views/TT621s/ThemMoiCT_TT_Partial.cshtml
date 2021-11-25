@@ -239,7 +239,7 @@
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
-                                        <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
+                                        <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-2">
@@ -257,7 +257,7 @@
                                     <select asp-for="TT621.BoPhan" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "BoPhan"))" id="ddlBoPhan">
                                     </select>
-                                    <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
+                                    <span asp-validation-for="TT621.BoPhan" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-4">

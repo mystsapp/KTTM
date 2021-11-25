@@ -506,6 +506,43 @@ namespace KTTM.Controllers
             return View(HomeVM);
         }
 
+        [HttpPost] // 1) phải là phiếu C, TKNo là 1411 or 1412
+        public async Task<JsonResult> CheckInPhieu(string soCT)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            ////var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuChi_Include(soCT, user.Macn);
+            //List<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinBy_SoCT(soCT, user.Macn);
+            //List<TamUng> tamUngs = new List<TamUng>();
+            //foreach (var item in kVCTPTCs)
+            //{
+            //    if (item.TKNo == "1411" || item.TKCo == "1411" ||
+            //        item.TKNo == "1412" || item.TKCo == "1412") // la phieu TU
+            //    {
+            //        // lay het chi tiet ma co' maKhNo co tkNo = 1411 || 1412 va tamung.contai > 0 (chua thanh toan het)
+            //        if (soCT.Contains("C"))
+            //        {
+            //            var tamUngs1 = await _tamUngService.Find_TamUngs_By_MaKh_Include(item.MaKh,
+            //            user.Macn, item.TKNo); // MaKh == MaKhNo && theo TK (ung VND or NgoaiTe)
+            //            tamUngs = tamUngs1.ToList();
+            //        }
+            //        else
+            //        {
+            //            var tamUngs1 = await _tamUngService.Find_TamUngs_By_MaKh_Include(item.MaKh,
+            //            user.Macn, item.TKCo); // MaKh == MaKhNo && theo TK (ung VND or NgoaiTe)
+            //            tamUngs = tamUngs1.ToList();
+            //        }
+            //    }
+            //}
+
+            if (tamUngs.Count > 0)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
+
         public async Task<IActionResult> InPhieuView(Guid id, int page)
         {
             HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);

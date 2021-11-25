@@ -689,15 +689,23 @@ namespace KTTM.Controllers
             TT621VM.TT621.NgayTao = DateTime.Now;
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
-            // lay soct cua tt621
-            if (TT621VM.TT621.LoaiTien == "VND")
+
+            List<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
+            if (tt621_Theo_PhieuTC.Count > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
             {
-                var tt621_Theo_PhieuTC = await _tT621Service.GetByPhieuTC(TT621VM.KVCTPTC.SoCT);
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
+                TT621VM.TT621.SoCT = tt621_Theo_PhieuTC.FirstOrDefault().SoCT;
             }
             else
             {
-                TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN", user.Macn);
+                // lay soct cua tt621
+                if (TT621VM.TT621.LoaiTien == "VND")
+                {
+                    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
+                }
+                else
+                {
+                    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN", user.Macn);
+                }
             }
 
             // PhieuTC: tuy vao loai phieu lam TT

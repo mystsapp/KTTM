@@ -45,6 +45,8 @@ namespace KTTM.Services
         IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
 
         Task CreateRangeAsync(List<TT621> tT621s);
+
+        Task<List<TT621>> GetByPhieuTC(string soCT, string maCn);
     }
 
     public class TT621Service : ITT621Service
@@ -351,6 +353,13 @@ namespace KTTM.Services
         {
             await _unitOfWork.tT621Repository.CreateRange(tT621s);
             await _unitOfWork.Complete();
+        }
+
+        public async Task<List<TT621>> GetByPhieuTC(string soCT, string maCn)
+        {
+            var tT621s = await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng,
+                y => y.PhieuTC == soCT && y.MaCn == maCn);
+            return tT621s.ToList();
         }
     }
 }
