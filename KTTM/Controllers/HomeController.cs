@@ -507,7 +507,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost] // 1) phải là phiếu C, TKNo là 1411 or 1412
-        public async Task<JsonResult> CheckInPhieu(string soCT)
+        public async Task<JsonResult> CheckInPhieu(Guid id)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -536,10 +536,29 @@ namespace KTTM.Controllers
             //    }
             //}
 
-            if (tamUngs.Count > 0)
+            var kVPTC = await _kVPTCService.GetByGuidIdAsync(id);
+
+            if (kVPTC.MFieu == "C")
             {
-                return Json(false);
+                var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+                kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412"); // dang tao phieu TU
+                if (kVCTPTCs.Count() > 0) //
+                {
+                    kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU
+                    if (kVCTPTCs.Count() > 0) // chua ketchuyen TU -> kt xem ketchuyen TT141 chua
+                    {
+                        // kiem tra xem có ketchuyen TT141 chua
+                        var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
+                        if (tamUngs.Count() > 0)
+                        {
+                            return Json(true); // cho inphieu
+                        }
+                        return Json(false);
+                    }
+                }
+                return Json(true);
             }
+
             return Json(true);
         }
 

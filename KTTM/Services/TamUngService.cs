@@ -35,6 +35,8 @@ namespace KTTM.Services
         IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs);
 
         IEnumerable<TamUngModel_GroupBy_Name_Phong> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs);
+
+        Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuTT(string soCT, string maCn);
     }
 
     public class TamUngService : ITamUngService
@@ -248,6 +250,11 @@ namespace KTTM.Services
         public IEnumerable<TamUng> GetAll()
         {
             return _unitOfWork.tamUngRepository.GetAll();
+        }
+
+        public async Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuTT(string soCT, string maCn)
+        {
+            return await _unitOfWork.tamUngRepository.FindAsync(x => x.PhieuTT == soCT && x.MaCn == maCn);
         }
     }
 }
