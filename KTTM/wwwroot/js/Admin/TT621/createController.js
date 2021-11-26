@@ -75,6 +75,9 @@ var createController = {
         // btnThemMoiCT
         $('#btnThemMoiCT').off('click').on('click', function () {
             tamUngId = $('#hidTamUngId').val();
+            if (tamUngId == null || tamUngId == '') {
+                alert('chưa chọn tạm ứng nào để thanh toán');
+            }
             id_Dong_Da_Click = $('#hidIdCu').val();
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
             var url = '/TT621s/ThemMoiCT_TT_Partial';
@@ -97,6 +100,8 @@ var createController = {
         // btnCapNhatCT
         // btnDelete
         $('#btnDelete').off('click').on('click', function () {
+            $('#btnThemMoiCT').attr('disabled', true);
+
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
             tamUngId = $('#hidTamUngId').val();

@@ -293,6 +293,7 @@ namespace KTTM.Services
                     if (!string.IsNullOrEmpty(maKhCo))
                     {
                         list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                        //||x.MaKhNo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
                     }
                 }
                 catch (Exception)

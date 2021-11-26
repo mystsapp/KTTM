@@ -635,8 +635,9 @@
         indexController.Load_KVCTPCTPartial(soCT);*@
                         tamUngId = $('#hidTamUngId').val();
                         soTienNT = @Model.KVCTPTC.SoTienNT;
+                        loaiPhieu = '@Model.KVCTPTC.KVPTC.MFieu';
                         createController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
-                        createController.GetCommentText_By_TamUng(tamUngId, soTienNT); // get comment text
+                        createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu); // get comment text
                         createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT); // check nut ketchuyen
                     }
                     else {
