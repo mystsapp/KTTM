@@ -47,6 +47,7 @@ var createController = {
                 $(this).addClass("hoverClass");
             }
 
+            $('#hidIdCu').val(0); // moi lan click tro lai tamungtr -> reset hidIdCu(id dong tt621) = 0
             tamUngId = $(this).data('id');
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
@@ -101,11 +102,13 @@ var createController = {
         // btnDelete
         $('#btnDelete').off('click').on('click', function () {
             $('#btnThemMoiCT').attr('disabled', true);
+            $('#btnCapNhatCT').attr('disabled', true);
 
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
             tamUngId = $('#hidTamUngId').val();
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            loaiPhieu = $('#hidLoaiPhieu').val();
 
             bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
                 if (result) {
@@ -115,7 +118,7 @@ var createController = {
                             toastr.success('Xoá thành công', 'Xoá!');
 
                             createController.GetTT621s_By_TamUng(tamUngId);
-                            createController.GetCommentText_By_TamUng(tamUngId, soTienNT);
+                            createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
                             $('#btnDelete').attr('disabled', true); // disabled btnDelete
                         }
                         else {
