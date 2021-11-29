@@ -118,7 +118,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + item.KVCTPTC.TenKH,
+                    Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });

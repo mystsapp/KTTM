@@ -84,16 +84,16 @@
 
                             <div class=" row">
 
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <label asp-for="TT621.TKNo" class="control-label"></label>
                                     <!--select2-->
                                     <select asp-for="TT621.TKNo" class="form-control form-control-sm select2"
-                                            asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "Tkhoan"))" id="ddlTkNo">
+                                            asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "TenTk"))" id="ddlTkNo">
                                     </select>
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-10">
+                                <div class="col-md-8">
                                     <label class="control-label">Tên tài khoãn</label>
                                     <input class="form-control form-control-sm " id="txtTenTkNo" value="@Model.TenTkNo" />
                                 </div>
@@ -101,7 +101,7 @@
 
                             <div class=" row">
 
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <label asp-for="TT621.TKCo" class="control-label"></label>
                                     @if (Model.TT621.TKCo == "1411") // tk co 1411 => ko cho sua
                                     {
@@ -111,14 +111,14 @@
                                     {
                                         <!--select2-->
                                         <select asp-for="TT621.TKCo" class="form-control form-control-sm select2"
-                                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
                                         </select>
                                     }
 
                                     <span asp-validation-for="TT621.TKNo" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-10">
+                                <div class="col-md-8">
                                     <label class="control-label">Tên tài khoãn</label>
                                     <input class="form-control form-control-sm " id="txtTenTkCo" value="@Model.TenTkCo" />
                                 </div>

@@ -662,7 +662,7 @@ namespace KTTM.Services
             List<DmTk> dmTks1 = new List<DmTk>();
             foreach (var item in dmTks)
             {
-                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan });
+                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan, TenTk = item.Tkhoan + " - " + item.TenTk });
             }
             return dmTks1;
         }
@@ -699,7 +699,7 @@ namespace KTTM.Services
             List<DmTk> dmTks1 = new List<DmTk>();
             foreach (var item in dmTks)
             {
-                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan });
+                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan, TenTk = item.Tkhoan + " - " + item.TenTk });
             }
             return dmTks1;
         }
