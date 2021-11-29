@@ -3,6 +3,7 @@ using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Repository;
 using Data.Utilities;
+using KTTM.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,8 @@ namespace KTTM.Services
         Task CreateRangeAsync(List<TT621> tT621s);
 
         Task<List<TT621>> GetByPhieuTC(string soCT, string maCn);
+
+        IEnumerable<TT621GroupBy_PhieuTC> GroupBy_PhieuTC(IEnumerable<TT621> tT621s);
     }
 
     public class TT621Service : ITT621Service
@@ -292,8 +295,8 @@ namespace KTTM.Services
                     list = list.Where(x => x.MaCn == maCn).ToList();
                     if (!string.IsNullOrEmpty(maKhCo))
                     {
-                        list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
-                        //||x.MaKhNo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                        list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()
+                        || x.MaKhNo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
                     }
                 }
                 catch (Exception)
@@ -313,7 +316,8 @@ namespace KTTM.Services
                         list = list.Where(x => x.MaCn == maCn).ToList();
                         if (!string.IsNullOrEmpty(maKhCo))
                         {
-                            list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                            list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()
+                            || x.MaKhNo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
                         }
                     }
                     catch (Exception)
@@ -331,7 +335,8 @@ namespace KTTM.Services
                         list = list.Where(x => x.MaCn == maCn).ToList();
                         if (!string.IsNullOrEmpty(maKhCo))
                         {
-                            list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                            list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()
+                            || x.MaKhNo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
                         }
                     }
                     catch (Exception)
@@ -361,6 +366,19 @@ namespace KTTM.Services
             var tT621s = await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng,
                 y => y.PhieuTC == soCT && y.MaCn == maCn);
             return tT621s.ToList();
+        }
+
+        public IEnumerable<TT621GroupBy_PhieuTC> GroupBy_PhieuTC(IEnumerable<TT621> tT621s)
+        {
+            var result = (from t in tT621s
+                          group t by t.PhieuTC into g
+                          select new TT621GroupBy_PhieuTC
+                          {
+                              PhieuTC = g.Key,
+                              TT621s = g.ToList()
+                          }).ToList();
+
+            return result;
         }
     }
 }

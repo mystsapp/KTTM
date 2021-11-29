@@ -302,9 +302,12 @@ namespace KTTM.Controllers
                 // TTThe, phieu thu, cap tk(no = 1111000000, co = 1311)
                 // -> tu tao phieu chi cap tk(no = 1131, co =1311110000)
                 if (KVCTPCTVM.LayDataCashierModel.TTThe &&
-                    kVPCT.MFieu == "T" && KVCTPCTVM.LayDataCashierModel.Tk == "1311110000")
+                    kVPCT.MFieu == "T")
                 {
-                    KVCTPCTVM.KVPTC = new KVPTC();
+                    if (KVCTPCTVM.LayDataCashierModel.Tk == "1311110000" ||
+                        KVCTPCTVM.LayDataCashierModel.Tk == "1311120000" ||
+                        KVCTPCTVM.LayDataCashierModel.Tk == "1368000000")
+                        KVCTPCTVM.KVPTC = new KVPTC();
                     // tao phieuchi
                     KVCTPCTVM.KVPTC.Create = DateTime.Now;
                     KVCTPCTVM.KVPTC.LapPhieu = user.Username;
@@ -349,6 +352,8 @@ namespace KTTM.Controllers
                         item.KVPTCId = kVPTC1.Id;
                         item.SoCT = kVPTC1.SoCT;
                         item.MaKh = ""; // thao
+                        item.MaKhCo = ""; // thao
+                        item.MaKhNo = ""; // thao
                         item.BoPhan = "CH"; // thao
                         item.NoQuay = ""; // thao
                         item.CoQuay = ""; // thao

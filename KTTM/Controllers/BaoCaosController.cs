@@ -2051,6 +2051,8 @@ namespace KTTM.Controllers
             BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate,
                 user.Macn, maKhCo).OrderBy(x => x.NgayCT);
 
+            ViewBag.tT621GroupBy_PhieuTCs = _tT621Service.GroupBy_PhieuTC(BaoCaoVM.TT621s);
+
             if (BaoCaoVM.TT621s == null)
             {
                 return Json(false);
