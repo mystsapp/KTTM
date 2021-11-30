@@ -270,6 +270,9 @@ namespace KTTM.Controllers
             //var abc = "";
             //await _kVPTCService.CreateRangeAsync(kVPTCs);
 
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             HomeVM.Page = page;
 
@@ -287,7 +290,8 @@ namespace KTTM.Controllers
             {
                 HomeVM.KVPTC = new KVPTC();
             }
-            HomeVM.KVPTCDtos = await _kVPTCService.ListKVPTC(searchString, searchFromDate, searchToDate, boolSgtcode, page);
+            HomeVM.KVPTCDtos = await _kVPTCService.ListKVPTC(searchString, searchFromDate,
+                searchToDate, boolSgtcode, page, user.Macn);
             return View(HomeVM);
         }
 

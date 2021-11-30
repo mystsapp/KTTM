@@ -23,7 +23,7 @@ namespace KTTM.Services
 
         IEnumerable<Phongban> GetAllPhongBan();
 
-        Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page);
+        Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page, string maCn);
 
         IEnumerable<ListViewModel> ListLoaiPhieu();
 
@@ -123,7 +123,8 @@ namespace KTTM.Services
             }
         }
 
-        public async Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page)
+        public async Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate,
+            string searchToDate, string boolSgtcode, int? page, string maCn)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -191,6 +192,8 @@ namespace KTTM.Services
                 }
             }
 
+            kVPTCs = kVPTCs.Where(x => x.MaCn == maCn).ToList(); // search by cn
+
             foreach (var item in kVPTCs)
             {
                 var kVPTCDto = new KVPTCDto();
@@ -208,6 +211,7 @@ namespace KTTM.Services
                 kVPTCDto.MayTinh = item.MayTinh;
                 kVPTCDto.Lock = item.Lock;
                 kVPTCDto.Locker = item.Locker;
+                kVPTCDto.MaCn = item.MaCn;
 
                 list.Add(kVPTCDto);
             }

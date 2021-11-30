@@ -8,6 +8,7 @@ namespace Data.Dtos
     public class KVPTCDto
     {
         public Guid Id { get; set; }
+
         [DisplayName("Số phiếu")]
         public string SoCT { get; set; }
 
@@ -40,5 +41,7 @@ namespace Data.Dtos
 
         public string Locker { get; set; }
 
+        [DisplayName("Chi nhánh")]
+        public string MaCn { get; set; }
     }
 }

@@ -164,13 +164,16 @@ namespace KTTM.Controllers
         public async Task<JsonResult> CheckTT141(long kVCTPCTId)
         {
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
+            var result = await CheckTamUng(kVCTPCTId);
+            var checkTU = (bool)result.Value;
 
-            if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411" ||
-                kVCTPCT.TKNo == "1412" || kVCTPCT.TKCo.Trim() == "1412") // TT141 VND || NgoaiTe
-            {
-                return Json(true);
-            }
-            return Json(false);
+            return Json(checkTU);
+
+            //if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411" ||
+            //    kVCTPCT.TKNo == "1412" || kVCTPCT.TKCo.Trim() == "1412") // TT141 VND || NgoaiTe
+            //{
+            //    return Json(true);
+            //}
         }
     }
 }
