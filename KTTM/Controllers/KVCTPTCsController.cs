@@ -308,6 +308,7 @@ namespace KTTM.Controllers
                         KVCTPCTVM.LayDataCashierModel.Tk == "1311120000" ||
                         KVCTPCTVM.LayDataCashierModel.Tk == "1368000000")
                         KVCTPCTVM.KVPTC = new KVPTC();
+
                     // tao phieuchi
                     KVCTPCTVM.KVPTC.Create = DateTime.Now;
                     KVCTPCTVM.KVPTC.LapPhieu = user.Username;
@@ -317,7 +318,7 @@ namespace KTTM.Controllers
                     KVCTPCTVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
                     KVCTPCTVM.KVPTC.NgoaiTe = kVPCT.NgoaiTe;
                     KVCTPCTVM.KVPTC.HoTen = "VCB(CHAU)"; // thao
-                    KVCTPCTVM.KVPTC.Phong = kVPCT.Phong;
+                    KVCTPCTVM.KVPTC.Phong = "KT";
 
                     // next SoCT --> bat buoc phai co'
                     KVCTPCTVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
@@ -357,6 +358,9 @@ namespace KTTM.Controllers
                         item.BoPhan = "CH"; // thao
                         item.NoQuay = ""; // thao
                         item.CoQuay = ""; // thao
+                        item.Sgtcode = ""; // thao
+                        item.DienGiai = "CHI NOP NGAN HANG =CC"; // thao
+                        item.DienGiaiP = "Chi nộp " + item.SalesSlip + item.CardNumber; // thao
                         kVCTPTCs1.Add(item);
                     }
                     if (kVCTPTCs1.Count > 0)

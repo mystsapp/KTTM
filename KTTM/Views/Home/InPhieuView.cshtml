@@ -52,7 +52,7 @@
                     <!-- title row -->
                     <div class="row">
                         <div class="col-7 text-center">
-                            <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST</b></span><br />
+                            <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span><br />
                             <span><b>SAIGONTOURIST</b></span>
                         </div>
                         <div class="col-5 text-center">
@@ -136,14 +136,14 @@
                                     <td>Số tiền NT</td>
                                 </tr>
                                 <!--thao: max 4 nhưng tongcong full-->
-                                @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4)) 
+                                @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4))
                                 {
                                     <tr>
                                         <td></td>
 
                                         <td>@item.TkNo</td>
                                         <td>@item.TkCo</td>
-                                        <td>@item.SoTien.ToString("N0")</td>
+                                        <td>@item.SoTien.ToString("N0") </td>
                                         <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
                                     </tr>
                                 }
@@ -159,7 +159,11 @@
                                                 if (lastItem != Model.KVCTPTCs.Count() - 1)
                                                 {
                                                     // this is the last item
-                                                    sgtcodes += item.Sgtcode + " + ";
+                                                    if (!string.IsNullOrEmpty(item.Sgtcode))
+                                                    {
+                                                        sgtcodes += item.Sgtcode + " + ";
+                                                    }
+                                                    //sgtcodes += item.Sgtcode + " + ";
                                                     soCTGocs += item.SoCTGoc + ", ";
                                                 }
                                                 else
@@ -208,7 +212,7 @@
                                     <td><i>Bằng chữ :</i></td>
                                     <td colspan="4">
                                         <i>
-                                            @if(Model.KVPTC.NgoaiTe == "VN")
+                                            @if (Model.KVPTC.NgoaiTe == "VN")
                                             {
                                                 @ViewBag.bangChu
                                             }

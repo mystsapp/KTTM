@@ -59,6 +59,7 @@
                 <th>Mã KH có</th>
                 <th>Tên Người Thanh Toán</th>
                 <th>Phiếu thu/chi</th>
+                <th>Chi nhánh</th>
 
             </tr>
         </thead>
@@ -76,6 +77,7 @@
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.TT621s.FirstOrDefault().MaKhCo)</td>
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.TT621s.FirstOrDefault().TamUng.KVCTPTC.KVPTC.HoTen)</td>
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.PhieuTC)</td>
+                        <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.TT621s.FirstOrDefault().MaCn)</td>
                         @*
                         <td class="tdVal_TT621" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                         <td class="tdVal_TT621" data-id="@item.Id">@Html.Raw(item.NgayCT.Value.ToString("dd/MM/yyyy"))</td>

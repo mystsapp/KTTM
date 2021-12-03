@@ -339,7 +339,8 @@ namespace KTTM.Services
 
         public List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNos(IEnumerable<KVCTPTC> kVCTPTCs)
         {
-            var result1 = (from p in kVCTPTCs
+            var kVCTPTCs1 = kVCTPTCs.ToList();
+            var result1 = (from p in kVCTPTCs1
                            group p by p.TKNo into g
                            select new InPhieuView_Groupby_TkNo_TkCo()
                            {

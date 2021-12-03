@@ -292,7 +292,7 @@ namespace KTTM.Services
                     }
 
                     list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date(fromDate, toDate).ToList();
-                    list = list.Where(x => x.MaCn == maCn).ToList();
+                    //list = list.Where(x => x.MaCn == maCn).ToList();
                     if (!string.IsNullOrEmpty(maKhCo))
                     {
                         list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()

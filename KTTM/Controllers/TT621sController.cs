@@ -1097,13 +1097,17 @@ namespace KTTM.Controllers
             //}
         }
 
+        private decimal soTienCanKetChuyen;
+
         public async Task<JsonResult> GetCommentText_By_TamUng(long tamUngId, decimal soTienNT, string loaiPhieu) // tamUngId == kvctpctId
         {
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
             decimal soTienNTTrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             string commentText;
+
             if (loaiPhieu == "C") // phieu C
             {
+                soTienCanKetChuyen = tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng;
                 if (tamUng.LoaiTien == "VND") // VND
                 {
                     commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
@@ -1119,6 +1123,7 @@ namespace KTTM.Controllers
             }
             else // phieu T
             {
+                soTienCanKetChuyen = tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng;
                 if (tamUng.LoaiTien == "VND") // VND
                 {
                     commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
@@ -1192,7 +1197,8 @@ namespace KTTM.Controllers
             TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
             decimal soTienNTTrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
 
-            if (tamUng.SoTienNT == soTienNTTrongTT621_TheoTamUng + soTienNT_PhieuTC)
+            //if (tamUng.SoTienNT == soTienNTTrongTT621_TheoTamUng + soTienNT_PhieuTC)
+            if (soTienCanKetChuyen == 0)
             {
                 tamUng.ConLaiNT = 0;
                 tamUng.ConLai = 0;

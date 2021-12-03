@@ -166,14 +166,20 @@ namespace KTTM.Controllers
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
             var result = await CheckTamUng(kVCTPCTId);
             var checkTU = (bool)result.Value;
+            var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
 
-            return Json(checkTU);
+            // return Json(checkTU);
 
-            //if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411" ||
-            //    kVCTPCT.TKNo == "1412" || kVCTPCT.TKCo.Trim() == "1412") // TT141 VND || NgoaiTe
-            //{
-            //    return Json(true);
-            //}
+            if (kVCTPCT.TKNo == "1411" || kVCTPCT.TKCo.Trim() == "1411" ||
+                kVCTPCT.TKNo == "1412" || kVCTPCT.TKCo.Trim() == "1412") // TT141 VND || NgoaiTe
+            {
+                if (tamUng == null) // chua TU
+                {
+                    return Json(true);
+                }
+            }
+
+            return Json(false);
         }
     }
 }
