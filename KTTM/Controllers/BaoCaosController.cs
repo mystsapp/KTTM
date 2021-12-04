@@ -2049,7 +2049,7 @@ namespace KTTM.Controllers
             }
 
             BaoCaoVM.TT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(searchFromDate, searchToDate,
-                user.Macn, maKhCo).OrderBy(x => x.NgayCT);
+                user.Macn, maKhCo, user.Username).OrderBy(x => x.NgayCT);
 
             ViewBag.tT621GroupBy_PhieuTCs = _tT621Service.GroupBy_PhieuTC(BaoCaoVM.TT621s);
 
@@ -2069,7 +2069,7 @@ namespace KTTM.Controllers
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay, user.Macn, "");
+            IEnumerable<TT621> tT621s = _tT621Service.FindTT621s_IncludeTwice_By_Date(tuNgay, denNgay, user.Macn, "", user.Username);
             TT621 tT621 = tT621s.Where(x => x.Id == id_TT).FirstOrDefault();
             List<TT621> tT621s_By_TamUng = _tT621Service.FindTT621s_IncludeTwice(tT621.TamUngId).ToList();
             //List<KVCTPTC> kVCTPTCs_By_SoCT = await _kVCTPTCService.List_KVCTPCT_By_SoCT(phieuTC_TT, user.Macn);

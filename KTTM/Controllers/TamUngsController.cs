@@ -164,8 +164,8 @@ namespace KTTM.Controllers
         public async Task<JsonResult> CheckTT141(long kVCTPCTId)
         {
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
-            var result = await CheckTamUng(kVCTPCTId);
-            var checkTU = (bool)result.Value;
+            //var result = await CheckTamUng(kVCTPCTId);
+            //var checkTU = (bool)result.Value;
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
 
             // return Json(checkTU);
@@ -181,5 +181,39 @@ namespace KTTM.Controllers
 
             return Json(false);
         }
+
+        //private async Task<bool> CheckThanhToan(KVCTPTC kVCTPTC)
+        //{
+        //    if(kVCTPTC.TKNo == "1411" || kVCTPTC.TKNo == "1412") // thanh toan phieu chi or phieu thu
+        //    {
+        //        if (string.IsNullOrEmpty(kVCTPTC.TamUng)) // chua TU
+        //        {
+        //            // kiem tra xem có ketchuyen TT141 chua
+        //            var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVCTPTC.SoCT, kVCTPTC.MaCn);
+        //            if (tamUngs.Count() == 0)
+        //            {
+        //                return false; // chua ketchuyen
+        //            }
+        //        }
+        //    }
+
+        //    //var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+        //    //kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412"); // dang tao phieu TU
+        //    //if (kVCTPTCs.Count() > 0) //
+        //    //{
+        //    //    kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU
+        //    //    if (kVCTPTCs.Count() > 0) // chua ketchuyen TU -> kt xem ketchuyen TT141 chua
+        //    //    {
+        //    //        // kiem tra xem có ketchuyen TT141 chua
+        //    //        var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
+        //    //        if (tamUngs.Count() > 0)
+        //    //        {
+        //    //            return Json(true); // cho inphieu
+        //    //        }
+        //    //        return Json(false);
+        //    //    }
+        //    //}
+        //    //return Json(true);
+        //}
     }
 }

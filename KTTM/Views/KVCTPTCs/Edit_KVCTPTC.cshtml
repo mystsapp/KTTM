@@ -116,7 +116,7 @@
                             {
                                 <!--select2-->
                                 <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
-                                        asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "Tkhoan"))" id="ddlTkCo">
+                                        asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
                                 </select>
                             }
 
@@ -175,7 +175,6 @@
                                             <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                         </span>
                                     }
-
                                 </div>
                                 <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
                             </div>
@@ -656,7 +655,6 @@
 
         //// Get_DienGiai_By_TkNo_TkCo forward to service
 
-
         function KhachHangSearch(code) {
             $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
 
@@ -665,7 +663,5 @@
                 $('#khachHang_Modal').draggable();
             });
         }
-
-
     </script>
 }

@@ -52,9 +52,7 @@
                                     </select>
                                     <span asp-validation-for="TT621.HTTC" class="text-danger"></span>
                                 </div>
-
                             </div>
-
 
                             <div class=" row">
 
@@ -100,7 +98,6 @@
                                     <label class="control-label">Tên tài khoãn</label>
                                     <input class="form-control form-control-sm " id="txtTenTkNo" value="@Model.TenTkNo" />
                                 </div>
-
                             </div>
 
                             <div class=" row">
@@ -118,7 +115,6 @@
                                     <label class="control-label">Tên tài khoãn</label>
                                     <input class="form-control form-control-sm " id="txtTenTkCo" value="@Model.TenTkCo" />
                                 </div>
-
                             </div>
 
                             <div class=" row">
@@ -133,10 +129,8 @@
 
                                         <span asp-validation-for="TT621.DienGiai" class="text-danger"></span>
                                     </div>
-
                                 </div>
                             </div>
-
                         </fieldset>
 
                         <fieldset class="groupbox-border ">
@@ -173,7 +167,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" disabled/>
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" disabled />
                                     </div>
 
                                 }
@@ -184,7 +178,7 @@
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo_ThemMoi">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi" id="btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
@@ -198,14 +192,14 @@
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo_ThemMoi" disabled> <!--readonly-->
-                                    </div>
+                                        </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
                                         <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" disabled /> <!--readonly-->
-                                </div>
+                                    </div>
 
                                 }
                             </div>
@@ -216,8 +210,8 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <!--select2-->
-                                    <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
@@ -226,7 +220,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -237,7 +231,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
@@ -271,9 +265,7 @@
                                     <input asp-for="TT621.SoXe" class="form-control form-control-sm" id="txtSoXe" />
                                     <span asp-validation-for="TT621.SoXe" class="text-danger"></span>
                                 </div>
-
                             </div>
-
                         </fieldset>
 
                         <fieldset class="groupbox-border ">
@@ -312,7 +304,6 @@
                                     <input asp-for="TT621.MauSoHD" class="form-control form-control-sm" id="txtMauSoHD" />
                                     <span asp-validation-for="TT621.MauSoHD" class="text-danger"></span>
                                 </div>
-
                             </div>
 
                             <div class=" row">
@@ -341,7 +332,6 @@
                                     <input asp-for="TT621.DieuChinh" id="ckDieuChinh" type="checkbox" />
                                     <span asp-validation-for="TT621.DieuChinh" class="text-danger"></span>
                                 </div>
-
                             </div>
 
                             <div class=" row">
@@ -351,7 +341,6 @@
                                     <input asp-for="TT621.TenKH" class="form-control form-control-sm" id="txtTenKH" />
                                     <span asp-validation-for="TT621.TenKH" class="text-danger"></span>
                                 </div>
-
                             </div>
 
                             <div class=" row">
@@ -361,7 +350,6 @@
                                     <input asp-for="TT621.DiaChi" class="form-control form-control-sm" id="txtDiaChi" />
                                     <span asp-validation-for="TT621.DiaChi" class="text-danger"></span>
                                 </div>
-
                             </div>
 
                             <div class=" row">
@@ -379,35 +367,31 @@
                                     <input asp-for="TT621.MaTraCuu" class="form-control form-control-sm" id="txtMaTraCuu" />
                                     <span asp-validation-for="TT621.MaTraCuu" class="text-danger"></span>
                                 </div>
-
                             </div>
-                            
-                    <div class=" row">
 
-                        <div class="col-md-12">
-                            <label asp-for="KVCTPTC.LinkHDDT" class="control-label "></label>
-                            <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
-                            <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
-                        </div>
+                            <div class=" row">
 
-                    </div>
+                                <div class="col-md-12">
+                                    <label asp-for="KVCTPTC.LinkHDDT" class="control-label "></label>
+                                    <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                                    <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
+                                </div>
+                            </div>
 
-                    <div class=" row">
+                            <div class=" row">
 
-                        <div class="col-md-6">
-                            <label asp-for="KVCTPTC.TkTruyCap" class="control-label "></label>
-                            <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
-                            <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
-                        </div>
+                                <div class="col-md-6">
+                                    <label asp-for="KVCTPTC.TkTruyCap" class="control-label "></label>
+                                    <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                                    <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
+                                </div>
 
-                        <div class="col-md-6">
-                            <label asp-for="KVCTPTC.Password" class="control-label "></label>
-                            <input asp-for="KVCTPTC.Password" class="form-control form-control-sm" id="txtPassword" />
-                            <span asp-validation-for="KVCTPTC.Password" class="text-danger"></span>
-                        </div>
-
-                    </div>
-
+                                <div class="col-md-6">
+                                    <label asp-for="KVCTPTC.Password" class="control-label "></label>
+                                    <input asp-for="KVCTPTC.Password" class="form-control form-control-sm" id="txtPassword" />
+                                    <span asp-validation-for="KVCTPTC.Password" class="text-danger"></span>
+                                </div>
+                            </div>
                         </fieldset>
 
                         <div class=" pt-1 pb-1">
@@ -416,9 +400,6 @@
                         </div>
                     </div>
                 </form>
-
-
-
             </div>
             <!-- /.card-body -->
         </div>
@@ -445,7 +426,6 @@
     //$('.tuyenTQ').select2({
     //    theme: 'bootstrap4'
     //})
-
 </script>
 
 <!-- Validation -->
@@ -459,9 +439,9 @@
 
     });
 
-    // btnKhSearch
+    // btnKhSearch_ThemMoi
     $('.btnKhSearch_ThemMoi').click(function () {
-        alert('a');
+
         var maKhtext = '';
         var txtMaKh = '';
 
@@ -668,5 +648,4 @@
     }
 
     //// Get_DienGiai_By_TkNo_TkCo forward to service
-
 </script>

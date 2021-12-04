@@ -41,7 +41,7 @@ namespace KTTM.Services
 
         IEnumerable<TT621> GetAll();
 
-        IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo);
+        IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo, string username);
 
         IEnumerable<TT621> FindTT621s_IncludeTwice(long tamUngId);
 
@@ -274,7 +274,8 @@ namespace KTTM.Services
             return _unitOfWork.tT621Repository.GetAll();
         }
 
-        public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo)
+        public IEnumerable<TT621> FindTT621s_IncludeTwice_By_Date(string searchFromDate, string searchToDate, string maCn, string maKhCo,
+            string username)
         {
             List<TT621> list = new List<TT621>();
             // search date
@@ -292,7 +293,12 @@ namespace KTTM.Services
                     }
 
                     list = _unitOfWork.tT621Repository.FindTT621s_IncludeTwice_By_Date(fromDate, toDate).ToList();
-                    //list = list.Where(x => x.MaCn == maCn).ToList();
+
+                    if (username.ToLower() != "hongvt") // account !=
+                    {
+                        list = list.Where(x => x.MaCn == maCn).ToList();
+                    }
+
                     if (!string.IsNullOrEmpty(maKhCo))
                     {
                         list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()
