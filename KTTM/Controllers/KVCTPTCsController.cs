@@ -269,6 +269,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("LayDataCashierPartial")]
+        [ValidateAntiForgeryToken] // ko cho submit nhieu lan
         public async Task<IActionResult> LayDataCashierPartial_Post()
         {
             var kVPTCId = KVCTPCTVM.KVPTC.Id;
