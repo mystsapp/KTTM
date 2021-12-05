@@ -644,6 +644,7 @@ namespace KTTM.Controllers
             {
                 var dongCu = _tT621Service.GetByIdAsNoTracking(id_Dong_Da_Click);
                 TT621VM.TT621 = dongCu;
+                TT621VM.TT621.SoTienNT = tT621.SoTienNT;
             }
 
             return PartialView(TT621VM);
@@ -1204,6 +1205,10 @@ namespace KTTM.Controllers
                 tamUng.ConLai = 0;
                 tamUng.PhieuTT = kVCTPCT.SoCT;
                 await _tamUngService.UpdateAsync(tamUng);
+
+                // capnhat SoTU_DaTT vào kvctptc
+                kVCTPCT.SoTU_DaTT = tamUng.SoCT;
+                await _kVCTPTCService.UpdateAsync(kVCTPCT);
 
                 return Json(true);
             }
