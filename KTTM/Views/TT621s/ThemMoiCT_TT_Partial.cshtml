@@ -157,6 +157,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
+                                            <input asp-for="TT621.MaKhCo" type="hidden">
                                             <input asp-for="TT621.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo_ThemMoi" disabled>
                                             <span class="input-group-btn">
                                                 <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi disabled" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
@@ -192,14 +193,14 @@
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo_ThemMoi" disabled> <!--readonly-->
-                                        </div>
+                                    </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
                                         <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" disabled /> <!--readonly-->
-                                    </div>
+                                </div>
 
                                 }
                             </div>
@@ -210,8 +211,8 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <!--select2-->
-                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                    <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
@@ -220,7 +221,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -231,7 +232,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
@@ -254,10 +255,16 @@
                                     <span asp-validation-for="TT621.BoPhan" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <label asp-for="TT621.Sgtcode" class="control-label"></label>
                                     <input asp-for="TT621.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
                                     <span asp-validation-for="TT621.Sgtcode" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label asp-for="TT621.SoVe" class="control-label"></label>
+                                    <input asp-for="TT621.SoVe" class="form-control form-control-sm" id="txtSoVe" />
+                                    <span asp-validation-for="TT621.SoVe" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-2">
@@ -432,12 +439,12 @@
 
 <script>
 
-    // enter for search
+    @*// enter for search
     shortcut.add("Enter", function () {
 
             $('.btnKhSearch_ThemMoi').click()
 
-    });
+    });*@
 
     // btnKhSearch_ThemMoi
     $('.btnKhSearch_ThemMoi').click(function () {
@@ -619,6 +626,7 @@
                         createController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung
                         createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu); // get comment text
                         createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT); // check nut ketchuyen
+                        createController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
                     }
                     else {
                         toastr.error(response.message);

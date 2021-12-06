@@ -48,7 +48,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm phiếu TT - <span>@Model.KVPTC.MFieu</span></h1>
+                <h1>Thêm phiếu TT - <span>@Model.KVPTC.MFieu</span> - <span>@Model.KVPTC.SoCT</span></h1>
                 <input type="hidden" value="@Model.KVPTC.SoCT" id="kVPCTId_TT621CreateView" />
             </div>
             <div class="col-sm-6">
@@ -141,7 +141,7 @@
                             @foreach (var item in Model.TamUngs)
                             {
 
-                                <tr class="tamUngTr" data-id="@item.Id">
+                                <tr class="tamUngTr" id="@item.Id" data-id="@item.Id">
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>

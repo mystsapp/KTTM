@@ -233,13 +233,31 @@
                                     <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label asp-for="TT621.Sgtcode" class="control-label"></label>
                                     <input asp-for="TT621.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
                                     <span asp-validation-for="TT621.Sgtcode" class="text-danger"></span>
                                 </div>
+                                
+                                @if (Model.KVPTC.NgoaiTe == "VN")
+                                {
+                                    <div class="col-md-2">
+                                        <label asp-for="TT621.SoVe" class="control-label"></label>
+                                        <input asp-for="TT621.SoVe" class="form-control form-control-sm" id="txtSoVe" />
+                                        <span asp-validation-for="TT621.SoVe" class="text-danger"></span>
+                                    </div>
 
-                                <div class="col-md-3">
+                                }
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <label asp-for="TT621.SoVe" class="control-label"></label>
+                                        <input asp-for="TT621.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
+                                        <span asp-validation-for="TT621.SoVe" class="text-danger"></span>
+                                    </div>
+
+                                }
+                                <div class="col-md-2">
                                     <label asp-for="TT621.SoXe" class="control-label"></label>
                                     <input asp-for="TT621.SoXe" class="form-control form-control-sm" id="txtSoXe" />
                                     <span asp-validation-for="TT621.SoXe" class="text-danger"></span>

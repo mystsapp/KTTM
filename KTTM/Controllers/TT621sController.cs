@@ -456,6 +456,7 @@ namespace KTTM.Controllers
         {
             TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
             TT621VM.KVCTPTC = await _kVCTPTCService.GetById(tamUngId);
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
@@ -596,6 +597,7 @@ namespace KTTM.Controllers
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuTC);
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
             var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             if (TT621VM.KVCTPTC.KVPTC.MFieu == "C")
             {
@@ -749,6 +751,7 @@ namespace KTTM.Controllers
                 return NotFound();
 
             TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuTC);
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
             TT621VM.TT621 = tT621;
 

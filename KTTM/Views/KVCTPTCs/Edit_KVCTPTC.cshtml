@@ -116,7 +116,7 @@
                             {
                                 <!--select2-->
                                 <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
-                                        asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
+                                    asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
                                 </select>
                             }
 
@@ -207,7 +207,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.MaKhCo" class="control-label "></label>
                                 @*<select asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
+                                    asp-items="@(new SelectList(Model.KhachHangs, "Code", "Code"))" disabled>
                                     </select>*@
                                 <input type="text" class="form-control form-control-sm" disabled />
                                 <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
@@ -224,19 +224,19 @@
                     <div class=" row">
                         @if (Model.KVPTC.MFieu == "T")
                         {
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                                 @*<select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm " disabled
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                     </select>*@
                                 <input asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm " readonly />
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
                             </div>
@@ -244,18 +244,18 @@
                         }
                         else
                         {
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                                 @*<select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm " disabled
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                     </select>*@
                                 <input asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm " readonly />
                                 <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
@@ -275,6 +275,25 @@
                             <input asp-for="KVCTPTC.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
                             <span asp-validation-for="KVCTPTC.Sgtcode" class="text-danger"></span>
                         </div>
+                        @if (Model.KVPTC.NgoaiTe == "VN")
+                        {
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
+                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" />
+                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
+                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
+                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                            </div>
+
+                        }
+
                     </div>
 
                     <div class=" row">
@@ -484,184 +503,184 @@
 
 @section Scripts{
     @*<script src="~/js/Admin/KVCTPCT/editController.js"></script>*@
-    <script src="~/js/Admin/Home/indexController.js"></script>
-    <script src="~/js/Admin/serviceController.js"></script>
+<script src="~/js/Admin/Home/indexController.js"></script>
+<script src="~/js/Admin/serviceController.js"></script>
 
-    <script>
-        //$('#txtMaKH').select2()
-        $('.select2').select2()
-        //$('#ddlMaKhCo1').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-        //$('.tuyenTQ').select2({
-        //    theme: 'bootstrap4'
-        //})
-    </script>
+<script>
+    //$('#txtMaKH').select2()
+    $('.select2').select2()
+    //$('#ddlMaKhCo1').select2()
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    })
+    //$('.tuyenTQ').select2({
+    //    theme: 'bootstrap4'
+    //})
+</script>
 
-    <!-- Validation -->
+<!-- Validation -->
 
-    <script>
-        //$(".maskInput").mask("99/99/9999");
+<script>
+    //$(".maskInput").mask("99/99/9999");
 
-        // enter for search
-        shortcut.add("Enter", function () {
-            var btnKhSearch_Status = $('#btnKhSearch').hasClass('disabled');
-            if (!btnKhSearch_Status) {
-                $('#btnKhSearch').click()
-            }
+    // enter for search
+    shortcut.add("Enter", function () {
+        var btnKhSearch_Status = $('#btnKhSearch').hasClass('disabled');
+        if (!btnKhSearch_Status) {
+            $('#btnKhSearch').click()
+        }
 
-        });
+    });
 
-        $('#btnKhSearch').click(function () {
-            debugger
-            var maKhtext = '';
-            var txtMaKh = '';
+    $('#btnKhSearch').click(function () {
+        debugger
+        var maKhtext = '';
+        var txtMaKh = '';
 
-            if ($(this).data('name') === 'maKhNo') { // search of no
-                maKhtext = $('#txtMaKhNo').val();
-                txtMaKh = 'maKhNo';
-            }
-            if ($(this).data('name') === 'maKhCo') { // search of co
-                maKhtext = $('#txtMaKhCo').val();
-                txtMaKh = 'maKhCo';
-            }
+        if ($(this).data('name') === 'maKhNo') { // search of no
+            maKhtext = $('#txtMaKhNo').val();
+            txtMaKh = 'maKhNo';
+        }
+        if ($(this).data('name') === 'maKhCo') { // search of co
+            maKhtext = $('#txtMaKhCo').val();
+            txtMaKh = 'maKhCo';
+        }
 
-            $('#hidTxtMaKh').val(txtMaKh);
+        $('#hidTxtMaKh').val(txtMaKh);
 
-            KhachHangSearch(maKhtext, txtMaKh);
-        })
+        KhachHangSearch(maKhtext, txtMaKh);
+    })
 
-        $('#txtMaKhNo').blur(function () {
+    $('#txtMaKhNo').blur(function () {
 
+        maKhtext = $(this).val();
+
+        //KhachHang_By_Code(maKhtext);
+        indexController.KhachHang_By_Code(maKhtext);
+    })
+
+    $('#txtMaKhCo').blur(function () {
+
+        var tkCo = '@Model.KVCTPTC.TKCo';
+        if (tkCo !== "1411") {
             maKhtext = $(this).val();
 
-            //KhachHang_By_Code(maKhtext);
             indexController.KhachHang_By_Code(maKhtext);
-        })
-
-        $('#txtMaKhCo').blur(function () {
-
-            var tkCo = '@Model.KVCTPTC.TKCo';
-            if (tkCo !== "1411") {
-                maKhtext = $(this).val();
-
-                indexController.KhachHang_By_Code(maKhtext);
-            }
-        })
-
-        $('#ddlNgoaiTe').change(function () {
-            loaiTien = $(this).val();
-            loaiPhieu = '@Model.KVPTC.MFieu';
-            serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
-        })
-
-        $('#frm_KVCTPCT_Edit').validate({
-            //rules: {
-            //    ddlTkNo: {
-            //        required: true
-            //    },
-            //    ddlTkCo: {
-            //        required: true
-            //    }
-
-            //},
-            //messages: {
-            //    ddlTkNo: {
-            //        required: "Please enter a tkno"
-            //    },
-            //    ddlTkCo: {
-            //        required: "Please enter a tkco"
-            //    }
-            //},
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-               // error.addClass('invalid-feedback');
-                // element.closest('.row').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
-
-        //$('#ddlTkNo').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        //required: "Tài khoãn không được để trống"
-        //    }
-        //});
-
-        //$('#ddlTkCo').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        //required: "Tài khoãn không được để trống"
-        //    }
-        //});
-        ////$('#ddlTkNo-error').removeClass('invalid-feedback') btnKVCTPCTEditPartial_Save
-
-        // sotien
-        $('#txtSoTienNT').blur(function () {
-            serviceController.TinhSoTien();
-
-        })
-
-        $('#txtTyGia').blur(function () {
-            serviceController.TinhSoTien();
-
-        })
-        // sotien
-        // btnKVCTPCTEditPartial_Save
-        $('#btnKVCTPCTEditPartial_Save').off('click').on('click', function () {
-            $('#frm_KVCTPCT_Edit').submit();
-        })
-
-        // AutoSgtcode
-        $('#txtSgtcode').blur(function () {
-            sgtcodeText = $(this).val();
-            serviceController.AutoSgtcode(sgtcodeText);
-        })
-
-        // get dien giai by tkno tkco
-        $('#ddlTkNo').change(function () {
-
-            tkNo = $(this).val();
-            tkCo = $('#ddlTkCo').val();
-
-            serviceController.DdlTkNo(tkNo);
-            serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-        })
-        $('#ddlTkCo').change(function () {
-            tkCo = $(this).val();
-            tkNo = $('#ddlTkNo').val();
-
-            serviceController.DdlTkCo(tkCo);
-            serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-        })
-        // get dien giai by tkno tkco
-
-        // VAT ==> DSKhongVAT
-        $('#txtVAT').blur(function () {
-            vat = $(this).val();
-            soTien = $('#txtSoTien').val();
-
-            serviceController.TxtVAT_Blur(vat, soTien);
-        })
-
-        //// Get_DienGiai_By_TkNo_TkCo forward to service
-
-        function KhachHangSearch(code) {
-            $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
-
-                $('#khachHang_Modal').modal('show');
-                $('.khachHang_Modal_Body').html(data);
-                $('#khachHang_Modal').draggable();
-            });
         }
-    </script>
+    })
+
+    $('#ddlNgoaiTe').change(function () {
+        loaiTien = $(this).val();
+        loaiPhieu = '@Model.KVPTC.MFieu';
+        serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
+    })
+
+    $('#frm_KVCTPCT_Edit').validate({
+        //rules: {
+        //    ddlTkNo: {
+        //        required: true
+        //    },
+        //    ddlTkCo: {
+        //        required: true
+        //    }
+
+        //},
+        //messages: {
+        //    ddlTkNo: {
+        //        required: "Please enter a tkno"
+        //    },
+        //    ddlTkCo: {
+        //        required: "Please enter a tkco"
+        //    }
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+           // error.addClass('invalid-feedback');
+            // element.closest('.row').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    //$('#ddlTkNo').rules('add', {
+    //    required: true,
+    //    messages: {
+    //        //required: "Tài khoãn không được để trống"
+    //    }
+    //});
+
+    //$('#ddlTkCo').rules('add', {
+    //    required: true,
+    //    messages: {
+    //        //required: "Tài khoãn không được để trống"
+    //    }
+    //});
+    ////$('#ddlTkNo-error').removeClass('invalid-feedback') btnKVCTPCTEditPartial_Save
+
+    // sotien
+    $('#txtSoTienNT').blur(function () {
+        serviceController.TinhSoTien();
+
+    })
+
+    $('#txtTyGia').blur(function () {
+        serviceController.TinhSoTien();
+
+    })
+    // sotien
+    // btnKVCTPCTEditPartial_Save
+    $('#btnKVCTPCTEditPartial_Save').off('click').on('click', function () {
+        $('#frm_KVCTPCT_Edit').submit();
+    })
+
+    // AutoSgtcode
+    $('#txtSgtcode').blur(function () {
+        sgtcodeText = $(this).val();
+        serviceController.AutoSgtcode(sgtcodeText);
+    })
+
+    // get dien giai by tkno tkco
+    $('#ddlTkNo').change(function () {
+
+        tkNo = $(this).val();
+        tkCo = $('#ddlTkCo').val();
+
+        serviceController.DdlTkNo(tkNo);
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+    })
+    $('#ddlTkCo').change(function () {
+        tkCo = $(this).val();
+        tkNo = $('#ddlTkNo').val();
+
+        serviceController.DdlTkCo(tkCo);
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+    })
+    // get dien giai by tkno tkco
+
+    // VAT ==> DSKhongVAT
+    $('#txtVAT').blur(function () {
+        vat = $(this).val();
+        soTien = $('#txtSoTien').val();
+
+        serviceController.TxtVAT_Blur(vat, soTien);
+    })
+
+    //// Get_DienGiai_By_TkNo_TkCo forward to service
+
+    function KhachHangSearch(code) {
+        $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
+
+            $('#khachHang_Modal').modal('show');
+            $('.khachHang_Modal_Body').html(data);
+            $('#khachHang_Modal').draggable();
+        });
+    }
+</script>
 }

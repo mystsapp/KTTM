@@ -223,6 +223,24 @@ var createController = {
         });
     },
 
+    Disabled_TU_Khong_TT: function (tamUngId) {
+        var idList = [];
+        $.each($('.tamUngTr'), function (i, item) {
+            var tamUngId_item = $(item).data('id');
+
+            if (parseFloat(tamUngId) !== parseFloat(tamUngId_item)) {
+                //idList.push({
+                //    Id: tamUngId_item
+                //});
+                //console.log(tamUngId_item);
+                //console.log('#' + tamUngId_item);
+                $('#' + tamUngId_item).css({
+                    'pointer-events': 'none',
+                    'background-color': 'grey'
+                });
+            }
+        });
+    },
     Check_KetChuyenBtnStatus: function (tamUngId, soTienNT, loaiPhieu) {
         $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT, loaiPhieu: loaiPhieu }, function (status) {
             $('#btnKetChuyen').attr('disabled', status)

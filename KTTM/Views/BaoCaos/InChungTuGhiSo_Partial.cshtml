@@ -69,11 +69,12 @@
                 @*@foreach (var item in Model.TT621s.ToList())*@
                 @foreach (var item in (List<TT621GroupBy_PhieuTC>)ViewBag.tT621GroupBy_PhieuTCs)
                 {
-
+                    //var maKh = string.IsNullOrEmpty(item.TT621s.FirstOrDefault().MaKhCo) ? item.TT621s.FirstOrDefault().MaKhNo : item.TT621s.FirstOrDefault().MaKhCo;
                     <tr class="khachhangs-cursor-pointer " data-id="@item.TT621s.FirstOrDefault().Id">
 
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.TT621s.FirstOrDefault().SoCT)</td>
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.Raw(item.TT621s.FirstOrDefault().NgayCT.Value.ToString("dd/MM/yyyy"))</td>
+                        @*<td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@maKh</td>*@
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.TT621s.FirstOrDefault().MaKhCo)</td>
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.TT621s.FirstOrDefault().TamUng.KVCTPTC.KVPTC.HoTen)</td>
                         <td class="tdVal_TT621" data-id="@item.TT621s.FirstOrDefault().Id">@Html.DisplayFor(m => item.PhieuTC)</td>

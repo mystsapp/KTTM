@@ -111,7 +111,7 @@
                                     {
                                         <!--select2-->
                                         <select asp-for="TT621.TKCo" class="form-control form-control-sm select2"
-                                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
+                                            asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
                                         </select>
                                     }
 
@@ -218,7 +218,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
@@ -227,7 +227,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -238,7 +238,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
@@ -246,7 +246,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         @*<select asp-for="TT621.CoQuay" class="form-control form-control-sm select2" disabled
-                                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                             </select>*@
                                         <input asp-for="TT621.CoQuay" class="form-control form-control-sm " readonly />
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
@@ -261,12 +261,30 @@
                                     <span asp-validation-for="TT621.BoPhan" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-2">
                                     <label asp-for="TT621.Sgtcode" class="control-label"></label>
                                     <input asp-for="TT621.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
                                     <span asp-validation-for="TT621.Sgtcode" class="text-danger"></span>
                                 </div>
 
+                                @if (Model.KVPTC.NgoaiTe == "VN")
+                                {
+                                    <div class="col-md-2">
+                                        <label asp-for="TT621.SoVe" class="control-label"></label>
+                                        <input asp-for="TT621.SoVe" class="form-control form-control-sm" id="txtSoVe" />
+                                        <span asp-validation-for="TT621.SoVe" class="text-danger"></span>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <label asp-for="TT621.SoVe" class="control-label"></label>
+                                        <input asp-for="TT621.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
+                                        <span asp-validation-for="TT621.SoVe" class="text-danger"></span>
+                                    </div>
+
+                                }
                                 <div class="col-md-2">
                                     <label asp-for="TT621.SoXe" class="control-label"></label>
                                     <input asp-for="TT621.SoXe" class="form-control form-control-sm" id="txtSoXe" />
@@ -617,9 +635,9 @@
 
                         $('#CapNhatCT_TT_Modal').modal('hide');
                         //debugger
-                        @*soCT = '@Model.KVCTPCT.KVPCTId';
+    @*soCT = '@Model.KVCTPCT.KVPCTId';
 
-                            indexController.Load_KVCTPCTPartial(soCT);*@
+        indexController.Load_KVCTPCTPartial(soCT);*@
                         tamUngId = $('#hidTamUngId').val();
                         soTienNT = @Model.KVCTPTC.SoTienNT;
                         createController.GetTT621s_By_TamUng(tamUngId); // get tt621 theo tamung

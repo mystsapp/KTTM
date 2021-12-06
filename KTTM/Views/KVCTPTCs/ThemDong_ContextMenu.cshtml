@@ -180,7 +180,7 @@
 
                     <div class=" row">
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                             <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
@@ -188,7 +188,7 @@
                             <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                             @*<select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm select2"
                                         asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
@@ -210,7 +210,24 @@
                             <input asp-for="KVCTPTC.Sgtcode" class="form-control form-control-sm" id="txtSgtcode" />
                             <span asp-validation-for="KVCTPTC.Sgtcode" class="text-danger"></span>
                         </div>
+                        @if (Model.KVPTC.NgoaiTe == "VN")
+                        {
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
+                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" />
+                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                            </div>
 
+                        }
+                        else
+                        {
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
+                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
+                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                            </div>
+
+                        }
                     </div>
 
                     <div class=" row">
