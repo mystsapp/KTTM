@@ -55,16 +55,22 @@
                 <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().LoaiThe)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().CardNumber)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().Id)</th>
+                @if (user.Username == "hongvt")
+                {
+                    <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTU_DaTT)</th>
+                    <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTT_DaTao)</th>
+
+                }
             </tr>
         </thead>
         <tbody>
             @if (Model.KVCTPTCs != null)
             {
                 @foreach (var item in Model.KVCTPTCs)
-                {
-                    if (string.IsNullOrEmpty(item.SoTU_DaTT)) // chua TT (chua ketchuyen)
+                { // SoTU_DaTT: da ketchuyen | SoTT_DaTao: da tao 1 TT nao do'
+                    if (string.IsNullOrEmpty(item.SoTU_DaTT) && string.IsNullOrEmpty(item.SoTT_DaTao)) // chua TT (chua ketchuyen)
                     {
-                        <tr class="ctphieu-cursor-pointer " data-sotudatt="@item.SoTU_DaTT">
+                        <tr class="ctphieu-cursor-pointer " @*data-sotudatt="@item.SoTT_DaTao"*@>
 
                             <td>
                                 <div class="btn-group text-white" role="group">
@@ -144,11 +150,17 @@
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiThe)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                            @if (user.Username == "hongvt")
+                            {
+                                <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
+                                <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
+
+                            }
                         </tr>
                     }
                     else // da TT (ket chyen)
                     {
-                        <tr class="ctphieu-cursor-pointer text-info" data-sotudatt="@item.SoTU_DaTT">
+                        <tr class="ctphieu-cursor-pointer text-info">  <!-- data-sotudatt="item.SoTU_DaTT"-->
 
                             <td>
                                 <div class="btn-group text-white" role="group">
@@ -187,7 +199,7 @@
                                         <input type="hidden" id="hidTourId" name="id" />
                                         <input type="hidden" id="hidStrUrl" name="strUrl" value="Model.StrUrl" />
                                     </form>-->
-                                </div>
+                    </div>
                             </td>
 
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
@@ -230,6 +242,12 @@
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiThe)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                            @if (user.Username == "hongvt")
+                            {
+                                <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
+                                <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTT_DaTao)</td>
+
+                            }
                         </tr>
                     }
 

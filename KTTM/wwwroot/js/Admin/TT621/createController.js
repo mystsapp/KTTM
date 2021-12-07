@@ -104,7 +104,7 @@ var createController = {
             $('#btnThemMoiCT').attr('disabled', true);
             $('#btnCapNhatCT').attr('disabled', true);
 
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
+            kVCTPTCId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
             tamUngId = $('#hidTamUngId').val();
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
@@ -112,7 +112,7 @@ var createController = {
 
             bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
                 if (result) {
-                    $.post('/TT621s/Delete', { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (response) {
+                    $.post('/TT621s/Delete', { tt621Id: tt621Id, kVCTPTCId_PhieuTC: kVCTPTCId_PhieuTC }, function (response) {
                         //console.log(response);
                         if (response.status) {
                             toastr.success('Xoá thành công', 'Xoá!');
@@ -226,15 +226,15 @@ var createController = {
     Disabled_TU_Khong_TT: function (tamUngId) {
         var idList = [];
         $.each($('.tamUngTr'), function (i, item) {
-            var tamUngId_item = $(item).data('id');
+            var id = $(item).data('id');
 
-            if (parseFloat(tamUngId) !== parseFloat(tamUngId_item)) {
+            if (parseFloat(tamUngId) !== parseFloat(id)) {
                 //idList.push({
                 //    Id: tamUngId_item
                 //});
                 //console.log(tamUngId_item);
                 //console.log('#' + tamUngId_item);
-                $('#' + tamUngId_item).css({
+                $('#' + id).css({
                     'pointer-events': 'none',
                     'background-color': 'grey'
                 });

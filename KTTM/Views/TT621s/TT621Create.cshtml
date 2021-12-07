@@ -141,7 +141,7 @@
                             @foreach (var item in Model.TamUngs)
                             {
 
-                                <tr class="tamUngTr" id="@item.Id" data-id="@item.Id">
+                                <tr class="tamUngTr" id="@item.Id" data-id="@item.Id" data-soTU_DaTT="@item.KVCTPTC.SoTU_DaTT">
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>

@@ -151,18 +151,21 @@ namespace KTTM.Controllers
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
             var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVCTPCT.KVPTCId);
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
-            if (tamUng == null) // chưa them
+            if (tamUng == null) // chưa them TU
+            {
                 if (kVPCT.MFieu == "C")
                 {
                     if (kVCTPCT.TKNo.Trim() == "1411" ||
                         kVCTPCT.TKNo.Trim() == "1412") // tamung VND || NgoaiTe
                     {
-                        if (await CheckThanhToan(kVCTPCT))
+                        if (string.IsNullOrEmpty(kVCTPCT.SoTT_DaTao)) // chua tao TT nao het
                         {
-                            return Json(true); // cho TU
+                            return Json(true);
                         }
                     }
                 }
+            }
+
             return Json(false);
         }
 
@@ -195,12 +198,15 @@ namespace KTTM.Controllers
 
         private async Task<bool> CheckThanhToan(KVCTPTC kVCTPTC)
         {
-            var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVCTPTC.SoCT, kVCTPTC.MaCn);
-            if (tamUngs.Count() > 0) // ket chuyen rồi
-            {
-                return false; // TT rồi -> ko cho TT nua
-            }
-            return true; // chua TT -> cho TT
+            if (!string.IsNullOrEmpty(kVCTPTC.SoTU_DaTT)) return false; // TT rồi -> ko cho TT nua
+            else return true;  // chua ketchuyen TT -> cho TT
+
+            //var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVCTPTC.SoCT, kVCTPTC.MaCn);
+            //if (tamUngs.Count() > 0) // ket chuyen rồi
+            //{
+            //    return false; // TT rồi -> ko cho TT nua
+            //}
+            //return true; // chua TT -> cho TT
 
             //if (kVCTPTC.TKNo == "1411" || kVCTPTC.TKNo == "1412") // thanh toan phieu chi or phieu thu
             //{

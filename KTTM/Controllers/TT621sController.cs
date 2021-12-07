@@ -726,6 +726,11 @@ namespace KTTM.Controllers
             {
                 await _tT621Service.CreateAsync(TT621VM.TT621);
 
+                // capnhat SoTU_DaTT vào kvctptc
+                KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(TT621VM.KVCTPTC.Id); // kVCTPCTId_PhieuTC
+                kVCTPTC.SoTT_DaTao = TT621VM.TT621.SoCT;
+                await _kVCTPTCService.UpdateAsync(kVCTPTC);
+
                 return Json(new
                 {
                     status = true
@@ -1015,7 +1020,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Delete(long tt621Id/*, long kVCTPCTId_PhieuTC*/)
+        public async Task<JsonResult> Delete(long tt621Id, long kVCTPTCId_PhieuTC)
         {
             if (tt621Id == 0)
                 return Json(new
@@ -1036,8 +1041,12 @@ namespace KTTM.Controllers
             try
             {
                 await _tT621Service.DeleteAsync(tT621);
-
                 // nếu ketchuyen roi ==> ko xoá được
+
+                // capnhat SoTU_DaTT vào kvctptc
+                KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(kVCTPTCId_PhieuTC); // kVCTPCTId_PhieuTC
+                kVCTPTC.SoTT_DaTao = "";
+                await _kVCTPTCService.UpdateAsync(kVCTPTC);
 
                 return Json(new
                 {

@@ -15,7 +15,6 @@ namespace Data.Models_KTTM
         public DbSet<KVCTPTC> KVCTPTCs { get; set; }
         public DbSet<TamUng> TamUngs { get; set; }
         public DbSet<TT621> TT621s { get; set; }
-        public DbSet<TT621_Tmp> TT621_Tmps { get; set; }
         public DbSet<TonQuy> TonQuies { get; set; }
         //public DbSet<KVCLTG> KVCLTGs { get; set; }
     }
