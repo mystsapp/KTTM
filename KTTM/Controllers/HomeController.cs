@@ -14,6 +14,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using NumToWords;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
 
 //using Data.Models_KTTM_1;
 
@@ -27,13 +31,14 @@ namespace KTTM.Controllers
         private readonly IKVCTPTCService _kVCTPTCService;
         private readonly ITamUngService _tamUngService;
         private readonly ITT621Service _tT621Service;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ITonQuyService _tonQuyService;
 
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
         public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService,
-            ITamUngService tamUngService, ITT621Service tT621Service,
+            ITamUngService tamUngService, ITT621Service tT621Service, IWebHostEnvironment webHostEnvironment,
             ITonQuyService tonQuyService)
         {
             //_kTTM_1Context = kTTM_1Context;
@@ -41,6 +46,7 @@ namespace KTTM.Controllers
             _kVCTPTCService = kVCTPTCService;
             _tamUngService = tamUngService;
             _tT621Service = tT621Service;
+            _webHostEnvironment = webHostEnvironment;
             _tonQuyService = tonQuyService;
             HomeVM = new HomeViewModel()
             {
@@ -745,6 +751,171 @@ namespace KTTM.Controllers
 
             return View(HomeVM);
         }
+
+        public FileResult DownloadExcel()
+        {
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string folderPath = webRootPath + @"\Doc\";
+            string newPath = Path.Combine(webRootPath, folderPath, "ExcelAttach.xlsx");
+
+            //return File(newPath, "application/vnd.ms-excel", "Book3.xlsx");
+
+            string filePath = newPath;
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/force-download", "File_mau.xlsx");
+        }
+
+        //public JsonResult UploadExcelAttach()
+        //{
+        //    var fileCheck = Request.Form.Files;
+        //    if (fileCheck.Count > 0)
+        //    {
+        //        // upload excel
+        //        UploadExcelAsync(TourVM.Tour.Sgtcode);
+        //        // upload excel
+
+        //    }
+
+        //}
+
+        //public void UploadExcelAsync(string sgtCode)
+        //{
+        //    var tour = _unitOfWork.tourRepository.Find(x => x.Sgtcode == sgtCode).FirstOrDefault();
+        //    IFormFile file = Request.Form.Files[0];
+        //    string folderName = "excelfolder";
+        //    string webRootPath = _webHostEnvironment.WebRootPath;
+        //    string newPath = Path.Combine(webRootPath, folderName);
+
+        //    string folderPath = webRootPath + @"\excelfolder\";
+        //    FileInfo fileInfo = new FileInfo(Path.Combine(folderPath, file.FileName));
+
+        //    if (!Directory.Exists(newPath))
+        //    {
+        //        Directory.CreateDirectory(newPath);
+        //    }
+        //    if (file.Length > 0)
+        //    {
+        //        string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+        //        string fullPath = Path.Combine(newPath, file.FileName);
+        //        using (var stream = new FileStream(fullPath, FileMode.Create))
+        //        {
+        //            file.CopyTo(stream);
+        //        }
+
+        //        using (ExcelPackage package = new ExcelPackage(fileInfo))
+        //        {
+        //            ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
+        //            //var list = workSheet.Cells.ToList();
+        //            //var table = workSheet.Tables.ToList();
+        //            int totalRows = workSheet.Dimension.Rows;
+
+        //            List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
+
+        //            for (int i = 2; i <= totalRows; i++)
+        //            {
+        //                var kVCTPTC = new KVCTPTC();
+
+        //                if (workSheet.Cells[i, 1].Value != null)
+        //                    khachHang.STT = int.Parse(workSheet.Cells[i, 1].Value.ToString());
+
+        //                if (workSheet.Cells[i, 2].Value != null)
+        //                    khachHang.MaKH = workSheet.Cells[i, 2].Value.ToString();
+
+        //                if (workSheet.Cells[i, 3].Value != null)
+        //                    khachHang.TenKH = workSheet.Cells[i, 3].Value.ToString();
+
+        //                if (workSheet.Cells[i, 4].Value != null)
+        //                {
+        //                    DateTime ngaySinh;
+        //                    try
+        //                    {
+        //                        ngaySinh = DateTime.Parse(workSheet.Cells[i, 4].Value.ToString());
+        //                        khachHang.NgaySinh = ngaySinh;
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        khachHang.NgaySinh = null;
+        //                    }
+        //                }
+
+        //                if (workSheet.Cells[i, 5].Value != null)
+        //                    khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString().ToLower() == "nam") ? true : false;
+
+        //                if (workSheet.Cells[i, 6].Value != null)
+        //                    khachHang.QuocTich = workSheet.Cells[i, 6].Value.ToString();
+
+        //                if (workSheet.Cells[i, 7].Value != null)
+        //                    khachHang.HoChieu = workSheet.Cells[i, 7].Value.ToString();
+
+        //                if (workSheet.Cells[i, 8].Value != null)
+        //                    khachHang.CMND = int.Parse(workSheet.Cells[i, 8].Value.ToString());
+
+        //                if (workSheet.Cells[i, 9].Value != null)
+        //                    khachHang.LoaiPhong = workSheet.Cells[i, 9].Value.ToString();
+
+        //                if (workSheet.Cells[i, 10].Value != null)
+        //                    khachHang.DiaChi = workSheet.Cells[i, 10].Value.ToString();
+
+        //                if (workSheet.Cells[i, 11].Value != null)
+        //                    khachHang.Visa = workSheet.Cells[i, 11].Value.ToString();
+
+        //                if (workSheet.Cells[i, 12].Value != null)
+        //                    khachHang.YeuCauVisa = workSheet.Cells[i, 12].Value.ToString();
+
+        //                //if (workSheet.Cells[i, 20].Value != null)
+        //                khachHang.TourId = tour.Id;
+        //                khachHang.Sgtcode = sgtCode;
+
+        //                khachHangs.Add(khachHang);
+        //            }
+
+        //            var abc = "";
+
+        //            //_db.Customers.AddRange(customerList);
+        //            //_db.SaveChanges();
+        //            try
+        //            {
+        //                _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs); // and savechange
+        //                List<Khachtour> khachtours = new List<Khachtour>();
+        //                foreach (var item in khachHangs)
+        //                {
+        //                    khachtours.Add(new Khachtour()
+        //                    {
+        //                        Sgtcode = sgtCode,
+        //                        Stt = item.STT,
+        //                        Makh = item.MaKH,
+        //                        Hoten = item.TenKH,
+        //                        Ngaysinh = item.NgaySinh,
+        //                        Phai = item.GioiTinh,
+        //                        Diachi = item.DiaChi,
+        //                        Quoctich = item.QuocTich,
+        //                        Loaiphong = item.LoaiPhong,
+        //                        Cmnd = item.CMND.ToString(),
+        //                        Hochieu = item.HoChieu,
+        //                        Del = false,
+        //                        Visa = item.Visa,
+        //                        YeuCauVisa = item.YeuCauVisa
+        //                    });
+        //                }
+        //                _unitOfWork.khachTourRepository.CreateRange(khachtours);// and savechange
+        //                //await _unitOfWork.Complete();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                throw ex;
+        //            }
+        //        }
+        //    }
+        //    if (System.IO.File.Exists(fileInfo.ToString()))
+        //        System.IO.File.Delete(fileInfo.ToString());
+
+        //    //return Json(new
+        //    //{
+        //    //    status = true
+        //    //});
+        //}
 
         public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
         {
