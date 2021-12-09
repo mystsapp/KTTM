@@ -1,4 +1,6 @@
-﻿@model HomeViewModel
+﻿const { Toast } = require("../../wwwroot/lib/bootstrap/dist/js/bootstrap.bundle");
+
+@model HomeViewModel
 
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
@@ -320,6 +322,35 @@
     function KVCTPCT_Tbl() { // tab href
         location.href = "#KVCTPCT_Tbl";
     }
+
+    $('#uploadExcelAttach_Submit').off('click').on('click', function(){
+        
+        var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#fUpload').val();
+            if (filename.length !== 0) {
+                var extension = filename.replace(/^.*\./, '');
+                // kiem tra dinh dang
+                if ($.inArray(extension, fileExtension) === -1) {
+                    bootbox.alert({
+                        size: "small",
+                        title: "Infomation",
+                        message: "Chọn chưa đúng định dạng <b> Excel! </b>"
+                    });
+                    
+                    return false;
+                }
+                else{
+                    $.post('Home/UploadExcelAttach', function(response){
+                        if(response.status){
+                            toastr.success('Attach thành công!');
+                        }else{
+                            toastr.error(response.message);
+                        }
+                    })
+                }
+            }
+            
+    })
 
 </script>
 

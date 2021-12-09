@@ -752,7 +752,7 @@ namespace KTTM.Controllers
             return View(HomeVM);
         }
 
-        public FileResult DownloadExcel()
+        public FileResult DownloadExcel() // thao
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
             string folderPath = webRootPath + @"\Doc\";
@@ -767,22 +767,192 @@ namespace KTTM.Controllers
             return File(fileBytes, "application/force-download", "File_mau.xlsx");
         }
 
-        //public JsonResult UploadExcelAttach()
+        [HttpPost]
+        public async Task<JsonResult> UploadExcelAttach() // thao
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            var fileCheck = Request.Form.Files;
+            if (fileCheck.Count > 0)
+            {
+                KVPTC kVPTC = new KVPTC();
+                // tao phieuchi
+                kVPTC.Create = DateTime.Now;
+                kVPTC.LapPhieu = user.Username;
+                kVPTC.MaCn = user.Macn;
+                kVPTC.MFieu = "C";
+                kVPTC.NgayCT = DateTime.Now;
+                kVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
+                kVPTC.NgoaiTe = "VN";
+                kVPTC.HoTen = "Attach Excel"; // thao
+                kVPTC.Phong = "KT";
+
+                // next SoCT --> bat buoc phai co'
+                kVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
+                                                                     // next SoCT
+
+                kVPTC.LapPhieu = user.Username;
+                // ghi log
+                kVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+                KVPTC kVPTC_Return = new KVPTC();
+                try
+                {
+                    //await _kVPTCService.CreateAsync(KVCTPCTVM.KVPTC); // save
+                    kVPTC_Return = await _kVPTCService.CreateAsync_ReturnEntity(kVPTC);
+                }
+                catch (Exception ex)
+                {
+                    SetAlert(ex.Message, "error");
+                    return Json(new
+                    {
+                        status = false,
+                        message = ex.Message
+                    });
+                }
+                // tao phieuchi
+
+                #region upload excel
+
+                // var kVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
+                IFormFile file = Request.Form.Files[0];
+                string folderName = "excelfolder";
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+
+                string folderPath = webRootPath + @"\excelfolder\";
+                FileInfo fileInfo = new FileInfo(Path.Combine(folderPath, file.FileName));
+
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+                if (file.Length > 0)
+                {
+                    string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+                    string fullPath = Path.Combine(newPath, file.FileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    using (ExcelPackage package = new ExcelPackage(fileInfo))
+                    {
+                        ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
+                        //var list = workSheet.Cells.ToList();
+                        //var table = workSheet.Tables.ToList();
+                        int totalRows = workSheet.Dimension.Rows;
+
+                        List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
+
+                        for (int i = 2; i <= totalRows; i++)
+                        {
+                            var kVCTPTC = new KVCTPTC();
+
+                            if (workSheet.Cells[i, 1].Value != null)
+                                kVCTPTC.Sgtcode = workSheet.Cells[i, 1].Value.ToString();
+
+                            if (workSheet.Cells[i, 2].Value != null)
+                                kVCTPTC.HTTC = workSheet.Cells[i, 2].Value.ToString();
+
+                            if (workSheet.Cells[i, 3].Value != null)
+                                kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 3].Value.ToString());
+
+                            if (workSheet.Cells[i, 4].Value != null)
+                                kVCTPTC.TKNo = workSheet.Cells[i, 4].Value.ToString();
+                            kVCTPTC.TKCo = "111100000000";
+
+                            if (workSheet.Cells[i, 5].Value != null)
+                                kVCTPTC.MaKhNo = workSheet.Cells[i, 5].Value.ToString();
+
+                            kVCTPTC.MaKh = kVCTPTC.MaKhNo;
+
+                            if (workSheet.Cells[i, 6].Value != null)
+                                kVCTPTC.BoPhan = workSheet.Cells[i, 6].Value.ToString();
+
+                            if (workSheet.Cells[i, 7].Value != null)
+                                kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 7].Value.ToString();
+
+                            if (workSheet.Cells[i, 8].Value != null)
+                                kVCTPTC.SoCTGoc = workSheet.Cells[i, 8].Value.ToString();
+
+                            if (workSheet.Cells[i, 9].Value != null)
+                                kVCTPTC.KyHieu = workSheet.Cells[i, 9].Value.ToString();
+
+                            if (workSheet.Cells[i, 10].Value != null)
+                                kVCTPTC.MauSoHD = workSheet.Cells[i, 10].Value.ToString();
+
+                            if (workSheet.Cells[i, 11].Value != null)
+                            {
+                                DateTime ngayCT;
+                                try
+                                {
+                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 11].Value.ToString());
+                                    kVCTPTC.NgayCTGoc = ngayCT;
+                                }
+                                catch (Exception ex)
+                                {
+                                    kVCTPTC.NgayCTGoc = null;
+                                }
+                            }
+
+                            //if (workSheet.Cells[i, 20].Value != null)
+                            kVCTPTC.KVPTCId = kVPTC_Return.Id;
+                            // khachhang
+                            var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+                            if (supplier != null)
+                            {
+                                kVCTPTC.TenKH = supplier.Name;
+                                kVCTPTC.MsThue = supplier.Taxcode;
+                                kVCTPTC.DiaChi = supplier.Address;
+                            }
+                            // khachhang
+
+                            kVCTPTCs.Add(kVCTPTC);
+                        }
+                        try
+                        {
+                            await _kVCTPTCService.CreateRange(kVCTPTCs);
+
+                            if (System.IO.File.Exists(fileInfo.ToString()))
+                                System.IO.File.Delete(fileInfo.ToString());
+
+                            return Json(new
+                            {
+                                status = true
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            return Json(new
+                            {
+                                status = false,
+                                message = ex.Message
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Vui lòng chọn file!"
+                    });
+                }
+
+                #endregion upload excel
+            }
+            return Json(false);
+        }
+
+        //public async Task<bool> UploadExcelAsync(Guid kVPTCId)
         //{
-        //    var fileCheck = Request.Form.Files;
-        //    if (fileCheck.Count > 0)
-        //    {
-        //        // upload excel
-        //        UploadExcelAsync(TourVM.Tour.Sgtcode);
-        //        // upload excel
+        //    // from login session
+        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-        //    }
-
-        //}
-
-        //public void UploadExcelAsync(string sgtCode)
-        //{
-        //    var tour = _unitOfWork.tourRepository.Find(x => x.Sgtcode == sgtCode).FirstOrDefault();
+        //    // var kVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
         //    IFormFile file = Request.Form.Files[0];
         //    string folderName = "excelfolder";
         //    string webRootPath = _webHostEnvironment.WebRootPath;
@@ -818,98 +988,85 @@ namespace KTTM.Controllers
         //                var kVCTPTC = new KVCTPTC();
 
         //                if (workSheet.Cells[i, 1].Value != null)
-        //                    khachHang.STT = int.Parse(workSheet.Cells[i, 1].Value.ToString());
+        //                    kVCTPTC.Sgtcode = workSheet.Cells[i, 1].Value.ToString();
 
         //                if (workSheet.Cells[i, 2].Value != null)
-        //                    khachHang.MaKH = workSheet.Cells[i, 2].Value.ToString();
+        //                    kVCTPTC.HTTC = workSheet.Cells[i, 2].Value.ToString();
 
         //                if (workSheet.Cells[i, 3].Value != null)
-        //                    khachHang.TenKH = workSheet.Cells[i, 3].Value.ToString();
+        //                    kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 3].Value.ToString());
 
         //                if (workSheet.Cells[i, 4].Value != null)
+        //                    kVCTPTC.TKNo = workSheet.Cells[i, 4].Value.ToString();
+        //                kVCTPTC.TKCo = "111100000000";
+
+        //                if (workSheet.Cells[i, 5].Value != null)
+        //                    kVCTPTC.MaKhNo = workSheet.Cells[i, 5].Value.ToString();
+
+        //                kVCTPTC.MaKh = kVCTPTC.MaKhNo;
+
+        //                if (workSheet.Cells[i, 6].Value != null)
+        //                    kVCTPTC.BoPhan = workSheet.Cells[i, 6].Value.ToString();
+
+        //                if (workSheet.Cells[i, 7].Value != null)
+        //                    kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 7].Value.ToString();
+
+        //                if (workSheet.Cells[i, 8].Value != null)
+        //                    kVCTPTC.SoCTGoc = workSheet.Cells[i, 8].Value.ToString();
+
+        //                if (workSheet.Cells[i, 9].Value != null)
+        //                    kVCTPTC.KyHieu = workSheet.Cells[i, 9].Value.ToString();
+
+        //                if (workSheet.Cells[i, 10].Value != null)
+        //                    kVCTPTC.MauSoHD = workSheet.Cells[i, 10].Value.ToString();
+
+        //                if (workSheet.Cells[i, 11].Value != null)
         //                {
-        //                    DateTime ngaySinh;
+        //                    DateTime ngayCT;
         //                    try
         //                    {
-        //                        ngaySinh = DateTime.Parse(workSheet.Cells[i, 4].Value.ToString());
-        //                        khachHang.NgaySinh = ngaySinh;
+        //                        ngayCT = DateTime.Parse(workSheet.Cells[i, 11].Value.ToString());
+        //                        kVCTPTC.NgayCTGoc = ngayCT;
         //                    }
         //                    catch (Exception ex)
         //                    {
-        //                        khachHang.NgaySinh = null;
+        //                        kVCTPTC.NgayCTGoc = null;
         //                    }
         //                }
 
-        //                if (workSheet.Cells[i, 5].Value != null)
-        //                    khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString().ToLower() == "nam") ? true : false;
-
-        //                if (workSheet.Cells[i, 6].Value != null)
-        //                    khachHang.QuocTich = workSheet.Cells[i, 6].Value.ToString();
-
-        //                if (workSheet.Cells[i, 7].Value != null)
-        //                    khachHang.HoChieu = workSheet.Cells[i, 7].Value.ToString();
-
-        //                if (workSheet.Cells[i, 8].Value != null)
-        //                    khachHang.CMND = int.Parse(workSheet.Cells[i, 8].Value.ToString());
-
-        //                if (workSheet.Cells[i, 9].Value != null)
-        //                    khachHang.LoaiPhong = workSheet.Cells[i, 9].Value.ToString();
-
-        //                if (workSheet.Cells[i, 10].Value != null)
-        //                    khachHang.DiaChi = workSheet.Cells[i, 10].Value.ToString();
-
-        //                if (workSheet.Cells[i, 11].Value != null)
-        //                    khachHang.Visa = workSheet.Cells[i, 11].Value.ToString();
-
-        //                if (workSheet.Cells[i, 12].Value != null)
-        //                    khachHang.YeuCauVisa = workSheet.Cells[i, 12].Value.ToString();
-
         //                //if (workSheet.Cells[i, 20].Value != null)
-        //                khachHang.TourId = tour.Id;
-        //                khachHang.Sgtcode = sgtCode;
+        //                kVCTPTC.KVPTCId = kVPTCId;
+        //                // khachhang
+        //                var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+        //                if (supplier != null)
+        //                {
+        //                    kVCTPTC.TenKH = supplier.Name;
+        //                    kVCTPTC.MsThue = supplier.Taxcode;
+        //                    kVCTPTC.DiaChi = supplier.Address;
+        //                }
+        //                // khachhang
 
-        //                khachHangs.Add(khachHang);
+        //                kVCTPTCs.Add(kVCTPTC);
         //            }
-
-        //            var abc = "";
-
-        //            //_db.Customers.AddRange(customerList);
-        //            //_db.SaveChanges();
         //            try
         //            {
-        //                _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs); // and savechange
-        //                List<Khachtour> khachtours = new List<Khachtour>();
-        //                foreach (var item in khachHangs)
-        //                {
-        //                    khachtours.Add(new Khachtour()
-        //                    {
-        //                        Sgtcode = sgtCode,
-        //                        Stt = item.STT,
-        //                        Makh = item.MaKH,
-        //                        Hoten = item.TenKH,
-        //                        Ngaysinh = item.NgaySinh,
-        //                        Phai = item.GioiTinh,
-        //                        Diachi = item.DiaChi,
-        //                        Quoctich = item.QuocTich,
-        //                        Loaiphong = item.LoaiPhong,
-        //                        Cmnd = item.CMND.ToString(),
-        //                        Hochieu = item.HoChieu,
-        //                        Del = false,
-        //                        Visa = item.Visa,
-        //                        YeuCauVisa = item.YeuCauVisa
-        //                    });
-        //                }
-        //                _unitOfWork.khachTourRepository.CreateRange(khachtours);// and savechange
-        //                //await _unitOfWork.Complete();
+        //                await _kVCTPTCService.CreateRange(kVCTPTCs);
+
+        //                if (System.IO.File.Exists(fileInfo.ToString()))
+        //                    System.IO.File.Delete(fileInfo.ToString());
+
+        //                return true;
         //            }
         //            catch (Exception ex)
         //            {
-        //                throw ex;
+        //                return false;
         //            }
         //        }
         //    }
-        //    if (System.IO.File.Exists(fileInfo.ToString()))
-        //        System.IO.File.Delete(fileInfo.ToString());
+        //    else
+        //    {
+        //        return false;
+        //    }
 
         //    //return Json(new
         //    //{
