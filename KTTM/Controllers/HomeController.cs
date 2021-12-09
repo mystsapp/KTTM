@@ -768,7 +768,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> UploadExcelAttach() // thao
+        public async Task<JsonResult> UploadExcelAttach(/*[FromForm] HomeViewModel homeVM*/) // thao
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -777,41 +777,41 @@ namespace KTTM.Controllers
             if (fileCheck.Count > 0)
             {
                 KVPTC kVPTC = new KVPTC();
-                // tao phieuchi
-                kVPTC.Create = DateTime.Now;
-                kVPTC.LapPhieu = user.Username;
-                kVPTC.MaCn = user.Macn;
-                kVPTC.MFieu = "C";
-                kVPTC.NgayCT = DateTime.Now;
-                kVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
-                kVPTC.NgoaiTe = "VN";
-                kVPTC.HoTen = "Attach Excel"; // thao
-                kVPTC.Phong = "KT";
+                //// tao phieuchi
+                //kVPTC.Create = DateTime.Now;
+                //kVPTC.LapPhieu = user.Username;
+                //kVPTC.MaCn = user.Macn;
+                //kVPTC.MFieu = "C";
+                //kVPTC.NgayCT = DateTime.Now;
+                //kVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
+                //kVPTC.NgoaiTe = "VN";
+                //kVPTC.HoTen = "Attach Excel"; // thao
+                //kVPTC.Phong = "KT";
 
-                // next SoCT --> bat buoc phai co'
-                kVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
-                                                                     // next SoCT
+                //// next SoCT --> bat buoc phai co'
+                //kVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
+                //                                                     // next SoCT
 
-                kVPTC.LapPhieu = user.Username;
-                // ghi log
-                kVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+                //kVPTC.LapPhieu = user.Username;
+                //// ghi log
+                //kVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
-                KVPTC kVPTC_Return = new KVPTC();
-                try
-                {
-                    //await _kVPTCService.CreateAsync(KVCTPCTVM.KVPTC); // save
-                    kVPTC_Return = await _kVPTCService.CreateAsync_ReturnEntity(kVPTC);
-                }
-                catch (Exception ex)
-                {
-                    SetAlert(ex.Message, "error");
-                    return Json(new
-                    {
-                        status = false,
-                        message = ex.Message
-                    });
-                }
-                // tao phieuchi
+                //KVPTC kVPTC_Return = new KVPTC();
+                //try
+                //{
+                //    //await _kVPTCService.CreateAsync(KVCTPCTVM.KVPTC); // save
+                //    kVPTC_Return = await _kVPTCService.CreateAsync_ReturnEntity(kVPTC);
+                //}
+                //catch (Exception ex)
+                //{
+                //    SetAlert(ex.Message, "error");
+                //    return Json(new
+                //    {
+                //        status = false,
+                //        message = ex.Message
+                //    });
+                //}
+                //// tao phieuchi
 
                 #region upload excel
 
@@ -898,7 +898,7 @@ namespace KTTM.Controllers
                             }
 
                             //if (workSheet.Cells[i, 20].Value != null)
-                            kVCTPTC.KVPTCId = kVPTC_Return.Id;
+                            //  kVCTPTC.KVPTCId = kVPTC_Return.Id;
                             // khachhang
                             var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
                             if (supplier != null)

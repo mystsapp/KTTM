@@ -4,6 +4,7 @@ using Data.Models_KTTM;
 
 //using Data.Models_QLTour;
 using Data.ViewModels;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using X.PagedList;
 
@@ -11,6 +12,7 @@ namespace KTTM.Models
 {
     public class HomeViewModel
     {
+        public List<IFormFile> files { get; set; }
         public KVPTC KVPTC { get; set; }
         public IPagedList<KVPTCDto> KVPTCDtos { get; set; }
         public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }

@@ -1,4 +1,4 @@
-﻿const { Toast } = require("../../wwwroot/lib/bootstrap/dist/js/bootstrap.bundle");
+﻿@*const { Toast } = require("../../wwwroot/lib/bootstrap/dist/js/bootstrap.bundle");*@
 
 @model HomeViewModel
 
@@ -323,9 +323,10 @@
         location.href = "#KVCTPCT_Tbl";
     }
 
-    $('#uploadExcelAttach_Submit').off('click').on('click', function(){
-        
-        var fileExtension = ['xls', 'xlsx'];
+    // attach excel
+
+        $('#uploadExcelAttach_Submit').click(function () {
+            var fileExtension = ['xls', 'xlsx'];
             var filename = $('#fUpload').val();
             if (filename.length !== 0) {
                 var extension = filename.replace(/^.*\./, '');
@@ -336,22 +337,54 @@
                         title: "Infomation",
                         message: "Chọn chưa đúng định dạng <b> Excel! </b>"
                     });
-                    
+
                     return false;
                 }
-                else{
-                    $.post('Home/UploadExcelAttach', function(response){
-                        if(response.status){
-                            toastr.success('Attach thành công!');
-                        }else{
-                            toastr.error(response.message);
-                        }
-                    })
-                }
             }
-            
-    })
 
+            if ($('#frmAttachExcell').valid()) {
+            debugger
+            var input = $('#fUpload');
+            var files = input[0].files;
+            if (files.length == 0) {
+                toastr.warning("Vui lòng chọn file excel.");
+                return;
+            }
+
+            var formData = new FormData();
+
+            console.log(files);
+            for (var i = 0; i <= files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Home/UploadExcelAttach",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    
+                    if (response.status) {
+                        toastr.success('Import data thành công!');
+                        $('#attachExcelModal').modal('hide');
+                        window.location.reload();
+                    } else {
+                        $('#attachExcelModal').modal('hide');
+                        toastr.error(response.message);
+                    }
+                }
+                , error: function (xhr, status, error) {
+                    $('.modal').modal('hide');
+                    alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
+                }
+            });
+            }
+            else{
+                alert('Not valid')
+            }
+        })
+        // attach excel
 </script>
 
 
