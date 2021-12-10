@@ -819,48 +819,48 @@ namespace KTTM.Controllers
                             var kVCTPTC = new KVCTPTC();
 
                             if (workSheet.Cells[i, 1].Value != null)
-                                kVCTPTC.DienGiaiP = workSheet.Cells[i, 1].Value.ToString();
+                                kVCTPTC.DienGiaiP = workSheet.Cells[i, 1].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 2].Value != null)
-                                kVCTPTC.Sgtcode = workSheet.Cells[i, 2].Value.ToString();
+                                kVCTPTC.Sgtcode = workSheet.Cells[i, 2].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 3].Value != null)
-                                kVCTPTC.HTTC = workSheet.Cells[i, 3].Value.ToString();
+                                kVCTPTC.HTTC = workSheet.Cells[i, 3].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 4].Value != null)
-                                kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 4].Value.ToString());
+                                kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 4].Value.ToString().Trim());
                             kVCTPTC.SoTien = kVCTPTC.SoTienNT;
 
                             if (workSheet.Cells[i, 5].Value != null)
-                                kVCTPTC.TKNo = workSheet.Cells[i, 5].Value.ToString();
-                            kVCTPTC.TKCo = "111100000000";
+                                kVCTPTC.TKNo = workSheet.Cells[i, 5].Value.ToString().Trim();
+                            kVCTPTC.TKCo = "1111000000";
 
                             if (workSheet.Cells[i, 6].Value != null)
-                                kVCTPTC.MaKhNo = workSheet.Cells[i, 6].Value.ToString();
+                                kVCTPTC.MaKhNo = workSheet.Cells[i, 6].Value.ToString().Trim();
 
                             kVCTPTC.MaKh = kVCTPTC.MaKhNo;
 
                             if (workSheet.Cells[i, 7].Value != null)
-                                kVCTPTC.BoPhan = workSheet.Cells[i, 7].Value.ToString();
+                                kVCTPTC.BoPhan = workSheet.Cells[i, 7].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 8].Value != null)
-                                kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 8].Value.ToString();
+                                kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 8].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 9].Value != null)
-                                kVCTPTC.SoCTGoc = workSheet.Cells[i, 9].Value.ToString();
+                                kVCTPTC.SoCTGoc = workSheet.Cells[i, 9].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 10].Value != null)
-                                kVCTPTC.KyHieu = workSheet.Cells[i, 10].Value.ToString();
+                                kVCTPTC.KyHieu = workSheet.Cells[i, 10].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 11].Value != null)
-                                kVCTPTC.MauSoHD = workSheet.Cells[i, 11].Value.ToString();
+                                kVCTPTC.MauSoHD = workSheet.Cells[i, 11].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 12].Value != null)
                             {
                                 DateTime ngayCT;
                                 try
                                 {
-                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 13].Value.ToString());
+                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
                                     kVCTPTC.NgayCTGoc = ngayCT;
                                 }
                                 catch (Exception ex)
@@ -870,10 +870,15 @@ namespace KTTM.Controllers
                             }
 
                             if (workSheet.Cells[i, 13].Value != null)
-                                kVCTPTC.MatHang = workSheet.Cells[i, 13].Value.ToString();
+                                kVCTPTC.MatHang = workSheet.Cells[i, 13].Value.ToString().Trim();
 
                             //if (workSheet.Cells[i, 20].Value != null)
                             kVCTPTC.KVPTCId = kvptcId;
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.NgayTao = DateTime.Now;
+                            kVCTPTC.NguoiTao = user.Username;
+                            kVCTPTC.KVPTCId = kvptcId;
+                            kVCTPTC.SoCT = kVPTC.SoCT;
                             // khachhang
                             var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
                             if (supplier != null)
@@ -882,8 +887,10 @@ namespace KTTM.Controllers
                                 kVCTPTC.MsThue = supplier.Taxcode;
                                 kVCTPTC.DiaChi = supplier.Address;
                             }
+
                             // khachhang
-                            kVCTPTCs.Add(kVCTPTC);
+                            if (string.IsNullOrEmpty(kVCTPTC.DienGiaiP) && )
+                                kVCTPTCs.Add(kVCTPTC);
                         }
                         try
                         {
