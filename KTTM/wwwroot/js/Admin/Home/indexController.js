@@ -197,6 +197,11 @@ var indexController = {
         $('#hidId_InPhieu').val(id);
         $('#hidId_InCTPhieu').val(id);
 
+        // attachExcel
+        if (loaiPhieu === 'C') {
+            $('#attachExcel').attr('disabled', false);
+        }
+
         // page
         var page = $('.active span').text();
         // $('#hidPage').val(page);

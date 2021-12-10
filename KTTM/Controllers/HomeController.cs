@@ -768,7 +768,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> UploadExcelAttach(/*[FromForm] HomeViewModel homeVM*/) // thao
+        public async Task<JsonResult> UploadExcelAttach(Guid kvptcId /*[FromForm] HomeViewModel homeVM*/) // thao
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -776,41 +776,9 @@ namespace KTTM.Controllers
             var fileCheck = Request.Form.Files;
             if (fileCheck.Count > 0)
             {
-                KVPTC kVPTC = new KVPTC();
+                KVPTC kVPTC = await _kVPTCService.GetByGuidIdAsync(kvptcId);
                 //// tao phieuchi
-                //kVPTC.Create = DateTime.Now;
-                //kVPTC.LapPhieu = user.Username;
-                //kVPTC.MaCn = user.Macn;
-                //kVPTC.MFieu = "C";
-                //kVPTC.NgayCT = DateTime.Now;
-                //kVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
-                //kVPTC.NgoaiTe = "VN";
-                //kVPTC.HoTen = "Attach Excel"; // thao
-                //kVPTC.Phong = "KT";
-
-                //// next SoCT --> bat buoc phai co'
-                //kVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
-                //                                                     // next SoCT
-
-                //kVPTC.LapPhieu = user.Username;
-                //// ghi log
-                //kVPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-
-                //KVPTC kVPTC_Return = new KVPTC();
-                //try
-                //{
-                //    //await _kVPTCService.CreateAsync(KVCTPCTVM.KVPTC); // save
-                //    kVPTC_Return = await _kVPTCService.CreateAsync_ReturnEntity(kVPTC);
-                //}
-                //catch (Exception ex)
-                //{
-                //    SetAlert(ex.Message, "error");
-                //    return Json(new
-                //    {
-                //        status = false,
-                //        message = ex.Message
-                //    });
-                //}
+                // tao roi
                 //// tao phieuchi
 
                 #region upload excel
@@ -851,44 +819,48 @@ namespace KTTM.Controllers
                             var kVCTPTC = new KVCTPTC();
 
                             if (workSheet.Cells[i, 1].Value != null)
-                                kVCTPTC.Sgtcode = workSheet.Cells[i, 1].Value.ToString();
+                                kVCTPTC.DienGiaiP = workSheet.Cells[i, 1].Value.ToString();
 
                             if (workSheet.Cells[i, 2].Value != null)
-                                kVCTPTC.HTTC = workSheet.Cells[i, 2].Value.ToString();
+                                kVCTPTC.Sgtcode = workSheet.Cells[i, 2].Value.ToString();
 
                             if (workSheet.Cells[i, 3].Value != null)
-                                kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 3].Value.ToString());
+                                kVCTPTC.HTTC = workSheet.Cells[i, 3].Value.ToString();
 
                             if (workSheet.Cells[i, 4].Value != null)
-                                kVCTPTC.TKNo = workSheet.Cells[i, 4].Value.ToString();
-                            kVCTPTC.TKCo = "111100000000";
+                                kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 4].Value.ToString());
+                            kVCTPTC.SoTien = kVCTPTC.SoTienNT;
 
                             if (workSheet.Cells[i, 5].Value != null)
-                                kVCTPTC.MaKhNo = workSheet.Cells[i, 5].Value.ToString();
+                                kVCTPTC.TKNo = workSheet.Cells[i, 5].Value.ToString();
+                            kVCTPTC.TKCo = "111100000000";
+
+                            if (workSheet.Cells[i, 6].Value != null)
+                                kVCTPTC.MaKhNo = workSheet.Cells[i, 6].Value.ToString();
 
                             kVCTPTC.MaKh = kVCTPTC.MaKhNo;
 
-                            if (workSheet.Cells[i, 6].Value != null)
-                                kVCTPTC.BoPhan = workSheet.Cells[i, 6].Value.ToString();
-
                             if (workSheet.Cells[i, 7].Value != null)
-                                kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 7].Value.ToString();
+                                kVCTPTC.BoPhan = workSheet.Cells[i, 7].Value.ToString();
 
                             if (workSheet.Cells[i, 8].Value != null)
-                                kVCTPTC.SoCTGoc = workSheet.Cells[i, 8].Value.ToString();
+                                kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 8].Value.ToString();
 
                             if (workSheet.Cells[i, 9].Value != null)
-                                kVCTPTC.KyHieu = workSheet.Cells[i, 9].Value.ToString();
+                                kVCTPTC.SoCTGoc = workSheet.Cells[i, 9].Value.ToString();
 
                             if (workSheet.Cells[i, 10].Value != null)
-                                kVCTPTC.MauSoHD = workSheet.Cells[i, 10].Value.ToString();
+                                kVCTPTC.KyHieu = workSheet.Cells[i, 10].Value.ToString();
 
                             if (workSheet.Cells[i, 11].Value != null)
+                                kVCTPTC.MauSoHD = workSheet.Cells[i, 11].Value.ToString();
+
+                            if (workSheet.Cells[i, 12].Value != null)
                             {
                                 DateTime ngayCT;
                                 try
                                 {
-                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 11].Value.ToString());
+                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 13].Value.ToString());
                                     kVCTPTC.NgayCTGoc = ngayCT;
                                 }
                                 catch (Exception ex)
@@ -897,8 +869,11 @@ namespace KTTM.Controllers
                                 }
                             }
 
+                            if (workSheet.Cells[i, 13].Value != null)
+                                kVCTPTC.MatHang = workSheet.Cells[i, 13].Value.ToString();
+
                             //if (workSheet.Cells[i, 20].Value != null)
-                            //  kVCTPTC.KVPTCId = kVPTC_Return.Id;
+                            kVCTPTC.KVPTCId = kvptcId;
                             // khachhang
                             var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
                             if (supplier != null)
@@ -908,11 +883,11 @@ namespace KTTM.Controllers
                                 kVCTPTC.DiaChi = supplier.Address;
                             }
                             // khachhang
-
                             kVCTPTCs.Add(kVCTPTC);
                         }
                         try
                         {
+                            kVCTPTCs = kVCTPTCs.Distinct().ToList();
                             await _kVCTPTCService.CreateRange(kVCTPTCs);
 
                             if (System.IO.File.Exists(fileInfo.ToString()))
@@ -944,7 +919,11 @@ namespace KTTM.Controllers
 
                 #endregion upload excel
             }
-            return Json(false);
+            return Json(new
+            {
+                status = false,
+                message = "Vui lòng chọn file!"
+            });
         }
 
         //public async Task<bool> UploadExcelAsync(Guid kVPTCId)
