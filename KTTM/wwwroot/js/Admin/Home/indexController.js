@@ -174,6 +174,7 @@ var indexController = {
         })
     },
     Load_KVCTPCTPartial: function (id, page) { // KVPTC id
+        
         var url = '/KVCTPTCs/KVCTPTCPartial';
         $.get(url, { KVPTCid: id, page: page }, function (response) {
             $('#KVCTPCT_Tbl').html(response);
@@ -201,6 +202,9 @@ var indexController = {
         if (loaiPhieu === 'C') {
             $('#attachExcel').attr('disabled', false);
         }
+        else {
+            $('#attachExcel').attr('disabled', true);
+        }
 
         // page
         var page = $('.active span').text();
@@ -212,7 +216,7 @@ var indexController = {
 
         $('#KVCTPCT_Create_Partial').hide(500);
         $('#KVCTPCT_Edit_Partial').hide(500);
-
+        
         indexController.Load_KVCTPCTPartial(id, page); // KVPTC id
     },
     KhachHang_By_Code: function (code, txtMaKh) {

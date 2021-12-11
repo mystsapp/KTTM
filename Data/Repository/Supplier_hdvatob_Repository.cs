@@ -11,10 +11,12 @@ namespace Data.Repository
     public interface ISupplier_hdvatob_Repository
     {
         IEnumerable<Supplier> GetAll();
-        //Task<Supplier> GetSupplierById(string id);
-        IEnumerable<Supplier> Find(Func<Supplier, bool> predicate);
 
+        Task<Supplier> GetSupplierById(string id);
+
+        IEnumerable<Supplier> Find(Func<Supplier, bool> predicate);
     }
+
     public class Supplier_hdvatob_Repository : ISupplier_hdvatob_Repository
     {
         private readonly hdvatobContext _context;
@@ -32,7 +34,11 @@ namespace Data.Repository
         public IEnumerable<Supplier> GetAll()
         {
             return _context.Suppliers;
+        }
 
+        public async Task<Supplier> GetSupplierById(string id)
+        {
+            return await _context.Suppliers.FindAsync(id);
         }
 
         //public async Task<Supplier> GetSupplierById(string id)

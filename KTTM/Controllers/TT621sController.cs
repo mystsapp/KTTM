@@ -586,6 +586,72 @@ namespace KTTM.Controllers
             }
         }
 
+        public async Task<IActionResult> ThemMoiCT_TT_ContextMenu_Partial(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click) // tamungid == kvctpctid // 1 <-> 1
+        {
+            TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
+            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuTC);
+            TT621VM.TT621 = tT621;
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            TT621VM.TT621.MaKhCo = tamUng.MaKhNo; // makh cua nguoi tamung
+
+            // lay sotien can de ket chuyen
+            TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
+            TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuTC);
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+            var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
+            if (TT621VM.KVCTPTC.KVPTC.MFieu == "C")
+            {
+                TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value + TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
+                TT621VM.TT621.TKNo = tT621.TKCo; // dao nguoc
+                TT621VM.TT621.TKCo = "1411"; // tT621.TKNo; // dao nguoc
+                if (TT621VM.KVCTPTC.KVPTC.NgoaiTe == "NT")
+                {
+                    TT621VM.TT621.TKCo = "1412"; // tT621.TKNo; // dao nguoc
+                }
+            }
+            else
+            {
+                TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value - TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
+            }
+
+            TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
+
+            // tentk
+            TT621VM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
+            TT621VM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKCo).TenTk;
+            TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
+
+            // ddl
+            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
+            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+            viewDmHttcs.Insert(0, viewDmHttc);
+            TT621VM.DmHttcs = viewDmHttcs;
+
+            Get_TkNo_TkCo();
+
+            TT621VM.Quays = _kVCTPTCService.GetAll_Quay_View();
+            var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+            viewMatHangs.Insert(0, viewMatHang);
+            TT621VM.MatHangs = viewMatHangs;
+            TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+
+            TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+
+            // btnThemdong + copy dong da click
+            if (id_Dong_Da_Click > 0)
+            {
+                var dongCu = _tT621Service.GetByIdAsNoTracking(id_Dong_Da_Click);
+                TT621VM.TT621 = dongCu;
+                TT621VM.TT621.SoTienNT = tT621.SoTienNT;
+            }
+
+            return PartialView(TT621VM);
+        }
+
         public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click) // tamungid == kvctpctid // 1 <-> 1
         {
             TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
@@ -693,8 +759,8 @@ namespace KTTM.Controllers
             TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
             TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
 
-            List<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
-            if (tt621_Theo_PhieuTC.Count > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
+            IEnumerable<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetTT621s_By_TamUng(tamUngId);//.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
+            if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
             {
                 TT621VM.TT621.SoCT = tt621_Theo_PhieuTC.FirstOrDefault().SoCT;
             }
@@ -1064,6 +1130,18 @@ namespace KTTM.Controllers
         }
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            code ??= "";
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
+            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.MaKhText = code;
+            return PartialView(TT621VM);
+        }
+
+        public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT_ContextMenu(string code)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");

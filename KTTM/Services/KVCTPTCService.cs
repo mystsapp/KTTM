@@ -97,6 +97,8 @@ namespace KTTM.Services
         List<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCTs(IEnumerable<KVCTPTC> kVCTPTCs);
 
         Task<List<KVCTPTC>> FinBy_SoCT(string soCT, string maCn);
+
+        Task<Data.Models_HDVATOB.Supplier> GetSupplierSingleByCode(string maKh);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -1116,6 +1118,11 @@ namespace KTTM.Services
         {
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
             return kVCTPTCs.ToList();
+        }
+
+        public async Task<Data.Models_HDVATOB.Supplier> GetSupplierSingleByCode(string maKh)
+        {
+            return await _unitOfWork.supplier_Hdvatob_Repository.GetSupplierById(maKh);
         }
     }
 }

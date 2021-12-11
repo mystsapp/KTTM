@@ -4,7 +4,6 @@
     ViewData["Title"] = "TT621Create";
 }
 
-
 <!-- CapNhatCT_TT modal-->
 <div class="modal fade" id="CapNhatCT_TT_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
@@ -43,6 +42,25 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- ThemMoiCT_TT modal-->
+<!-- ThemMoiCT_TT_ContextMenu modal-->
+<div class="modal fade" id="ThemMoiCT_TT_ContextMenu_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Thêm chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ThemMoiCT_TT_ContextMenu_Body p-0">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- ThemMoiCT_TT_ContextMenu modal-->
 <!-- Content Header (Page header) -->
 <section class="content-header p-0">
     <div class="container-fluid">
@@ -89,7 +107,7 @@
                     <label>Nội dung thanh toán</label>
                 </div>
                 <div class="col-md-4">
-                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="KVCTPTC.DienGiaiP" readonly/>
+                    <input class="form-control form-control-sm " id="txtDienGiaiP" asp-for="KVCTPTC.DienGiaiP" readonly />
                 </div>
 
                 <div class="col-md-1">
@@ -97,16 +115,15 @@
                 </div>
                 <div class="col-md-2">
 
-                    <input asp-for="KVCTPTC.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT_Create" readonly/>
+                    <input asp-for="KVCTPTC.SoTienNT" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTienNT_Create" readonly />
                 </div>
 
                 <div class="col-md-1">
                     <label asp-for="KVCTPTC.SoTien"></label>
                 </div>
                 <div class="col-md-2">
-                    <input asp-for="KVCTPTC.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTien" readonly/>
+                    <input asp-for="KVCTPTC.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" id="txtSoTien" readonly />
                 </div>
-
             </div>
 
             <div class=" row p-2">
@@ -116,7 +133,6 @@
                 <div class="col-md-9">
                     <input class="form-control form-control-sm " id="txtCommentText" asp-for="CommentText" />
                 </div>
-
             </div>
 
             <input type="hidden" id="hidLoaiPhieu" value="@Model.KVPTC.MFieu" />
@@ -150,14 +166,12 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.ConLaiNT.Value.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.ConLai.Value.ToString("N0"))</td>
-
                                 </tr>
 
                             }
                         }
                     </tbody>
                 </table>
-
             </div>
 
             <!-- Chi tiet thanh toan -->
@@ -179,7 +193,6 @@
                     <button type="button" class="btn btn-outline-dark btn-sm" title="Thanh toán không kết chuyển"><i class="fas fa-folder text-warning"></i></button>
                     <button type="button" class="btn btn-outline-dark btn-sm" title="Kết chuyển" disabled id="btnKetChuyen"><i class="fas fa-check"></i></button>
                 </div>
-
             </div>
 
             <div class="pr-2 pl-2" style="overflow-x:auto;">
@@ -226,7 +239,6 @@
                     <tbody id="ctThanhToanBody">
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
@@ -257,7 +269,6 @@
             <td>{{TKCo}}</td>
             <td>{{MaKhCo}}</td>
             <td>{{PhieuTC}}</td>
-
         </tr>
     </script>
 
@@ -274,5 +285,33 @@
                 $('#' + confirmDeleteSpan).hide();
             }
         }
+
+        // contextmenu for themmoiTT VND btnThemMoiCT
+        $('#btnThemMoiCT').contextmenu(function (e) {
+            e.preventDefault();
+            var loaiTien = '@Model.KVPTC.NgoaiTe';
+
+            if (loaiTien === 'VN') {
+                tamUngId = $('#hidTamUngId').val();
+                if (tamUngId == null || tamUngId == '') {
+                    alert('chưa chọn tạm ứng nào để thanh toán');
+                }
+                id_Dong_Da_Click = $('#hidIdCu').val();
+                kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+                var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
+
+                $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click }, function (data) {
+                    $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
+                    $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
+                    $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
+                })
+            }
+            else {
+                toastr.warning("Hãy chọn phiếu TT VN.");
+                return;
+            }
+
+        });
+        // contextmenu for themmoiTT VND
     </script>
 }

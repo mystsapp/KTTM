@@ -879,26 +879,49 @@ namespace KTTM.Controllers
                             kVCTPTC.NguoiTao = user.Username;
                             kVCTPTC.KVPTCId = kvptcId;
                             kVCTPTC.SoCT = kVPTC.SoCT;
-                            // khachhang
-                            var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
-                            if (supplier != null)
-                            {
-                                kVCTPTC.TenKH = supplier.Name;
-                                kVCTPTC.MsThue = supplier.Taxcode;
-                                kVCTPTC.DiaChi = supplier.Address;
-                            }
 
-                            // khachhang
-                            if (string.IsNullOrEmpty(kVCTPTC.DienGiaiP) && )
+                            if (string.IsNullOrEmpty(kVCTPTC.DienGiaiP) && string.IsNullOrEmpty(kVCTPTC.Sgtcode) &&
+                                string.IsNullOrEmpty(kVCTPTC.HTTC) && string.IsNullOrEmpty(kVCTPTC.SoTienNT.ToString()) &&
+                                string.IsNullOrEmpty(kVCTPTC.TKNo) && string.IsNullOrEmpty(kVCTPTC.MaKhNo) &&
+                                string.IsNullOrEmpty(kVCTPTC.BoPhan) && string.IsNullOrEmpty(kVCTPTC.LoaiHDGoc) &&
+                                string.IsNullOrEmpty(kVCTPTC.SoCTGoc) && string.IsNullOrEmpty(kVCTPTC.KyHieu) &&
+                                string.IsNullOrEmpty(kVCTPTC.MauSoHD) && string.IsNullOrEmpty(kVCTPTC.NgayCTGoc.ToString()) &&
+                                string.IsNullOrEmpty(kVCTPTC.MatHang))
+                            {
+                            }
+                            else
+                            {
+                                var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+
+                                if (!string.IsNullOrEmpty(supplier.Code))
+                                {
+                                    kVCTPTC.TenKH = supplier.Name;
+                                    kVCTPTC.MsThue = supplier.Taxcode;
+                                    kVCTPTC.DiaChi = supplier.Address;
+                                }
                                 kVCTPTCs.Add(kVCTPTC);
+                            }
                         }
                         try
                         {
-                            kVCTPTCs = kVCTPTCs.Distinct().ToList();
+                            kVCTPTCs = kVCTPTCs.ToList();
+                            if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.TKNo)))
+                            {
+
+                                return Json(new
+                                {
+                                    status = false,
+                                    message = "Tk nợ không được để trống."
+                                });
+
+                            }
                             await _kVCTPTCService.CreateRange(kVCTPTCs);
 
                             if (System.IO.File.Exists(fileInfo.ToString()))
                                 System.IO.File.Delete(fileInfo.ToString());
+
+                            // for redirect
+                            ViewBag.id = kvptcId;
 
                             return Json(new
                             {

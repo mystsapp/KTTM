@@ -1,6 +1,6 @@
 ﻿@model TT621ViewModel
 @{
-    ViewData["Title"] = "Them CT TT";
+    ViewData["Title"] = "Them CT TT Tach VAT";
 }
 
 <div style="overflow-x:auto; overflow-y:auto; height: 600px">
@@ -87,6 +87,27 @@
                             <div class=" row">
 
                                 <div class="col-md-4">
+                                    <label class="control-label">Chi phí</label>
+                                    <input asp-for="TT621.DSKhongVAT" class="form-control form-control-sm numbers" id="txtChiPhi" />
+                                    <span @*asp-validation-for="KVCTPTC.SoTienNT"*@ class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="control-label ">Thuế suất % VAT</label>
+                                    <input asp-for="TT621.VAT" class="form-control form-control-sm numbers" id="txtThueSuat" />
+                                    <span @*asp-validation-for="KVCTPTC.TyGia"*@ class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="control-label">Thuế GTGT</label>
+                                    <input class="form-control form-control-sm " id="txtThueGTGT" readonly />
+                                    <span @*asp-validation-for="KVCTPTC.SoTien"*@ class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class=" row">
+
+                                <div class="col-md-4">
                                     <label asp-for="TT621.TKNo" class="control-label"></label>
                                     <!--select2-->
                                     <select asp-for="TT621.TKNo" class="form-control form-control-sm select2"
@@ -145,7 +166,7 @@
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo_ThemMoi">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi_ContextMenu" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
@@ -180,7 +201,7 @@
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo_ThemMoi">
                                             <span class="input-group-btn">
-                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi" id="btnKhSearch_ThemMoi" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                                <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch_ThemMoi_ContextMenu" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                             </span>
                                         </div>
                                         <span asp-validation-for="TT621.MaKhNo" class="text-danger"></span>
@@ -194,14 +215,14 @@
                                         <label asp-for="TT621.MaKhCo" class="control-label "></label>
                                         <div class="input-group">
                                             <input asp-for="TT621.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo_ThemMoi" disabled> <!--readonly-->
-                                    </div>
+                                        </div>
                                         <span asp-validation-for="TT621.MaKhCo" class="text-danger"></span>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
                                         <input type="text" class="form-control form-control-sm" id="txtTenKhCo_ThemMoi" value="@Model.TT621.TenKH" disabled /> <!--readonly-->
-                                </div>
+                                    </div>
 
                                 }
                             </div>
@@ -212,8 +233,8 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <!--select2-->
-                                    <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                        <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
@@ -222,7 +243,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -233,7 +254,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                                asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
@@ -281,7 +302,7 @@
 
                             <div class=" row">
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label asp-for="TT621.LoaiHDGoc" class="control-label "></label>
                                     <select asp-for="TT621.LoaiHDGoc" class="form-control form-control-sm "
                                             asp-items="@(new SelectList(Model.LoaiHDGocs, "Name", "Name"))" id="ddlLoaiHDGoc">
@@ -289,7 +310,7 @@
                                     <span asp-validation-for="TT621.LoaiHDGoc" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label asp-for="TT621.NgayCTGoc" class="control-label "></label>
                                     <input type="text" value="" asp-for="TT621.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
                                     <span asp-validation-for="TT621.NgayCTGoc" class="text-danger"></span>
@@ -301,40 +322,28 @@
                                     <span asp-validation-for="TT621.SoCTGoc" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label asp-for="TT621.KyHieu" class="control-label "></label>
                                     <input asp-for="TT621.KyHieu" class="form-control form-control-sm" id="txtKyHieu" />
                                     <span asp-validation-for="TT621.KyHieu" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label asp-for="TT621.MauSoHD" class="control-label "></label>
-                                    <input asp-for="TT621.MauSoHD" class="form-control form-control-sm" id="txtMauSoHD" />
-                                    <span asp-validation-for="TT621.MauSoHD" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class=" row">
 
                                 <div class="col-md-3">
+                                    <label asp-for="TT621.MauSoHD" class="control-label "></label>
+                                    <input asp-for="TT621.MauSoHD" class="form-control form-control-sm" id="txtMauSoHD" />
+                                    <span asp-validation-for="TT621.MauSoHD" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-4">
                                     <label asp-for="TT621.MsThue" class="control-label "></label>
                                     <input asp-for="TT621.MsThue" class="form-control form-control-sm" id="txtMsThue" />
                                     <span asp-validation-for="TT621.MsThue" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-3">
-                                    <label asp-for="TT621.VAT" class="control-label "></label>
-                                    <input asp-for="TT621.VAT" class="form-control form-control-sm" id="txtVAT" />
-                                    <span asp-validation-for="TT621.VAT" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label asp-for="TT621.DSKhongVAT" class="control-label "></label>
-                                    <input asp-for="TT621.DSKhongVAT" class="form-control form-control-sm" asp-format="{0:0,0}" id="txtDSKhongVAT" />
-                                    <span asp-validation-for="TT621.DSKhongVAT" class="text-danger"></span>
-                                </div>
-
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label asp-for="TT621.DieuChinh" class="control-label "></label>
                                     <br />
                                     <input asp-for="TT621.DieuChinh" id="ckDieuChinh" type="checkbox" />
@@ -417,7 +426,7 @@
 <input type="hidden" id="hidTxtMaKh" />
 
 <!--Khach hang them moi modal-->
-<partial name="~/Views/Shared/_KhachHangPartial_ThemMoiCTTT.cshtml" />
+<partial name="~/Views/Shared/_KhachHangPartial_ThemMoiCTTT_ContextMenu.cshtml" />
 
 @*<script src="~/js/Admin/Home/indexController.js"></script>*@
 <script src="~/js/Admin/serviceController.js"></script>
@@ -447,8 +456,48 @@
 
     });*@
 
-    // btnKhSearch_ThemMoi
-    $('.btnKhSearch_ThemMoi').click(function () {
+    // tongtien, chiphi ==> thue GTGT
+    $('#txtSoTienNT').blur(function () {
+
+        serviceController.TinhSoTien();
+
+        soTienNT = $('#txtSoTienNT').val();
+        //tyGia = $('#txtTyGia').val();
+
+        chiPhi = $('#txtChiPhi').val();
+        TinhThueGTGT(soTienNT, chiPhi);
+    })
+    $('#txtChiPhi').blur(function () {
+
+        chiPhi = $(this).val();
+        soTienNT = $('#txtSoTienNT').val();
+        TinhThueGTGT(soTienNT, chiPhi);
+
+    })
+    function TinhThueGTGT(soTienNT, chiPhi) {
+
+        $.ajax({
+            type: "GET",
+            url: "/KVCTPTCs/TinhThueGTGT",
+            data: { tongTien: soTienNT, chiPhi: chiPhi },
+            dataType: "json",
+            success: function (response) {
+                if (response.status) {
+                    thueGTGT = response.thueGTGT;
+                    $('#txtThueGTGT').val(numeral(thueGTGT).format('0,0'));
+                }
+                else {
+                    toastr.error(response.message);
+
+                }
+            }
+        });
+
+    }
+        // tongtien, chiphi ==> thue GTGT
+
+    // btnKhSearch_ThemMoi_ContextMenu
+    $('.btnKhSearch_ThemMoi_ContextMenu').click(function () {
 
         var maKhtext = '';
         var txtMaKh = '';
@@ -464,7 +513,7 @@
 
             $('#hidTxtMaKh').val(txtMaKh);
 
-        KhachHangSearch_ThemMoiTT(maKhtext);
+        KhachHangSearch_ThemMoiTT_ContextMenu(maKhtext);
     })
 
     $('#txtMaKhNo_ThemMoi').blur(function () {
@@ -616,7 +665,7 @@
 
                         toastr.success('Tạo mới chi tiết thành công!', 'Chi tiết TT'); // toastr in admin/tour/indexController.js
 
-                        $('#ThemMoiCT_TT_Modal').modal('hide');
+                        $('#ThemMoiCT_TT_ContextMenu_Modal').modal('hide');
                         //debugger
     @*soCT = '@Model.KVCTPCT.KVPCTId';
 
@@ -647,12 +696,12 @@
         serviceController.TxtVAT_Blur(vat, soTien);
     })
 
-    function KhachHangSearch_ThemMoiTT(code) {
-        $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT', { code: code }, function (data) {
+    function KhachHangSearch_ThemMoiTT_ContextMenu(code) {
+        $.get('/TT621s/GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT_ContextMenu', { code: code }, function (data) {
 
-            $('#khachHang_Modal_ThemMoiCTTT').modal('show');
-            $('.khachHang_Modal_Body').html(data);
-            $('#khachHang_Modal_ThemMoiCTTT').draggable();
+            $('#khachHang_Modal_ThemMoiCTTT_ContextMenu').modal('show');
+            $('.khachHang_Modal_ContextMenu_Body').html(data);
+            $('#khachHang_Modal_ThemMoiCTTT_ContextMenu').draggable();
         });
     }
 
