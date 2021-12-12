@@ -6,6 +6,7 @@ using Data.Repository;
 using Data.Utilities;
 using Data.ViewModels;
 using KTTM.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace KTTM.Services
 
         IEnumerable<Phongban> GetAllPhongBan();
 
-        Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, int? page, string maCn);
+        Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate, string searchToDate,
+            string boolSgtcode, string boolTkNo1311, int? page, string maCn);
 
         IEnumerable<ListViewModel> ListLoaiPhieu();
 
@@ -53,10 +55,12 @@ namespace KTTM.Services
     public class KVPTCService : IKVPTCService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public KVPTCService(IUnitOfWork unitOfWork)
+        public KVPTCService(IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IEnumerable<KVPTC> GetAll()
@@ -124,7 +128,7 @@ namespace KTTM.Services
         }
 
         public async Task<IPagedList<KVPTCDto>> ListKVPTC(string searchString, string searchFromDate,
-            string searchToDate, string boolSgtcode, int? page, string maCn)
+            string searchToDate, string boolSgtcode, string boolTkNo1311, int? page, string maCn)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -134,20 +138,69 @@ namespace KTTM.Services
 
             var list = new List<KVPTCDto>();
             var kVPTCs = new List<KVPTC>();
-            //var kVPTCs = GetAll();
 
-            //if (kVPTCs == null)
-            //{
-            //    return null;
-            //}
-
-            // search for sgtcode in kvctptC
-            if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
+            // search by boolTkNo1311
+            if (!string.IsNullOrEmpty(boolTkNo1311))
             {
-                List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.Trim())).ToList();
+                IEnumerable<KVCTPTC> kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.TKNo == "1131");
 
                 if (kVCTPTCs.Count() > 0)
                 {
+                    #region search date kVCTPTCs
+
+                    DateTime fromDate1, toDate1;
+                    if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+                    {
+                        try
+                        {
+                            fromDate1 = DateTime.Parse(searchFromDate); // NgayCT
+                            toDate1 = DateTime.Parse(searchToDate); // NgayCT
+
+                            if (fromDate1 > toDate1)
+                            {
+                                return null; //
+                            }
+
+                            kVCTPTCs = kVCTPTCs.Where(x => x.KVPTC.NgayCT >= fromDate1 &&
+                                               x.KVPTC.NgayCT < toDate1.AddDays(1)).ToList();
+                        }
+                        catch (Exception)
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
+                        {
+                            try
+                            {
+                                fromDate1 = DateTime.Parse(searchFromDate);
+                                kVCTPTCs = kVCTPTCs.Where(x => x.KVPTC.NgayCT >= fromDate1).ToList();
+                            }
+                            catch (Exception)
+                            {
+                                return null;
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
+                        {
+                            try
+                            {
+                                toDate1 = DateTime.Parse(searchToDate);
+                                kVCTPTCs = kVCTPTCs.Where(x => x.KVPTC.NgayCT < toDate1.AddDays(1)).ToList();
+                            }
+                            catch (Exception)
+                            {
+                                return null;
+                            }
+                        }
+                    }
+
+                    _httpContextAccessor.HttpContext.Session.Set("kVCTPTCs_1311", kVCTPTCs);
+
+                    #endregion search date kVCTPTCs
+
                     List<KVPTC> kVPTCs1 = new List<KVPTC>();
                     foreach (var item in kVCTPTCs)
                     {
@@ -160,35 +213,48 @@ namespace KTTM.Services
                     }
                 }
             }
-            else if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
-            {
-                kVPTCs = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
-                                       (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.DonVi) && x.DonVi.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.Phong) && x.Phong.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
-
-                //kVPTCs = kVPTCs.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
-                //                       (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.DonVi) && x.DonVi.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.Phong) && x.Phong.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
-                //                       (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
-            }
             else
             {
-                kVPTCs = GetAll().ToList();
-
-                if (kVPTCs == null)
+                // search for sgtcode in kvctptC
+                if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
                 {
-                    return null;
+                    List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) &&
+                    x.Sgtcode.Contains(searchString.Trim())).ToList();
+
+                    if (kVCTPTCs.Count() > 0)
+                    {
+                        List<KVPTC> kVPTCs1 = new List<KVPTC>();
+                        foreach (var item in kVCTPTCs)
+                        {
+                            KVPTC kVPCT = await GetByGuidIdAsync(item.KVPTCId);
+                            kVPTCs1.Add(kVPCT);
+                        }
+                        if (kVPTCs1.Count > 0)
+                        {
+                            kVPTCs = kVPTCs1.Distinct().ToList();
+                        }
+                    }
+                }
+                else if (string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
+                {
+                    kVPTCs = _unitOfWork.kVPCTRepository.Find(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
+                                           (!string.IsNullOrEmpty(x.MFieu) && x.MFieu.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.NgoaiTe) && x.NgoaiTe.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.DonVi) && x.DonVi.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.Phong) && x.Phong.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.LapPhieu) && x.LapPhieu.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.MayTinh) && x.MayTinh.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.Locker) && x.Locker.ToLower().Contains(searchString.ToLower()))).ToList();
+                }
+                else
+                {
+                    kVPTCs = GetAll().ToList();
+
+                    if (kVPTCs == null)
+                    {
+                        return null;
+                    }
                 }
             }
 

@@ -56,7 +56,8 @@ namespace KTTM.Controllers
 
         //-----------LayDataCashierPartial------------
 
-        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, string boolSgtcode, Guid id, int page = 1)
+        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate,
+            string boolSgtcode, string boolTkNo1311, Guid id, int page = 1)
         {
             if (id == Guid.Empty)
             {
@@ -286,6 +287,7 @@ namespace KTTM.Controllers
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
             ViewBag.boolSgtcode = boolSgtcode;
+            ViewBag.boolTkNo1311 = boolTkNo1311;
 
             if (id != Guid.Empty) // for redirect with id
             {
@@ -297,7 +299,7 @@ namespace KTTM.Controllers
                 HomeVM.KVPTC = new KVPTC();
             }
             HomeVM.KVPTCDtos = await _kVPTCService.ListKVPTC(searchString, searchFromDate,
-                searchToDate, boolSgtcode, page, user.Macn);
+                searchToDate, boolSgtcode, boolTkNo1311, page, user.Macn);
             return View(HomeVM);
         }
 
@@ -907,13 +909,11 @@ namespace KTTM.Controllers
                             kVCTPTCs = kVCTPTCs.ToList();
                             if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.TKNo)))
                             {
-
                                 return Json(new
                                 {
                                     status = false,
                                     message = "Tk nợ không được để trống."
                                 });
-
                             }
                             await _kVCTPTCService.CreateRange(kVCTPTCs);
 
@@ -955,133 +955,6 @@ namespace KTTM.Controllers
                 message = "Vui lòng chọn file!"
             });
         }
-
-        //public async Task<bool> UploadExcelAsync(Guid kVPTCId)
-        //{
-        //    // from login session
-        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-        //    // var kVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
-        //    IFormFile file = Request.Form.Files[0];
-        //    string folderName = "excelfolder";
-        //    string webRootPath = _webHostEnvironment.WebRootPath;
-        //    string newPath = Path.Combine(webRootPath, folderName);
-
-        //    string folderPath = webRootPath + @"\excelfolder\";
-        //    FileInfo fileInfo = new FileInfo(Path.Combine(folderPath, file.FileName));
-
-        //    if (!Directory.Exists(newPath))
-        //    {
-        //        Directory.CreateDirectory(newPath);
-        //    }
-        //    if (file.Length > 0)
-        //    {
-        //        string sFileExtension = Path.GetExtension(file.FileName).ToLower();
-        //        string fullPath = Path.Combine(newPath, file.FileName);
-        //        using (var stream = new FileStream(fullPath, FileMode.Create))
-        //        {
-        //            file.CopyTo(stream);
-        //        }
-
-        //        using (ExcelPackage package = new ExcelPackage(fileInfo))
-        //        {
-        //            ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
-        //            //var list = workSheet.Cells.ToList();
-        //            //var table = workSheet.Tables.ToList();
-        //            int totalRows = workSheet.Dimension.Rows;
-
-        //            List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
-
-        //            for (int i = 2; i <= totalRows; i++)
-        //            {
-        //                var kVCTPTC = new KVCTPTC();
-
-        //                if (workSheet.Cells[i, 1].Value != null)
-        //                    kVCTPTC.Sgtcode = workSheet.Cells[i, 1].Value.ToString();
-
-        //                if (workSheet.Cells[i, 2].Value != null)
-        //                    kVCTPTC.HTTC = workSheet.Cells[i, 2].Value.ToString();
-
-        //                if (workSheet.Cells[i, 3].Value != null)
-        //                    kVCTPTC.SoTienNT = decimal.Parse(workSheet.Cells[i, 3].Value.ToString());
-
-        //                if (workSheet.Cells[i, 4].Value != null)
-        //                    kVCTPTC.TKNo = workSheet.Cells[i, 4].Value.ToString();
-        //                kVCTPTC.TKCo = "111100000000";
-
-        //                if (workSheet.Cells[i, 5].Value != null)
-        //                    kVCTPTC.MaKhNo = workSheet.Cells[i, 5].Value.ToString();
-
-        //                kVCTPTC.MaKh = kVCTPTC.MaKhNo;
-
-        //                if (workSheet.Cells[i, 6].Value != null)
-        //                    kVCTPTC.BoPhan = workSheet.Cells[i, 6].Value.ToString();
-
-        //                if (workSheet.Cells[i, 7].Value != null)
-        //                    kVCTPTC.LoaiHDGoc = workSheet.Cells[i, 7].Value.ToString();
-
-        //                if (workSheet.Cells[i, 8].Value != null)
-        //                    kVCTPTC.SoCTGoc = workSheet.Cells[i, 8].Value.ToString();
-
-        //                if (workSheet.Cells[i, 9].Value != null)
-        //                    kVCTPTC.KyHieu = workSheet.Cells[i, 9].Value.ToString();
-
-        //                if (workSheet.Cells[i, 10].Value != null)
-        //                    kVCTPTC.MauSoHD = workSheet.Cells[i, 10].Value.ToString();
-
-        //                if (workSheet.Cells[i, 11].Value != null)
-        //                {
-        //                    DateTime ngayCT;
-        //                    try
-        //                    {
-        //                        ngayCT = DateTime.Parse(workSheet.Cells[i, 11].Value.ToString());
-        //                        kVCTPTC.NgayCTGoc = ngayCT;
-        //                    }
-        //                    catch (Exception ex)
-        //                    {
-        //                        kVCTPTC.NgayCTGoc = null;
-        //                    }
-        //                }
-
-        //                //if (workSheet.Cells[i, 20].Value != null)
-        //                kVCTPTC.KVPTCId = kVPTCId;
-        //                // khachhang
-        //                var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
-        //                if (supplier != null)
-        //                {
-        //                    kVCTPTC.TenKH = supplier.Name;
-        //                    kVCTPTC.MsThue = supplier.Taxcode;
-        //                    kVCTPTC.DiaChi = supplier.Address;
-        //                }
-        //                // khachhang
-
-        //                kVCTPTCs.Add(kVCTPTC);
-        //            }
-        //            try
-        //            {
-        //                await _kVCTPTCService.CreateRange(kVCTPTCs);
-
-        //                if (System.IO.File.Exists(fileInfo.ToString()))
-        //                    System.IO.File.Delete(fileInfo.ToString());
-
-        //                return true;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-
-        //    //return Json(new
-        //    //{
-        //    //    status = true
-        //    //});
-        //}
 
         public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
         {

@@ -142,8 +142,9 @@
                                 @*<input type="hidden" id="hidCashier" />*@
                                 <button type="button" class="btn btn-outline-info btn-sm btnCashier" disabled data-strurl="@Model.StrUrl" title="Cashier">Cashier</button>
 
-                                <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInPhieu" title="TT 141"><i class="fas fa-print"></i> In phiếu</button>
-                                <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInCTPhieu" title="TT 141"><i class="fas fa-print"></i> In CT phiếu</button>
+                                <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInPhieu" title="In Phiếu"><i class="fas fa-print"></i> In phiếu</button>
+                                <button type="button" class="btn btn-outline-dark btn-sm" disabled id="btnInCTPhieu" title="In CT Phiếu"><i class="fas fa-print"></i> In CT phiếu</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" disabled id="btnInTkNo1311" title="In TK Nợ 1311"><i class="fas fa-file-export text-success"></i> Tk Nợ 1311</button>
 
                                 <button type="button" disabled id="attachExcel" class="btn btn-outline-success btn-sm" title="Excel" data-toggle="modal" data-target="#attachExcelModal"><i class="fas fa-file-excel"></i> Excel</button>
                             </div>
@@ -151,6 +152,12 @@
                     </div>
                 </div>
             </div>
+
+            <form id="frmExportTkNo1311" asp-action="ExportTkNo1311" asp-controller="BaoCaos" method="post">
+                <input type="hidden" id="hidId_TuNgay" name="tuNgay" />
+                <input type="hidden" id="hidId_DenNgay" name="denNgay" />
+                <input type="hidden" value="@Model.Page" name="page" />
+            </form>
 
             <form id="frmInPhieu" asp-action="InPhieuView" asp-controller="Home" method="get">
                 <input type="hidden" id="hidId_InPhieu" name="id" />
@@ -252,20 +259,22 @@
                 @if (Model.KVPTCDtos != null)
                 {
                     @Html.PagedListPager((IPagedList)Model.KVPTCDtos, page => Url.Action("Index", new
-                {
-                page = page,
-                option = Context.Request.Query["option"],
-                searchString = @ViewBag.searchString,
-                searchFromDate = ViewBag.searchFromDate,
-                searchToDate = ViewBag.searchToDate
-                }),
+               {
+                   page = page,
+                   option = Context.Request.Query["option"],
+                   searchString = ViewBag.searchString,
+                   searchFromDate = ViewBag.searchFromDate,
+                   searchToDate = ViewBag.searchToDate,
+                   boolSgtcode = ViewBag.boolSgtcode,
+                   boolTkNo1311 = ViewBag.boolTkNo1311
+               }),
                 PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
                 {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" },
-                MaximumPageNumbersToDisplay = 5,
-                UlElementClasses = new[] { "pagination pagination-sm m-0" }, // ul class
-                ContainerDivClasses = new[] { "pagination-container" }
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" },
+                    MaximumPageNumbersToDisplay = 5,
+                    UlElementClasses = new[] { "pagination pagination-sm m-0" }, // ul class
+                    ContainerDivClasses = new[] { "pagination-container" }
                 }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
                 }
             </div>
@@ -390,6 +399,54 @@
             }
         })
         // attach excel
+
+        // boolTkNo1311
+        var boolTkNo1311 = '@ViewBag.boolTkNo1311';
+        if (boolTkNo1311 === 'on') {
+            $('#btnInTkNo1311').attr('disabled', false);
+        }
+
+        $('#btnInTkNo1311').off('click').on('click', function () {
+            //var formData = new FormData();
+
+            var searchFromDate = $('#searchFromDate').val();
+            var searchToDate = $('#searchToDate').val();
+
+            $('#hidId_TuNgay').val(searchFromDate);
+            $('#hidId_DenNgay').val(searchToDate);
+
+            $('#frmExportTkNo1311').submit();
+
+            //formData.append("tuNgay", searchFromDate);
+            //formData.append("denNgay", searchToDate);
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Baocaos/ExportTkNo1311",
+            //    data: formData,
+            //    processData: false,
+            //    contentType: false,
+            //    success: function (response) {
+
+            //        if (response) {
+            //            toastr.success('Export data successfully!');
+            //           // $('#attachExcelModal').modal('hide');
+            //            //window.location.reload();
+            //            //indexController.Load_KVCTPCTPartial(kvptcId);
+
+            //        } else {
+            //            //$('#attachExcelModal').modal('hide');
+            //            toastr.error('Export data failure!');
+
+            //        }
+            //    }
+            //    , error: function (xhr, status, error) {
+            //        $('.modal').modal('hide');
+            //        alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
+            //    }
+            //});
+
+        })
     </script>
 
 }
