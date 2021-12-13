@@ -59,7 +59,7 @@
 
                                 <div class="col-md-4">
                                     <label asp-for="TT621.SoTienNT" class="control-label"></label>
-                                    <input asp-for="TT621.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" />
+                                    <input @*asp-for="TT621.SoTienNT"*@ class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtSoTienNT" />
                                     <span asp-validation-for="TT621.SoTienNT" class="text-danger"></span>
                                 </div>
 
@@ -88,7 +88,7 @@
 
                                 <div class="col-md-4">
                                     <label class="control-label">Chi phí</label>
-                                    <input asp-for="TT621.DSKhongVAT" class="form-control form-control-sm numbers" id="txtChiPhi" />
+                                    <input asp-for="TT621.SoTienNT" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtChiPhi" />
                                     <span @*asp-validation-for="KVCTPTC.SoTienNT"*@ class="text-danger"></span>
                                 </div>
 
@@ -100,7 +100,7 @@
 
                                 <div class="col-md-4">
                                     <label class="control-label">Thuế GTGT</label>
-                                    <input class="form-control form-control-sm " id="txtThueGTGT" readonly />
+                                    <input asp-for="ThueGTGT" class="form-control form-control-sm " id="txtThueGTGT" readonly />
                                     <span @*asp-validation-for="KVCTPTC.SoTien"*@ class="text-danger"></span>
                                 </div>
                             </div>
@@ -657,7 +657,7 @@
             var tt621 = $('#frm_ThemMoiCT_TT_Partial').serialize();
             $.ajax({
                 type: "POST",
-                url: "/TT621s/ThemMoiCT_TT_Partial",
+                url: "/TT621s/ThemMoiCT_TT_ContextMenu_Partial",
                 data: tt621,
                 dataType: "json",
                 success: function (response) {

@@ -881,6 +881,8 @@ namespace KTTM.Controllers
                             kVCTPTC.NguoiTao = user.Username;
                             kVCTPTC.KVPTCId = kvptcId;
                             kVCTPTC.SoCT = kVPTC.SoCT;
+                            kVCTPTC.LoaiTien = "VND";
+                            kVCTPTC.TyGia = 1;
 
                             if (string.IsNullOrEmpty(kVCTPTC.DienGiaiP) && string.IsNullOrEmpty(kVCTPTC.Sgtcode) &&
                                 string.IsNullOrEmpty(kVCTPTC.HTTC) && string.IsNullOrEmpty(kVCTPTC.SoTienNT.ToString()) &&

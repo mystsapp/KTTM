@@ -38,5 +38,6 @@ namespace KTTM.Models
         public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
         public string MaKhText { get; set; }
 
+        public string ThueGTGT { get; set; }
     }
 }
