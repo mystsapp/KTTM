@@ -550,28 +550,28 @@ namespace KTTM.Controllers
 
             var kVPTC = await _kVPTCService.GetByGuidIdAsync(id);
 
-            if (kVPTC.MFieu == "C")
+            //if (kVPTC.MFieu == "C")
+            //{
+            var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+            kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412" || x.TKCo == "1411" || x.TKCo == "1412"); // dang tao phieu TU
+            if (kVCTPTCs.Count() > 0) //
             {
-                var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
-                kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412"); // dang tao phieu TU
-                if (kVCTPTCs.Count() > 0) //
+                kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU
+                if (kVCTPTCs.Count() > 0) // chua ketchuyen TU -> kt xem ketchuyen TT141 chua
                 {
-                    kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU
-                    if (kVCTPTCs.Count() > 0) // chua ketchuyen TU -> kt xem ketchuyen TT141 chua
+                    // kiem tra xem có ketchuyen TT141 chua
+                    var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
+                    if (tamUngs.Count() > 0)
                     {
-                        // kiem tra xem có ketchuyen TT141 chua
-                        var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
-                        if (tamUngs.Count() > 0)
-                        {
-                            return Json(true); // ko cho inphieu
-                        }
-                        return Json(false);
+                        return Json(true); // ko cho inphieu
                     }
+                    return Json(false);
                 }
-                return Json(true);
             }
+            return Json(true);
+            //}
 
-            return Json(true); // ko cho inphieu
+            //return Json(true); // ko cho inphieu
         }
 
         public async Task<IActionResult> InPhieuView(Guid id, int page)

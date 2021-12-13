@@ -164,7 +164,7 @@ var indexController = {
         $('#btnInPhieu').off('click').on('click', function () {
             kvptcId = $('#hidId_InPhieu').val();
             $.post('/Home/CheckInPhieu', { id: kvptcId }, function (response) {
-                if (response) {
+                if (!response) {
                     bootbox.alert("Còn tồn tại 1 CT Phiếu chưa TU hoặc TT TU!");
                 }
                 else {
