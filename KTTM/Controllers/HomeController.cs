@@ -563,7 +563,7 @@ namespace KTTM.Controllers
                         var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
                         if (tamUngs.Count() > 0)
                         {
-                            return Json(true); // cho inphieu
+                            return Json(true); // ko cho inphieu
                         }
                         return Json(false);
                     }
@@ -571,7 +571,7 @@ namespace KTTM.Controllers
                 return Json(true);
             }
 
-            return Json(true);
+            return Json(true); // ko cho inphieu
         }
 
         public async Task<IActionResult> InPhieuView(Guid id, int page)
