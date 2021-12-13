@@ -15,6 +15,8 @@ namespace KTTM.Services
     {
         Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId);
 
+        Task DeleteRangeAsync(IEnumerable<TT621> tT621s);
+
         Task CreateAsync(TT621 tT621);
 
         Task UpdateAsync(TT621 tT621);
@@ -114,6 +116,11 @@ namespace KTTM.Services
         public async Task<IEnumerable<TT621>> GetTT621s_By_TamUng(long tamUngId)
         {
             return await _unitOfWork.tT621Repository.FindIncludeOneAsync(x => x.TamUng, y => y.TamUngId == tamUngId);
+        }
+
+        public async Task DeleteRangeAsync(IEnumerable<TT621> tT621s)
+        {
+            await _unitOfWork.tT621Repository.DeleteRangeAsync(tT621s);
         }
 
         public async Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621)

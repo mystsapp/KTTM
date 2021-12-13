@@ -178,6 +178,22 @@ namespace KTTM.Controllers
             {
                 var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, kVCTPCT.SoTienNT.Value, TT621VM.KVPTC.MFieu);
                 TT621VM.CommentText = jsonResult.Result.Value.ToString();
+
+                // get all TT621 thep tamungs -> clear het
+                List<TT621> tT621s = new List<TT621>();
+                foreach (var item in TT621VM.TamUngs)
+                {
+                    var tT621s1 = await _tT621Service.GetTT621s_By_TamUng(item.Id);
+                    if (tT621s1 != null)
+                    {
+                        tT621s.AddRange(tT621s1);
+                    }
+                }
+                if (tT621s != null)
+                {
+                    await _tT621Service.DeleteRangeAsync(tT621s);
+                }
+                // get all TT621 thep tamungs -> clear het
             }
 
             return View(TT621VM);
@@ -1234,6 +1250,10 @@ namespace KTTM.Controllers
         public async Task<JsonResult> GetTT621s_By_TamUng(long tamUngId)
         {
             var tT621s = await _tT621Service.GetTT621s_By_TamUng(tamUngId);
+            //// get all && delete nhung TT theo TU truoc do ma chua KetChuyen
+            //await _tT621Service.DeleteRangeAsync(tT621s);
+            //// get all && delete nhung TT theo TU truoc do ma chua KetChuyen
+
             if (tT621s.Count() > 0)
             {
                 return Json(new
