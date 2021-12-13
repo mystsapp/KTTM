@@ -26,6 +26,7 @@ namespace Data.Models_Cashier
         public virtual DbSet<VBiennhanVanchuyen> VBiennhanVanchuyens { get; set; }
         public virtual DbSet<VCuocHangkhong> VCuocHangkhongs { get; set; }
         public virtual DbSet<VDataDatcocCashier> VDataDatcocCashiers { get; set; }
+        public virtual DbSet<VDataDatcocCashier1> VDataDatcocCashier1s { get; set; }
         public virtual DbSet<VDataVetourCashier> VDataVetourCashiers { get; set; }
         public virtual DbSet<VHoadonInBound> VHoadonInBounds { get; set; }
         public virtual DbSet<VHoadonVanchuyen> VHoadonVanchuyens { get; set; }
@@ -284,6 +285,10 @@ namespace Data.Models_Cashier
                 entity.Property(e => e.Phieuthu)
                     .HasMaxLength(50)
                     .HasColumnName("phieuthu");
+
+                entity.Property(e => e.Phieuthucc)
+                    .HasMaxLength(50)
+                    .HasColumnName("phieuthucc");
             });
 
             modelBuilder.Entity<Ntbill>(entity =>
@@ -642,6 +647,86 @@ namespace Data.Models_Cashier
                 entity.HasNoKey();
 
                 entity.ToView("vDataDatcocCashier");
+
+                entity.Property(e => e.Biennhan)
+                    .HasMaxLength(12)
+                    .HasColumnName("biennhan");
+
+                entity.Property(e => e.Daily)
+                    .HasMaxLength(25)
+                    .HasColumnName("daily");
+
+                entity.Property(e => e.Diengiai).HasColumnName("diengiai");
+
+                entity.Property(e => e.Ghichu)
+                    .HasMaxLength(25)
+                    .HasColumnName("ghichu")
+                    .UseCollation("Latin1_General_CS_AS");
+
+                entity.Property(e => e.Iddatcoc).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Kenhtt)
+                    .HasMaxLength(50)
+                    .HasColumnName("kenhtt");
+
+                entity.Property(e => e.Macoquan)
+                    .HasMaxLength(16)
+                    .IsUnicode(false)
+                    .HasColumnName("macoquan");
+
+                entity.Property(e => e.Ngaydatcoc)
+                    .HasColumnType("datetime")
+                    .HasColumnName("ngaydatcoc");
+
+                entity.Property(e => e.Ngaydc)
+                    .HasMaxLength(19)
+                    .IsUnicode(false)
+                    .HasColumnName("ngaydc");
+
+                entity.Property(e => e.Ngayhuy)
+                    .HasColumnType("datetime")
+                    .HasColumnName("ngayhuy");
+
+                entity.Property(e => e.Ngaythu)
+                    .HasColumnType("datetime")
+                    .HasColumnName("ngaythu");
+
+                entity.Property(e => e.Nguoihuy)
+                    .HasMaxLength(50)
+                    .HasColumnName("nguoihuy");
+
+                entity.Property(e => e.Sgtcode)
+                    .IsRequired()
+                    .HasMaxLength(17)
+                    .IsUnicode(false)
+                    .HasColumnName("sgtcode");
+
+                entity.Property(e => e.Sk).HasColumnName("sk");
+
+                entity.Property(e => e.Sotiennt)
+                    .HasColumnType("decimal(12, 0)")
+                    .HasColumnName("sotiennt");
+
+                entity.Property(e => e.Tencoquan)
+                    .HasMaxLength(60)
+                    .HasColumnName("tencoquan");
+
+                entity.Property(e => e.Tenkhach)
+                    .HasMaxLength(50)
+                    .HasColumnName("tenkhach");
+
+                entity.Property(e => e.Tour)
+                    .IsRequired()
+                    .HasMaxLength(2)
+                    .IsUnicode(false)
+                    .HasColumnName("tour");
+            });
+
+            modelBuilder.Entity<VDataDatcocCashier1>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vDataDatcocCashier1");
 
                 entity.Property(e => e.Biennhan)
                     .HasMaxLength(12)

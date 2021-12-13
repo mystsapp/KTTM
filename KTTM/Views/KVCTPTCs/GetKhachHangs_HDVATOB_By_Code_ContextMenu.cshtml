@@ -64,7 +64,7 @@
         
         var maKhText = $('#txtTimkh').val();
         
-        KhachHangSearch(maKhText); // ben Edit_KVCTPCT KhachHangSearch
+        KhachHangSearch_ContextMenu(maKhText); // ben Edit_KVCTPCT KhachHangSearch
     })
     $('.khachhangs-cursor-pointer').click(function () {
 
@@ -87,8 +87,10 @@
         var taxSign = $(this).children().eq(7).html();
         var taxForm = $(this).children().eq(8).html();
 
+        var abc = $('#hidTxtMaKh').val();
+
         if ($('#hidTxtMaKh').val() === 'maKhNo') { // search off no
-            $('#txtMaKhNo').val(code);
+            $('#txtMaKhNo_ContextMenu').val(code);
             console.log($('#txtMaKhNo').val() + " - " + code);
             $('#txtTenKhNo').val(name);
         }

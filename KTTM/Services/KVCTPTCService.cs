@@ -262,10 +262,10 @@ namespace KTTM.Services
                     var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) && string.IsNullOrEmpty(x.Loaicard));
                     var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
 
-                    string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + item.Bill : "CHI BILL " + item.Bill; // ??
+                    string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + item.Stt : "CHI BILL " + item.Stt; // ??
                     var loaiHDGoc = "VAT";// item.Loaihd; // ??
-                    var soCTGoc = item.Bill; // ??
-                    var ngayBill = item.Ngaybill; // ??
+                    var soCTGoc = item.Stt; // thao
+                    var ngayBill = item.Ngaybill;
 
                     if (tienMat)
                     {

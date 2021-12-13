@@ -28,6 +28,7 @@
                 <input type="hidden" asp-for="KVCTPTC.KVPTCId" />
                 <input type="hidden" asp-for="KVCTPTC.MaCn" />
                 <input type="hidden" asp-for="KVPTC.SoCT" />
+                <input type="hidden" asp-for="KVPTC.NgayCT" /> <!--for validate-->
                 <input type="hidden" asp-for="StrUrl" />
                 <input type="hidden" asp-for="KVCTPTC.TKCo" value="1111000000" />
 
@@ -58,7 +59,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Tổng tiền NT</label>
-                            <input asp-for="KVCTPTC.SoTienNT" class="form-control form-control-sm numbers" id="txtSoTienNT" />
+                            <input @*asp-for="KVCTPTC.SoTienNT"*@ class="form-control form-control-sm numbers" id="txtSoTienNT" />
                             <span asp-validation-for="KVCTPTC.SoTienNT" class="text-danger"></span>
                         </div>
 
@@ -87,7 +88,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Chi phí</label>
-                            <input asp-for="KVCTPTC.DSKhongVAT" class="form-control form-control-sm numbers" id="txtChiPhi" />
+                            <input asp-for="KVCTPTC.SoTienNT" class="form-control form-control-sm numbers" id="txtChiPhi" />
                             <span @*asp-validation-for="KVCTPTC.SoTienNT"*@ class="text-danger"></span>
                         </div>
 
@@ -99,7 +100,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Thuế GTGT</label>
-                            <input class="form-control form-control-sm " id="txtThueGTGT" readonly />
+                            <input asp-for="ThueGTGT" class="form-control form-control-sm " id="txtThueGTGT" readonly />
                             <span @*asp-validation-for="KVCTPTC.SoTien"*@ class="text-danger"></span>
                         </div>
                     </div>
@@ -163,9 +164,10 @@
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
                             <div class="input-group">
-                                <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
+                                @*<input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase txtMaKhNo_ContextMenu" id="txtMaKhNo_ContextMenu">*@
+                                <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase txtMaKhNo_ContextMenu" id="txtMaKhNo_ContextMenu">                                
                                 <span class="input-group-btn">
-                                    <a href="javascript:;" class="btn btn-default btn-sm" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                 </span>
                             </div>
                             <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
@@ -408,6 +410,8 @@
 </div>
 <!-- khachhang modal-->
 
+<input type="hidden" id="hidTxtMaKh" />
+
 @section Scripts{
 
     <script src="~/js/Admin/Home/indexController.js"></script>
@@ -433,26 +437,32 @@
 
     <script>
 
-        // enter for search
-        shortcut.add("Enter", function () {
-            $('#btnKhSearch').click()
-        });
+        //// enter for search
+        //shortcut.add("Enter", function () {
+        //    $('#btnKhSearch').click()
+        //});
 
-        $('#btnKhSearch').click(function () {
+        $('.btnKhSearch').click(function () {
             debugger
+            
             var maKhtext = '';
-
+            var txtMaKh = '';
+            
             if ($(this).data('name') === 'maKhNo') { // search off no
-                maKhtext = $('#txtMaKhNo').val();
+                maKhtext = $('#txtMaKhNo_ContextMenu').val();
+                txtMaKh = 'maKhNo';
             }
             if ($(this).data('name') === 'maKhCo') { // search off co
                 maKhtext = $('#txtMaKhCo').val();
+                txtMaKh = 'maKhCo';
             }
 
-            KhachHangSearch(maKhtext);
+            $('#hidTxtMaKh').val(txtMaKh);
+
+            KhachHangSearch_ContextMenu(maKhtext);
         })
 
-        $('#txtMaKhNo').blur(function () {
+        $('#txtMaKhNo_ContextMenu').blur(function () {
 
             maKhtext = $(this).val();
 
@@ -630,8 +640,8 @@
             });
         }
 
-        function KhachHangSearch(code) {
-            $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
+        function KhachHangSearch_ContextMenu(code) {
+            $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code_ContextMenu', { code: code }, function (data) {
 
                 $('#khachHang_Modal').modal('show');
                 $('.khachHang_Modal_Body').html(data);

@@ -15,14 +15,14 @@ namespace KTTM.Models
         public KVCTPTC KVCTPTC { get; set; }
         public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; }
-        public IEnumerable<ViewDmHttc> DmHttcs { get; set; }        
+        public IEnumerable<ViewDmHttc> DmHttcs { get; set; }
         public IEnumerable<DmTk> DmTks_TkNo { get; set; }
         public IEnumerable<DmTk> DmTks_TkCo { get; set; }
         public IEnumerable<DmTk> DmTks_Cashier { get; set; }
         public IEnumerable<ViewQuay> Quays { get; set; }
-        
+
         public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
-        
+
         public IEnumerable<ViewMatHang> MatHangs { get; set; }
         public IEnumerable<ViewPhongBan> PhongBans { get; set; }
         public LayDataCashierModel LayDataCashierModel { get; set; }
@@ -34,5 +34,6 @@ namespace KTTM.Models
         public IEnumerable<Dgiai> Dgiais { get; set; }
         public IEnumerable<ListViewModel> LoaiHDGocs { get; set; }
 
+        public string ThueGTGT { get; set; }
     }
 }

@@ -178,6 +178,7 @@ namespace KTTM.Controllers
                 return View(KVCTPCTVM);
             }
 
+            // dong full
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
@@ -185,6 +186,9 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
+            KVCTPCTVM.KVCTPTC.SoTien = KVCTPCTVM.KVCTPTC.SoTienNT * KVCTPCTVM.KVCTPTC.TyGia;
+            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.SoTienNT;
+            //KVCTPCTVM.KVCTPTC.SoTienNT : "co roi: tren view"
 
             // ghi log
             KVCTPCTVM.KVCTPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
@@ -192,6 +196,15 @@ namespace KTTM.Controllers
             try
             {
                 await _kVCTPTCService.Create(KVCTPCTVM.KVCTPTC);
+
+                // dong tach
+                KVCTPTC kVCTPTC = KVCTPCTVM.KVCTPTC;
+                kVCTPTC.Id = 0;
+                kVCTPTC.SoTienNT = decimal.Parse(KVCTPCTVM.ThueGTGT);
+                kVCTPTC.SoTien = kVCTPTC.SoTienNT * kVCTPTC.TyGia;
+                kVCTPTC.TKNo = "1331000010";
+                kVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT;
+                await _kVCTPTCService.Create(kVCTPTC);
 
                 SetAlert("Thêm mới thành công.", "success");
                 return BackIndex(KVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?soCT
@@ -295,8 +308,16 @@ namespace KTTM.Controllers
                 // save to cashier
                 var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
                 var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo.Trim(), user.Macn);
-                noptien.Phieuthu = KVCTPCTVM.KVPTC.SoCT;
+
                 noptien.Ngaypt = kVPCT.NgayCT;
+                if (KVCTPCTVM.LayDataCashierModel.TienMat)
+                {
+                    noptien.Phieuthu = KVCTPCTVM.KVPTC.SoCT;
+                }
+                if (KVCTPCTVM.LayDataCashierModel.TTThe)
+                {
+                    noptien.Phieuthucc = KVCTPCTVM.KVPTC.SoCT;
+                }
                 //noptien.Ghichu = kVPCT.ghichu; ??
                 await _kVCTPTCService.UpdateAsync_NopTien(noptien);
 
@@ -775,6 +796,17 @@ namespace KTTM.Controllers
                     status = false
                 });
             }
+        }
+
+        public IActionResult GetKhachHangs_HDVATOB_By_Code_ContextMenu(string code)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            code ??= "";
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            KVCTPCTVM.MaKhText = code;
+            return PartialView(KVCTPCTVM);
         }
 
         public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
