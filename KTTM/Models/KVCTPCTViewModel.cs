@@ -1,4 +1,5 @@
 ﻿using Data.Models_DanhMucKT;
+using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.ViewModels;
@@ -21,7 +22,8 @@ namespace KTTM.Models
         public IEnumerable<DmTk> DmTks_Cashier { get; set; }
         public IEnumerable<ViewQuay> Quays { get; set; }
 
-        public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
+        public IEnumerable<VSupplierTaiKhoan> KhachHangs_HDVATOB { get; set; }
+        //public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
 
         public IEnumerable<ViewMatHang> MatHangs { get; set; }
         public IEnumerable<ViewPhongBan> PhongBans { get; set; }

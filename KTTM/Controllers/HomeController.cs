@@ -895,7 +895,8 @@ namespace KTTM.Controllers
                             }
                             else
                             {
-                                var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+                                var supplier = _kVCTPTCService.GetSuppliersByCodeName(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+                                //var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
 
                                 if (!string.IsNullOrEmpty(supplier.Code))
                                 {

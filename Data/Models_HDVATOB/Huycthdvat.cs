@@ -39,6 +39,7 @@ namespace Data.Models_HDVATOB
         public string Number { get; set; }
         public int Slve { get; set; }
         public int? Sk { get; set; }
+        public string Soxe { get; set; }
         public string Logfile { get; set; }
     }
 }

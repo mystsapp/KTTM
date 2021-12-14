@@ -21,6 +21,7 @@ namespace Data.Models_HDVATOB
         public virtual DbSet<CthdvatDel> CthdvatDels { get; set; }
         public virtual DbSet<Cttachve> Cttachves { get; set; }
         public virtual DbSet<Dmhttc> Dmhttcs { get; set; }
+        public virtual DbSet<Dmkhbp> Dmkhbps { get; set; }
         public virtual DbSet<Dmtk> Dmtks { get; set; }
         public virtual DbSet<Dvphi> Dvphis { get; set; }
         public virtual DbSet<Hoadon> Hoadons { get; set; }
@@ -33,17 +34,19 @@ namespace Data.Models_HDVATOB
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<Tachve> Tachves { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<VBiennhanVanchuyen> VBiennhanVanchuyens { get; set; }
         public virtual DbSet<VDataVetourCashier> VDataVetourCashiers { get; set; }
         public virtual DbSet<VDmkhVmb> VDmkhVmbs { get; set; }
         public virtual DbSet<VPhongban> VPhongbans { get; set; }
+        public virtual DbSet<VSupplierTaiKhoan> VSupplierTaiKhoans { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=192.168.4.198,1434;database=hdvatob;Trusted_Connection=true;User Id=sa;Password=123456;Integrated security=false;MultipleActiveResultSets=true");
-            }
+            //            if (!optionsBuilder.IsConfigured)
+            //            {
+            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+            //                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=hdvatob;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
+            //            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -542,6 +545,59 @@ namespace Data.Models_HDVATOB
                     .HasColumnName("ma_in");
             });
 
+            modelBuilder.Entity<Dmkhbp>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("dmkhbp");
+
+                entity.Property(e => e.Coquan)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("coquan");
+
+                entity.Property(e => e.Diachi)
+                    .HasMaxLength(100)
+                    .HasColumnName("diachi");
+
+                entity.Property(e => e.Dienthoai)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("dienthoai");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("fax");
+
+                entity.Property(e => e.Lienhe)
+                    .HasMaxLength(50)
+                    .HasColumnName("lienhe");
+
+                entity.Property(e => e.Makh)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("makh");
+
+                entity.Property(e => e.Msthue)
+                    .HasMaxLength(50)
+                    .HasColumnName("msthue");
+
+                entity.Property(e => e.Source)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("source");
+
+                entity.Property(e => e.Tencoquan)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("tencoquan");
+            });
+
             modelBuilder.Entity<Dmtk>(entity =>
             {
                 entity.ToTable("dmtk");
@@ -649,7 +705,7 @@ namespace Data.Models_HDVATOB
                     .HasColumnName("dienthoai");
 
                 entity.Property(e => e.Ghichu)
-                    .HasMaxLength(80)
+                    .HasMaxLength(300)
                     .HasColumnName("ghichu");
 
                 entity.Property(e => e.Hdvat)
@@ -680,7 +736,7 @@ namespace Data.Models_HDVATOB
                     .HasColumnName("kyhieu");
 
                 entity.Property(e => e.Loaikhach)
-                    .HasMaxLength(5)
+                    .HasMaxLength(2)
                     .IsUnicode(false)
                     .HasColumnName("loaikhach");
 
@@ -1162,6 +1218,11 @@ namespace Data.Models_HDVATOB
                 entity.Property(e => e.Sotiennt)
                     .HasColumnType("decimal(14, 2)")
                     .HasColumnName("sotiennt");
+
+                entity.Property(e => e.Soxe)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("soxe");
 
                 entity.Property(e => e.Tenkhach)
                     .HasMaxLength(40)
@@ -1650,6 +1711,64 @@ namespace Data.Models_HDVATOB
                     .HasColumnName("passwordhddt");
             });
 
+            modelBuilder.Entity<VBiennhanVanchuyen>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vBiennhanVanchuyen");
+
+                entity.Property(e => e.Chinhanh)
+                    .HasMaxLength(4)
+                    .IsUnicode(false)
+                    .HasColumnName("chinhanh");
+
+                entity.Property(e => e.Codedoan)
+                    .HasMaxLength(17)
+                    .IsUnicode(false)
+                    .HasColumnName("codedoan");
+
+                entity.Property(e => e.Httt)
+                    .HasMaxLength(10)
+                    .HasColumnName("httt");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Ngay)
+                    .HasColumnType("datetime")
+                    .HasColumnName("ngay");
+
+                entity.Property(e => e.Ngaybn)
+                    .HasMaxLength(19)
+                    .IsUnicode(false)
+                    .HasColumnName("ngaybn");
+
+                entity.Property(e => e.Nguoitao)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("nguoitao");
+
+                entity.Property(e => e.Noidung)
+                    .HasMaxLength(250)
+                    .HasColumnName("noidung");
+
+                entity.Property(e => e.Sobiennhan)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("sobiennhan");
+
+                entity.Property(e => e.Sotien)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("sotien");
+
+                entity.Property(e => e.Tencoquan)
+                    .HasMaxLength(250)
+                    .HasColumnName("tencoquan");
+
+                entity.Property(e => e.Tenkhach)
+                    .HasMaxLength(100)
+                    .HasColumnName("tenkhach");
+            });
+
             modelBuilder.Entity<VDataVetourCashier>(entity =>
             {
                 entity.HasNoKey();
@@ -1769,9 +1888,101 @@ namespace Data.Models_HDVATOB
                     .HasColumnName("tenphong");
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            modelBuilder.Entity<VSupplierTaiKhoan>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vSupplierTaiKhoan");
+
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Address)
+                    .HasMaxLength(200)
+                    .HasColumnName("address");
+
+                entity.Property(e => e.Chinhanh)
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("chinhanh");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(15)
+                    .HasColumnName("city");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.Contact)
+                    .HasMaxLength(50)
+                    .HasColumnName("contact");
+
+                entity.Property(e => e.DiaChi).HasMaxLength(150);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(200)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(50)
+                    .HasColumnName("fax");
+
+                entity.Property(e => e.Httt)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("httt");
+
+                entity.Property(e => e.LoaiTien)
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(200)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Nation)
+                    .HasMaxLength(50)
+                    .HasColumnName("nation");
+
+                entity.Property(e => e.NganHang).HasMaxLength(150);
+
+                entity.Property(e => e.QuocGia).HasMaxLength(50);
+
+                entity.Property(e => e.Realname)
+                    .HasMaxLength(200)
+                    .HasColumnName("realname");
+
+                entity.Property(e => e.TaiKhoan)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Taxcode)
+                    .HasMaxLength(16)
+                    .IsUnicode(false)
+                    .HasColumnName("taxcode");
+
+                entity.Property(e => e.Taxform)
+                    .HasMaxLength(50)
+                    .HasColumnName("taxform");
+
+                entity.Property(e => e.Taxsign)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("taxsign");
+
+                entity.Property(e => e.Telephone)
+                    .HasMaxLength(50)
+                    .HasColumnName("telephone");
+
+                entity.Property(e => e.ThanhPho).HasMaxLength(50);
+            });
+
+            //  OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

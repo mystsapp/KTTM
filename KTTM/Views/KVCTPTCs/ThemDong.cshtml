@@ -144,9 +144,9 @@
                                 <div class="col-md-2">
                                     <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
                                     <div class="input-group">
-                                        <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
+                                        <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo" readonly> <!--readonly: Thao-->
                                         <span class="input-group-btn">
-                                            <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                            <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch disabled" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                         </span>
                                     </div>
                                     <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>

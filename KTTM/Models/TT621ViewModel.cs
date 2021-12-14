@@ -1,4 +1,5 @@
 ﻿using Data.Models_DanhMucKT;
+using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.ViewModels;
@@ -35,7 +36,9 @@ namespace KTTM.Models
         public IEnumerable<Dgiai> Dgiais { get; set; }
         public IEnumerable<ListViewModel> LoaiHDGocs { get; set; }
 
-        public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
+        public IEnumerable<VSupplierTaiKhoan> KhachHangs_HDVATOB { get; set; }
+
+        //public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
         public string MaKhText { get; set; }
 
         public string ThueGTGT { get; set; }
