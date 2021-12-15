@@ -455,6 +455,35 @@
             $('.btnKhSearch_ThemMoi').click()
 
     });*@
+    
+    var validSubmitSave = true;
+    // check loaiHD VAT
+    $('#ddlLoaiHDGoc').off('change').on('change', function(){
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            $('#txtSoCTGoc').addClass('is-invalid');
+            $('#txtKyHieu').addClass('is-invalid');
+            $('#txtMauSoHD').addClass('is-invalid');
+            $('#txtNgayCTGoc').addClass('is-invalid');
+
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
+
+            if(soCTGoc === '' || kyHieu === '' || mauSo === '' || ngayCTGoc === '' ){
+                validSubmitSave = false;
+            }
+        }
+        else{
+            $('#txtSoCTGoc').removeClass('is-invalid');
+            $('#txtKyHieu').removeClass('is-invalid');
+            $('#txtMauSoHD').removeClass('is-invalid');
+            $('#txtNgayCTGoc').removeClass('is-invalid');
+            validSubmitSave = true;
+        }
+
+    })
+    // check loaiHD VAT
 
     // tongtien, chiphi ==> thue GTGT
     $('#txtSoTienNT').blur(function () {
@@ -652,8 +681,22 @@
     // save
     $('#btnSaveData').off('click').on('click', function () {
         //debugger
+        
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
 
-        if ($('#frm_ThemMoiCT_TT_Partial').valid()) {
+            if(soCTGoc !== '' && kyHieu !== '' && mauSo !== '' && ngayCTGoc !== '' ){
+                validSubmitSave = true;
+            }
+
+        }
+
+        if(validSubmitSave){
+
+            if ($('#frm_ThemMoiCT_TT_Partial').valid()) {
             var tt621 = $('#frm_ThemMoiCT_TT_Partial').serialize();
             $.ajax({
                 type: "POST",
@@ -686,6 +729,11 @@
             });
         }
 
+        }
+        else{
+            toastr.warning("Chưa điền đủ thông tin!");
+        }
+        
     });
 
     // VAT ==> DSKhongVAT

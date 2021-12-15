@@ -91,7 +91,7 @@
                         <div class="col-md-4">
                             <label asp-for="KVCTPTC.TKNo" class="control-label"></label>
                             <!--select2-->
-                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2" 
+                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2"
                                     asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "TenTk"))" id="ddlTkNo">
                             </select>
                             <span asp-validation-for="KVCTPTC.TKNo" class="text-danger"></span>
@@ -141,67 +141,67 @@
                     <div class=" row">
                         @if (Model.KVPTC.MFieu == "T")
                         {
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
-                                    <div class="input-group">
-                                        <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo" readonly> <!--readonly: Thao-->
-                                        <span class="input-group-btn">
-                                            <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch disabled" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                        </span>
-                                    </div>
-                                    <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
+                                <div class="input-group">
+                                    <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo" readonly> <!--readonly: Thao-->
+                                <span class="input-group-btn">
+                                        <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch disabled" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    </span>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="control-label ">Tên KH nợ</label>
-                                    <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhNo" readonly />
-                                </div>
+                                <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label ">Tên KH nợ</label>
+                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhNo" readonly />
+                            </div>
 
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.MaKhCo" class="control-label "></label>
-                                    <div class="input-group">
-                                        <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo">
-                                        <span class="input-group-btn">
-                                            <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch_Co" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                        </span>
-                                    </div>
-                                    <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.MaKhCo" class="control-label "></label>
+                                <div class="input-group">
+                                    <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm text-uppercase" id="txtMaKhCo">
+                                    <span class="input-group-btn">
+                                        <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch_Co" data-name="maKhCo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    </span>
                                 </div>
+                                <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
+                            </div>
 
-                                <div class="col-md-4">
-                                    <label class="control-label ">Tên KH có</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtTenKhCo" />
-                                </div>
+                            <div class="col-md-4">
+                                <label class="control-label ">Tên KH có</label>
+                                <input type="text" class="form-control form-control-sm" id="txtTenKhCo" />
+                            </div>
 
                         }
                         else
                         {
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
-                                    <div class="input-group">
-                                        <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
-                                        <span class="input-group-btn">
-                                            <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
-                                        </span>
-                                    </div>
-                                    <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
+                                <div class="input-group">
+                                    <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
+                                    <span class="input-group-btn">
+                                        <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
+                                    </span>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="control-label ">Tên KH nợ</label>
-                                    <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
-                                </div>
+                                <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label ">Tên KH nợ</label>
+                                <input type="text" class="form-control form-control-sm" id="txtTenKhNo" />
+                            </div>
 
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.MaKhCo" class="control-label "></label>
-                                    <div class="input-group">
-                                        <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
-                                    </div>
-                                    <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.MaKhCo" class="control-label "></label>
+                                <div class="input-group">
+                                    <input asp-for="KVCTPTC.MaKhCo" class="form-control form-control-sm" id="txtMaKhCo" disabled>
                                 </div>
+                                <span asp-validation-for="KVCTPTC.MaKhCo" class="text-danger"></span>
+                            </div>
 
-                                <div class="col-md-4">
-                                    <label class="control-label ">Tên KH có</label>
-                                    <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" disabled />
-                                </div>
+                            <div class="col-md-4">
+                                <label class="control-label ">Tên KH có</label>
+                                <input type="text" class="form-control form-control-sm" value="Không có mã khách hàng" id="txtTenKhCo" disabled />
+                            </div>
 
                         }
                     </div>
@@ -209,42 +209,42 @@
                     <div class=" row">
                         @if (Model.KVPTC.MFieu == "T")
                         {
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                                 @*<select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm select2" disabled
                                     asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                     </select>*@
-                                    <input asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm " readonly />
-                                    <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
-                                </div>
+                                <input asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm " readonly />
+                                <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
+                            </div>
 
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
-                                    <select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
-                                    </select>
-                                    <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
-                                </div>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
+                                <select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm "
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                </select>
+                                <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
+                            </div>
 
                         }
                         else
                         {
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
-                                    <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
-                                    </select>
-                                    <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
-                                </div>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
+                                <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                </select>
+                                <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
+                            </div>
 
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                                 @*<select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm select2" disabled
                                     asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                     </select>*@
-                                    <input asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm " readonly />
-                                    <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
-                                </div>
+                                <input asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm " readonly />
+                                <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
+                            </div>
                         }
 
                         <div class="col-md-3">
@@ -262,20 +262,20 @@
                         </div>
                         @if (Model.KVPTC.NgoaiTe == "VN")
                         {
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
-                                    <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" />
-                                    <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
-                                </div>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
+                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" />
+                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                            </div>
 
                         }
                         else
                         {
-                                <div class="col-md-2">
-                                    <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
-                                    <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
-                                    <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
-                                </div>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
+                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
+                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                            </div>
 
                         }
                     </div>
@@ -368,7 +368,7 @@
                         <div class="col-md-3">
                             <label asp-for="KVCTPTC.DieuChinh" class="control-label "></label>
                             <br />
-                            <input asp-for="KVCTPTC.DieuChinh" id="ckDieuChinh" type="checkbox"/>
+                            <input asp-for="KVCTPTC.DieuChinh" id="ckDieuChinh" type="checkbox" />
                             <span asp-validation-for="KVCTPTC.DieuChinh" class="text-danger"></span>
                         </div>
 
@@ -479,81 +479,110 @@
 
 @section Scripts{
 
-    <script src="~/js/Admin/Home/indexController.js"></script>
-    <script src="~/js/Admin/serviceController.js"></script>
+<script src="~/js/Admin/Home/indexController.js"></script>
+<script src="~/js/Admin/serviceController.js"></script>
 
-    <!-- select2 and multi select2 (bootstrap4)-->
-    <script>
-        //$('#txtMaKH').select2()
-        $('.select2').select2()
-        //$('#ddlMaKhCo1').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-        //$('.tuyenTQ').select2({
-        //    theme: 'bootstrap4'
-        //})
+<!-- select2 and multi select2 (bootstrap4)-->
+<script>
+    //$('#txtMaKH').select2()
+    $('.select2').select2()
+    //$('#ddlMaKhCo1').select2()
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    })
+    //$('.tuyenTQ').select2({
+    //    theme: 'bootstrap4'
+    //})
 
 
-    </script>
+</script>
 
-    <!-- Validation -->
+<!-- Validation -->
 
-    <script>
-        /*$(".maskInput").mask("99/99/9999");*/
+<script>
+    /*$(".maskInput").mask("99/99/9999");*/
 
-        // $(document).ready(function (){})
-        $(document).ready(function () {
-            loaiPhieu = '@Model.KVPTC.MFieu';
-            if (loaiPhieu == 'T') {
-                serviceController.DdlTkNo('1111000000');
+    // $(document).ready(function (){})
+    $(document).ready(function () {
+        loaiPhieu = '@Model.KVPTC.MFieu';
+        if (loaiPhieu == 'T') {
+            serviceController.DdlTkNo('1111000000');
+        }
+        else {
+            serviceController.DdlTkCo('1111000000');
+        }
+    });
+    //// enter for search
+    //shortcut.add("Enter", function () {
+    //    $('#btnKhSearch').click()
+    //});
+
+    var validSubmitSave = true;
+    // check loaiHD VAT
+    $('#ddlLoaiHDGoc').off('change').on('change', function(){
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            $('#txtSoCTGoc').addClass('is-invalid');
+            $('#txtKyHieu').addClass('is-invalid');
+            $('#txtMauSoHD').addClass('is-invalid');
+            $('#txtNgayCTGoc').addClass('is-invalid');
+
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
+
+            if(soCTGoc === '' || kyHieu === '' || mauSo === '' || ngayCTGoc === '' ){
+                validSubmitSave = false;
             }
-            else {
-                serviceController.DdlTkCo('1111000000');
-            }
-        });
-        //// enter for search
-        //shortcut.add("Enter", function () {
-        //    $('#btnKhSearch').click()
-        //});
+        }
+        else{
+            $('#txtSoCTGoc').removeClass('is-invalid');
+            $('#txtKyHieu').removeClass('is-invalid');
+            $('#txtMauSoHD').removeClass('is-invalid');
+            $('#txtNgayCTGoc').removeClass('is-invalid');
+            validSubmitSave = true;
+        }
 
-        $('.btnKhSearch').click(function () {
+    })
+    // check loaiHD VAT
 
-            var maKhtext = '';
-            var txtMaKh = '';
-            
-            if ($(this).data('name') === 'maKhNo') { // search off no
-                maKhtext = $('#txtMaKhNo').val();
-                txtMaKh = 'maKhNo';
-            }
-            if ($(this).data('name') === 'maKhCo') { // search off co
-                maKhtext = $('#txtMaKhCo').val();
-                txtMaKh = 'maKhCo';
-            }
+    $('.btnKhSearch').click(function () {
 
-            $('#hidTxtMaKh').val(txtMaKh);
+        var maKhtext = '';
+        var txtMaKh = '';
 
-            KhachHangSearch(maKhtext, txtMaKh);
-        })
+        if ($(this).data('name') === 'maKhNo') { // search off no
+            maKhtext = $('#txtMaKhNo').val();
+            txtMaKh = 'maKhNo';
+        }
+        if ($(this).data('name') === 'maKhCo') { // search off co
+            maKhtext = $('#txtMaKhCo').val();
+            txtMaKh = 'maKhCo';
+        }
 
-        $('#txtMaKhNo').blur(function () {
+        $('#hidTxtMaKh').val(txtMaKh);
 
-            maKhtext = $(this).val();
+        KhachHangSearch(maKhtext, txtMaKh);
+    })
 
-            //KhachHang_By_Code(maKhtext);
-            indexController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
-        })
+    $('#txtMaKhNo').blur(function () {
 
-        $('#txtMaKhCo').blur(function () {
+        maKhtext = $(this).val();
 
-            maKhtext = $(this).val();
+        //KhachHang_By_Code(maKhtext);
+        indexController.KhachHang_By_Code(maKhtext, 'txtMaKhNo');
+    })
 
-            //KhachHang_By_Code(maKhtext);
-            indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
-        })
+    $('#txtMaKhCo').blur(function () {
 
-        @*$('#ddlNgoaiTe').change(function () {
+        maKhtext = $(this).val();
+
+        //KhachHang_By_Code(maKhtext);
+        indexController.KhachHang_By_Code(maKhtext, 'txtMaKhCo');
+    })
+
+    @*$('#ddlNgoaiTe').change(function () {
                 loaiTien = $(this).val();
                 loaiPhieu = '@Model.KVPCT.MFieu';
                 serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
@@ -566,116 +595,135 @@
                 }
             })*@
 
-        $('#frm_KVCTPCT_Create').validate({
-            //rules: {
-            //    email: {
-            //        required: true,
-            //        email: true,
-            //    },
-            //    NgayDen: {
-            //        required: true
-            //    },
-            //    chuDetour1: {
-            //        required: true
-            //    },
-            //},
-            //messages: {
-            //    email: {
-            //        required: "Please enter a email address",
-            //        email: "Please enter a vaild email address"
-            //    },
-            //    NgayDen: {
-            //        required: "Please provide a date"
-            //    },
-            //    chuDetour1: "Please enter value"
-            //},
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                // add error text
+    $('#frm_KVCTPCT_Create').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
 
-                //error.addClass('invalid-feedback').removeClass('error');
-                //element.closest('.chuDeTourGroup').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    //$('#txtSgtcode').rules('add', {
+    //    required: true,
+    //    minlength: 17,
+    //    messages: {
+    //        //required: "Chủ đề không được để trống"
+    //    }
+    //});
+
+    // sotien
+    $('#txtSoTienNT').blur(function () {
+
+        serviceController.TinhSoTien();
+
+    })
+
+    $('#txtTyGia').blur(function () {
+
+
+        serviceController.TinhSoTien();
+
+    })
+    // sotien
+    // btnKVCTPCTCreatePartial_Save
+    $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {
+
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
+
+            if(soCTGoc !== '' && kyHieu !== '' && mauSo !== '' && ngayCTGoc !== '' ){
+                validSubmitSave = true;
             }
-        });
 
-        //$('#txtSgtcode').rules('add', {
-        //    required: true,
-        //    minlength: 17,
-        //    messages: {
-        //        //required: "Chủ đề không được để trống"
-        //    }
-        //});
-
-        // sotien
-        $('#txtSoTienNT').blur(function () {
-
-            serviceController.TinhSoTien();
-
-        })
-
-        $('#txtTyGia').blur(function () {
-
-
-            serviceController.TinhSoTien();
-
-        })
-        // sotien
-        // btnKVCTPCTCreatePartial_Save
-        $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {
-            $('#frm_KVCTPCT_Create').submit();
-        })
-
-        // AutoSgtcode
-        $('#txtSgtcode').blur(function () {
-            sgtcodeText = $(this).val();
-            serviceController.AutoSgtcode(sgtcodeText);
-        })
-
-        // get dien giai by tkno tkco
-        $('#ddlTkNo').change(function () {
-
-            tkNo = $(this).val();
-            tkCo = $('#ddlTkCo').val();
-
-            serviceController.DdlTkNo(tkNo);
-            serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-        })
-        $('#ddlTkCo').change(function () {
-            tkCo = $(this).val();
-            tkNo = $('#ddlTkNo').val();
-
-            serviceController.DdlTkCo(tkCo);
-            serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-
-        })
-        // get dien giai by tkno tkco
-
-        // VAT ==> DSKhongVAT
-        $('#txtVAT').blur(function () {
-            vat = $(this).val();
-            soTien = $('#txtSoTien').val();
-
-            serviceController.TxtVAT_Blur(vat, soTien);
-        })
-        // VAT ==> DSKhongVAT
-
-        function KhachHangSearch(code) {
-            debugger
-            $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
-
-                $('#khachHang_Modal').modal('show');
-                $('.khachHang_Modal_Body').html(data);
-                $('#khachHang_Modal').draggable();
-            });
         }
 
-    </script>
+        if(validSubmitSave){
+
+            $('#frm_KVCTPCT_Create').submit();
+        }
+        else{
+            toastr.warning("Chưa điền đủ thông tin!");
+        }
+    });
+
+    // AutoSgtcode
+    $('#txtSgtcode').blur(function () {
+        sgtcodeText = $(this).val();
+        serviceController.AutoSgtcode(sgtcodeText);
+    })
+
+    // get dien giai by tkno tkco
+    $('#ddlTkNo').change(function () {
+
+        tkNo = $(this).val();
+        tkCo = $('#ddlTkCo').val();
+
+        serviceController.DdlTkNo(tkNo);
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+    })
+    $('#ddlTkCo').change(function () {
+        tkCo = $(this).val();
+        tkNo = $('#ddlTkNo').val();
+
+        serviceController.DdlTkCo(tkCo);
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+
+    })
+    // get dien giai by tkno tkco
+
+    // VAT ==> DSKhongVAT
+    $('#txtVAT').blur(function () {
+        vat = $(this).val();
+        soTien = $('#txtSoTien').val();
+
+        serviceController.TxtVAT_Blur(vat, soTien);
+    })
+    // VAT ==> DSKhongVAT
+
+    function KhachHangSearch(code) {
+        debugger
+        $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
+
+            $('#khachHang_Modal').modal('show');
+            $('.khachHang_Modal_Body').html(data);
+            $('#khachHang_Modal').draggable();
+        });
+    }
+
+</script>
 
 }

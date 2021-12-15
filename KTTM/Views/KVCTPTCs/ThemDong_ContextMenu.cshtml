@@ -441,6 +441,35 @@
         //shortcut.add("Enter", function () {
         //    $('#btnKhSearch').click()
         //});
+        
+    var validSubmitSave = true;
+    // check loaiHD VAT
+    $('#ddlLoaiHDGoc').off('change').on('change', function(){
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            $('#txtSoCTGoc').addClass('is-invalid');
+            $('#txtKyHieu').addClass('is-invalid');
+            $('#txtMauSoHD').addClass('is-invalid');
+            $('#txtNgayCTGoc').addClass('is-invalid');
+
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
+
+            if(soCTGoc === '' || kyHieu === '' || mauSo === '' || ngayCTGoc === '' ){
+                validSubmitSave = false;
+            }
+        }
+        else{
+            $('#txtSoCTGoc').removeClass('is-invalid');
+            $('#txtKyHieu').removeClass('is-invalid');
+            $('#txtMauSoHD').removeClass('is-invalid');
+            $('#txtNgayCTGoc').removeClass('is-invalid');
+            validSubmitSave = true;
+        }
+
+    })
+    // check loaiHD VAT
 
         $('.btnKhSearch').click(function () {
             debugger
@@ -542,7 +571,26 @@
         // sotien
         // btnKVCTPCTCreatePartial_Save
         $('#btnKVCTPCTCreatePartial_Save').off('click').on('click', function () {
-            $('#frm_KVCTPCT_Create').submit();
+            //$('#frm_KVCTPCT_Create').submit();
+            if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
+
+            if(soCTGoc !== '' && kyHieu !== '' && mauSo !== '' && ngayCTGoc !== '' ){
+                validSubmitSave = true;
+            }
+
+            }
+
+            if(validSubmitSave){
+
+                $('#frm_KVCTPCT_Create').submit();
+            }
+            else{
+                toastr.warning("Chưa điền đủ thông tin!");
+            }
         })
 
         // AutoSgtcode

@@ -402,14 +402,43 @@
 
 <script>
 
-    // enter for search
-    shortcut.add("Enter", function () {
-        var btnKhSearch_KhongTC_Status = $('#btnKhSearch_KhongTC').hasClass('disabled');
-        if (!btnKhSearch_KhongTC_Status) {
-            $('#btnKhSearch_KhongTC').click()
+    //// enter for search
+    //shortcut.add("Enter", function () {
+    //    var btnKhSearch_KhongTC_Status = $('#btnKhSearch_KhongTC').hasClass('disabled');
+    //    if (!btnKhSearch_KhongTC_Status) {
+    //        $('#btnKhSearch_KhongTC').click()
+    //    }
+
+    //});
+    
+    var validSubmitSave = true;
+    // check loaiHD VAT
+    $('#ddlLoaiHDGoc').off('change').on('change', function(){
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            $('#txtSoCTGoc').addClass('is-invalid');
+            $('#txtKyHieu').addClass('is-invalid');
+            $('#txtMauSoHD').addClass('is-invalid');
+            $('#txtNgayCTGoc').addClass('is-invalid');
+
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
+
+            if(soCTGoc === '' || kyHieu === '' || mauSo === '' || ngayCTGoc === '' ){
+                validSubmitSave = false;
+            }
+        }
+        else{
+            $('#txtSoCTGoc').removeClass('is-invalid');
+            $('#txtKyHieu').removeClass('is-invalid');
+            $('#txtMauSoHD').removeClass('is-invalid');
+            $('#txtNgayCTGoc').removeClass('is-invalid');
+            validSubmitSave = true;
         }
 
-    });
+    })
+    // check loaiHD VAT
 
     // btnKhSearch
     $('#btnKhSearch_KhongTC').click(function () {
@@ -543,8 +572,22 @@
     // save
     $('#btnSaveData_KhongTC_CapNhat').off('click').on('click', function () {
         //debugger
+        
+        if($('#ddlLoaiHDGoc').val() === 'VAT'){
+            var soCTGoc = $('#txtSoCTGoc').val();
+            var kyHieu = $('#txtKyHieu').val();
+            var mauSo = $('#txtMauSoHD').val();
+            var ngayCTGoc = $('#txtNgayCTGoc').val();
 
-        if ($('#frm_CapNhatCT_TT_KhongTC_Partial').valid()) {
+            if(soCTGoc !== '' && kyHieu !== '' && mauSo !== '' && ngayCTGoc !== '' ){
+                validSubmitSave = true;
+            }
+
+        }
+
+        if(validSubmitSave){
+
+            if ($('#frm_CapNhatCT_TT_KhongTC_Partial').valid()) {
             var tt621 = $('#frm_CapNhatCT_TT_KhongTC_Partial').serialize();
             $.ajax({
                 type: "POST",
@@ -576,6 +619,11 @@
             });
         }
 
+        }
+        else{
+            toastr.warning("Chưa điền đủ thông tin!");
+        }
+        
     });
 
     // VAT ==> DSKhongVAT

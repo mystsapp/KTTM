@@ -273,14 +273,13 @@
 
     <script>
 
-        // enter for search
-        shortcut.add("Enter", function () {
-            $('#btnKhSearch').click();
-        });
+        //// enter for search
+        //shortcut.add("Enter", function () {
+        //    $('#btnKhSearch').click();
+        //});
 
         $('#btnKhSearch').click(function () { // khi click có the dinh' nut txtMaKh blur (su kien blur khi go~ dang do~ va bam' nut btnKhSearch)
-            debugger
-
+            
             var maKhtext = maKhtext = $('#txtMaKh').val();
             var kvpctId = '';
             if ('@Model.KVPTC.SoCT' != null) {
@@ -289,7 +288,7 @@
             var strUrl = '@Model.StrUrl';
             var page = '@Model.Page';
 
-            KhachHangSearch(maKhtext, kvpctId, strUrl, page);
+            KhachHangSearch_KhongTC(maKhtext, kvpctId, strUrl, page);
         })
 
         $('#txtMaKh').blur(function () {
@@ -328,7 +327,7 @@
 
         })
 
-        function KhachHangSearch(code, kvpctId, strUrl, page) {
+        function KhachHangSearch_KhongTC(code, kvpctId, strUrl, page) {
             url = '/TT621s/GetKhachHangs_HDVATOB_By_Code_KhongTC';
             $.get(url, { code: code, kvpctId: kvpctId, strUrl: strUrl, page: page }, function (data) {
 

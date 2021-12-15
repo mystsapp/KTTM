@@ -39,7 +39,7 @@ namespace KTTM.Services
 
         Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621);
 
-        IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn);
+        IEnumerable<VSupplierTaiKhoan> GetSuppliersByCode(string code, string maCn);
 
         IEnumerable<TT621> GetAll();
 
@@ -268,11 +268,13 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
-        public IEnumerable<Supplier> GetSuppliersByCode(string code, string maCn)
+        public IEnumerable<VSupplierTaiKhoan> GetSuppliersByCode(string code, string maCn)
         {
             code ??= "";
             // supplier co 2 key
-            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower() == code.Trim().ToLower() && x.Chinhanh == maCn).ToList();
+            //var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower() == code.Trim().ToLower() && x.Chinhanh == maCn).ToList();
+            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.GetSuppliersByCodeName(code);
+            suppliers = suppliers.Where(x => x.Chinhanh == maCn).ToList();
             return suppliers;
         }
 

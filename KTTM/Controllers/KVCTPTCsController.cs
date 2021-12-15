@@ -104,6 +104,57 @@ namespace KTTM.Controllers
             return View(KVCTPCTVM);
         }
 
+        [HttpPost, ActionName("ThemDong")]
+        public async Task<IActionResult> ThemDong_Post(Guid KVPTCId, int page)
+        {
+            // var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (!ModelState.IsValid)
+            {
+                // not valid
+                KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
+                KVCTPCTVM.Page = page;
+                KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+                KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+                KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+                KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+                KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                Get_TkNo_TkCo();
+
+                return View(KVCTPCTVM);
+            }
+
+            KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
+            KVCTPCTVM.KVCTPTC.VAT = KVCTPCTVM.KVCTPTC.VAT ?? 0;
+            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
+            KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
+            KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
+            KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
+            KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
+            KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
+            KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
+            KVCTPCTVM.KVCTPTC.MaKhCo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhCo) ? "" : KVCTPCTVM.KVCTPTC.MaKhCo.ToUpper();
+
+            // ghi log
+            KVCTPCTVM.KVCTPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            try
+            {
+                await _kVCTPTCService.Create(KVCTPCTVM.KVCTPTC);
+
+                SetAlert("Thêm mới thành công.", "success");
+                return BackIndex(KVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
+            }
+            catch (Exception ex)
+            {
+                SetAlert(ex.Message, "error");
+                return View(KVCTPCTVM);
+            }
+        }
+
         private void Get_TkNo_TkCo()
         {
             DmTk dmTk = new DmTk() { Tkhoan = "" };
@@ -216,57 +267,6 @@ namespace KTTM.Controllers
             }
         }
 
-        [HttpPost, ActionName("ThemDong")]
-        public async Task<IActionResult> ThemDong_Post(Guid KVPTCId, int page)
-        {
-            // var soCT = KVCTPCTVM.KVCTPCT.KVPCTId;
-            // from login session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            if (!ModelState.IsValid)
-            {
-                // not valid
-                KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
-                KVCTPCTVM.Page = page;
-                KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
-                KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
-                KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
-                KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
-                KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-                Get_TkNo_TkCo();
-
-                return View(KVCTPCTVM);
-            }
-
-            KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
-            KVCTPCTVM.KVCTPTC.VAT = KVCTPCTVM.KVCTPTC.VAT ?? 0;
-            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
-            KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
-            KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
-            KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
-            KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
-            KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
-            KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
-            KVCTPCTVM.KVCTPTC.MaKhCo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhCo) ? "" : KVCTPCTVM.KVCTPTC.MaKhCo.ToUpper();
-
-            // ghi log
-            KVCTPCTVM.KVCTPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-
-            try
-            {
-                await _kVCTPTCService.Create(KVCTPCTVM.KVCTPTC);
-
-                SetAlert("Thêm mới thành công.", "success");
-                return BackIndex(KVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
-            }
-            catch (Exception ex)
-            {
-                SetAlert(ex.Message, "error");
-                return View(KVCTPCTVM);
-            }
-        }
-
         //-----------LayDataCashierPartial------------
         public async Task<IActionResult> LayDataCashierPartial(Guid kVPTCId, string strUrl, int page)
         {
@@ -300,6 +300,12 @@ namespace KTTM.Controllers
                 KVCTPCTVM.LayDataCashierModel.Tk.Trim(), KVCTPCTVM.LayDataCashierModel.TienMat,
                 KVCTPCTVM.LayDataCashierModel.TTThe);
             // ghi log ben service
+
+            if (kVCTPTCs == null) //545 ben kvctptcService
+            {
+                SetAlert("Báo cáo số không được phai khác H", "warning");
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
+            }
 
             try
             {
@@ -359,7 +365,7 @@ namespace KTTM.Controllers
                     catch (Exception ex)
                     {
                         SetAlert(ex.Message, "error");
-                        return View(KVCTPCTVM);
+                        return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
                     }
                     // tao phieuchi
 
@@ -400,7 +406,7 @@ namespace KTTM.Controllers
             catch (Exception ex)
             {
                 SetAlert(ex.Message, "error");
-                return View(KVCTPCTVM);
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
             }
         }
 
