@@ -804,24 +804,24 @@ namespace KTTM.Controllers
             }
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_ContextMenu(string code)
+        //public IActionResult GetKhachHangs_HDVATOB_By_Code_ContextMenu(string code)
+        //{
+        //    // from login session
+        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+        //    code ??= "";
+        //    KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+        //    KVCTPCTVM.MaKhText = code;
+        //    return PartialView(KVCTPCTVM);
+        //}
+
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
-            KVCTPCTVM.MaKhText = code;
-            return PartialView(KVCTPCTVM);
-        }
-
-        public IActionResult GetKhachHangs_HDVATOB_By_Code(string code)
-        {
-            // from login session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            code ??= "";
-            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            KVCTPCTVM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             KVCTPCTVM.MaKhText = code;
             return PartialView(KVCTPCTVM);
         }

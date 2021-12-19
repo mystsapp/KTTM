@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace KTTM.Models
 {
@@ -22,7 +23,8 @@ namespace KTTM.Models
         public IEnumerable<DmTk> DmTks_Cashier { get; set; }
         public IEnumerable<ViewQuay> Quays { get; set; }
 
-        public IEnumerable<VSupplierTaiKhoan> KhachHangs_HDVATOB { get; set; }
+        public IPagedList<VSupplierTaiKhoan> KhachHangs_HDVATOB { get; set; }
+        //public IEnumerable<VSupplierTaiKhoan> KhachHangs_HDVATOB { get; set; }
         //public IEnumerable<Data.Models_HDVATOB.Supplier> KhachHangs_HDVATOB { get; set; }
 
         public IEnumerable<ViewMatHang> MatHangs { get; set; }

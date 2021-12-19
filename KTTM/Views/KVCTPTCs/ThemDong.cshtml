@@ -5,7 +5,6 @@
 <!-- Main content -->
 @*<section class="content">*@
 
-
 <div class="card">
     <div class="card-header">
         <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm CT phiếu - <span>@Model.KVPTC.SoCT</span></h3>
@@ -53,9 +52,7 @@
                             </select>
                             <span asp-validation-for="KVCTPTC.HTTC" class="text-danger"></span>
                         </div>
-
                     </div>
-
 
                     <div class=" row">
 
@@ -101,7 +98,6 @@
                             <label class="control-label">Tên tài khoãn</label>
                             <input class="form-control form-control-sm " id="txtTenTkNo" />
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -119,7 +115,6 @@
                             <label class="control-label">Tên tài khoãn</label>
                             <input class="form-control form-control-sm " id="txtTenTkCo" />
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -132,7 +127,6 @@
                             <span asp-validation-for="KVCTPTC.DienGiai" class="text-danger"></span>
                         </div>
                     </div>
-
                 </fieldset>
                 <!--Thông tin về công nợ đoàn-->
                 <fieldset class="groupbox-border ">
@@ -145,7 +139,7 @@
                                 <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
                                 <div class="input-group">
                                     <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo" readonly> <!--readonly: Thao-->
-                                <span class="input-group-btn">
+                                    <span class="input-group-btn">
                                         <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch disabled" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                     </span>
                                 </div>
@@ -221,7 +215,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
                             </div>
@@ -232,7 +226,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                             </div>
@@ -299,9 +293,7 @@
                             <input asp-for="KVCTPTC.SalesSlip" class="form-control form-control-sm" id="txtCardNumber" />
                             <span asp-validation-for="KVCTPTC.SalesSlip" class="text-danger"></span>
                         </div>
-
                     </div>
-
                 </fieldset>
                 <!--Thông tin về thuế-->
                 <fieldset class="groupbox-border ">
@@ -342,7 +334,6 @@
                             <input type="text" value="" asp-for="KVCTPTC.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
                             <span asp-validation-for="KVCTPTC.NgayCTGoc" class="text-danger"></span>
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -371,7 +362,6 @@
                             <input asp-for="KVCTPTC.DieuChinh" id="ckDieuChinh" type="checkbox" />
                             <span asp-validation-for="KVCTPTC.DieuChinh" class="text-danger"></span>
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -381,7 +371,6 @@
                             <input asp-for="KVCTPTC.TenKH" class="form-control form-control-sm" id="txtTenKH" />
                             <span asp-validation-for="KVCTPTC.TenKH" class="text-danger"></span>
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -391,7 +380,6 @@
                             <input asp-for="KVCTPTC.DiaChi" class="form-control form-control-sm" id="txtDiaChi" />
                             <span asp-validation-for="KVCTPTC.DiaChi" class="text-danger"></span>
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -409,7 +397,6 @@
                             <input asp-for="KVCTPTC.MaTraCuu" class="form-control form-control-sm" id="txtMaTraCuu" />
                             <span asp-validation-for="KVCTPTC.MaTraCuu" class="text-danger"></span>
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -419,7 +406,6 @@
                             <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
                             <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
                         </div>
-
                     </div>
 
                     <div class=" row">
@@ -435,9 +421,7 @@
                             <input asp-for="KVCTPTC.Password" class="form-control form-control-sm" id="txtPassword" />
                             <span asp-validation-for="KVCTPTC.Password" class="text-danger"></span>
                         </div>
-
                     </div>
-
                 </fieldset>
 
                 <div class=" pt-1 pb-1">
@@ -446,9 +430,6 @@
                 </div>
             </div>
         </form>
-
-
-
     </div>
 </div>
 <!-- khachhang modal-->
@@ -462,7 +443,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body khachHang_Modal_Body ">
+            <div class="modal-body khachHang_Modal_Body " id="khachHang_Modal_Body">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
@@ -479,28 +460,26 @@
 
 @section Scripts{
 
-<script src="~/js/Admin/Home/indexController.js"></script>
-<script src="~/js/Admin/serviceController.js"></script>
+    <script src="~/js/Admin/Home/indexController.js"></script>
+    <script src="~/js/Admin/serviceController.js"></script>
 
-<!-- select2 and multi select2 (bootstrap4)-->
-<script>
-    //$('#txtMaKH').select2()
-    $('.select2').select2()
-    //$('#ddlMaKhCo1').select2()
-    //Initialize Select2 Elements
-    $('.select2bs4').select2({
-        theme: 'bootstrap4'
-    })
-    //$('.tuyenTQ').select2({
-    //    theme: 'bootstrap4'
-    //})
+    <!-- select2 and multi select2 (bootstrap4)-->
+    <script>
+        //$('#txtMaKH').select2()
+        $('.select2').select2()
+        //$('#ddlMaKhCo1').select2()
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+        //$('.tuyenTQ').select2({
+        //    theme: 'bootstrap4'
+        //})
+    </script>
 
+    <!-- Validation -->
 
-</script>
-
-<!-- Validation -->
-
-<script>
+    <script>
     /*$(".maskInput").mask("99/99/9999");*/
 
     // $(document).ready(function (){})
@@ -650,7 +629,6 @@
 
     $('#txtTyGia').blur(function () {
 
-
         serviceController.TinhSoTien();
 
     })
@@ -723,7 +701,6 @@
             $('#khachHang_Modal').draggable();
         });
     }
-
-</script>
+    </script>
 
 }

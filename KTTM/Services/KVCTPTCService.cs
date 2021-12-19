@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace KTTM.Services
 {
@@ -101,6 +102,8 @@ namespace KTTM.Services
         Task<List<KVCTPTC>> FinBy_SoCT(string soCT, string maCn);
 
         Task<Data.Models_HDVATOB.Supplier> GetSupplierSingleByCode(string maKh);
+
+        Task<IPagedList<VSupplierTaiKhoan>> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -1098,6 +1101,38 @@ namespace KTTM.Services
             var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn).ToList();
 
             return suppliers;
+        }
+
+        public async Task<IPagedList<VSupplierTaiKhoan>> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page)
+        {
+            // return a 404 if user browses to before the first page
+            if (page.HasValue && page < 1)
+                return null;
+
+            code ??= "";
+            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.GetSuppliersByCodeName(code);
+            suppliers = suppliers.Where(x => x.Chinhanh == maCn).ToList();
+
+            var list = suppliers.OrderByDescending(x => x.Code).ToList();
+            var count = list.Count();
+
+            // page the list
+            const int pageSize = 10;
+            decimal aa = (decimal)list.Count() / (decimal)pageSize;
+            var bb = Math.Ceiling(aa);
+            if (page > bb)
+            {
+                page--;
+            }
+            page = (page == 0) ? 1 : page;
+            var listPaged = list.ToPagedList(page ?? 1, pageSize);
+            //if (page > listPaged.PageCount)
+            //    page--;
+            // return a 404 if user browses to pages beyond last page. special case first page if no items exist
+            if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
+                return null;
+
+            return listPaged;
         }
 
         public IEnumerable<VSupplierTaiKhoan> GetSuppliersByCodeName(string code, string maCn)

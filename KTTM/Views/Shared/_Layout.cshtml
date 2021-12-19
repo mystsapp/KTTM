@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
@@ -39,8 +38,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <partial name="_BaoCaoQuyTienVND.cshtml" />
         <partial name="_BaoCaoQuyTienNT.cshtml" />
 
-
-
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand-sm navbar-dark navbar-info text-sm" @*style="background-color:#3c8dbc"*@>
             <div class="container">
@@ -61,20 +58,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <!-- SEARCH FORM -->
                     @*<form class="form-inline ml-0 ml-md-3">
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>*@
+                        </form>*@
                 </div>
-
             </div>
             <partial name="_LoginPartial.cshtml" />
-
         </nav>
         <!-- /.navbar -->
         <!-- Content Wrapper. Contains page content -->
@@ -107,6 +102,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
     <script src="~/lib/AdminLTE-3.1.0/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-ui/jquery-ui.js"></script>
     <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-validation/jquery.validate.js"></script>
     <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
@@ -134,11 +130,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
             $('#AlertBox').removeClass('hide');
             $('#AlertBox').delay(2000).slideUp(2000);
 
-
         });
-
     </script>
-    
+
     <style>
         .error {
             color: red;
@@ -179,7 +173,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
         }
     </style>
-
 </body>
-
 </html>
