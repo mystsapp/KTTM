@@ -1,5 +1,12 @@
 ﻿@model TT621ViewModel
 
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
 
 <div class="row form-group">
     <div class="col-xs-12 col-md-6">
@@ -53,8 +60,52 @@
             }
         </tbody>
     </table>
-
 </div>
+
+<div class="p-2" style="background-color: aliceblue;">
+    @if (Model.KhachHangs_HDVATOB != null)
+    {
+        @Html.PagedListPager((IPagedList)Model.KhachHangs_HDVATOB, page => Url.Action("GetKhachHangs_HDVATOB_By_Code_KhongTC", new
+   {
+       page = page,
+       option = Context.Request.Query["option"],
+       code = Model.MaKhText
+       //searchFromDate = ViewBag.searchFromDate,
+       //searchToDate = ViewBag.searchToDate,
+       //boolSgtcode = ViewBag.boolSgtcode,
+       //boolTkNo1311 = ViewBag.boolTkNo1311
+   }),
+             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+             {
+                 LiElementClasses = new string[] { "page-item" },
+                 PageClasses = new string[] { "page-link" },
+                 MaximumPageNumbersToDisplay = 5,
+                 UlElementClasses = new[] { "pagination pagination-sm m-0" }, // ul class
+                 ContainerDivClasses = new[] { "pagination-container" }
+             }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "khachHang_KhongTC_Modal_Body" }))
+
+        @*@Html.PagedListPager(Model.KhachHangs_HDVATOB, page => Url.Action("GetKhachHangs_HDVATOB_By_Code", "KVCTPTCs",
+               new
+               {
+                   page,
+                   pageSize = ViewBag.PageSize,
+                   teamId = ViewBag.TeamId
+               }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+            {
+                //Display = PagedListDisplayMode.IfNeeded,
+                MaximumPageNumbersToDisplay = 5
+            },
+            new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "GET",
+                UpdateTargetId = "PlayerContainer"
+            }))*@
+
+    }
+</div>
+
 @*<form asp-action="KhongTC_141" method="get" id="frm_KhachHang_by_code">
     <input type="hidden" name="kvpctId" id="hidKvpctId" />
     <input type="hidden" name="strUrl" id="hidStrUrl" />

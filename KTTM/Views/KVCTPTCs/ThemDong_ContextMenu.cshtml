@@ -397,7 +397,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body khachHang_Modal_Body ">
+            <div class="modal-body khachHang_Modal_Body " id="khachHang_Modal_Body">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-dark " data-dismiss="modal" title="Thoát"><i class="fas fa-power-off fa-2x"></i></button>
@@ -689,7 +689,7 @@
         }
 
         function KhachHangSearch_ContextMenu(code) {
-            $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code_ContextMenu', { code: code }, function (data) {
+            $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code_Contextmenu', { code: code }, function (data) {
 
                 $('#khachHang_Modal').modal('show');
                 $('.khachHang_Modal_Body').html(data);

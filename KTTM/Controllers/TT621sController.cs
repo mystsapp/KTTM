@@ -93,41 +93,44 @@ namespace KTTM.Controllers
             }
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, string page)
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             TT621VM.MaKhText = code;
 
             ViewBag.kvpctId = kvpctId;
             TT621VM.StrUrl = strUrl;
-            TT621VM.Page = page;
+            //TT621VM.Page = page;
 
             return PartialView(TT621VM);
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC_CapNhat(string code)
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_KhongTC_CapNhat(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             TT621VM.MaKhText = code;
 
             return PartialView(TT621VM);
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC_ThemMoi(string code)
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_KhongTC_ThemMoi(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             TT621VM.MaKhText = code;
 
             return PartialView(TT621VM);
@@ -1251,38 +1254,39 @@ namespace KTTM.Controllers
             }
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code)
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_CapNhatCTTT(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
-            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             TT621VM.MaKhText = code;
             return PartialView(TT621VM);
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT_ContextMenu(string code)
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT_ContextMenu(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
-            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             TT621VM.MaKhText = code;
             return PartialView(TT621VM);
         }
 
-        public IActionResult GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT(string code)
+        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_ThemMoiCTTT(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetAll_KhachHangs_HDVATOB().Where(x => x.Code.ToLower().Contains(code.ToLower()));
-            TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            //TT621VM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
+            TT621VM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             TT621VM.MaKhText = code;
             return PartialView(TT621VM);
         }
