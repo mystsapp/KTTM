@@ -919,5 +919,15 @@ namespace KTTM.Controllers
                 });
             }
         }
+
+        public JsonResult CheckBaoCaoSo_Hoan(string baoCaoSo)
+        {
+            string baoCaoSoCheck = baoCaoSo.Trim().Substring(5, 1);
+            if (baoCaoSoCheck == "H")
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
     }
 }

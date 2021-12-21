@@ -131,14 +131,35 @@
             $('#ckTienMat').prop('checked', false);
         });
 
-        
+      
+</script>
+<script>
+      
     $('#LayDataCashier_Submit').off('click').on('click', function () {
         debugger
+        var baoCaoSo = $('#txtBaoCaoSo').val();
+        var loaiPhieu = '@Model.KVPTC.MFieu';
 
-        if ($('#frmLayDataCashierPartial').valid()) {
-            $('#frmLayDataCashierPartial').submit();
+        if(loaiPhieu === 'T'){ // phieu T
+            $.get('/KVCTPTCs/CheckBaoCaoSo_Hoan', {baoCaoSo: baoCaoSo}, function(response){
+                if(!response){ // sobaocao Hoan --> H
+                    bootbox.alert(baoCaoSo + " đây là <b>phiếu hoàn</b> nên không kéo phiếu T được!");
+                }
+                else{
+                    if ($('#frmLayDataCashierPartial').valid()) {
+                        $('#frmLayDataCashierPartial').submit();
+                    }
+                }
+            })
+
         }
+        else{
+            if ($('#frmLayDataCashierPartial').valid()) {
+                $('#frmLayDataCashierPartial').submit();
+            }
 
+        }
+        
     });
 
 </script>

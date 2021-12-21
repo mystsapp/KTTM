@@ -268,9 +268,9 @@ namespace KTTM.Services
                     var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) && string.IsNullOrEmpty(x.Loaicard));
                     var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
 
-                    string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + item.Stt : "CHI BILL " + item.Stt; // ??
+                    string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + (item.Bill ?? item.Stt) : "CHI BILL " + (item.Bill ?? item.Stt); // ??
                     var loaiHDGoc = "VAT";// item.Loaihd; // ??
-                    var soCTGoc = item.Stt; // thao
+                    var soCTGoc = item.Bill ?? item.Stt;// item.Stt; // thao
                     var ngayBill = item.Ngaybill;
 
                     KVCTPTC kVCTPTC = new KVCTPTC();
