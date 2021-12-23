@@ -574,6 +574,13 @@ namespace KTTM.Controllers
             //return Json(true); // ko cho inphieu
         }
 
+        public async Task<JsonResult> CheckSoLuongDong(Guid id)
+        {
+            var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+            if (kVCTPTCs.Count() == 0) return Json(false);
+            else return Json(true);
+        }
+
         public async Task<IActionResult> InPhieuView(Guid id, int page)
         {
             HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);

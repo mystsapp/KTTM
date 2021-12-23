@@ -163,12 +163,20 @@ var indexController = {
         // btnInPhieu
         $('#btnInPhieu').off('click').on('click', function () {
             kvptcId = $('#hidId_InPhieu').val();
-            $.post('/Home/CheckInPhieu', { id: kvptcId }, function (response) {
+            $.post('/Home/CheckSoLuongDong', { id: kvptcId }, function (response) {
                 if (!response) {
-                    bootbox.alert("Còn tồn tại 1 CT Phiếu chưa TU hoặc TT TU!");
+                    bootbox.alert("Phiếu này không có dòng nào hết!");
+                    return;
                 }
                 else {
-                    $('#frmInPhieu').submit();
+                    $.post('/Home/CheckInPhieu', { id: kvptcId }, function (response) {
+                        if (!response) {
+                            bootbox.alert("Còn tồn tại 1 CT Phiếu chưa TU hoặc TT TU!");
+                        }
+                        else {
+                            $('#frmInPhieu').submit();
+                        }
+                    })
                 }
             })
         })
