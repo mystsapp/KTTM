@@ -111,8 +111,8 @@ namespace KTTM
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                //app.UseExceptionHandler("/Home/Error");
+                //app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
 

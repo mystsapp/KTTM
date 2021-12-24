@@ -502,6 +502,7 @@ namespace KTTM.Controllers
             TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
 
             TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            TT621VM.TT621.NgayCTGoc = DateTime.Now; // Thao
 
             return PartialView(TT621VM);
         }
@@ -659,6 +660,7 @@ namespace KTTM.Controllers
             TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
 
             TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            TT621VM.TT621.NgayCTGoc = DateTime.Now; // Thao
 
             // btnThemdong + copy dong da click
             if (id_Dong_Da_Click > 0)
@@ -819,6 +821,7 @@ namespace KTTM.Controllers
             TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
 
             TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            TT621VM.TT621.NgayCTGoc = DateTime.Now; // Thao
 
             // btnThemdong + copy dong da click
             if (id_Dong_Da_Click > 0)

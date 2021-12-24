@@ -2412,14 +2412,15 @@ namespace KTTM.Controllers
             xlSheet.Column(5).Width = 20;// LOẠI THẺ
             xlSheet.Column(6).Width = 20;// VND
             xlSheet.Column(7).Width = 20;// VND
+            xlSheet.Column(8).Width = 20;// SGTCODE
 
             xlSheet.Cells[1, 1].Value = "BẢNG THEO DÕI THẺ";
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
-            xlSheet.Cells[1, 1, 1, 7].Merge = true;
+            xlSheet.Cells[1, 1, 1, 8].Merge = true;
 
             string stringNgay = "Ngày " + tuNgay + " đến " + denNgay;
             xlSheet.Cells[2, 1].Value = stringNgay;
-            xlSheet.Cells[2, 1, 2, 7].Merge = true;
+            xlSheet.Cells[2, 1, 2, 8].Merge = true;
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
 
             setCenterAligment(1, 1, 2, 1, xlSheet);
@@ -2439,11 +2440,13 @@ namespace KTTM.Controllers
             xlSheet.Cells[4, 6, 4, 7].Merge = true;
             xlSheet.Cells[5, 6].Value = "Số tiền";
             xlSheet.Cells[5, 7].Value = "CÓ 1131";
+            xlSheet.Cells[4, 8].Value = "SGTCODE";
+            xlSheet.Cells[4, 8, 5, 8].Merge = true;
 
-            setBorder(4, 1, 5, 7, xlSheet);
-            setCenterAligment(4, 1, 5, 7, xlSheet);
-            xlSheet.Cells[4, 1, 5, 7].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[4, 1, 5, 7].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            setBorder(4, 1, 5, 8, xlSheet);
+            setCenterAligment(4, 1, 5, 8, xlSheet);
+            xlSheet.Cells[4, 1, 5, 8].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[4, 1, 5, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
 
             // do du lieu tu table
             int dong = 6;
@@ -2498,6 +2501,10 @@ namespace KTTM.Controllers
                     TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
+                    xlSheet.Cells[dong, 8].Value = item.Sgtcode ?? "";
+                    TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
                     //setBorder(5, 1, dong, 10, xlSheet);
                     NumberFormat(dong, 6, dong + 1, 6, xlSheet);
 
@@ -2511,8 +2518,8 @@ namespace KTTM.Controllers
 
                 //NumberFormat(dong, 3, dong, 4, xlSheet);
                 //setFontBold(dong, 1, dong, 10, 12, xlSheet);
-                setBorder(dong, 1, dong, 7, xlSheet);
-                DateTimeFormat(6, 1, dong, 1, xlSheet);
+                setBorder(dong, 1, dong, 8, xlSheet);
+                DateFormat(6, 1, dong, 1, xlSheet);
 
                 //xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";
                 //xlSheet.Cells[dong + 2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));

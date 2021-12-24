@@ -94,6 +94,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
             KVCTPCTVM.StrUrl = strUrl;
             KVCTPCTVM.Page = page; // page for redirect
+            KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
 
             // btnThemdong + copy dong da click
             if (id_Dong_Da_Click > 0)
@@ -202,6 +203,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
             KVCTPCTVM.Page = page;
             KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
 
             return View(KVCTPCTVM);
         }
