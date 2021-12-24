@@ -84,6 +84,8 @@ namespace KTTM.Services
 
         Task DeleteAsync(KVCTPTC kVCTPCT);
 
+        Task DeleteRangeAsync(IEnumerable<KVCTPTC> kVCTPCTs);
+
         IEnumerable<ListViewModel> LoaiHDGocs();
 
         string AutoSgtcode(string param);
@@ -104,6 +106,10 @@ namespace KTTM.Services
         Task<Data.Models_HDVATOB.Supplier> GetSupplierSingleByCode(string maKh);
 
         Task<IPagedList<VSupplierTaiKhoan>> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page);
+
+        Ntbill GetNtbillBySTT(string sTT);
+
+        Task<Noptien> GetNopTienById(string soct, string macn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -274,6 +280,7 @@ namespace KTTM.Services
                     var ngayBill = item.Ngaybill;
 
                     KVCTPTC kVCTPTC = new KVCTPTC();
+                    kVCTPTC.STT = item.Stt; // ben [ntbill] cashier
 
                     if (tienMat)
                     {
@@ -372,8 +379,9 @@ namespace KTTM.Services
                             }
 
                             kVCTPTC.BoPhan = boPhan;
-                            kVCTPTC.Sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
-                                                                                                                            //kVCTPTC.CardNumber = item1.Cardnumber;
+                            var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
+                            kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
+                                                                                     //kVCTPTC.CardNumber = item1.Cardnumber;
                             kVCTPTC.SalesSlip = ctbills_TienMat.FirstOrDefault().Saleslip;// item1.Saleslip;
 
                             // THONG TIN VE THUE
@@ -626,7 +634,12 @@ namespace KTTM.Services
                             }
 
                             kVCTPTC.BoPhan = boPhan;
-                            kVCTPTC.Sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
+                            kVCTPTC.BoPhan = boPhan;
+
+                            //kVCTPTC.Sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
+                            var sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
+                            kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
+
                             kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
                             kVCTPTC.SalesSlip = ctbills_TTThe.FirstOrDefault().Saleslip;// item1.Saleslip;
 
@@ -871,8 +884,10 @@ namespace KTTM.Services
                             }
 
                             kVCTPTC.BoPhan = boPhan;
-                            kVCTPTC.Sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
-                                                                                                                            //kVCTPTC.CardNumber = item1.Cardnumber;
+                            //kVCTPTC.Sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
+                            var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
+                            kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
+                            //kVCTPTC.CardNumber = item1.Cardnumber;
                             kVCTPTC.SalesSlip = ctbills_TienMat.FirstOrDefault().Saleslip;// item1.Saleslip;
 
                             // THONG TIN VE THUE
@@ -1547,6 +1562,21 @@ namespace KTTM.Services
         public async Task<Data.Models_HDVATOB.Supplier> GetSupplierSingleByCode(string maKh)
         {
             return await _unitOfWork.supplier_Hdvatob_Repository.GetSupplierById(maKh);
+        }
+
+        public async Task DeleteRangeAsync(IEnumerable<KVCTPTC> kVCTPCTs)
+        {
+            await _unitOfWork.kVCTPCTRepository.DeleteRangeAsync(kVCTPCTs);
+        }
+
+        public Ntbill GetNtbillBySTT(string sTT)
+        {
+            return _unitOfWork.ntbillRepository.Find(x => x.Stt == sTT).FirstOrDefault();
+        }
+
+        public async Task<Noptien> GetNopTienById(string soct, string macn)
+        {
+            return await _unitOfWork.nopTienRepository.GetById(soct, macn);
         }
     }
 }

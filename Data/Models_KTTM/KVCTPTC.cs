@@ -89,7 +89,7 @@ namespace Data.Models_KTTM
         [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string LoaiThe { get; set; }
 
-        [DisplayName("SalesSlip")]
+        [DisplayName("App Code")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "nvarchar(10)")]
         public string SalesSlip { get; set; } //
 

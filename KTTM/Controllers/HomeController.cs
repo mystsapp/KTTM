@@ -401,11 +401,12 @@ namespace KTTM.Controllers
 
             try
             {
-                await _kVPTCService.CreateAsync(HomeVM.KVPTC); // save
+                KVPTC kVPTC = await _kVPTCService.CreateAsync_ReturnEntity(HomeVM.KVPTC); // save
 
                 SetAlert("Thêm mới thành công.", "success");
 
-                return Redirect(strUrl);
+                //return Redirect(strUrl);
+                return RedirectToAction(nameof(Index), new { id = kVPTC.Id });
             }
             catch (Exception ex)
             {

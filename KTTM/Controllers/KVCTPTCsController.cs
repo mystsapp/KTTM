@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Models_KTTM;
+using Data.Models_Cashier;
 
 namespace KTTM.Controllers
 {
@@ -750,6 +751,9 @@ namespace KTTM.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             if (id == 0)
                 return NotFound();
             var kVCTPCT = await _kVCTPTCService.GetById(id);
@@ -757,9 +761,24 @@ namespace KTTM.Controllers
                 return NotFound();
             try
             {
-                await _kVCTPTCService.DeleteAsync(kVCTPCT);
+                // chi tiet nay keo ben cashier qua
+                if (!string.IsNullOrEmpty(kVCTPCT.STT)) // kVCTPCT.STT: stt trong ntbill lay qua
+                {
+                    var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(kVCTPCT.KVPTCId);
+                    await _kVCTPTCService.DeleteRangeAsync(kVCTPTCs);
 
-                //SetAlert("Xóa thành công.", "success");
+                    // Noptien
+                    Ntbill ntbill = _kVCTPTCService.GetNtbillBySTT(kVCTPCT.STT);
+                    Noptien noptien = await _kVCTPTCService.GetNopTienById(ntbill.Soct, user.Macn);
+                    noptien.Phieuthu = "";
+                    noptien.Phieuthucc = "";
+                    await _kVCTPTCService.UpdateAsync_NopTien(noptien);
+                }
+                else
+                {
+                    await _kVCTPTCService.DeleteAsync(kVCTPCT);
+                }
+
                 return Json(new
                 {
                     status = true
