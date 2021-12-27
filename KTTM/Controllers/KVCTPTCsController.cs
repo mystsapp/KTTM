@@ -270,6 +270,74 @@ namespace KTTM.Controllers
             }
         }
 
+        //-----------LayDataQLXePartial------------
+        public async Task<IActionResult> LayDataQLXePartial(Guid kVPTCId, string strUrl, int page)
+        {
+            if (kVPTCId == null)
+                return NotFound();
+
+            KVCTPCTVM.StrUrl = strUrl;
+            KVCTPCTVM.Page = page;
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
+            //KVCTPCTVM.DmTks_Cashier = _kVCTPTCService.GetAll_DmTk_Cashier();
+
+            return PartialView(KVCTPCTVM);
+        }
+
+        [HttpPost, ActionName("LayDataQLXePartial")]
+        [ValidateAntiForgeryToken] // ko cho submit nhieu lan
+        public async Task<IActionResult> LayDataQLXePartial_Post(string soPhieu)
+        {
+            var kVPTCId = KVCTPCTVM.KVPTC.Id;
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (!ModelState.IsValid)
+            {
+                return View(KVCTPCTVM);
+            }
+
+            // data tu cashier
+            IEnumerable<KVCTPTC> kVCTPTCs = null; // _kVCTPTCService.GetKVCTPTCs_QLXe(soPhieu.Trim(),
+                                                  //kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu);
+                                                  // ghi log ben service
+
+            if (kVCTPTCs == null) //545 ben kvctptcService
+            {
+                SetAlert("Báo cáo số không được phai khác H", "warning");
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
+            }
+
+            try
+            {
+                await _kVCTPTCService.CreateRange(kVCTPTCs);
+
+                //// save to cashier
+                //var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
+                //var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo.Trim(), user.Macn);
+
+                //noptien.Ngaypt = kVPCT.NgayCT;
+                //if (KVCTPCTVM.LayDataCashierModel.TienMat)
+                //{
+                //    noptien.Phieuthu = KVCTPCTVM.KVPTC.SoCT;
+                //}
+                //if (KVCTPCTVM.LayDataCashierModel.TTThe)
+                //{
+                //    noptien.Phieuthucc = KVCTPCTVM.KVPTC.SoCT;
+                //}
+                ////noptien.Ghichu = kVPCT.ghichu; ??
+                //await _kVCTPTCService.UpdateAsync_NopTien(noptien);
+
+                SetAlert("Kéo thành công.", "success");
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
+            }
+            catch (Exception ex)
+            {
+                SetAlert(ex.Message, "error");
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
+            }
+        }
+
         //-----------LayDataCashierPartial------------
         public async Task<IActionResult> LayDataCashierPartial(Guid kVPTCId, string strUrl, int page)
         {

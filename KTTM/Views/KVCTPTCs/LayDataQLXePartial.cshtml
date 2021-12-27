@@ -1,0 +1,104 @@
+﻿@model KVCTPCTViewModel
+
+
+<form id="frmLayDataQLXePartial" asp-action="LayDataQLXePartial" method="post" autocomplete="off">
+
+    <input type="hidden" asp-for="KVPTC.Id" />
+    <input type="hidden" asp-for="KVPTC.SoCT" />
+    <input type="hidden" asp-for="KVPTC.MFieu" />
+    <input type="hidden" asp-for="KVPTC.NgayCT" />
+    <input type="hidden" asp-for="StrUrl" />
+    <input type="hidden" asp-for="Page" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class=" row text-sm">
+
+        <div class="col-md-12 ">
+            <label class="control-labels">Số phiếu</label>
+            <input name="soPhieu" class="form-control form-control-sm text-uppercase" id="txtSoPhieu" />
+        </div>
+    </div>
+
+    <div class="modal-footer p-0">
+        <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
+        <button type="button" id="LayDataQLXe_Submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+    </div>
+</form>
+<!-- /.modal-content -->
+<!-- Validation -->
+<script>
+    //$('.select2').select2();
+    $('#frmLayDataQLXePartial').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
+
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    $('#txtSoPhieu').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+
+        //$('#ckTienMat').change(function () {
+        //    $('#ckTTThe').prop('checked', false);
+        //    $('#ckNganHang').prop('checked', false);
+        //});
+
+        //$('#ckTTThe').change(function () {
+        //    $('#ckTienMat').prop('checked', false);
+        //    $('#ckNganHang').prop('checked', false);
+        //});
+
+        //$('#ckNganHang').change(function () {
+        //    $('#ckTTThe').prop('checked', false);
+        //    $('#ckTienMat').prop('checked', false);
+        //});
+
+
+</script>
+<script>
+
+    $('#LayDataQLXe_Submit').off('click').on('click', function () {
+        
+        if ($('#frmLayDataQLXePartial').valid()) {
+            $('#frmLayDataQLXePartial').submit();
+        }
+
+    });
+
+</script>

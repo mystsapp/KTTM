@@ -68,6 +68,19 @@ var indexController = {
             });
         });
 
+        // show qlxe modal
+        $('.btnQlXe').off('click').on('click', function () {
+            var page = $('.active span').text();
+
+            kvptcId = $('#hidKVPCTId').val();
+            strUrl = $('.layDataCashier').data('url');
+            $.get('/KVCTPTCs/LayDataQLXePartial', { kVPTCId: kvptcId, strUrl: strUrl, page: page }, function (data) {
+                $('#layDataQLXe').modal('show');
+                $('.layDataQLXe_Body').html(data);
+                $('#layDataQLXe').draggable();
+            });
+        });
+
         // contextmenu for themdong
         $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
@@ -191,7 +204,6 @@ var indexController = {
     TdVal_Click: function (id, loaiPhieu) { // KVPTC id
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
-        //$('#hidCashier').val(id);
 
         // gang' soCT cho btnThemDong
         $('#btnThemDong').attr('disabled', false);
@@ -208,6 +220,7 @@ var indexController = {
         // attachExcel
         if (loaiPhieu === 'C') {
             $('#attachExcel').attr('disabled', false);
+            $('.btnQlXe').attr('disabled', false);
         }
         else {
             $('#attachExcel').attr('disabled', true);
