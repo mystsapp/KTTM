@@ -116,7 +116,7 @@ namespace KTTM.Services
 
         Task UpdateAsync_ThuChiXe(Thuchi thuchi);
 
-        //IEnumerable<KVCTPTC> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu);
+        Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -1596,803 +1596,877 @@ namespace KTTM.Services
             return _unitOfWork.xeRepository.Find(x => x.SoPhieu == soPhieu);
         }
 
-        //public IEnumerable<KVCTPTC> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu)
-        //{
-        //    var ntbills = _unitOfWork.ntbillRepository.Find(x => x.Soct == baoCaoSo && x.Chinhanh == maCN);
-
-        //    string nguoiTao = username;
-        //    DateTime ngayTao = DateTime.Now;
-
-        //    // ghi log
-        //    string logFile = "-User kéo từ cashier: " + username + " , báo cáo số " + baoCaoSo + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-
-        //    List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
-
-        //    if (ntbills != null)
-        //    {
-        //        foreach (var item in ntbills)
-        //        {
-        //            string boPhan = item.Bophan;
-        //            string maKh = string.IsNullOrEmpty(item.Coquan) ? "50000" : item.Coquan;
-        //            var viewSupplier = GetSuppliersByCodeName(maKh, maCN).FirstOrDefault();//.Where(x => x.Code == maKh).FirstOrDefault();
-        //                                                                                   //var viewSupplier = GetAll_KhachHangs_HDVATOB().Where(x => x.Code == maKh).FirstOrDefault();
-        //            string kyHieu = "", mauSo = "", msThue = "", tenKh = "", diaChi = "";
-        //            if (viewSupplier != null)
-        //            {
-        //                kyHieu = viewSupplier.Taxsign;
-        //                mauSo = viewSupplier.Taxform;
-        //                msThue = viewSupplier.Taxcode;
-        //                tenKh = viewSupplier.Name;
-        //                diaChi = viewSupplier.Address;
-        //            }
-        //            var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == item.Idntbill);
-        //            var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) && string.IsNullOrEmpty(x.Loaicard));
-        //            var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
-
-        //            string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + (item.Bill ?? item.Stt) : "CHI BILL " + (item.Bill ?? item.Stt); // ??
-        //            var loaiHDGoc = "VAT";// item.Loaihd; // ??
-        //            var soCTGoc = item.Bill ?? item.Stt;// item.Stt; // thao
-        //            var ngayBill = item.Ngaybill;
-
-        //            KVCTPTC kVCTPTC = new KVCTPTC();
-        //            kVCTPTC.STT = item.Stt; // ben [ntbill] cashier
-
-        //            if (tienMat)
-        //            {
-        //                if (ctbills_TienMat.Count() > 0)
-        //                {
-        //                    // THONG TIN VE TAI CHINH
-        //                    kVCTPTC.KVPTCId = kVPTCId;
-        //                    kVCTPTC.SoCT = soCT;
-        //                    kVCTPTC.MaCn = maCN;
-        //                    kVCTPTC.DienGiaiP = dienGiaiP;
-        //                    kVCTPTC.SoTienNT = ctbills_TienMat.Sum(x => x.Sotiennt);// item1.Sotiennt;
-        //                    kVCTPTC.LoaiTien = ctbills_TienMat.FirstOrDefault().Loaitien;// item1.Loaitien;
-        //                    kVCTPTC.TyGia = ctbills_TienMat.FirstOrDefault().Tygia;// item1.Tygia;
-        //                    kVCTPTC.SoTien = ctbills_TienMat.Sum(x => x.Sotien);// item1.Sotien;
-        //                                                                        //kVCTPTC.CardNumber = ctbills_TienMat.FirstOrDefault().Cardnumber;// item1.Cardnumber;
-        //                                                                        //kVCTPTC.LoaiThe = ctbills_TienMat.FirstOrDefault().Loaicard;// item1.Loaicard;
-
-        //                    // THONG TIN VE CONG NO DOAN
-        //                    if (loaiPhieu == "T") // phieu thu
-        //                    {
-        //                        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-        //                        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                        kVCTPTC.TKNo = "1111000000";
-        //                        kVCTPTC.TKCo = tk;
-
-        //                        kVCTPTC.CoQuay = boPhan;
-
-        //                        switch (baoCaoSo.Substring(5, 3))
-        //                        {
-        //                            case "CHK":
-        //                                kVCTPTC.MaKhCo = "KLHK"; //maKh;
-        //                                break;
-
-        //                            case "TWI":
-        //                                kVCTPTC.MaKhCo = "KLWI"; //maKh;
-        //                                break;
-
-        //                            case "TND":
-        //                                kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                                break;
-
-        //                            case "TOB":
-        //                                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
-        //                                break;
-
-        //                            case "TXE":
-        //                                kVCTPTC.MaKhCo = "TX001"; //maKh;
-        //                                break;
-
-        //                            case "TIB":
-        //                                kVCTPTC.MaKhCo = "KLIB"; //maKh;
-        //                                break;
-        //                        }
-
-        //                        kVCTPTC.MaKhCo = maKh; //maKh;
-        //                        if (tk == "1368000000")
-        //                        {
-        //                            kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                        }
-        //                    }
-        //                    else // phieu chi
-        //                    {
-        //                        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-        //                        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                        kVCTPTC.TKNo = tk;
-        //                        kVCTPTC.TKCo = "1111000000";
-        //                        kVCTPTC.MaKhNo = maKh;
-        //                        kVCTPTC.NoQuay = boPhan;
-
-        //                        switch (baoCaoSo.Substring(5, 3))
-        //                        {
-        //                            case "HHK":
-        //                                kVCTPTC.MaKhNo = "KLHK"; //maKh;
-        //                                break;
-
-        //                            case "HWI":
-        //                                kVCTPTC.MaKhNo = "KLWI"; //maKh;
-        //                                break;
-
-        //                            case "HND":
-        //                                kVCTPTC.MaKhNo = "STNCN"; //maKh;
-        //                                break;
-
-        //                            case "HOB":
-        //                                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
-        //                                break;
-
-        //                            case "HXE":
-        //                                kVCTPTC.MaKhNo = "TX001"; //maKh;
-        //                                break;
-
-        //                            case "HIB":
-        //                                kVCTPTC.MaKhNo = "KLIB"; //maKh;
-        //                                break;
-        //                        }
-        //                    }
-
-        //                    kVCTPTC.BoPhan = boPhan;
-        //                    var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
-        //                    kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
-        //                                                                             //kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    kVCTPTC.SalesSlip = ctbills_TienMat.FirstOrDefault().Saleslip;// item1.Saleslip;
-
-        //                    // THONG TIN VE THUE
-        //                    kVCTPTC.LoaiHDGoc = loaiHDGoc;
-        //                    kVCTPTC.SoCTGoc = soCTGoc;
-        //                    kVCTPTC.NgayCTGoc = ngayBill;
-
-        //                    kVCTPTC.DSKhongVAT = 0;
-        //                    kVCTPTC.VAT = 0;
-
-        //                    kVCTPTC.KyHieu = kyHieu;
-        //                    kVCTPTC.MauSoHD = mauSo;
-        //                    kVCTPTC.MsThue = msThue;
-        //                    kVCTPTC.MaKh = maKh;
-        //                    kVCTPTC.TenKH = tenKh;
-        //                    kVCTPTC.DiaChi = diaChi;
-
-        //                    kVCTPTC.NguoiTao = nguoiTao;
-        //                    kVCTPTC.NgayTao = ngayTao;
-        //                    kVCTPTC.LogFile = logFile;
-
-        //                    kVCTPTCs.Add(kVCTPTC);
-
-        //                    #region ctbill tienmat old
-
-        //                    //foreach (var item1 in ctbills_TienMat)
-        //                    //{
-        //                    //    //KVCTPTC kVCTPTC = new KVCTPTC();
-
-        //                    //    //// THONG TIN VE TAI CHINH
-        //                    //    //kVCTPTC.KVPTCId = kVPTCId;
-        //                    //    //kVCTPTC.SoCT = soCT;
-        //                    //    //kVCTPTC.MaCn = maCN;
-        //                    //    //kVCTPTC.DienGiaiP = dienGiaiP;
-        //                    //    //kVCTPTC.SoTienNT = item1.Sotiennt;
-        //                    //    //kVCTPTC.LoaiTien = item1.Loaitien;
-        //                    //    //kVCTPTC.TyGia = item1.Tygia;
-        //                    //    //kVCTPTC.SoTien = item1.Sotien;
-        //                    //    //kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    //    //kVCTPTC.LoaiThe = item1.Loaicard;
-
-        //                    //    //// THONG TIN VE CONG NO DOAN
-        //                    //    //if (loaiPhieu == "T") // phieu thu
-        //                    //    //{
-        //                    //    //    var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-        //                    //    //    kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                    //    //    kVCTPTC.TKNo = "1111000000";
-        //                    //    //    kVCTPTC.TKCo = tk;
-
-        //                    //    //    kVCTPTC.CoQuay = boPhan;
-
-        //                    //    //    switch (baoCaoSo.Substring(5, 3))
-        //                    //    //    {
-        //                    //    //        case "CHK":
-        //                    //    //            kVCTPTC.MaKhCo = "KLHK"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "TWI":
-        //                    //    //            kVCTPTC.MaKhCo = "KLWI"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "TND":
-        //                    //    //            kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "TOB":
-        //                    //    //            kVCTPTC.MaKhCo = "VEKLO"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "TXE":
-        //                    //    //            kVCTPTC.MaKhCo = "TX001"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "TIB":
-        //                    //    //            kVCTPTC.MaKhCo = "KLIB"; //maKh;
-        //                    //    //            break;
-        //                    //    //    }
-
-        //                    //    //    kVCTPTC.MaKhCo = maKh; //maKh;
-        //                    //    //    if (tk == "1368000000")
-        //                    //    //    {
-        //                    //    //        kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                    //    //    }
-        //                    //    //}
-        //                    //    //else // phieu chi
-        //                    //    //{
-        //                    //    //    var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-        //                    //    //    kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                    //    //    kVCTPTC.TKNo = tk;
-        //                    //    //    kVCTPTC.TKCo = "1111000000";
-        //                    //    //    kVCTPTC.MaKhNo = maKh;
-        //                    //    //    kVCTPTC.NoQuay = boPhan;
-
-        //                    //    //    switch (baoCaoSo.Substring(5, 3))
-        //                    //    //    {
-        //                    //    //        case "HHK":
-        //                    //    //            kVCTPTC.MaKhNo = "KLHK"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "HWI":
-        //                    //    //            kVCTPTC.MaKhNo = "KLWI"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "HND":
-        //                    //    //            kVCTPTC.MaKhNo = "STNCN"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "HOB":
-        //                    //    //            kVCTPTC.MaKhNo = "VEKLO"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "HXE":
-        //                    //    //            kVCTPTC.MaKhNo = "TX001"; //maKh;
-        //                    //    //            break;
-
-        //                    //    //        case "HIB":
-        //                    //    //            kVCTPTC.MaKhNo = "KLIB"; //maKh;
-        //                    //    //            break;
-        //                    //    //    }
-        //                    //    //}
-
-        //                    //    //kVCTPTC.BoPhan = boPhan;
-        //                    //    //kVCTPTC.Sgtcode = item1.Sgtcode;
-        //                    //    //kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    //    //kVCTPTC.SalesSlip = item1.Saleslip;
-
-        //                    //    //// THONG TIN VE THUE
-        //                    //    //kVCTPTC.LoaiHDGoc = loaiHDGoc;
-        //                    //    //kVCTPTC.SoCTGoc = soCTGoc;
-        //                    //    //kVCTPTC.NgayCTGoc = ngayBill;
-
-        //                    //    //kVCTPTC.DSKhongVAT = 0;
-        //                    //    //kVCTPTC.VAT = 0;
-
-        //                    //    //kVCTPTC.KyHieu = kyHieu;
-        //                    //    //kVCTPTC.MauSoHD = mauSo;
-        //                    //    //kVCTPTC.MsThue = msThue;
-        //                    //    //kVCTPTC.MaKh = maKh;
-        //                    //    //kVCTPTC.TenKH = tenKh;
-        //                    //    //kVCTPTC.DiaChi = diaChi;
-
-        //                    //    //kVCTPTC.NguoiTao = nguoiTao;
-        //                    //    //kVCTPTC.NgayTao = ngayTao;
-        //                    //    //kVCTPTC.LogFile = logFile;
-
-        //                    //    //kVCTPTCs.Add(kVCTPTC);
-        //                    //}
-
-        //                    #endregion ctbill tienmat old
-        //                }
-        //            }
-
-        //            if (tTThe)
-        //            {
-        //                if (ctbills_TTThe.Count() > 0)
-        //                {
-        //                    //KVCTPTC kVCTPTC = new KVCTPTC();
-
-        //                    // THONG TIN VE TAI CHINH
-        //                    kVCTPTC.KVPTCId = kVPTCId;
-        //                    kVCTPTC.SoCT = soCT;
-        //                    kVCTPTC.MaCn = maCN;
-        //                    kVCTPTC.DienGiaiP = dienGiaiP;
-        //                    kVCTPTC.SoTienNT = ctbills_TTThe.Sum(x => x.Sotiennt);// item1.Sotiennt;
-        //                    kVCTPTC.LoaiTien = ctbills_TTThe.FirstOrDefault().Loaitien;// item1.Loaitien;
-        //                    kVCTPTC.TyGia = ctbills_TTThe.FirstOrDefault().Tygia;// item1.Tygia;
-        //                    kVCTPTC.SoTien = ctbills_TTThe.Sum(x => x.Sotien);// item1.Sotien;
-        //                    kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
-        //                    kVCTPTC.LoaiThe = ctbills_TTThe.FirstOrDefault().Loaicard;// item1.Loaicard;
-
-        //                    // THONG TIN VE CONG NO DOAN
-        //                    if (loaiPhieu == "T") // phieu thu
-        //                    {
-        //                        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-        //                        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                        kVCTPTC.TKNo = "1111000000";
-        //                        kVCTPTC.TKCo = tk;
-        //                        kVCTPTC.MaKhCo = maKh;
-        //                        if (tk == "1368000000")
-        //                        {
-        //                            kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                        }
-        //                        kVCTPTC.CoQuay = boPhan;
-        //                        switch (baoCaoSo.Substring(5, 3))
-        //                        {
-        //                            case "CHK":
-        //                                kVCTPTC.MaKhCo = "KLHK"; //maKh;
-        //                                break;
-
-        //                            case "TWI":
-        //                                kVCTPTC.MaKhCo = "KLWI"; //maKh;
-        //                                break;
-
-        //                            case "TND":
-        //                                kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                                break;
-
-        //                            case "TOB":
-        //                                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
-        //                                break;
-
-        //                            case "TXE":
-        //                                kVCTPTC.MaKhCo = "TX001"; //maKh;
-        //                                break;
-
-        //                            case "TIB":
-        //                                kVCTPTC.MaKhCo = "KLIB"; //maKh;
-        //                                break;
-
-        //                            default:
-        //                                if (baoCaoSo.Substring(5, 3).Contains("H"))
-        //                                    return null;///////////////////////////////////////////////////////////
-        //                                break;
-        //                        }
-        //                    }
-        //                    else // phieu chi
-        //                    {
-        //                        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-        //                        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                        kVCTPTC.TKNo = tk;
-        //                        kVCTPTC.TKCo = "1111000000";
-        //                        kVCTPTC.MaKhNo = maKh;
-        //                        kVCTPTC.NoQuay = boPhan;
-        //                        switch (baoCaoSo.Substring(5, 3))
-        //                        {
-        //                            case "HHK":
-        //                                kVCTPTC.MaKhNo = "KLHK"; //maKh;
-        //                                break;
-
-        //                            case "HWI":
-        //                                kVCTPTC.MaKhNo = "KLWI"; //maKh;
-        //                                break;
-
-        //                            case "HND":
-        //                                kVCTPTC.MaKhNo = "STNCN"; //maKh;
-        //                                break;
-
-        //                            case "HOB":
-        //                                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
-        //                                break;
-
-        //                            case "HXE":
-        //                                kVCTPTC.MaKhNo = "TX001"; //maKh;
-        //                                break;
-
-        //                            case "HIB":
-        //                                kVCTPTC.MaKhNo = "KLIB"; //maKh;
-        //                                break;
-        //                        }
-        //                    }
-
-        //                    kVCTPTC.BoPhan = boPhan;
-        //                    kVCTPTC.BoPhan = boPhan;
-
-        //                    //kVCTPTC.Sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
-        //                    var sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
-        //                    kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
-
-        //                    kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
-        //                    kVCTPTC.SalesSlip = ctbills_TTThe.FirstOrDefault().Saleslip;// item1.Saleslip;
-
-        //                    // THONG TIN VE THUE
-        //                    kVCTPTC.LoaiHDGoc = loaiHDGoc;
-        //                    kVCTPTC.SoCTGoc = soCTGoc;
-        //                    kVCTPTC.NgayCTGoc = ngayBill;
-
-        //                    kVCTPTC.DSKhongVAT = 0;
-        //                    kVCTPTC.VAT = 0;
-
-        //                    kVCTPTC.KyHieu = kyHieu;
-        //                    kVCTPTC.MauSoHD = mauSo;
-        //                    kVCTPTC.MsThue = msThue;
-        //                    kVCTPTC.MaKh = maKh;
-        //                    kVCTPTC.TenKH = tenKh;
-        //                    kVCTPTC.DiaChi = diaChi;
-
-        //                    kVCTPTC.NguoiTao = nguoiTao;
-        //                    kVCTPTC.NgayTao = ngayTao;
-        //                    kVCTPTC.LogFile = logFile;
-
-        //                    kVCTPTCs.Add(kVCTPTC);
-
-        //                    #region ctbill ttthe old
-
-        //                    //foreach (var item1 in ctbills_TTThe)
-        //                    //{
-        //                    //    KVCTPTC kVCTPTC = new KVCTPTC();
-
-        //                    //    // THONG TIN VE TAI CHINH
-        //                    //    kVCTPTC.KVPTCId = kVPTCId;
-        //                    //    kVCTPTC.SoCT = soCT;
-        //                    //    kVCTPTC.MaCn = maCN;
-        //                    //    kVCTPTC.DienGiaiP = dienGiaiP;
-        //                    //    kVCTPTC.SoTienNT = item1.Sotiennt;
-        //                    //    kVCTPTC.LoaiTien = item1.Loaitien;
-        //                    //    kVCTPTC.TyGia = item1.Tygia;
-        //                    //    kVCTPTC.SoTien = item1.Sotien;
-        //                    //    kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    //    kVCTPTC.LoaiThe = item1.Loaicard;
-
-        //                    //    // THONG TIN VE CONG NO DOAN
-        //                    //    if (loaiPhieu == "T") // phieu thu
-        //                    //    {
-        //                    //        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-        //                    //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                    //        kVCTPTC.TKNo = "1111000000";
-        //                    //        kVCTPTC.TKCo = tk;
-        //                    //        kVCTPTC.MaKhCo = maKh;
-        //                    //        if (tk == "1368000000")
-        //                    //        {
-        //                    //            kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                    //        }
-        //                    //        kVCTPTC.CoQuay = boPhan;
-        //                    //        switch (baoCaoSo.Substring(5, 3))
-        //                    //        {
-        //                    //            case "CHK":
-        //                    //                kVCTPTC.MaKhCo = "KLHK"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TWI":
-        //                    //                kVCTPTC.MaKhCo = "KLWI"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TND":
-        //                    //                kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TOB":
-        //                    //                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TXE":
-        //                    //                kVCTPTC.MaKhCo = "TX001"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TIB":
-        //                    //                kVCTPTC.MaKhCo = "KLIB"; //maKh;
-        //                    //                break;
-        //                    //        }
-        //                    //    }
-        //                    //    else // phieu chi
-        //                    //    {
-        //                    //        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-        //                    //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                    //        kVCTPTC.TKNo = tk;
-        //                    //        kVCTPTC.TKCo = "1111000000";
-        //                    //        kVCTPTC.MaKhNo = maKh;
-        //                    //        kVCTPTC.NoQuay = boPhan;
-        //                    //        switch (baoCaoSo.Substring(5, 3))
-        //                    //        {
-        //                    //            case "HHK":
-        //                    //                kVCTPTC.MaKhNo = "KLHK"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HWI":
-        //                    //                kVCTPTC.MaKhNo = "KLWI"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HND":
-        //                    //                kVCTPTC.MaKhNo = "STNCN"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HOB":
-        //                    //                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HXE":
-        //                    //                kVCTPTC.MaKhNo = "TX001"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HIB":
-        //                    //                kVCTPTC.MaKhNo = "KLIB"; //maKh;
-        //                    //                break;
-        //                    //        }
-        //                    //    }
-
-        //                    //    kVCTPTC.BoPhan = boPhan;
-        //                    //    kVCTPTC.Sgtcode = item1.Sgtcode;
-        //                    //    kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    //    kVCTPTC.SalesSlip = item1.Saleslip;
-
-        //                    //    // THONG TIN VE THUE
-        //                    //    kVCTPTC.LoaiHDGoc = loaiHDGoc;
-        //                    //    kVCTPTC.SoCTGoc = soCTGoc;
-        //                    //    kVCTPTC.NgayCTGoc = ngayBill;
-
-        //                    //    kVCTPTC.DSKhongVAT = 0;
-        //                    //    kVCTPTC.VAT = 0;
-
-        //                    //    kVCTPTC.KyHieu = kyHieu;
-        //                    //    kVCTPTC.MauSoHD = mauSo;
-        //                    //    kVCTPTC.MsThue = msThue;
-        //                    //    kVCTPTC.MaKh = maKh;
-        //                    //    kVCTPTC.TenKH = tenKh;
-        //                    //    kVCTPTC.DiaChi = diaChi;
-
-        //                    //    kVCTPTC.NguoiTao = nguoiTao;
-        //                    //    kVCTPTC.NgayTao = ngayTao;
-        //                    //    kVCTPTC.LogFile = logFile;
-
-        //                    //    kVCTPTCs.Add(kVCTPTC);
-        //                    //}
-
-        //                    #endregion ctbill ttthe old
-        //                }
-        //            }
-
-        //            if (!tienMat && !tTThe) // bỏ tróng -> lấy theo tiền mặt
-        //            {
-        //                if (ctbills_TienMat.Count() > 0)
-        //                {
-        //                    //KVCTPTC kVCTPTC = new KVCTPTC();
-
-        //                    // THONG TIN VE TAI CHINH
-        //                    kVCTPTC.KVPTCId = kVPTCId;
-        //                    kVCTPTC.SoCT = soCT;
-        //                    kVCTPTC.MaCn = maCN;
-        //                    kVCTPTC.DienGiaiP = dienGiaiP;
-        //                    kVCTPTC.SoTienNT = ctbills_TienMat.Sum(x => x.Sotiennt);// item1.Sotiennt;
-        //                    kVCTPTC.LoaiTien = ctbills_TienMat.FirstOrDefault().Loaitien;// item1.Loaitien;
-        //                    kVCTPTC.TyGia = ctbills_TienMat.FirstOrDefault().Tygia;// item1.Tygia;
-        //                    kVCTPTC.SoTien = ctbills_TienMat.Sum(x => x.Sotien);// item1.Sotien;
-        //                                                                        //kVCTPTC.CardNumber = item1.Cardnumber;
-        //                                                                        //kVCTPTC.LoaiThe = item1.Loaicard;
-
-        //                    // THONG TIN VE CONG NO DOAN
-        //                    if (loaiPhieu == "T") // phieu thu
-        //                    {
-        //                        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-        //                        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                        kVCTPTC.TKNo = "1111000000";
-        //                        kVCTPTC.TKCo = tk;
-        //                        kVCTPTC.MaKhCo = maKh;
-        //                        if (tk == "1368000000")
-        //                        {
-        //                            kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                        }
-        //                        kVCTPTC.CoQuay = boPhan;
-        //                        switch (baoCaoSo.Substring(5, 3))
-        //                        {
-        //                            case "CHK":
-        //                                kVCTPTC.MaKhCo = "KLHK"; //maKh;
-        //                                break;
-
-        //                            case "TWI":
-        //                                kVCTPTC.MaKhCo = "KLWI"; //maKh;
-        //                                break;
-
-        //                            case "TND":
-        //                                kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                                break;
-
-        //                            case "TOB":
-        //                                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
-        //                                break;
-
-        //                            case "TXE":
-        //                                kVCTPTC.MaKhCo = "TX001"; //maKh;
-        //                                break;
-
-        //                            case "TIB":
-        //                                kVCTPTC.MaKhCo = "KLIB"; //maKh;
-        //                                break;
-        //                        }
-        //                    }
-        //                    else // phieu chi
-        //                    {
-        //                        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-        //                        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                        kVCTPTC.TKNo = tk;
-        //                        kVCTPTC.TKCo = "1111000000";
-        //                        kVCTPTC.MaKhNo = maKh;
-        //                        kVCTPTC.NoQuay = boPhan;
-        //                        switch (baoCaoSo.Substring(5, 3))
-        //                        {
-        //                            case "HHK":
-        //                                kVCTPTC.MaKhNo = "KLHK"; //maKh;
-        //                                break;
-
-        //                            case "HWI":
-        //                                kVCTPTC.MaKhNo = "KLWI"; //maKh;
-        //                                break;
-
-        //                            case "HND":
-        //                                kVCTPTC.MaKhNo = "STNCN"; //maKh;
-        //                                break;
-
-        //                            case "HOB":
-        //                                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
-        //                                break;
-
-        //                            case "HXE":
-        //                                kVCTPTC.MaKhNo = "TX001"; //maKh;
-        //                                break;
-
-        //                            case "HIB":
-        //                                kVCTPTC.MaKhNo = "KLIB"; //maKh;
-        //                                break;
-        //                        }
-        //                    }
-
-        //                    kVCTPTC.BoPhan = boPhan;
-        //                    //kVCTPTC.Sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
-        //                    var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
-        //                    kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
-        //                                                                             //kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    kVCTPTC.SalesSlip = ctbills_TienMat.FirstOrDefault().Saleslip;// item1.Saleslip;
-
-        //                    // THONG TIN VE THUE
-        //                    kVCTPTC.LoaiHDGoc = loaiHDGoc;
-        //                    kVCTPTC.SoCTGoc = soCTGoc;
-        //                    kVCTPTC.NgayCTGoc = ngayBill;
-
-        //                    kVCTPTC.DSKhongVAT = 0;
-        //                    kVCTPTC.VAT = 0;
-
-        //                    kVCTPTC.KyHieu = kyHieu;
-        //                    kVCTPTC.MauSoHD = mauSo;
-        //                    kVCTPTC.MsThue = msThue;
-        //                    kVCTPTC.MaKh = maKh;
-        //                    kVCTPTC.TenKH = tenKh;
-        //                    kVCTPTC.DiaChi = diaChi;
-
-        //                    kVCTPTC.NguoiTao = nguoiTao;
-        //                    kVCTPTC.NgayTao = ngayTao;
-        //                    kVCTPTC.LogFile = logFile;
-
-        //                    kVCTPTCs.Add(kVCTPTC);
-
-        //                    #region bỏ tróng -> lấy theo tiền mặt old
-
-        //                    //foreach (var item1 in ctbills_TienMat)
-        //                    //{
-        //                    //    KVCTPTC kVCTPTC = new KVCTPTC();
-
-        //                    //    // THONG TIN VE TAI CHINH
-        //                    //    kVCTPTC.KVPTCId = kVPTCId;
-        //                    //    kVCTPTC.SoCT = soCT;
-        //                    //    kVCTPTC.MaCn = maCN;
-        //                    //    kVCTPTC.DienGiaiP = dienGiaiP;
-        //                    //    kVCTPTC.SoTienNT = item1.Sotiennt;
-        //                    //    kVCTPTC.LoaiTien = item1.Loaitien;
-        //                    //    kVCTPTC.TyGia = item1.Tygia;
-        //                    //    kVCTPTC.SoTien = item1.Sotien;
-        //                    //    kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    //    kVCTPTC.LoaiThe = item1.Loaicard;
-
-        //                    //    // THONG TIN VE CONG NO DOAN
-        //                    //    if (loaiPhieu == "T") // phieu thu
-        //                    //    {
-        //                    //        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
-        //                    //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                    //        kVCTPTC.TKNo = "1111000000";
-        //                    //        kVCTPTC.TKCo = tk;
-        //                    //        kVCTPTC.MaKhCo = maKh;
-        //                    //        if (tk == "1368000000")
-        //                    //        {
-        //                    //            kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                    //        }
-        //                    //        kVCTPTC.CoQuay = boPhan;
-        //                    //        switch (baoCaoSo.Substring(5, 3))
-        //                    //        {
-        //                    //            case "CHK":
-        //                    //                kVCTPTC.MaKhCo = "KLHK"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TWI":
-        //                    //                kVCTPTC.MaKhCo = "KLWI"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TND":
-        //                    //                kVCTPTC.MaKhCo = "STNCN"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TOB":
-        //                    //                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TXE":
-        //                    //                kVCTPTC.MaKhCo = "TX001"; //maKh;
-        //                    //                break;
-
-        //                    //            case "TIB":
-        //                    //                kVCTPTC.MaKhCo = "KLIB"; //maKh;
-        //                    //                break;
-        //                    //        }
-        //                    //    }
-        //                    //    else // phieu chi
-        //                    //    {
-        //                    //        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
-        //                    //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-        //                    //        kVCTPTC.TKNo = tk;
-        //                    //        kVCTPTC.TKCo = "1111000000";
-        //                    //        kVCTPTC.MaKhNo = maKh;
-        //                    //        kVCTPTC.NoQuay = boPhan;
-        //                    //        switch (baoCaoSo.Substring(5, 3))
-        //                    //        {
-        //                    //            case "HHK":
-        //                    //                kVCTPTC.MaKhNo = "KLHK"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HWI":
-        //                    //                kVCTPTC.MaKhNo = "KLWI"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HND":
-        //                    //                kVCTPTC.MaKhNo = "STNCN"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HOB":
-        //                    //                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HXE":
-        //                    //                kVCTPTC.MaKhNo = "TX001"; //maKh;
-        //                    //                break;
-
-        //                    //            case "HIB":
-        //                    //                kVCTPTC.MaKhNo = "KLIB"; //maKh;
-        //                    //                break;
-        //                    //        }
-        //                    //    }
-
-        //                    //    kVCTPTC.BoPhan = boPhan;
-        //                    //    kVCTPTC.Sgtcode = item1.Sgtcode;
-        //                    //    kVCTPTC.CardNumber = item1.Cardnumber;
-        //                    //    kVCTPTC.SalesSlip = item1.Saleslip;
-
-        //                    //    // THONG TIN VE THUE
-        //                    //    kVCTPTC.LoaiHDGoc = loaiHDGoc;
-        //                    //    kVCTPTC.SoCTGoc = soCTGoc;
-        //                    //    kVCTPTC.NgayCTGoc = ngayBill;
-
-        //                    //    kVCTPTC.DSKhongVAT = 0;
-        //                    //    kVCTPTC.VAT = 0;
-
-        //                    //    kVCTPTC.KyHieu = kyHieu;
-        //                    //    kVCTPTC.MauSoHD = mauSo;
-        //                    //    kVCTPTC.MsThue = msThue;
-        //                    //    kVCTPTC.MaKh = maKh;
-        //                    //    kVCTPTC.TenKH = tenKh;
-        //                    //    kVCTPTC.DiaChi = diaChi;
-
-        //                    //    kVCTPTC.NguoiTao = nguoiTao;
-        //                    //    kVCTPTC.NgayTao = ngayTao;
-        //                    //    kVCTPTC.LogFile = logFile;
-
-        //                    //    kVCTPTCs.Add(kVCTPTC);
-        //                    //}
-
-        //                    #endregion bỏ tróng -> lấy theo tiền mặt old
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return kVCTPTCs;
-        //}
+        public async Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu)
+        {
+            var thuchis = _unitOfWork.xeRepository.Find(x => x.SoPhieu == soPhieu && x.ChiNhanh == macn);
+            Vandoanh vandoanh = new Vandoanh();
+            try
+            {
+                vandoanh = await _unitOfWork.xeRepository.GetVanDoanhById(thuchis.FirstOrDefault().VanDoanhId.Value);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("vandoanhId ko tồn tại", ex.InnerException);
+            }
+
+            string nguoiTao = username;
+            DateTime ngayTao = DateTime.Now;
+
+            // ghi log
+            string logFile = "-User kéo từ qlxe: " + username + " , số phiếu " + soPhieu + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
+
+            if (thuchis != null)
+            {
+                foreach (var item in thuchis)
+                {
+                    // string boPhan = item.;
+                    // string maKh = string.IsNullOrEmpty(item.Coquan) ? "50000" : item.Coquan;
+                    // var viewSupplier = GetSuppliersByCodeName(maKh, maCN).FirstOrDefault();//.Where(x => x.Code == maKh).FirstOrDefault();
+                    //var viewSupplier = GetAll_KhachHangs_HDVATOB().Where(x => x.Code == maKh).FirstOrDefault();
+                    // string kyHieu = "", mauSo = "", msThue = "", tenKh = "", diaChi = "";
+                    //if (viewSupplier != null)
+                    //{
+                    //    kyHieu = viewSupplier.Taxsign;
+                    //    mauSo = viewSupplier.Taxform;
+                    //    msThue = viewSupplier.Taxcode;
+                    //    tenKh = viewSupplier.Name;
+                    //    diaChi = viewSupplier.Address;
+                    //}
+                    //var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == item.Idntbill);
+                    //var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) && string.IsNullOrEmpty(x.Loaicard));
+                    //var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
+
+                    string dienGiaiP = "CHI NL + CTP " + vandoanh.MaDoan ?? " từ ngày " +
+                        vandoanh.NgayDon.Value.ToString("dd/MM/yyyy") ?? "" + " đến ngày " + vandoanh.DenNgay.Value.ToString("dd/MM/yyyy") ?? "";
+
+                    var chiphiXe = await _unitOfWork.xeRepository.GetChiPhiXeById(item.KhoanMuc); // item.KhoanMuc == macp
+
+                    var loaiHDGoc = "VAT";// item.Loaihd; // ??
+                    var soCTGoc = item.Bill ?? item.Stt;// item.Stt; // thao
+                    var ngayBill = item.Ngaybill;
+
+                    KVCTPTC kVCTPTC = new KVCTPTC();
+                    kVCTPTC.STT = item.Stt; // ben [ntbill] cashier
+
+                    if (tienMat)
+                    {
+                        if (ctbills_TienMat.Count() > 0)
+                        {
+                            // THONG TIN VE TAI CHINH
+                            kVCTPTC.KVPTCId = kVPTCId;
+                            kVCTPTC.SoCT = soCT;
+                            kVCTPTC.MaCn = maCN;
+                            kVCTPTC.DienGiaiP = dienGiaiP;
+                            kVCTPTC.SoTienNT = ctbills_TienMat.Sum(x => x.Sotiennt);// item1.Sotiennt;
+                            kVCTPTC.LoaiTien = ctbills_TienMat.FirstOrDefault().Loaitien;// item1.Loaitien;
+                            kVCTPTC.TyGia = ctbills_TienMat.FirstOrDefault().Tygia;// item1.Tygia;
+                            kVCTPTC.SoTien = ctbills_TienMat.Sum(x => x.Sotien);// item1.Sotien;
+                                                                                //kVCTPTC.CardNumber = ctbills_TienMat.FirstOrDefault().Cardnumber;// item1.Cardnumber;
+                                                                                //kVCTPTC.LoaiThe = ctbills_TienMat.FirstOrDefault().Loaicard;// item1.Loaicard;
+
+                            // THONG TIN VE CONG NO DOAN
+                            if (loaiPhieu == "T") // phieu thu
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = "1111000000";
+                                kVCTPTC.TKCo = tk;
+
+                                kVCTPTC.CoQuay = boPhan;
+
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "TWI":
+                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "TND":
+                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "TOB":
+                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "TXE":
+                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        break;
+
+                                    case "TIB":
+                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        break;
+                                }
+
+                                kVCTPTC.MaKhCo = maKh; //maKh;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                }
+                            }
+                            else // phieu chi
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = tk;
+                                kVCTPTC.TKCo = "1111000000";
+                                kVCTPTC.MaKhNo = maKh;
+                                kVCTPTC.NoQuay = boPhan;
+
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "HHK":
+                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "HWI":
+                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "HND":
+                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "HOB":
+                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "HXE":
+                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        break;
+
+                                    case "HIB":
+                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        break;
+                                }
+                            }
+
+                            kVCTPTC.BoPhan = boPhan;
+                            var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
+                            kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
+                                                                                     //kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.SalesSlip = ctbills_TienMat.FirstOrDefault().Saleslip;// item1.Saleslip;
+
+                            // THONG TIN VE THUE
+                            kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            kVCTPTC.SoCTGoc = soCTGoc;
+                            kVCTPTC.NgayCTGoc = ngayBill;
+
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.VAT = 0;
+
+                            kVCTPTC.KyHieu = kyHieu;
+                            kVCTPTC.MauSoHD = mauSo;
+                            kVCTPTC.MsThue = msThue;
+                            kVCTPTC.MaKh = maKh;
+                            kVCTPTC.TenKH = tenKh;
+                            kVCTPTC.DiaChi = diaChi;
+
+                            kVCTPTC.NguoiTao = nguoiTao;
+                            kVCTPTC.NgayTao = ngayTao;
+                            kVCTPTC.LogFile = logFile;
+
+                            kVCTPTCs.Add(kVCTPTC);
+
+                            #region ctbill tienmat old
+
+                            //foreach (var item1 in ctbills_TienMat)
+                            //{
+                            //    //KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            //    //// THONG TIN VE TAI CHINH
+                            //    //kVCTPTC.KVPTCId = kVPTCId;
+                            //    //kVCTPTC.SoCT = soCT;
+                            //    //kVCTPTC.MaCn = maCN;
+                            //    //kVCTPTC.DienGiaiP = dienGiaiP;
+                            //    //kVCTPTC.SoTienNT = item1.Sotiennt;
+                            //    //kVCTPTC.LoaiTien = item1.Loaitien;
+                            //    //kVCTPTC.TyGia = item1.Tygia;
+                            //    //kVCTPTC.SoTien = item1.Sotien;
+                            //    //kVCTPTC.CardNumber = item1.Cardnumber;
+                            //    //kVCTPTC.LoaiThe = item1.Loaicard;
+
+                            //    //// THONG TIN VE CONG NO DOAN
+                            //    //if (loaiPhieu == "T") // phieu thu
+                            //    //{
+                            //    //    var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                            //    //    kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            //    //    kVCTPTC.TKNo = "1111000000";
+                            //    //    kVCTPTC.TKCo = tk;
+
+                            //    //    kVCTPTC.CoQuay = boPhan;
+
+                            //    //    switch (baoCaoSo.Substring(5, 3))
+                            //    //    {
+                            //    //        case "CHK":
+                            //    //            kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                            //    //            break;
+
+                            //    //        case "TWI":
+                            //    //            kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                            //    //            break;
+
+                            //    //        case "TND":
+                            //    //            kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                            //    //            break;
+
+                            //    //        case "TOB":
+                            //    //            kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                            //    //            break;
+
+                            //    //        case "TXE":
+                            //    //            kVCTPTC.MaKhCo = "TX001"; //maKh;
+                            //    //            break;
+
+                            //    //        case "TIB":
+                            //    //            kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                            //    //            break;
+                            //    //    }
+
+                            //    //    kVCTPTC.MaKhCo = maKh; //maKh;
+                            //    //    if (tk == "1368000000")
+                            //    //    {
+                            //    //        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                            //    //    }
+                            //    //}
+                            //    //else // phieu chi
+                            //    //{
+                            //    //    var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                            //    //    kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            //    //    kVCTPTC.TKNo = tk;
+                            //    //    kVCTPTC.TKCo = "1111000000";
+                            //    //    kVCTPTC.MaKhNo = maKh;
+                            //    //    kVCTPTC.NoQuay = boPhan;
+
+                            //    //    switch (baoCaoSo.Substring(5, 3))
+                            //    //    {
+                            //    //        case "HHK":
+                            //    //            kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                            //    //            break;
+
+                            //    //        case "HWI":
+                            //    //            kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                            //    //            break;
+
+                            //    //        case "HND":
+                            //    //            kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                            //    //            break;
+
+                            //    //        case "HOB":
+                            //    //            kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                            //    //            break;
+
+                            //    //        case "HXE":
+                            //    //            kVCTPTC.MaKhNo = "TX001"; //maKh;
+                            //    //            break;
+
+                            //    //        case "HIB":
+                            //    //            kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                            //    //            break;
+                            //    //    }
+                            //    //}
+
+                            //    //kVCTPTC.BoPhan = boPhan;
+                            //    //kVCTPTC.Sgtcode = item1.Sgtcode;
+                            //    //kVCTPTC.CardNumber = item1.Cardnumber;
+                            //    //kVCTPTC.SalesSlip = item1.Saleslip;
+
+                            //    //// THONG TIN VE THUE
+                            //    //kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            //    //kVCTPTC.SoCTGoc = soCTGoc;
+                            //    //kVCTPTC.NgayCTGoc = ngayBill;
+
+                            //    //kVCTPTC.DSKhongVAT = 0;
+                            //    //kVCTPTC.VAT = 0;
+
+                            //    //kVCTPTC.KyHieu = kyHieu;
+                            //    //kVCTPTC.MauSoHD = mauSo;
+                            //    //kVCTPTC.MsThue = msThue;
+                            //    //kVCTPTC.MaKh = maKh;
+                            //    //kVCTPTC.TenKH = tenKh;
+                            //    //kVCTPTC.DiaChi = diaChi;
+
+                            //    //kVCTPTC.NguoiTao = nguoiTao;
+                            //    //kVCTPTC.NgayTao = ngayTao;
+                            //    //kVCTPTC.LogFile = logFile;
+
+                            //    //kVCTPTCs.Add(kVCTPTC);
+                            //}
+
+                            #endregion ctbill tienmat old
+                        }
+                    }
+
+                    if (tTThe)
+                    {
+                        if (ctbills_TTThe.Count() > 0)
+                        {
+                            //KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            // THONG TIN VE TAI CHINH
+                            kVCTPTC.KVPTCId = kVPTCId;
+                            kVCTPTC.SoCT = soCT;
+                            kVCTPTC.MaCn = maCN;
+                            kVCTPTC.DienGiaiP = dienGiaiP;
+                            kVCTPTC.SoTienNT = ctbills_TTThe.Sum(x => x.Sotiennt);// item1.Sotiennt;
+                            kVCTPTC.LoaiTien = ctbills_TTThe.FirstOrDefault().Loaitien;// item1.Loaitien;
+                            kVCTPTC.TyGia = ctbills_TTThe.FirstOrDefault().Tygia;// item1.Tygia;
+                            kVCTPTC.SoTien = ctbills_TTThe.Sum(x => x.Sotien);// item1.Sotien;
+                            kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
+                            kVCTPTC.LoaiThe = ctbills_TTThe.FirstOrDefault().Loaicard;// item1.Loaicard;
+
+                            // THONG TIN VE CONG NO DOAN
+                            if (loaiPhieu == "T") // phieu thu
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = "1111000000";
+                                kVCTPTC.TKCo = tk;
+                                kVCTPTC.MaKhCo = maKh;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                }
+                                kVCTPTC.CoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "TWI":
+                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "TND":
+                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "TOB":
+                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "TXE":
+                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        break;
+
+                                    case "TIB":
+                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        break;
+
+                                    default:
+                                        if (baoCaoSo.Substring(5, 3).Contains("H"))
+                                            return null;///////////////////////////////////////////////////////////
+                                        break;
+                                }
+                            }
+                            else // phieu chi
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = tk;
+                                kVCTPTC.TKCo = "1111000000";
+                                kVCTPTC.MaKhNo = maKh;
+                                kVCTPTC.NoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "HHK":
+                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "HWI":
+                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "HND":
+                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "HOB":
+                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "HXE":
+                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        break;
+
+                                    case "HIB":
+                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        break;
+                                }
+                            }
+
+                            kVCTPTC.BoPhan = boPhan;
+                            kVCTPTC.BoPhan = boPhan;
+
+                            //kVCTPTC.Sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
+                            var sgtcode = ctbills_TTThe.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
+                            kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
+
+                            kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
+                            kVCTPTC.SalesSlip = ctbills_TTThe.FirstOrDefault().Saleslip;// item1.Saleslip;
+
+                            // THONG TIN VE THUE
+                            kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            kVCTPTC.SoCTGoc = soCTGoc;
+                            kVCTPTC.NgayCTGoc = ngayBill;
+
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.VAT = 0;
+
+                            kVCTPTC.KyHieu = kyHieu;
+                            kVCTPTC.MauSoHD = mauSo;
+                            kVCTPTC.MsThue = msThue;
+                            kVCTPTC.MaKh = maKh;
+                            kVCTPTC.TenKH = tenKh;
+                            kVCTPTC.DiaChi = diaChi;
+
+                            kVCTPTC.NguoiTao = nguoiTao;
+                            kVCTPTC.NgayTao = ngayTao;
+                            kVCTPTC.LogFile = logFile;
+
+                            kVCTPTCs.Add(kVCTPTC);
+
+                            #region ctbill ttthe old
+
+                            //foreach (var item1 in ctbills_TTThe)
+                            //{
+                            //    KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            //    // THONG TIN VE TAI CHINH
+                            //    kVCTPTC.KVPTCId = kVPTCId;
+                            //    kVCTPTC.SoCT = soCT;
+                            //    kVCTPTC.MaCn = maCN;
+                            //    kVCTPTC.DienGiaiP = dienGiaiP;
+                            //    kVCTPTC.SoTienNT = item1.Sotiennt;
+                            //    kVCTPTC.LoaiTien = item1.Loaitien;
+                            //    kVCTPTC.TyGia = item1.Tygia;
+                            //    kVCTPTC.SoTien = item1.Sotien;
+                            //    kVCTPTC.CardNumber = item1.Cardnumber;
+                            //    kVCTPTC.LoaiThe = item1.Loaicard;
+
+                            //    // THONG TIN VE CONG NO DOAN
+                            //    if (loaiPhieu == "T") // phieu thu
+                            //    {
+                            //        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                            //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            //        kVCTPTC.TKNo = "1111000000";
+                            //        kVCTPTC.TKCo = tk;
+                            //        kVCTPTC.MaKhCo = maKh;
+                            //        if (tk == "1368000000")
+                            //        {
+                            //            kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                            //        }
+                            //        kVCTPTC.CoQuay = boPhan;
+                            //        switch (baoCaoSo.Substring(5, 3))
+                            //        {
+                            //            case "CHK":
+                            //                kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                            //                break;
+
+                            //            case "TWI":
+                            //                kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                            //                break;
+
+                            //            case "TND":
+                            //                kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                            //                break;
+
+                            //            case "TOB":
+                            //                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                            //                break;
+
+                            //            case "TXE":
+                            //                kVCTPTC.MaKhCo = "TX001"; //maKh;
+                            //                break;
+
+                            //            case "TIB":
+                            //                kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                            //                break;
+                            //        }
+                            //    }
+                            //    else // phieu chi
+                            //    {
+                            //        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                            //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            //        kVCTPTC.TKNo = tk;
+                            //        kVCTPTC.TKCo = "1111000000";
+                            //        kVCTPTC.MaKhNo = maKh;
+                            //        kVCTPTC.NoQuay = boPhan;
+                            //        switch (baoCaoSo.Substring(5, 3))
+                            //        {
+                            //            case "HHK":
+                            //                kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                            //                break;
+
+                            //            case "HWI":
+                            //                kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                            //                break;
+
+                            //            case "HND":
+                            //                kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                            //                break;
+
+                            //            case "HOB":
+                            //                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                            //                break;
+
+                            //            case "HXE":
+                            //                kVCTPTC.MaKhNo = "TX001"; //maKh;
+                            //                break;
+
+                            //            case "HIB":
+                            //                kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                            //                break;
+                            //        }
+                            //    }
+
+                            //    kVCTPTC.BoPhan = boPhan;
+                            //    kVCTPTC.Sgtcode = item1.Sgtcode;
+                            //    kVCTPTC.CardNumber = item1.Cardnumber;
+                            //    kVCTPTC.SalesSlip = item1.Saleslip;
+
+                            //    // THONG TIN VE THUE
+                            //    kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            //    kVCTPTC.SoCTGoc = soCTGoc;
+                            //    kVCTPTC.NgayCTGoc = ngayBill;
+
+                            //    kVCTPTC.DSKhongVAT = 0;
+                            //    kVCTPTC.VAT = 0;
+
+                            //    kVCTPTC.KyHieu = kyHieu;
+                            //    kVCTPTC.MauSoHD = mauSo;
+                            //    kVCTPTC.MsThue = msThue;
+                            //    kVCTPTC.MaKh = maKh;
+                            //    kVCTPTC.TenKH = tenKh;
+                            //    kVCTPTC.DiaChi = diaChi;
+
+                            //    kVCTPTC.NguoiTao = nguoiTao;
+                            //    kVCTPTC.NgayTao = ngayTao;
+                            //    kVCTPTC.LogFile = logFile;
+
+                            //    kVCTPTCs.Add(kVCTPTC);
+                            //}
+
+                            #endregion ctbill ttthe old
+                        }
+                    }
+
+                    if (!tienMat && !tTThe) // bỏ tróng -> lấy theo tiền mặt
+                    {
+                        if (ctbills_TienMat.Count() > 0)
+                        {
+                            //KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            // THONG TIN VE TAI CHINH
+                            kVCTPTC.KVPTCId = kVPTCId;
+                            kVCTPTC.SoCT = soCT;
+                            kVCTPTC.MaCn = maCN;
+                            kVCTPTC.DienGiaiP = dienGiaiP;
+                            kVCTPTC.SoTienNT = ctbills_TienMat.Sum(x => x.Sotiennt);// item1.Sotiennt;
+                            kVCTPTC.LoaiTien = ctbills_TienMat.FirstOrDefault().Loaitien;// item1.Loaitien;
+                            kVCTPTC.TyGia = ctbills_TienMat.FirstOrDefault().Tygia;// item1.Tygia;
+                            kVCTPTC.SoTien = ctbills_TienMat.Sum(x => x.Sotien);// item1.Sotien;
+                                                                                //kVCTPTC.CardNumber = item1.Cardnumber;
+                                                                                //kVCTPTC.LoaiThe = item1.Loaicard;
+
+                            // THONG TIN VE CONG NO DOAN
+                            if (loaiPhieu == "T") // phieu thu
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = "1111000000";
+                                kVCTPTC.TKCo = tk;
+                                kVCTPTC.MaKhCo = maKh;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                }
+                                kVCTPTC.CoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "TWI":
+                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "TND":
+                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "TOB":
+                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "TXE":
+                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        break;
+
+                                    case "TIB":
+                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        break;
+                                }
+                            }
+                            else // phieu chi
+                            {
+                                var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                                kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                                kVCTPTC.TKNo = tk;
+                                kVCTPTC.TKCo = "1111000000";
+                                kVCTPTC.MaKhNo = maKh;
+                                kVCTPTC.NoQuay = boPhan;
+                                switch (baoCaoSo.Substring(5, 3))
+                                {
+                                    case "HHK":
+                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        break;
+
+                                    case "HWI":
+                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        break;
+
+                                    case "HND":
+                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        break;
+
+                                    case "HOB":
+                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        break;
+
+                                    case "HXE":
+                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        break;
+
+                                    case "HIB":
+                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        break;
+                                }
+                            }
+
+                            kVCTPTC.BoPhan = boPhan;
+                            //kVCTPTC.Sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode)).Sgtcode;// item1.Sgtcode;
+                            var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
+                            kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
+                                                                                     //kVCTPTC.CardNumber = item1.Cardnumber;
+                            kVCTPTC.SalesSlip = ctbills_TienMat.FirstOrDefault().Saleslip;// item1.Saleslip;
+
+                            // THONG TIN VE THUE
+                            kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            kVCTPTC.SoCTGoc = soCTGoc;
+                            kVCTPTC.NgayCTGoc = ngayBill;
+
+                            kVCTPTC.DSKhongVAT = 0;
+                            kVCTPTC.VAT = 0;
+
+                            kVCTPTC.KyHieu = kyHieu;
+                            kVCTPTC.MauSoHD = mauSo;
+                            kVCTPTC.MsThue = msThue;
+                            kVCTPTC.MaKh = maKh;
+                            kVCTPTC.TenKH = tenKh;
+                            kVCTPTC.DiaChi = diaChi;
+
+                            kVCTPTC.NguoiTao = nguoiTao;
+                            kVCTPTC.NgayTao = ngayTao;
+                            kVCTPTC.LogFile = logFile;
+
+                            kVCTPTCs.Add(kVCTPTC);
+
+                            #region bỏ tróng -> lấy theo tiền mặt old
+
+                            //foreach (var item1 in ctbills_TienMat)
+                            //{
+                            //    KVCTPTC kVCTPTC = new KVCTPTC();
+
+                            //    // THONG TIN VE TAI CHINH
+                            //    kVCTPTC.KVPTCId = kVPTCId;
+                            //    kVCTPTC.SoCT = soCT;
+                            //    kVCTPTC.MaCn = maCN;
+                            //    kVCTPTC.DienGiaiP = dienGiaiP;
+                            //    kVCTPTC.SoTienNT = item1.Sotiennt;
+                            //    kVCTPTC.LoaiTien = item1.Loaitien;
+                            //    kVCTPTC.TyGia = item1.Tygia;
+                            //    kVCTPTC.SoTien = item1.Sotien;
+                            //    kVCTPTC.CardNumber = item1.Cardnumber;
+                            //    kVCTPTC.LoaiThe = item1.Loaicard;
+
+                            //    // THONG TIN VE CONG NO DOAN
+                            //    if (loaiPhieu == "T") // phieu thu
+                            //    {
+                            //        var dienGiai = Get_DienGiai_By_TkNo_TkCo("1111000000", tk).FirstOrDefault(); // chac chan tien mat : 1111000000
+                            //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            //        kVCTPTC.TKNo = "1111000000";
+                            //        kVCTPTC.TKCo = tk;
+                            //        kVCTPTC.MaKhCo = maKh;
+                            //        if (tk == "1368000000")
+                            //        {
+                            //            kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                            //        }
+                            //        kVCTPTC.CoQuay = boPhan;
+                            //        switch (baoCaoSo.Substring(5, 3))
+                            //        {
+                            //            case "CHK":
+                            //                kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                            //                break;
+
+                            //            case "TWI":
+                            //                kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                            //                break;
+
+                            //            case "TND":
+                            //                kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                            //                break;
+
+                            //            case "TOB":
+                            //                kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                            //                break;
+
+                            //            case "TXE":
+                            //                kVCTPTC.MaKhCo = "TX001"; //maKh;
+                            //                break;
+
+                            //            case "TIB":
+                            //                kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                            //                break;
+                            //        }
+                            //    }
+                            //    else // phieu chi
+                            //    {
+                            //        var dienGiai = Get_DienGiai_By_TkNo_TkCo(tk, "1111000000").FirstOrDefault();
+                            //        kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                            //        kVCTPTC.TKNo = tk;
+                            //        kVCTPTC.TKCo = "1111000000";
+                            //        kVCTPTC.MaKhNo = maKh;
+                            //        kVCTPTC.NoQuay = boPhan;
+                            //        switch (baoCaoSo.Substring(5, 3))
+                            //        {
+                            //            case "HHK":
+                            //                kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                            //                break;
+
+                            //            case "HWI":
+                            //                kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                            //                break;
+
+                            //            case "HND":
+                            //                kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                            //                break;
+
+                            //            case "HOB":
+                            //                kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                            //                break;
+
+                            //            case "HXE":
+                            //                kVCTPTC.MaKhNo = "TX001"; //maKh;
+                            //                break;
+
+                            //            case "HIB":
+                            //                kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                            //                break;
+                            //        }
+                            //    }
+
+                            //    kVCTPTC.BoPhan = boPhan;
+                            //    kVCTPTC.Sgtcode = item1.Sgtcode;
+                            //    kVCTPTC.CardNumber = item1.Cardnumber;
+                            //    kVCTPTC.SalesSlip = item1.Saleslip;
+
+                            //    // THONG TIN VE THUE
+                            //    kVCTPTC.LoaiHDGoc = loaiHDGoc;
+                            //    kVCTPTC.SoCTGoc = soCTGoc;
+                            //    kVCTPTC.NgayCTGoc = ngayBill;
+
+                            //    kVCTPTC.DSKhongVAT = 0;
+                            //    kVCTPTC.VAT = 0;
+
+                            //    kVCTPTC.KyHieu = kyHieu;
+                            //    kVCTPTC.MauSoHD = mauSo;
+                            //    kVCTPTC.MsThue = msThue;
+                            //    kVCTPTC.MaKh = maKh;
+                            //    kVCTPTC.TenKH = tenKh;
+                            //    kVCTPTC.DiaChi = diaChi;
+
+                            //    kVCTPTC.NguoiTao = nguoiTao;
+                            //    kVCTPTC.NgayTao = ngayTao;
+                            //    kVCTPTC.LogFile = logFile;
+
+                            //    kVCTPTCs.Add(kVCTPTC);
+                            //}
+
+                            #endregion bỏ tróng -> lấy theo tiền mặt old
+                        }
+                    }
+                }
+
+                return kVCTPTCs;
+            }
+        }
+
+        private ListViewModel GetLoaiCT_By_MaCp(string maCP)
+        {
+            ListViewModel viewModel = new ListViewModel();
+            switch (maCP)
+            {
+                case "001":
+                case "002":
+                case "035":
+                case "058":
+                case "059":
+                    viewModel.HTTC = "CBU";
+                    viewModel.TKNo = "6278348050";
+                    var dgiais = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000");
+                    viewModel.DienGiai = dgiais.FirstOrDefault().DienGiai;
+                    viewModel.LoaiCTU = "VAT";
+                    viewModel.BoPhan = "XE";
+                    break;
+
+                case "003":
+                case "004":
+                case "009":
+                case "022":
+                case "031":
+                case "054":
+                case "056":
+                case "057":
+                case "060":
+                    viewModel.HTTC = "CBU";
+                    viewModel.TKNo = "6278348160";
+                    viewModel.DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348160", "1111000000")
+                        .FirstOrDefault().DienGiai;
+                    viewModel.LoaiCTU = "KHD";
+                    viewModel.BoPhan = "XE";
+                    break;
+
+                case "005":
+                    viewModel.HTTC = "CBU";
+                    viewModel.TKNo = "6278348140";
+                    viewModel.DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                        .Where(x => x.DienGiai.Contains("XE")).FirstOrDefault().DienGiai; // PHI GUI XE
+                    viewModel.LoaiCTU = "KHD";
+                    viewModel.BoPhan = "XE";
+                    break;
+
+                case "007":
+                case "008":
+                case "020":
+                case "048":
+                case "049":
+                case "055":
+                    viewModel.HTTC = "CBU";
+                    viewModel.TKNo = "6278348140";
+                    viewModel.DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                        .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai; // PHI CAU PHA
+                    viewModel.LoaiCTU = "KCT";
+                    viewModel.BoPhan = "XE";
+                    break;
+            }
+        }
     }
 }

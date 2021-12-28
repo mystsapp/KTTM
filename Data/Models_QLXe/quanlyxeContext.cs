@@ -17,6 +17,7 @@ namespace Data.Models_QLXe
         {
         }
 
+        public virtual DbSet<ChiphiXe> ChiphiXes { get; set; }
         public virtual DbSet<Thuchi> Thuchis { get; set; }
         public virtual DbSet<Vandoanh> Vandoanhs { get; set; }
 
@@ -32,6 +33,81 @@ namespace Data.Models_QLXe
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<ChiphiXe>(entity =>
+            {
+                entity.HasKey(e => e.Macp);
+
+                entity.ToTable("chiphi_xe");
+
+                entity.Property(e => e.Macp)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("macp");
+
+                entity.Property(e => e.Dvt)
+                    .HasMaxLength(50)
+                    .HasColumnName("dvt");
+
+                entity.Property(e => e.Ghichu)
+                    .HasMaxLength(70)
+                    .HasColumnName("ghichu");
+
+                entity.Property(e => e.Gia04)
+                    .HasColumnType("money")
+                    .HasColumnName("gia04");
+
+                entity.Property(e => e.Gia05)
+                    .HasColumnType("money")
+                    .HasColumnName("gia05");
+
+                entity.Property(e => e.Gia07)
+                    .HasColumnType("money")
+                    .HasColumnName("gia07");
+
+                entity.Property(e => e.Gia12)
+                    .HasColumnType("money")
+                    .HasColumnName("gia12");
+
+                entity.Property(e => e.Gia16)
+                    .HasColumnType("money")
+                    .HasColumnName("gia16");
+
+                entity.Property(e => e.Gia22)
+                    .HasColumnType("money")
+                    .HasColumnName("gia22");
+
+                entity.Property(e => e.Gia29)
+                    .HasColumnType("money")
+                    .HasColumnName("gia29");
+
+                entity.Property(e => e.Gia30)
+                    .HasColumnType("money")
+                    .HasColumnName("gia30");
+
+                entity.Property(e => e.Gia35)
+                    .HasColumnType("money")
+                    .HasColumnName("gia35");
+
+                entity.Property(e => e.Gia45)
+                    .HasColumnType("money")
+                    .HasColumnName("gia45");
+
+                entity.Property(e => e.Loai).HasColumnName("loai");
+
+                entity.Property(e => e.Ngaycapnhat)
+                    .HasColumnType("datetime")
+                    .HasColumnName("ngaycapnhat");
+
+                entity.Property(e => e.Nguoicapnhat)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("nguoicapnhat");
+
+                entity.Property(e => e.Tenchiphi)
+                    .HasMaxLength(50)
+                    .HasColumnName("tenchiphi");
+            });
 
             modelBuilder.Entity<Thuchi>(entity =>
             {

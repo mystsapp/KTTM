@@ -298,10 +298,11 @@ namespace KTTM.Controllers
                 return View(KVCTPCTVM);
             }
 
-            // data tu cashier
-            IEnumerable<KVCTPTC> kVCTPTCs = null; // _kVCTPTCService.GetKVCTPTCs_QLXe(soPhieu.Trim(),
-                                                  //kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, KVCTPCTVM.KVPTC.MFieu);
-                                                  // ghi log ben service
+            // data tu qlxe
+            IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.GetKVCTPTCs_QLXe(soPhieu.Trim(),
+                                            kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn,
+                                            KVCTPCTVM.KVPTC.MFieu);
+            // ghi log ben service
 
             if (kVCTPTCs == null) //545 ben kvctptcService
             {

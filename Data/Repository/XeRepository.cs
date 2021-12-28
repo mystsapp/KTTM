@@ -1,5 +1,6 @@
 ﻿using Data.Models_Cashier;
 using Data.Models_QLXe;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,11 @@ namespace Data.Repository
     {
         IEnumerable<Thuchi> GetAll();
 
-        Task<Thuchi> GetById(int id);
+        Task<Thuchi> GetThuById(int id);
+
+        Task<Vandoanh> GetVanDoanhById(long id);
+
+        Task<ChiphiXe> GetChiPhiXeById(string id);
 
         Task CreateAsync(Thuchi thuchi);
 
@@ -46,9 +51,19 @@ namespace Data.Repository
             return _context.Thuchis;
         }
 
-        public async Task<Thuchi> GetById(int id)
+        public async Task<ChiphiXe> GetChiPhiXeById(string id)
+        {
+            return await _context.ChiphiXes.FindAsync(id);
+        }
+
+        public async Task<Thuchi> GetThuById(int id)
         {
             return await _context.Thuchis.FindAsync(id);
+        }
+
+        public async Task<Vandoanh> GetVanDoanhById(long id)
+        {
+            return await _context.Vandoanhs.FindAsync(id);
         }
 
         public async Task UpdateAsync(Thuchi Thuchi)
