@@ -31,5 +31,6 @@ namespace Data.Models_QLXe
         public DateTime? NgayCapNhat { get; set; }
         public string NguoiCapNhat { get; set; }
         public string ChiNhanh { get; set; }
+        public string SoCtKttm { get; set; }
     }
 }

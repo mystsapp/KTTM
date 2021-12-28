@@ -10,6 +10,7 @@ using Data.Models_KTTM;
 using Data.Models_KTTM_1;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
+using Data.Models_QLXe;
 using Data.Repository;
 using KTTM.Services;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +42,7 @@ namespace KTTM
             services.AddDbContext<KTTMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<DanhMucKTContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DanhMucKTConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qlcashierContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLCashierConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<quanlyxeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLXeConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HdVATObConnection"))/*.EnableSensitiveDataLogging()*/);
             //services.AddDbContext<KTTM_1Context>(options => options.UseSqlServer(Configuration.GetConnectionString("Kttm_1Connection"))/*.EnableSensitiveDataLogging()*/);
 
@@ -79,6 +81,9 @@ namespace KTTM
 
             // hdvatob
             services.AddTransient<ISupplier_hdvatob_Repository, Supplier_hdvatob_Repository>();
+
+            // quanlyxe
+            services.AddTransient<IXeRepository, XeRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

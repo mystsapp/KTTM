@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data.Models_KTTM;
 using Data.Models_Cashier;
+using Data.Models_QLXe;
 
 namespace KTTM.Controllers
 {
@@ -312,21 +313,14 @@ namespace KTTM.Controllers
             {
                 await _kVCTPTCService.CreateRange(kVCTPTCs);
 
-                //// save to cashier
-                //var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
-                //var noptien = await _unitOfWork.nopTienRepository.GetById(KVCTPCTVM.LayDataCashierModel.BaoCaoSo.Trim(), user.Macn);
-
-                //noptien.Ngaypt = kVPCT.NgayCT;
-                //if (KVCTPCTVM.LayDataCashierModel.TienMat)
-                //{
-                //    noptien.Phieuthu = KVCTPCTVM.KVPTC.SoCT;
-                //}
-                //if (KVCTPCTVM.LayDataCashierModel.TTThe)
-                //{
-                //    noptien.Phieuthucc = KVCTPCTVM.KVPTC.SoCT;
-                //}
-                ////noptien.Ghichu = kVPCT.ghichu; ??
-                //await _kVCTPTCService.UpdateAsync_NopTien(noptien);
+                // save to cashier
+                var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
+                IEnumerable<Thuchi> thuchis = _kVCTPTCService.GetThuChiXe_By_SoPhieu(soPhieu);
+                foreach (var item in thuchis)
+                {
+                    item.SoCtKttm = kVPCT.SoCT;
+                    await _kVCTPTCService.UpdateAsync_ThuChiXe(item);
+                }
 
                 SetAlert("Kéo thành công.", "success");
                 return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id

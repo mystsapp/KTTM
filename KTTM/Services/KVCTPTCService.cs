@@ -3,6 +3,7 @@ using Data.Models_DanhMucKT;
 using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
+using Data.Models_QLXe;
 using Data.Repository;
 using Data.ViewModels;
 using KTTM.Models;
@@ -110,6 +111,10 @@ namespace KTTM.Services
         Ntbill GetNtbillBySTT(string sTT);
 
         Task<Noptien> GetNopTienById(string soct, string macn);
+
+        IEnumerable<Thuchi> GetThuChiXe_By_SoPhieu(string soPhieu);
+
+        Task UpdateAsync_ThuChiXe(Thuchi thuchi);
 
         //IEnumerable<KVCTPTC> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu);
     }
@@ -1112,6 +1117,11 @@ namespace KTTM.Services
             await _unitOfWork.nopTienRepository.UpdateAsync(noptien);
         }
 
+        public async Task UpdateAsync_ThuChiXe(Thuchi thuchi)
+        {
+            await _unitOfWork.xeRepository.UpdateAsync(thuchi);
+        }
+
         public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn)
         {
             code ??= "";
@@ -1579,6 +1589,11 @@ namespace KTTM.Services
         public async Task<Noptien> GetNopTienById(string soct, string macn)
         {
             return await _unitOfWork.nopTienRepository.GetById(soct, macn);
+        }
+
+        public IEnumerable<Thuchi> GetThuChiXe_By_SoPhieu(string soPhieu)
+        {
+            return _unitOfWork.xeRepository.Find(x => x.SoPhieu == soPhieu);
         }
 
         //public IEnumerable<KVCTPTC> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu)

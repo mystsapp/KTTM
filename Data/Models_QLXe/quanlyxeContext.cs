@@ -91,6 +91,11 @@ namespace Data.Models_QLXe
                     .IsUnicode(false)
                     .HasColumnName("SoChungTuNB");
 
+                entity.Property(e => e.SoCtKttm)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("SoCT_KTTM");
+
                 entity.Property(e => e.SoLuong).HasColumnType("decimal(18, 1)");
 
                 entity.Property(e => e.SoPhieu)

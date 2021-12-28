@@ -4,6 +4,7 @@ using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
+using Data.Models_QLXe;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -54,6 +55,9 @@ namespace Data.Repository
         // hdvatob
         ISupplier_hdvatob_Repository supplier_Hdvatob_Repository { get; }
 
+        // xe
+        IXeRepository xeRepository { get; }
+
         Task<int> Complete();
     }
 
@@ -65,8 +69,11 @@ namespace Data.Repository
         private readonly DanhMucKTContext _danhMucKTContext;
         private readonly qlcashierContext _qlcashierContext;
         private readonly hdvatobContext _hdvatobContext;
+        private readonly quanlyxeContext _quanlyxeContext;
 
-        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext, qltourContext qltourContext, DanhMucKTContext danhMucKTContext, qlcashierContext qlcashierContext, hdvatobContext hdvatobContext)
+        public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext,
+            qltourContext qltourContext, DanhMucKTContext danhMucKTContext,
+            qlcashierContext qlcashierContext, hdvatobContext hdvatobContext, quanlyxeContext quanlyxeContext)
         {
             _qltaikhoanContext = qltaikhoanContext;
             _kTTMDbContext = kTTMDbContext;
@@ -74,6 +81,7 @@ namespace Data.Repository
             _danhMucKTContext = danhMucKTContext;
             _qlcashierContext = qlcashierContext;
             _hdvatobContext = hdvatobContext;
+            _quanlyxeContext = quanlyxeContext;
 
             // qltaikhoan
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -110,6 +118,9 @@ namespace Data.Repository
 
             // hdvatob
             supplier_Hdvatob_Repository = new Supplier_hdvatob_Repository(_hdvatobContext);
+
+            // xe
+            xeRepository = new XeRepository(_quanlyxeContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -159,6 +170,8 @@ namespace Data.Repository
         public ITonQuyRepository tonQuyRepository { get; }
 
         public INgoaiTe_DanhMucKT_Repository ngoaiTe_DanhMucKT_Repository { get; }
+
+        public IXeRepository xeRepository { get; }
 
         public async Task<int> Complete()
         {
