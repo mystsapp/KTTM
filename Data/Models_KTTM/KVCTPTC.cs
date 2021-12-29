@@ -75,10 +75,10 @@ namespace Data.Models_KTTM
         public string MaKh { get; set; } //
 
         [DisplayName("Khoãng mục")]
-        [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
+        [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string KhoangMuc { get; set; } //
 
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "nvarchar(2)")]
+        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "nvarchar(12)")]
         public string HTTT { get; set; }
 
         [DisplayName("Số thẻ tín dụng")]
@@ -94,7 +94,7 @@ namespace Data.Models_KTTM
         public string SalesSlip { get; set; } //
 
         [DisplayName("Số xe")]
-        [MaxLength(8, ErrorMessage = "Chiều dài tối đa 8 ký tự"), Column(TypeName = "varchar(8)")]
+        [MaxLength(18, ErrorMessage = "Chiều dài tối đa 8 ký tự"), Column(TypeName = "varchar(18)")]
         public string SoXe { get; set; }
 
         [DisplayName("MS Thuế")]
@@ -216,7 +216,7 @@ namespace Data.Models_KTTM
         public string SoTT_DaTao { get; set; }
 
         [DisplayName("Số vé")]
-        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(50)")]
         public string SoVe { get; set; } // Thao
     }
 }

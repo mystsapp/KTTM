@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 using Data.Models_KTTM;
 using Data.Models_Cashier;
 using Data.Models_QLXe;
+using Microsoft.Data.SqlClient;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace KTTM.Controllers
 {
@@ -300,8 +303,7 @@ namespace KTTM.Controllers
 
             // data tu qlxe
             IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.GetKVCTPTCs_QLXe(soPhieu.Trim(),
-                                            kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn,
-                                            KVCTPCTVM.KVPTC.MFieu);
+                                            kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn);
             // ghi log ben service
 
             if (kVCTPTCs == null) //545 ben kvctptcService
@@ -314,9 +316,9 @@ namespace KTTM.Controllers
             {
                 await _kVCTPTCService.CreateRange(kVCTPTCs);
 
-                // save to cashier
+                // save to qlxe
                 var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
-                IEnumerable<Thuchi> thuchis = _kVCTPTCService.GetThuChiXe_By_SoPhieu(soPhieu);
+                List<Thuchi> thuchis = _kVCTPTCService.GetThuChiXe_By_SoPhieu(soPhieu).ToList();
                 foreach (var item in thuchis)
                 {
                     item.SoCtKttm = kVPCT.SoCT;
@@ -838,6 +840,21 @@ namespace KTTM.Controllers
                     noptien.Phieuthu = "";
                     noptien.Phieuthucc = "";
                     await _kVCTPTCService.UpdateAsync_NopTien(noptien);
+                }
+
+                // chi tiet nay keo ben qlxe qua
+                else if (!string.IsNullOrEmpty(kVCTPCT.KhoangMuc)) // kVCTPCT.KhoangMuc: KhoangMuc trong thuchi(qlxe) lay qua
+                {
+                    var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(kVCTPCT.KVPTCId);
+                    await _kVCTPTCService.DeleteRangeAsync(kVCTPTCs);
+
+                    // ThuChi
+                    var thuchis = _kVCTPTCService.GetThuChiXe_By_SoCT_KTTM(kVCTPCT.SoCT);
+                    foreach (var thuchi in thuchis)
+                    {
+                        thuchi.SoCtKttm = "";
+                        await _kVCTPTCService.UpdateAsync_ThuChiXe(thuchi);
+                    }
                 }
                 else
                 {

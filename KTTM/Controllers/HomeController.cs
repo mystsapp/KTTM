@@ -622,7 +622,7 @@ namespace KTTM.Controllers
             }
 
             string tongTienNT = HomeVM.InPhieuView_Groupby_TkNo_TkCos.Sum(x => x.SoTienNT).ToString();
-            string bangChu;
+            string bangChu = "";
             string tongCong = "";
             // VN
             if (HomeVM.KVPTC.NgoaiTe == "VN")
@@ -632,7 +632,7 @@ namespace KTTM.Controllers
                 string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
                 //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
                 bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
-                tongCong = tongTienNT + " VND";
+                tongCong = decimal.Parse(tongTienNT).ToString("N0") + " VND";
             }
             else
             {
@@ -670,42 +670,6 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> InPhieuPrint(Guid id, int page)
         {
-            //HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
-            //HomeVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
-            //HomeVM.Page = page;
-            //HomeVM.InPhieuView_Groupby_TkNo_TkCos = _kVPTCService.InPhieuView_Groupby_TkNos(HomeVM.KVCTPTCs);
-            //string tongTienNT = HomeVM.InPhieuView_Groupby_TkNo_TkCos.Sum(x => x.SoTienNT).ToString();
-            /////// Currency to money VNC
-            //string s = SoSangChu.DoiSoSangChu(tongTienNT.Split('.')[0]);
-            //string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
-            ////string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
-            //ViewBag.bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
-
-            //// NT
-            //string soTienNT_BangChu = "";
-            //foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
-            //{
-            //    string tien = SoSangChu.DoiSoSangChu(item.SoTienNT.ToString().Split('.')[0]);
-            //    item.SoTienNT_BangChu = char.ToUpper(tien[0]) + tien.Substring(1) + " " + item.LoaiTien;
-            //}
-
-            //foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
-            //{
-            //    int lastItem = HomeVM.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
-            //    if (lastItem != HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
-            //    {
-            //        // this is the last item
-            //        soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
-            //    }
-            //    else
-            //    {
-            //        soTienNT_BangChu += item.SoTienNT_BangChu;
-            //    }
-            //}
-            //ViewBag.SoTienNT_BangChu = soTienNT_BangChu;
-
-            //return View(HomeVM);
-
             HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
             HomeVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
             HomeVM.Page = page;
@@ -744,36 +708,119 @@ namespace KTTM.Controllers
             }
 
             string tongTienNT = HomeVM.InPhieuView_Groupby_TkNo_TkCos.Sum(x => x.SoTienNT).ToString();
-            ///// Currency to money
-            string s = SoSangChu.DoiSoSangChu(tongTienNT.Split('.')[0]);
-            string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
-            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
-            ViewBag.bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
-
-            // NT
-            string soTienNT_BangChu = "";
-            foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
+            string bangChu = "";
+            string tongCong = "";
+            // VN
+            if (HomeVM.KVPTC.NgoaiTe == "VN")
             {
-                string tien = SoSangChu.DoiSoSangChu(item.SoTienNT.ToString().Split('.')[0]);
-                item.SoTienNT_BangChu = char.ToUpper(tien[0]) + tien.Substring(1) + " " + item.LoaiTien;
+                ///// Currency to money
+                string s = SoSangChu.DoiSoSangChu(tongTienNT.Split('.')[0]);
+                string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
+                //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+                bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
+                tongCong = decimal.Parse(tongTienNT).ToString("N0") + " VND";
             }
-
-            foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
+            else
             {
-                int lastItem = HomeVM.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
-                if (lastItem != HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                // NT
+                string soTienNT_BangChu = "";
+                foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
                 {
-                    // this is the last item
-                    soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
+                    string tien = SoSangChu.DoiSoSangChu(item.SoTienNT.ToString().Split('.')[0]);
+                    item.SoTienNT_BangChu = char.ToUpper(tien[0]) + tien.Substring(1) + " " + item.LoaiTien;
                 }
-                else
+
+                foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
                 {
-                    soTienNT_BangChu += item.SoTienNT_BangChu;
+                    int lastItem = HomeVM.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+                    if (lastItem != HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                    {
+                        // this is the last item
+                        soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
+                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                    }
+                    else
+                    {
+                        soTienNT_BangChu += item.SoTienNT_BangChu;
+                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+                    }
                 }
+                bangChu = soTienNT_BangChu;
+                //ViewBag.SoTienNT_BangChu = soTienNT_BangChu;
             }
-            ViewBag.SoTienNT_BangChu = soTienNT_BangChu;
+            ViewBag.tongCong = tongCong;
+            ViewBag.bangChu = bangChu;
 
             return View(HomeVM);
+
+            //HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
+            //HomeVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+            //HomeVM.Page = page;
+
+            //switch (HomeVM.KVPTC.MFieu)
+            //{
+            //    case "T": // thu
+            //        switch (HomeVM.KVPTC.NgoaiTe)
+            //        {
+            //            case "VN":
+            //                HomeVM.InPhieuView_Groupby_TkNo_TkCos = _kVPTCService.InPhieuView_Groupby_TkNo_TkCos(HomeVM.KVCTPTCs);
+            //                break;
+
+            //            default:
+            //                HomeVM.InPhieuView_Groupby_TkNo_TkCos = _kVPTCService.InPhieuView_Groupby_TkNo_TkCos(HomeVM.KVCTPTCs);
+            //                break;
+            //        }
+            //        break;
+
+            //    default: // chi
+            //        switch (HomeVM.KVPTC.NgoaiTe)
+            //        {
+            //            case "VN":
+
+            //                HomeVM.InPhieuView_Groupby_TkNo_TkCos = _kVPTCService.InPhieuView_Groupby_TkNo_TkCos(HomeVM.KVCTPTCs);
+            //                // chi VND
+            //                break;
+
+            //            default:
+
+            //                HomeVM.InPhieuView_Groupby_TkNo_TkCos = _kVPTCService.InPhieuView_Groupby_TkNo_TkCos(HomeVM.KVCTPTCs);
+            //                // chi NgoaiTe
+            //                break;
+            //        }
+            //        break;
+            //}
+
+            //string tongTienNT = HomeVM.InPhieuView_Groupby_TkNo_TkCos.Sum(x => x.SoTienNT).ToString();
+            /////// Currency to money
+            //string s = SoSangChu.DoiSoSangChu(tongTienNT.Split('.')[0]);
+            //string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
+            ////string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            //ViewBag.bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
+
+            //// NT
+            //string soTienNT_BangChu = "";
+            //foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
+            //{
+            //    string tien = SoSangChu.DoiSoSangChu(item.SoTienNT.ToString().Split('.')[0]);
+            //    item.SoTienNT_BangChu = char.ToUpper(tien[0]) + tien.Substring(1) + " " + item.LoaiTien;
+            //}
+
+            //foreach (var item in HomeVM.InPhieuView_Groupby_TkNo_TkCos)
+            //{
+            //    int lastItem = HomeVM.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+            //    if (lastItem != HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+            //    {
+            //        // this is the last item
+            //        soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
+            //    }
+            //    else
+            //    {
+            //        soTienNT_BangChu += item.SoTienNT_BangChu;
+            //    }
+            //}
+            //ViewBag.SoTienNT_BangChu = soTienNT_BangChu;
+
+            //return View(HomeVM);
         }
 
         public FileResult DownloadExcel() // thao

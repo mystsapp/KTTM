@@ -114,9 +114,11 @@ namespace KTTM.Services
 
         IEnumerable<Thuchi> GetThuChiXe_By_SoPhieu(string soPhieu);
 
+        IEnumerable<Thuchi> GetThuChiXe_By_SoCT_KTTM(string soCTKTTM);
+
         Task UpdateAsync_ThuChiXe(Thuchi thuchi);
 
-        Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn, string mFieu);
+        Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -599,7 +601,8 @@ namespace KTTM.Services
                                         break;
 
                                     default:
-                                        if (baoCaoSo.Substring(5, 3).Contains("H"))
+                                        var soBaoCao_Hoan = baoCaoSo.Substring(5, 1);//.Contains("H")
+                                        if (soBaoCao_Hoan == "H")
                                             return null;///////////////////////////////////////////////////////////
                                         break;
                                 }
@@ -1596,9 +1599,11 @@ namespace KTTM.Services
             return _unitOfWork.xeRepository.Find(x => x.SoPhieu == soPhieu);
         }
 
-        public async Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string maCn, string mFieu)
+        public async Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT,
+            string username, string maCn)
         {
-            var thuchis = _unitOfWork.xeRepository.Find(x => x.SoPhieu == soPhieu && x.ChiNhanh == maCn);
+            var thuchis = _unitOfWork.xeRepository
+                .Find(x => x.SoPhieu == soPhieu && x.ChiNhanh.Trim() == maCn.Trim());
             Vandoanh vandoanh = new Vandoanh();
             try
             {
@@ -1613,7 +1618,8 @@ namespace KTTM.Services
             //DateTime ngayTao = DateTime.Now;
 
             // ghi log
-            string logFile = "-User kéo từ qlxe: " + username + " , số phiếu " + soPhieu + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            string logFile = "-User kéo từ qlxe: " + username + " , số phiếu " + soPhieu + " vào lúc: " +
+                System.DateTime.Now.ToString(); // user.Username
 
             List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
@@ -1638,9 +1644,9 @@ namespace KTTM.Services
                     //var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) && string.IsNullOrEmpty(x.Loaicard));
                     //var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
 
-                    string dienGiaiP = "CHI NL + CTP " + vandoanh.MaDoan ?? " từ ngày " +
-                        vandoanh.NgayDon.Value.ToString("dd/MM/yyyy") ?? "" + " đến ngày " +
-                        vandoanh.DenNgay.Value.ToString("dd/MM/yyyy") ?? "";
+                    string dienGiaiP = "CHI NL + CTP " + (vandoanh.MaDoan ?? "") + " từ ngày " +
+                        (vandoanh.NgayDon.Value.ToString("dd/MM/yyyy") ?? "") + " đến ngày " +
+                        (vandoanh.DenNgay.Value.ToString("dd/MM/yyyy") ?? "");
 
                     var chiphiXe = await _unitOfWork.xeRepository.GetChiPhiXeById(item.KhoanMuc); // item.KhoanMuc == macp
 
@@ -1649,35 +1655,34 @@ namespace KTTM.Services
                     //var ngayCTGoc = DateTime.Now;
 
                     KVCTPTC kVCTPTC = new KVCTPTC();
-                    kVCTPTC.STT = item.Stt.ToString(); // ben [ntbill] cashier
+                    kVCTPTC.STT = item.Stt.ToString().Trim();
+                    kVCTPTC.KhoangMuc = item.KhoanMuc.Trim(); // KhoanMuc ben [thuchi] (qlxe) / kVCTPTC.KhoangMuc: chi danh cho qlxe
 
                     // THONG TIN VE TAI CHINH
                     kVCTPTC.KVPTCId = kVPTCId;
                     kVCTPTC.SoCT = soCT;
                     kVCTPTC.MaCn = maCn;
                     kVCTPTC.DienGiaiP = dienGiaiP;
-                    kVCTPTC.SoTienNT = item.SoTien ?? 0;
+                    kVCTPTC.SoTienNT = item.SoTien.HasValue ? (decimal)item.SoTien.Value : 0;
                     kVCTPTC.LoaiTien = "VND";
                     kVCTPTC.TyGia = 1;
-                    kVCTPTC.SoTien = item.SoTien ?? 0;
+                    kVCTPTC.SoTien = item.SoTien.HasValue ? (decimal)item.SoTien.Value : 0;
 
                     // THONG TIN VE CONG NO DOAN // phieu chi
 
-                    var dienGiai = Get_DienGiai_By_TkNo_TkCo(loaiHDGocVM.TKNo, "1111000000").FirstOrDefault();
-                    kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
-                    kVCTPTC.TKNo = loaiHDGocVM.TKNo;
+                    //var dienGiai = Get_DienGiai_By_TkNo_TkCo(loaiHDGocVM.TKNo, "1111000000").FirstOrDefault();
+                    //kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
+                    kVCTPTC.TKNo = loaiHDGocVM.TKNo.Trim();
                     kVCTPTC.TKCo = "1111000000";
                     //kVCTPTC.MaKhNo = "";
                     //kVCTPTC.NoQuay = "";
 
-                    kVCTPTC.BoPhan = "XE";
                     var sgtcode = vandoanh.MaDoan;
-                    kVCTPTC.Sgtcode = string.IsNullOrEmpty(sgtcode) ? "" : vandoanh.MaDoan;// item1.Sgtcode;
-                                                                                           //kVCTPTC.CardNumber = item1.Cardnumber;
-                                                                                           //kVCTPTC.SalesSlip = "";// item1.Saleslip;
+                    kVCTPTC.Sgtcode = string.IsNullOrEmpty(sgtcode) ? "" : vandoanh.MaDoan.Trim();// item1.Sgtcode;
+                                                                                                  //kVCTPTC.CardNumber = item1.Cardnumber;
+                                                                                                  //kVCTPTC.SalesSlip = "";// item1.Saleslip;
 
-                    // THONG TIN VE THUE
-                    kVCTPTC.LoaiHDGoc = GetLoaiCT_By_MaCp(chiphiXe.Macp).FirstOrDefault().LoaiCTU;// item.Loaihd; // ??;
+                    //// THONG TIN VE THUE
                     //kVCTPTC.SoCTGoc = soCTGoc;
                     //kVCTPTC.NgayCTGoc = ngayBill;
 
@@ -1691,6 +1696,12 @@ namespace KTTM.Services
                     //kVCTPTC.TenKH = tenKh;
                     //kVCTPTC.DiaChi = diaChi;
 
+                    kVCTPTC.HTTC = loaiHDGocVM.HTTC.Trim();
+                    kVCTPTC.DienGiai = loaiHDGocVM.DienGiai.Trim();
+                    kVCTPTC.LoaiHDGoc = loaiHDGocVM.LoaiCTU.Trim();
+                    kVCTPTC.BoPhan = loaiHDGocVM.BoPhan.Trim();// "XE";
+                    kVCTPTC.SoXe = item.SoXe;
+
                     kVCTPTC.NguoiTao = username;
                     kVCTPTC.NgayTao = DateTime.Now;
                     kVCTPTC.LogFile = logFile;
@@ -1698,6 +1709,8 @@ namespace KTTM.Services
                     kVCTPTCs.Add(kVCTPTC);
                 }
             }
+            else return null;
+
             return kVCTPTCs;
         }
 
@@ -1995,6 +2008,11 @@ namespace KTTM.Services
             }
 
             return viewModels;
+        }
+
+        public IEnumerable<Thuchi> GetThuChiXe_By_SoCT_KTTM(string soCTKTTM)
+        {
+            return _unitOfWork.xeRepository.Find(x => x.SoCtKttm == soCTKTTM);
         }
     }
 }
