@@ -185,7 +185,7 @@
                                     <td colspan="4">
                                         <b>
                                             <i class="fas fa-pencil-alt"></i>
-                                            @{
+                                           @* @{
                                                 string tongCong = "";
                                                 foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
                                                 {
@@ -204,7 +204,8 @@
 
                                                 }
                                             }
-                                            @tongCong
+                                            @tongCong*@
+                                            @ViewBag.tongCong
                                         </b>
                                     </td>
                                 </tr>
@@ -212,15 +213,15 @@
                                     <td><i>Bằng chữ :</i></td>
                                     <td colspan="4">
                                         <i>
-                                            @if (Model.KVPTC.NgoaiTe == "VN")
+                                            @*@if (Model.KVPTC.NgoaiTe == "VN")
                                             {
                                                 @ViewBag.bangChu
                                             }
                                             else
                                             {
                                                 @ViewBag.SoTienNT_BangChu
-                                            }
-
+                                            }*@
+                                            @ViewBag.bangChu
                                         </i>
                                     </td>
                                 </tr>

@@ -224,6 +224,7 @@ var indexController = {
         }
         else {
             $('#attachExcel').attr('disabled', true);
+            $('.btnQlXe').attr('disabled', true);
         }
 
         // page

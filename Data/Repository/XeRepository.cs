@@ -13,6 +13,8 @@ namespace Data.Repository
     {
         IEnumerable<Thuchi> GetAll();
 
+        IEnumerable<ChiphiXe> GetAll_ChiPhiXe();
+
         Task<Thuchi> GetThuById(int id);
 
         Task<Vandoanh> GetVanDoanhById(long id);
@@ -49,6 +51,11 @@ namespace Data.Repository
         public IEnumerable<Thuchi> GetAll()
         {
             return _context.Thuchis;
+        }
+
+        public IEnumerable<ChiphiXe> GetAll_ChiPhiXe()
+        {
+            return _context.ChiphiXes.Where(x => !x.Loai.Value);
         }
 
         public async Task<ChiphiXe> GetChiPhiXeById(string id)

@@ -306,7 +306,7 @@ namespace KTTM.Controllers
 
             if (kVCTPTCs == null) //545 ben kvctptcService
             {
-                SetAlert("Báo cáo số không được phai khác H", "warning");
+                SetAlert("Phiếu này không có bất cứ dòng nào!", "warning");
                 return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
             }
 
@@ -369,7 +369,7 @@ namespace KTTM.Controllers
 
             if (kVCTPTCs == null) //545 ben kvctptcService
             {
-                SetAlert("Báo cáo số không được phai khác H", "warning");
+                SetAlert("Báo cáo số không có bất cứ dòng nào!", "warning");
                 return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
             }
 
