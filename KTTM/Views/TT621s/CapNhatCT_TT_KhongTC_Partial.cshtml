@@ -70,7 +70,7 @@
                                     @*<select asp-for="TT621.LoaiTien" class="form-control form-control-sm"
                                                 asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe" >
                                         </select>*@
-                                    <input asp-for="TT621.LoaiTien" class="form-control form-control-sm" readonly />
+                                    <input asp-for="TT621.LoaiTien" class="form-control form-control-sm" readonly /> <!--only vnd-->
                                     <span asp-validation-for="TT621.LoaiTien" class="text-danger"></span>
                                 </div>
 

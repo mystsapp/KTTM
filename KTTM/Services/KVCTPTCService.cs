@@ -77,6 +77,8 @@ namespace KTTM.Services
 
         IEnumerable<Dgiai> GetAll_DienGiai();
 
+        IEnumerable<NgoaiTe> GetAll_NgoaiTes_DanhMucKT();
+
         KVCTPTC GetBySoCTAsNoTracking(long id);
 
         Task UpdateAsync(KVCTPTC kVCTPCT);
@@ -2013,6 +2015,11 @@ namespace KTTM.Services
         public IEnumerable<Thuchi> GetThuChiXe_By_SoCT_KTTM(string soCTKTTM)
         {
             return _unitOfWork.xeRepository.Find(x => x.SoCtKttm == soCTKTTM);
+        }
+
+        public IEnumerable<NgoaiTe> GetAll_NgoaiTes_DanhMucKT()
+        {
+            return _unitOfWork.ngoaiTe_DanhMucKT_Repository.GetAll();
         }
     }
 }

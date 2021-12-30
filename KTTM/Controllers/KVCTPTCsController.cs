@@ -68,12 +68,16 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
             KVCTPCTVM.KVCTPTC.TyGia = 1;
-            KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
 
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+            if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
+            {
+                KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+            }
 
             if (KVCTPCTVM.KVPTC.MFieu == "C")
             {
@@ -127,7 +131,9 @@ namespace KTTM.Controllers
                 KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
                 KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
                 KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
                 Get_TkNo_TkCo();
 
                 return View(KVCTPCTVM);
@@ -138,7 +144,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
-            KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
+            KVCTPCTVM.KVCTPTC.DienGiaiP = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.DienGiaiP) ? "" : KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
@@ -187,11 +193,17 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
             KVCTPCTVM.KVCTPTC.TyGia = 1;
             KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+            if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
+            {
+                KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+            }
 
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
@@ -230,7 +242,9 @@ namespace KTTM.Controllers
                 KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
                 KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
                 KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
                 Get_TkNo_TkCo();
 
                 return View(KVCTPCTVM);
@@ -507,8 +521,14 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
+            if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
+            {
+                KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+            }
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
@@ -805,7 +825,10 @@ namespace KTTM.Controllers
             KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
             KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
             KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
             Get_TkNo_TkCo();
             // tentk
             KVCTPCTVM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKNo).TenTk;

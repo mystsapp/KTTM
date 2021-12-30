@@ -67,15 +67,29 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.LoaiTien" class="control-label "></label>
-                            <select asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm "
+                            @if (Model.KVPTC.NgoaiTe == "VN")
+                            {
+                                <input asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm text-uppercase " id="txtLoaiTien" readonly />
+                            }
+                            else
+                            {
+                                <select asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
-                            </select>
+                                </select>
+                            }
                             <span asp-validation-for="KVCTPTC.LoaiTien" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.TyGia" class="control-label "></label>
-                            <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" asp-format="{0:0,0}" id="txtTyGia" />
+                            @if (Model.KVPTC.NgoaiTe == "VN")
+                            {
+                                <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0}" readonly />
+                            }
+                            else
+                            {
+                                <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0}" />
+                            }
                             <span asp-validation-for="KVCTPTC.TyGia" class="text-danger"></span>
                         </div>
 

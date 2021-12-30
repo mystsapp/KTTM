@@ -225,7 +225,10 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             TT621VM.DmHttcs = viewDmHttcs;
@@ -473,6 +476,10 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> ThemMoiCT_TT_KhongTC_Partial(long tamUngId) // tamungid == kvctpctid // 1 <-> 1
         {
+            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
             TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
             TT621VM.KVCTPTC = await _kVCTPTCService.GetById(tamUngId);
             TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
@@ -488,7 +495,6 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             TT621VM.DmHttcs = viewDmHttcs;
@@ -614,10 +620,19 @@ namespace KTTM.Controllers
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.TT621.MaKhCo = tamUng.MaKhNo; // makh cua nguoi tamung
 
+            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuTC);
             TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+            if (TT621VM.KVPTC.NgoaiTe == "VN")
+            {
+                TT621VM.TT621.LoaiTien = "VND";
+            }
+
             var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             if (TT621VM.KVCTPTC.KVPTC.MFieu == "C")
             {
@@ -646,7 +661,6 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             TT621VM.DmHttcs = viewDmHttcs;
@@ -775,10 +789,19 @@ namespace KTTM.Controllers
             var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.TT621.MaKhCo = tamUng.MaKhNo; // makh cua nguoi tamung
 
+            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
             // lay sotien can de ket chuyen
             TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
             TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuTC);
             TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+            if (TT621VM.KVPTC.NgoaiTe == "VN")
+            {
+                TT621VM.TT621.LoaiTien = "VND";
+            }
+
             var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             if (TT621VM.KVCTPTC.KVPTC.MFieu == "C")
             {
@@ -807,7 +830,6 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             TT621VM.DmHttcs = viewDmHttcs;
@@ -949,8 +971,16 @@ namespace KTTM.Controllers
             if (tT621 == null)
                 return NotFound();
 
+            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
             TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuTC);
             TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+            if (TT621VM.KVPTC.NgoaiTe == "VN")
+            {
+                TT621VM.TT621.LoaiTien = "VND";
+            }
 
             TT621VM.TT621 = tT621;
 
@@ -964,7 +994,6 @@ namespace KTTM.Controllers
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             TT621VM.DmHttcs = viewDmHttcs;

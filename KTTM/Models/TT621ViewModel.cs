@@ -25,7 +25,7 @@ namespace KTTM.Models
         public string Page { get; set; }
 
         public IEnumerable<ViewDmHttc> DmHttcs { get; set; }
-        public IEnumerable<Ngoaite> Ngoaites { get; set; }
+        public IEnumerable<NgoaiTe> Ngoaites { get; set; }
         public IEnumerable<DmTk> DmTks_TkNo { get; set; }
         public IEnumerable<DmTk> DmTks_TkCo { get; set; }
         public IEnumerable<ViewQuay> Quays { get; set; }

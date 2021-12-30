@@ -64,15 +64,30 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.LoaiTien" class="control-label "></label>
-                            <select asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm "
+                            @if (Model.KVPTC.NgoaiTe == "VN")
+                            {
+                                <input asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm text-uppercase " id="txtLoaiTien" readonly />
+                            }
+                            else
+                            {
+                                <select asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
-                            </select>
+                                </select>
+                            }
                             <span asp-validation-for="KVCTPTC.LoaiTien" class="text-danger"></span>
+
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.TyGia" class="control-label "></label>
-                            <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0}" />
+                            @if (Model.KVPTC.NgoaiTe == "VN")
+                            {
+                                <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0}" readonly />
+                            }
+                            else
+                            {
+                                <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0}" />
+                            }
                             <span asp-validation-for="KVCTPTC.TyGia" class="text-danger"></span>
                         </div>
 
@@ -139,7 +154,7 @@
                                 <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
                                 <div class="input-group">
                                     <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo" readonly> <!--readonly: Thao-->
-                                    <span class="input-group-btn">
+                                <span class="input-group-btn">
                                         <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch disabled" id="btnKhSearch_No" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                     </span>
                                 </div>
@@ -215,7 +230,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
                             </div>
@@ -226,7 +241,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
-                                        asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                             </div>
@@ -460,26 +475,26 @@
 
 @section Scripts{
 
-    <script src="~/js/Admin/Home/indexController.js"></script>
-    <script src="~/js/Admin/serviceController.js"></script>
+<script src="~/js/Admin/Home/indexController.js"></script>
+<script src="~/js/Admin/serviceController.js"></script>
 
-    <!-- select2 and multi select2 (bootstrap4)-->
-    <script>
-        //$('#txtMaKH').select2()
-        $('.select2').select2()
-        //$('#ddlMaKhCo1').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-        //$('.tuyenTQ').select2({
-        //    theme: 'bootstrap4'
-        //})
-    </script>
+<!-- select2 and multi select2 (bootstrap4)-->
+<script>
+    //$('#txtMaKH').select2()
+    $('.select2').select2()
+    //$('#ddlMaKhCo1').select2()
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+        theme: 'bootstrap4'
+    })
+    //$('.tuyenTQ').select2({
+    //    theme: 'bootstrap4'
+    //})
+</script>
 
-    <!-- Validation -->
+<!-- Validation -->
 
-    <script>
+<script>
     /*$(".maskInput").mask("99/99/9999");*/
 
     // $(document).ready(function (){})
@@ -562,17 +577,17 @@
     })
 
     @*$('#ddlNgoaiTe').change(function () {
-                loaiTien = $(this).val();
-                loaiPhieu = '@Model.KVPCT.MFieu';
-                serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
+                        loaiTien = $(this).val();
+                        loaiPhieu = '@Model.KVPCT.MFieu';
+                        serviceController.DdlLoaiTien(loaiTien, loaiPhieu);
 
-                if (loaiPhieu == 'T') {
-                    serviceController.DdlTkNo('1111000000');
-                }
-                if (loaiPhieu == 'C') {
-                    serviceController.DdlTkCo('1111000000');
-                }
-            })*@
+                        if (loaiPhieu == 'T') {
+                            serviceController.DdlTkNo('1111000000');
+                        }
+                        if (loaiPhieu == 'C') {
+                            serviceController.DdlTkCo('1111000000');
+                        }
+                    })*@
 
     $('#frm_KVCTPCT_Create').validate({
         //rules: {
@@ -701,6 +716,6 @@
             $('#khachHang_Modal').draggable();
         });
     }
-    </script>
+</script>
 
 }
