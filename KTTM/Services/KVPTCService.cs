@@ -50,6 +50,8 @@ namespace KTTM.Services
         List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNo_TkCos(IEnumerable<KVCTPTC> kVCTPTCs);
 
         Task<KVPTC> CreateAsync_ReturnEntity(KVPTC kVPTC);
+
+        List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_LoaiTiens(IEnumerable<KVCTPTC> kVCTPTCs);
     }
 
     public class KVPTCService : IKVPTCService
@@ -431,6 +433,25 @@ namespace KTTM.Services
                            {
                                TkNo = g.Key.TKNo,
                                TkCo = g.Key.TKCo,
+                               LoaiTien = g.Key.LoaiTien,
+                               KVCTPTCs = g.ToList()
+                           }).ToList();
+
+            foreach (var item in result1)
+            {
+                item.SoTien = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+                item.SoTienNT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
+            }
+
+            return result1;
+        }
+
+        public List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_LoaiTiens(IEnumerable<KVCTPTC> kVCTPTCs)
+        {
+            var result1 = (from p in kVCTPTCs
+                           group p by new { p.LoaiTien } into g
+                           select new InPhieuView_Groupby_TkNo_TkCo()
+                           {
                                LoaiTien = g.Key.LoaiTien,
                                KVCTPTCs = g.ToList()
                            }).ToList();

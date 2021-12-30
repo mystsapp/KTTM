@@ -1603,7 +1603,7 @@ namespace KTTM.Services
             string username, string maCn)
         {
             var thuchis = _unitOfWork.xeRepository
-                .Find(x => x.SoPhieu == soPhieu && x.ChiNhanh.Trim() == maCn.Trim());
+                .Find(x => x.SoPhieu == soPhieu.ToUpper() && x.ChiNhanh.Trim() == maCn.Trim());
             Vandoanh vandoanh = new Vandoanh();
             try
             {
