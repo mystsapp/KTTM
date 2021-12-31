@@ -8,6 +8,23 @@ namespace Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ErrorLog",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Message = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    InnerMessage = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    MaCn = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
+                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LogFile = table.Column<string>(type: "nvarchar(MAX)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErrorLog", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "KVPTCs",
                 columns: table => new
                 {
@@ -76,14 +93,15 @@ namespace Data.Migrations
                     TyGia = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     SoTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     MaKh = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
-                    KhoangMuc = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: true),
+                    KhoangMuc = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
                     HTTT = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true),
                     CardNumber = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
+                    LoaiThe = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     SalesSlip = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    SoXe = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: true),
+                    SoXe = table.Column<string>(type: "varchar(18)", maxLength: 18, nullable: true),
                     MsThue = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: true),
                     LoaiHDGoc = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
-                    SoCTGoc = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
+                    SoCTGoc = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     NgayCTGoc = table.Column<DateTime>(type: "datetime", nullable: true),
                     VAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     DSKhongVAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
@@ -109,7 +127,10 @@ namespace Data.Migrations
                     LinkHDDT = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true),
                     MaTraCuu = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
                     TkTruyCap = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
-                    Password = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                    Password = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    SoTU_DaTT = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    SoTT_DaTao = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    SoVe = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,7 +209,7 @@ namespace Data.Migrations
                     MsThue = table.Column<string>(type: "varchar(16)", maxLength: 16, nullable: true),
                     NgayCTGoc = table.Column<DateTime>(type: "datetime", nullable: true),
                     LoaiHDGoc = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: true),
-                    SoCTGoc = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: true),
+                    SoCTGoc = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     KyHieuHD = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
                     VAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     DSKhongVAT = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
@@ -209,7 +230,12 @@ namespace Data.Migrations
                     NguoiTao = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
                     NgayTao = table.Column<DateTime>(type: "datetime", nullable: true),
                     NguoiSua = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
-                    NgaySua = table.Column<DateTime>(type: "datetime", nullable: true)
+                    NgaySua = table.Column<DateTime>(type: "datetime", nullable: true),
+                    LinkHDDT = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true),
+                    MaTraCuu = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    TkTruyCap = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    Password = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    SoVe = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -235,6 +261,9 @@ namespace Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ErrorLog");
+
             migrationBuilder.DropTable(
                 name: "TonQuies");
 

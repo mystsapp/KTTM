@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    [Migration("20211104104433_fixSoCTGoc")]
-    partial class fixSoCTGoc
+    [Migration("20211231032200_initialDb")]
+    partial class initialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,36 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Data.Models_KTTM.ErrorLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("InnerMessage")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("LogFile")
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("MaCn")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)");
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ErrorLog");
+                });
 
             modelBuilder.Entity("Data.Models_KTTM.KVCTPTC", b =>
                 {
@@ -77,8 +107,8 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("KhoangMuc")
-                        .HasMaxLength(2)
-                        .HasColumnType("varchar(2)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<string>("KyHieu")
                         .HasMaxLength(10)
@@ -91,6 +121,10 @@ namespace Data.Migrations
                     b.Property<string>("LoaiHDGoc")
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
+
+                    b.Property<string>("LoaiThe")
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("LoaiTien")
                         .HasMaxLength(3)
@@ -176,15 +210,27 @@ namespace Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
+                    b.Property<string>("SoTT_DaTao")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("SoTU_DaTT")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
                     b.Property<decimal?>("SoTien")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("SoVe")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<string>("SoXe")
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)");
+                        .HasMaxLength(18)
+                        .HasColumnType("varchar(18)");
 
                     b.Property<string>("TKCo")
                         .IsRequired()
@@ -349,6 +395,10 @@ namespace Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("LinkHDDT")
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
                     b.Property<string>("LoaiHDGoc")
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
@@ -371,6 +421,10 @@ namespace Data.Migrations
                     b.Property<string>("MaKhNo")
                         .HasMaxLength(12)
                         .HasColumnType("varchar(12)");
+
+                    b.Property<string>("MaTraCuu")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("MatHang")
                         .HasMaxLength(60)
@@ -408,6 +462,10 @@ namespace Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("varchar(3)");
 
+                    b.Property<string>("Password")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<string>("PhieuTC")
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
@@ -434,6 +492,10 @@ namespace Data.Migrations
                     b.Property<decimal?>("SoTienNT")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("SoVe")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<string>("SoXe")
                         .HasMaxLength(8)
                         .HasColumnType("varchar(8)");
@@ -454,6 +516,10 @@ namespace Data.Migrations
                     b.Property<string>("TenKH")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TkTruyCap")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<decimal?>("TyGia")
                         .HasColumnType("decimal(18,2)");

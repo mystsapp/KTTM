@@ -1702,7 +1702,7 @@ namespace KTTM.Services
                     kVCTPTC.DienGiai = loaiHDGocVM.DienGiai.Trim();
                     kVCTPTC.LoaiHDGoc = loaiHDGocVM.LoaiCTU.Trim();
                     kVCTPTC.BoPhan = loaiHDGocVM.BoPhan.Trim();// "XE";
-                    kVCTPTC.SoXe = item.SoXe;
+                    kVCTPTC.SoXe = vandoanh.SoXe;// item.SoXe;
 
                     kVCTPTC.NguoiTao = username;
                     kVCTPTC.NgayTao = DateTime.Now;
