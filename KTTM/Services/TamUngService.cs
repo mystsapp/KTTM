@@ -78,7 +78,7 @@ namespace KTTM.Services
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
-                    SoCT = item.SoCT,
+                    SoCT = item.KVCTPTC.SoCT,
                     DienGiai = item.DienGiai,
                     SoTienNT = item.SoTienNT,
                     LT = item.LoaiTien,
@@ -112,7 +112,7 @@ namespace KTTM.Services
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
-                    SoCT = item.SoCT,
+                    SoCT = item.KVCTPTC.SoCT,
                     DienGiai = item.DienGiai,
                     SoTienNT = item.SoTienNT,
                     LT = item.LoaiTien,

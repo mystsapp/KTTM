@@ -58,6 +58,14 @@ namespace KTTM.Controllers
                     message = "Chi tiết này không có thật!"
                 });
             }
+            if (string.IsNullOrEmpty(kVCTPCT.MaKhNo))
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Chi tiết này không có MaKhNo!"
+                });
+            }
 
             var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVCTPCT.KVPTCId);
 
