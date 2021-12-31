@@ -140,6 +140,8 @@ namespace KTTM.Controllers
             }
 
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
+            KVCTPCTVM.KVCTPTC.SoTienNT = KVCTPCTVM.KVCTPTC.SoTienNT == null ? 0 : KVCTPCTVM.KVCTPTC.SoTienNT.Value;
+            KVCTPCTVM.KVCTPTC.SoTien = KVCTPCTVM.KVCTPTC.SoTien == null ? 0 : KVCTPCTVM.KVCTPTC.SoTien.Value;
             KVCTPCTVM.KVCTPTC.VAT = KVCTPCTVM.KVCTPTC.VAT ?? 0;
             KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
