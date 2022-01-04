@@ -5,16 +5,12 @@ using System.Collections.Generic;
 
 namespace Data.Models_KTTM_1
 {
-    public partial class TonQuy
+    public partial class Tonquy
     {
-        public long Id { get; set; }
-        public DateTime NgayCt { get; set; }
-        public string LoaiTien { get; set; }
-        public decimal SoTien { get; set; }
-        public decimal SoTienNt { get; set; }
-        public decimal TyGia { get; set; }
-        public string LogFile { get; set; }
-        public string NguoiTao { get; set; }
-        public DateTime? NgayTao { get; set; }
+        public DateTime? Ngayct { get; set; }
+        public string Loaitien { get; set; }
+        public decimal? Sotien { get; set; }
+        public decimal? Sotiennt { get; set; }
+        public decimal? Tygia { get; set; }
     }
 }

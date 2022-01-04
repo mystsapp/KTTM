@@ -21,7 +21,7 @@ namespace Data.Models_KTTM
         public virtual TamUng TamUng { get; set; }
 
         [DisplayName("Mã KH nợ")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [MaxLength(25, ErrorMessage = "Chiều dài tối đa 25 ký tự"), Column(TypeName = "varchar(25)")]
         public string MaKhNo { get; set; }
 
         [DisplayName("Số phiếu")]
@@ -71,7 +71,7 @@ namespace Data.Models_KTTM
         public string TKCo { get; set; }
 
         [DisplayName("Mã KH có")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [MaxLength(25, ErrorMessage = "Chiều dài tối đa 25 ký tự"), Column(TypeName = "varchar(25)")]
         public string MaKhCo { get; set; }
 
         [MaxLength(17, ErrorMessage = "Chiều dài tối đa 17 ký tự"), MinLength(17, ErrorMessage = "Chiều dài tối thiểu 17 ký tự"), Column(TypeName = "varchar(17)")]
