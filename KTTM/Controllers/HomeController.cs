@@ -1,24 +1,20 @@
-﻿using Data.Models_DanhMucKT;
-using Data.Models_KTTM;
+﻿using Data.Models_KTTM;
+using Data.Models_KTTM_1;
 using Data.Models_QLTaiKhoan;
-using Data.Repository;
-using KTTM.Services;
 using Data.Utilities;
 using KTTM.Models;
+using KTTM.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using NumToWords;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using NumToWords;
-using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using Microsoft.AspNetCore.Http;
-using OfficeOpenXml;
-using Data.Models_KTTM_1;
+using System.Linq;
+using System.Threading.Tasks;
 
 //using Data.Models_KTTM_1;
 
