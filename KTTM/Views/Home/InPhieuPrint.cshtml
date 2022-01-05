@@ -280,7 +280,14 @@
                                     Kế toán trưởng
                                 </div>
                                 <div class="col-3 text-center">
-                                    Người nhận tiền
+                                    @if(Model.KVPTC.MFieu == "C")
+                                    {
+                                        <span>Người nhận tiền</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Người nộp tiền</span>
+                                    }
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-2 text-center">
@@ -533,7 +540,14 @@
                                     Kế toán trưởng
                                 </div>
                                 <div class="col-3 text-center">
-                                    Người nhận tiền
+                                    @if(Model.KVPTC.MFieu == "C")
+                                    {
+                                        <span>Người nhận tiền</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Người nộp tiền</span>
+                                    }
                                 </div>
                                 <!-- /.col -->
                                 <div class="col-2 text-center">

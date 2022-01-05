@@ -74,12 +74,12 @@
                                         switch (Model.KVPTC.NgoaiTe)
                                         {
                                             case "VN":
-                                                <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
+                                                                    <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
                                                 // thu VND
                                                 break;
 
                                             default:
-                                                <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
+                                                                    <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
                                                 // thu NgoaiTe
                                                 break;
                                         }
@@ -89,12 +89,12 @@
                                         switch (Model.KVPTC.NgoaiTe)
                                         {
                                             case "VN":
-                                                <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                                                                    <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
                                                 // chi VND
                                                 break;
 
                                             default:
-                                                <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
+                                                                    <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
                                                 // chi NgoaiTe
                                                 break;
                                         }
@@ -138,14 +138,14 @@
                                 <!--thao: max 4 nhưng tongcong full-->
                                 @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4))
                                 {
-                                    <tr>
-                                        <td></td>
+                                        <tr>
+                                            <td></td>
 
-                                        <td>@item.TkNo</td>
-                                        <td>@item.TkCo</td>
-                                        <td>@item.SoTien.ToString("N0") </td>
-                                        <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
-                                    </tr>
+                                            <td>@item.TkNo</td>
+                                            <td>@item.TkCo</td>
+                                            <td>@item.SoTien.ToString("N0") </td>
+                                            <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
+                                        </tr>
                                 }
 
                                 <tr>
@@ -185,26 +185,26 @@
                                     <td colspan="4">
                                         <b>
                                             <i class="fas fa-pencil-alt"></i>
-                                           @* @{
+                                            @* @{
                                                 string tongCong = "";
                                                 foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
                                                 {
-                                                    int lastItem = Model.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
-                                                    if (lastItem != Model.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
-                                                    {
-                                                        // this is the last item
-                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
-                                                    }
-                                                    else
-                                                    {
-                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+                                                int lastItem = Model.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+                                                if (lastItem != Model.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                                                {
+                                                // this is the last item
+                                                tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                                                }
+                                                else
+                                                {
+                                                tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
 
-                                                    }
+                                                }
 
 
                                                 }
-                                            }
-                                            @tongCong*@
+                                                }
+                                                @tongCong*@
                                             @ViewBag.tongCong
                                         </b>
                                     </td>
@@ -214,13 +214,13 @@
                                     <td colspan="4">
                                         <i>
                                             @*@if (Model.KVPTC.NgoaiTe == "VN")
-                                            {
+                                                {
                                                 @ViewBag.bangChu
-                                            }
-                                            else
-                                            {
+                                                }
+                                                else
+                                                {
                                                 @ViewBag.SoTienNT_BangChu
-                                            }*@
+                                                }*@
                                             @ViewBag.bangChu
                                         </i>
                                     </td>
@@ -245,7 +245,14 @@
                             Kế toán trưởng
                         </div>
                         <div class="col-3 text-center">
-                            Người nhận tiền
+                            @if (Model.KVPTC.MFieu == "C")
+                            {
+                                            <span>Người nhận tiền</span>
+                            }
+                            else
+                            {
+                                            <span>Người nộp tiền</span>
+                            }
                         </div>
                         <!-- /.col -->
                         <div class="col-2 text-center">

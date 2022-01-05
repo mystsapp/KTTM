@@ -1388,7 +1388,7 @@ namespace KTTM.Controllers
             List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
             if (tamUngs.Count() > 0)
             {
-                tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs).ToList();
+                tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
             }
 
             ExcelPackage ExcelApp = new ExcelPackage();
@@ -1620,7 +1620,7 @@ namespace KTTM.Controllers
                 List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
                 if (tamUngs.Count() > 0)
                 {
-                    tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs).ToList();
+                    tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
 
                     ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add(phongBan.TenBoPhan.Trim());
                     // Định dạng chiều dài cho cột
@@ -1805,7 +1805,7 @@ namespace KTTM.Controllers
             List<TamUngModel_GroupBy_Name_Phong> tamUngModel_GroupBy_Name_Phongs = new List<TamUngModel_GroupBy_Name_Phong>();
             if (tamUngs.Count() > 0)
             {
-                var tamUngModel_GroupBy_Name_Phongs1 = await _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs); // groupby name (makh)
+                var tamUngModel_GroupBy_Name_Phongs1 = await _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs.OrderBy(x => x.NgayCT), user.Macn); // groupby name (makh)
                 tamUngModel_GroupBy_Name_Phongs = tamUngModel_GroupBy_Name_Phongs1.ToList();
             }
 

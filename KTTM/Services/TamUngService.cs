@@ -32,9 +32,9 @@ namespace KTTM.Services
 
         IEnumerable<TamUng> FindTamUngs_IncludeTwice_By_Phong(string tenBoPhan, string maCn);
 
-        IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs);
+        IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs, string maCn);
 
-        Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs);
+        Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs, string maCn);
 
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuTT(string soCT, string maCn);
 
@@ -71,16 +71,16 @@ namespace KTTM.Services
             return tamUngs;
         }
 
-        public IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs)
+        public IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs, string maCn)
         {
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach (var item in tamUngs)
             {
-                var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo).FirstOrDefault();
+                var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
-                    SoCT = item.SoCT,
+                    SoCT = item.KVCTPTC.SoCT,// item.SoCT,
                     DienGiai = item.DienGiai,
                     SoTienNT = item.SoTienNT,
                     LT = item.LoaiTien,
@@ -106,16 +106,16 @@ namespace KTTM.Services
             return result1;
         }
 
-        public async Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs)
+        public async Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs, string maCn)
         {
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach (var item in tamUngs)
             {
-                var supplier = await _unitOfWork.supplier_Hdvatob_Repository.GetSupplierById(item.MaKhNo);
+                var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
-                    SoCT = item.SoCT,
+                    SoCT = item.KVCTPTC.SoCT,// item.SoCT,
                     DienGiai = item.DienGiai,
                     SoTienNT = item.SoTienNT,
                     LT = item.LoaiTien,
