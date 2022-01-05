@@ -52,6 +52,8 @@ namespace KTTM.Services
         Task<KVPTC> CreateAsync_ReturnEntity(KVPTC kVPTC);
 
         List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_LoaiTiens(IEnumerable<KVCTPTC> kVCTPTCs);
+
+        List<KVPTC> FindByMaCN(string maCn);
     }
 
     public class KVPTCService : IKVPTCService
@@ -468,6 +470,11 @@ namespace KTTM.Services
         public async Task<KVPTC> CreateAsync_ReturnEntity(KVPTC kVPTC)
         {
             return await _unitOfWork.kVPCTRepository.CreateAsync(kVPTC);
+        }
+
+        public List<KVPTC> FindByMaCN(string maCn)
+        {
+            return _unitOfWork.kVPCTRepository.Find(x => x.MaCn == maCn).ToList();
         }
     }
 }

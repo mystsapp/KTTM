@@ -121,6 +121,8 @@ namespace KTTM.Services
         Task UpdateAsync_ThuChiXe(Thuchi thuchi);
 
         Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn);
+
+        List<KVCTPTC> FindByMaCN(string maCn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -2020,6 +2022,11 @@ namespace KTTM.Services
         public IEnumerable<NgoaiTe> GetAll_NgoaiTes_DanhMucKT()
         {
             return _unitOfWork.ngoaiTe_DanhMucKT_Repository.GetAll();
+        }
+
+        public List<KVCTPTC> FindByMaCN(string maCn)
+        {
+            return _unitOfWork.kVCTPCTRepository.Find(x => x.MaCn == maCn).ToList();
         }
     }
 }

@@ -34,9 +34,11 @@ namespace KTTM.Services
 
         IEnumerable<TamUngModel_GroupBy_Name> TamUngModels_GroupBy_Name(IEnumerable<TamUng> tamUngs);
 
-        IEnumerable<TamUngModel_GroupBy_Name_Phong> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs);
+        Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs);
 
         Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuTT(string soCT, string maCn);
+
+        List<TamUng> FindByMaCn(string maCn);
     }
 
     public class TamUngService : ITamUngService
@@ -104,11 +106,12 @@ namespace KTTM.Services
             return result1;
         }
 
-        public IEnumerable<TamUngModel_GroupBy_Name_Phong> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs)
+        public async Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs)
         {
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach (var item in tamUngs)
             {
+                var supplier = await _unitOfWork.supplier_Hdvatob_Repository.GetSupplierById(item.MaKhNo);
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
@@ -118,7 +121,8 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
+                    Name = item.MaKhNo + " " + supplier.Name ?? "",
+                    //Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });
@@ -255,6 +259,11 @@ namespace KTTM.Services
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_PhieuTT(string soCT, string maCn)
         {
             return await _unitOfWork.tamUngRepository.FindAsync(x => x.PhieuTT == soCT && x.MaCn == maCn);
+        }
+
+        public List<TamUng> FindByMaCn(string maCn)
+        {
+            return _unitOfWork.tamUngRepository.Find(x => x.MaCn == maCn).ToList();
         }
     }
 }

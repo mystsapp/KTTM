@@ -63,6 +63,8 @@ namespace KTTM.Controllers
                 ViewBag.id = "";
             }
 
+            #region chuyen dulieu
+
             //List<Data.Models_KTTM_1.Tonquy> tonquiesAnhSon = _kTTM_1Context.Tonquies.ToList();
             //List<Data.Models_KTTM.TonQuy> tonQuies = new List<Data.Models_KTTM.TonQuy>();
             //foreach (var item in tonquiesAnhSon)
@@ -75,13 +77,14 @@ namespace KTTM.Controllers
             //        SoTien = item.Sotien.Value,
             //        SoTienNT = item.Sotiennt.Value,
             //        TyGia = item.Tygia.Value,
-            //        MaCn = "STS"
+            //        MaCn = "STN"
             //    });
             //}
             //var abc = "";
             //await _tonQuyService.CreateRangeAsync(tonQuies);
 
-            //List<Data.Models_KTTM.TamUng> tamUngs = _tamUngService.GetAll().ToList();
+            //List<Data.Models_KTTM.TamUng> tamUngs = _tamUngService.FindByMaCn("STN");
+            ////List<Data.Models_KTTM.TamUng> tamUngs = _tamUngService.GetAll().ToList();
             //List<Tt621> tt621sAnhSon = _kTTM_1Context.Tt621s.ToList();
             //List<TT621> tT621s = new List<TT621>();
 
@@ -133,18 +136,18 @@ namespace KTTM.Controllers
             //                TyGia = item.Tygia,
             //                VAT = item.Vat,
             //                MaCn = tamUng.MaCn
-
             //            });
             //        }
             //    }
-
             //}
             //var abc = "";
             //await _tT621Service.CreateRangeAsync(tT621s);
 
             //var list = _kTTM_1Context.Tamungs.ToList();
-            //var listKVCTPTC = _kVCTPTCService.GetAll().ToList();
-            //var listKVPTC = _kVPTCService.GetAll().ToList();
+            //List<KVCTPTC> listKVCTPTC = _kVCTPTCService.FindByMaCN("STN");
+            ////var listKVCTPTC = _kVCTPTCService.GetAll().ToList();
+            //var listKVPTC = _kVPTCService.FindByMaCN("STN");
+            ////var listKVPTC = _kVPTCService.GetAll().ToList();
 
             //List<Data.Models_KTTM.TamUng> tamUngs = new List<Data.Models_KTTM.TamUng>();
             //foreach (var tamUng in list)
@@ -176,17 +179,15 @@ namespace KTTM.Controllers
             //            TTTP = tamUng.Tttp,
             //            TyGia = tamUng.Tygia,
             //            MaCn = kVCTPTC.MaCn
-
             //        });
-
             //    }
-
             //}
 
             //var bac = "";
             //await _tamUngService.CreateRangeAsync(tamUngs);
 
-            //var kvptcs = _kVPTCService.GetAll().ToList();
+            ////var kvptcs = _kVPTCService.GetAll().ToList();
+            //List<KVPTC> kvptcs = _kVPTCService.FindByMaCN("STN");
             //var kvctptcs = _kTTM_1Context.Kvctpcts.ToList();
             //List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
@@ -268,12 +269,14 @@ namespace KTTM.Controllers
             //        NgoaiTe = item.Ngoaite.Trim(),
             //        Phong = item.Phong.Trim(),
             //        SoCT = item.Soct.Trim(),
-            //        MaCn = "STS"
+            //        MaCn = "STN"
             //    });
             //}
 
             //var abc = "";
             //await _kVPTCService.CreateRangeAsync(kVPTCs);
+
+            #endregion chuyen dulieu
 
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");

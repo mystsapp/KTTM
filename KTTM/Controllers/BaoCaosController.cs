@@ -558,7 +558,7 @@ namespace KTTM.Controllers
                     {
                         NgoaiTe = ngoaiTe,
                         TonQuy = new TonQuy() /*{ SoTienNT = 0, SoTien = 0 }*/,
-                        KVCTPTCs = null
+                        KVCTPTCs = new List<KVCTPTC>()
                     });
                 }
             } // group by theo ngoaite
@@ -567,11 +567,18 @@ namespace KTTM.Controllers
 
             foreach (var item in tonQuy_LoaiTien_KVCTPTC)
             {
-                item.CongPhatSinh_Thu_NT = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTienNT).Value;
-                item.CongPhatSinh_Thu = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTien).Value;
+                try
+                {
+                    item.CongPhatSinh_Thu_NT = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTienNT).Value;
+                    item.CongPhatSinh_Thu = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTien).Value;
 
-                item.CongPhatSinh_Chi_NC = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTienNT).Value;
-                item.CongPhatSinh_Chi = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTien).Value;
+                    item.CongPhatSinh_Chi_NC = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTienNT).Value;
+                    item.CongPhatSinh_Chi = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTien).Value;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
 
             ExcelPackage ExcelApp = new ExcelPackage();
@@ -978,7 +985,7 @@ namespace KTTM.Controllers
                     {
                         NgoaiTe = ngoaiTe,
                         TonQuy = new TonQuy() /*{ SoTienNT = 0, SoTien = 0 }*/,
-                        KVCTPTC_NT_GroupBy_SoCTs = null
+                        KVCTPTC_NT_GroupBy_SoCTs = new List<KVCTPTC_NT_GroupBy_SoCTs>()
                     };
                 }
 
@@ -1072,7 +1079,8 @@ namespace KTTM.Controllers
                 ////NumberFormat(dong, 6, dong, 6, xlSheet);
                 //dong++;
 
-                if (tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Count() > 0)
+                //if (tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.KVCTPTC_NT_GroupBy_SoCTs.Count() > 0)
+                if (tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT != null)
                 {
                     xlSheet.Cells[dong, 1].Value = "TỒN ĐẦU " + tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT.NgoaiTe.TenNt;
                     TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
@@ -1785,7 +1793,7 @@ namespace KTTM.Controllers
 
         // TatCa1Sheet
         [HttpPost]
-        public IActionResult TheoDoiTUNoiBoTk141_Partial_Excel_TatCa1Sheet(string tuNgay, string denNgay)
+        public async Task<IActionResult> TheoDoiTUNoiBoTk141_Partial_Excel_TatCa1Sheet(string tuNgay, string denNgay)
         {
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -1797,7 +1805,8 @@ namespace KTTM.Controllers
             List<TamUngModel_GroupBy_Name_Phong> tamUngModel_GroupBy_Name_Phongs = new List<TamUngModel_GroupBy_Name_Phong>();
             if (tamUngs.Count() > 0)
             {
-                tamUngModel_GroupBy_Name_Phongs = _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs).ToList(); // groupby name (makh)
+                var tamUngModel_GroupBy_Name_Phongs1 = await _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs); // groupby name (makh)
+                tamUngModel_GroupBy_Name_Phongs = tamUngModel_GroupBy_Name_Phongs1.ToList();
             }
 
             ExcelPackage ExcelApp = new ExcelPackage();
