@@ -45,6 +45,7 @@ namespace Data.Repository
         IMatHangRepository matHangRepository { get; }
         IPhongBan_DanhMucKT_Repository phongBan_DanhMucKT_Repository { get; }
         INgoaiTe_DanhMucKT_Repository ngoaiTe_DanhMucKT_Repository { get; }
+        IKhachHang_DanhMucKTRepository khachHang_DanhMucKTRepository { get; }
 
         // Cashier
         INopTienRepository nopTienRepository { get; }
@@ -110,6 +111,7 @@ namespace Data.Repository
             matHangRepository = new MatHangRepository(_danhMucKTContext);
             phongBan_DanhMucKT_Repository = new PhongBan_DanhMucKT_Repository(_danhMucKTContext);
             ngoaiTe_DanhMucKT_Repository = new NgoaiTe_DanhMucKT_Repository(_danhMucKTContext);
+            khachHang_DanhMucKTRepository = new KhachHang_DanhMucKTRepository(_danhMucKTContext);
 
             // Cashier
             nopTienRepository = new NopTienRepository(_qlcashierContext);
@@ -172,6 +174,8 @@ namespace Data.Repository
         public INgoaiTe_DanhMucKT_Repository ngoaiTe_DanhMucKT_Repository { get; }
 
         public IXeRepository xeRepository { get; }
+
+        public IKhachHang_DanhMucKTRepository khachHang_DanhMucKTRepository { get; }
 
         public async Task<int> Complete()
         {

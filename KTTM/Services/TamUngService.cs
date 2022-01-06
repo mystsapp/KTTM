@@ -76,7 +76,9 @@ namespace KTTM.Services
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach (var item in tamUngs)
             {
-                var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
+                //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
+                var supplier = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(item.MaKhNo).FirstOrDefault();
+                //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
@@ -86,7 +88,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + supplier.Name,//item.KVCTPTC.TenKH,
+                    Name = item.MaKhNo + " " + supplier.TenThuongMai,//item.KVCTPTC.TenKH,
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });
@@ -108,10 +110,13 @@ namespace KTTM.Services
 
         public async Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs, string maCn)
         {
+            tamUngs = tamUngs.Where(x => x.ConLaiNT > 0 && x.MaCn == maCn);
             List<TamUngModel> tamUngModels = new List<TamUngModel>();
             foreach (var item in tamUngs)
             {
-                var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
+                //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
+                var supplier = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(item.MaKhNo).FirstOrDefault();
+                //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
                     NgayCT = item.NgayCT,
@@ -121,7 +126,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + supplier.Name ?? "",
+                    Name = item.MaKhNo + " " + supplier.TenThuongMai ?? "",
                     //Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
                     Name_Phong = item.Phong,
                     Id = item.Id

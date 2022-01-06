@@ -20,7 +20,11 @@ namespace Data.Models_DanhMucKT
         public virtual DbSet<Dgiai> Dgiais { get; set; }
         public virtual DbSet<DmHttc> DmHttcs { get; set; }
         public virtual DbSet<DmTk> DmTks { get; set; }
+        public virtual DbSet<Dmkhbp> Dmkhbps { get; set; }
         public virtual DbSet<DvPhi> DvPhis { get; set; }
+        public virtual DbSet<EmailKhachHang> EmailKhachHangs { get; set; }
+        public virtual DbSet<KhachHang> KhachHangs { get; set; }
+        public virtual DbSet<LoaiCard> LoaiCards { get; set; }
         public virtual DbSet<MatHang> MatHangs { get; set; }
         public virtual DbSet<NgoaiTe> NgoaiTes { get; set; }
         public virtual DbSet<PhongBan> PhongBans { get; set; }
@@ -120,6 +124,69 @@ namespace Data.Models_DanhMucKT
                     .HasColumnName("TKhoanCu");
             });
 
+            modelBuilder.Entity<Dmkhbp>(entity =>
+            {
+                entity.ToTable("dmkhbp");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("decimal(18, 0)")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Chinhanh)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasColumnName("chinhanh");
+
+                entity.Property(e => e.Coquan)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("coquan");
+
+                entity.Property(e => e.Diachi)
+                    .HasMaxLength(100)
+                    .HasColumnName("diachi");
+
+                entity.Property(e => e.Dienthoai)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("dienthoai");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .HasColumnName("email");
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("fax");
+
+                entity.Property(e => e.Lienhe)
+                    .HasMaxLength(50)
+                    .HasColumnName("lienhe");
+
+                entity.Property(e => e.Logfile).HasColumnName("logfile");
+
+                entity.Property(e => e.Makh)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("makh");
+
+                entity.Property(e => e.Msthue)
+                    .HasMaxLength(50)
+                    .HasColumnName("msthue");
+
+                entity.Property(e => e.Source)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("source");
+
+                entity.Property(e => e.Tencoquan)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("tencoquan");
+            });
+
             modelBuilder.Entity<DvPhi>(entity =>
             {
                 entity.HasKey(e => e.SrvType);
@@ -140,6 +207,110 @@ namespace Data.Models_DanhMucKT
                 entity.Property(e => e.Vatra).HasColumnName("VATRa");
 
                 entity.Property(e => e.Vatvao).HasColumnName("VATVao");
+            });
+
+            modelBuilder.Entity<EmailKhachHang>(entity =>
+            {
+                entity.HasKey(e => new { e.Code, e.Maviettat });
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Maviettat)
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email).HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<KhachHang>(entity =>
+            {
+                entity.HasKey(e => e.Code);
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Contact).HasMaxLength(150);
+
+                entity.Property(e => e.DiaChi).HasMaxLength(300);
+
+                entity.Property(e => e.DienThoai)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.KyHieuHd)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("KyHieuHD");
+
+                entity.Property(e => e.LoaiKh).HasMaxLength(50);
+
+                entity.Property(e => e.MaSoThue)
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MauSoHd)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("MauSoHD");
+
+                entity.Property(e => e.NgaySua).HasColumnType("datetime");
+
+                entity.Property(e => e.NgayTao).HasColumnType("datetime");
+
+                entity.Property(e => e.NguoiSua)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NguoiTao)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.QuocGia).HasMaxLength(100);
+
+                entity.Property(e => e.TenGiaoDich).HasMaxLength(300);
+
+                entity.Property(e => e.TenNganHang).HasMaxLength(150);
+
+                entity.Property(e => e.TenThuongMai).HasMaxLength(300);
+
+                entity.Property(e => e.ThanhPho).HasMaxLength(100);
+
+                entity.Property(e => e.TknganHang)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("TKNganHang");
+
+                entity.Property(e => e.Tpnh)
+                    .HasMaxLength(100)
+                    .HasColumnName("TPNH");
+            });
+
+            modelBuilder.Entity<LoaiCard>(entity =>
+            {
+                entity.HasKey(e => e.Loaithe)
+                    .HasName("PK_loaicard");
+
+                entity.ToTable("LoaiCard");
+
+                entity.Property(e => e.Loaithe)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("loaithe");
+
+                entity.Property(e => e.Diengiai)
+                    .HasMaxLength(50)
+                    .HasColumnName("diengiai");
             });
 
             modelBuilder.Entity<MatHang>(entity =>
@@ -474,9 +645,9 @@ namespace Data.Models_DanhMucKT
                     .IsUnicode(false);
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            //OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        //private partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

@@ -108,7 +108,7 @@ namespace KTTM.Services
 
         Task<Data.Models_HDVATOB.Supplier> GetSupplierSingleByCode(string maKh);
 
-        Task<IPagedList<VSupplierTaiKhoan>> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page);
+        IPagedList<KhachHang> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page);
 
         Ntbill GetNtbillBySTT(string sTT);
 
@@ -1137,15 +1137,16 @@ namespace KTTM.Services
             return suppliers;
         }
 
-        public async Task<IPagedList<VSupplierTaiKhoan>> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page)
+        public IPagedList<KhachHang> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
                 return null;
 
             code ??= "";
-            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.GetSuppliersByCodeName(code);
-            suppliers = suppliers.Where(x => x.Chinhanh == maCn).ToList();
+            var suppliers = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(code);
+            //var suppliers = _unitOfWork.supplier_Hdvatob_Repository.GetSuppliersByCodeName(code);
+            //suppliers = suppliers.Where(x => x.Chinhanh == maCn).ToList();
 
             var list = suppliers.OrderByDescending(x => x.Code).ToList();
             var count = list.Count();

@@ -255,7 +255,7 @@ namespace KTTM.Controllers
             // dong full
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
-            KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
+            KVCTPCTVM.KVCTPTC.DienGiaiP = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.DienGiaiP) ? "" : KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();// KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
             KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
@@ -930,25 +930,25 @@ namespace KTTM.Controllers
             }
         }
 
-        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code_ContextMenu(string code, int page = 1)
+        public IActionResult GetKhachHangs_HDVATOB_By_Code_ContextMenu(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
             //KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName(code, user.Macn);
-            KVCTPCTVM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             KVCTPCTVM.MaKhText = code;
             return PartialView(KVCTPCTVM);
         }
 
-        public async Task<IActionResult> GetKhachHangs_HDVATOB_By_Code(string code, int page = 1)
+        public IActionResult GetKhachHangs_HDVATOB_By_Code(string code, int page = 1)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             code ??= "";
-            KVCTPCTVM.KhachHangs_HDVATOB = await _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
             KVCTPCTVM.MaKhText = code;
             return PartialView(KVCTPCTVM);
         }

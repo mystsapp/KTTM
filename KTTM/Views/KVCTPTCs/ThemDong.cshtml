@@ -346,7 +346,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.NgayCTGoc" class="control-label "></label>
-                            <input type="text" asp-for="KVCTPTC.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
+                            <input type="text" asp-for="KVCTPTC.NgayCTGoc" class="form-control form-control-sm maskInput" asp-format="{0:dd/MM/yyyy}" id="txtNgayCTGoc" />
                             <span asp-validation-for="KVCTPTC.NgayCTGoc" class="text-danger"></span>
                         </div>
                     </div>
