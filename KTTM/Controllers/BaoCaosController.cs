@@ -232,7 +232,7 @@ namespace KTTM.Controllers
             var tonQuies = _tonQuyService.FindTonQuy_By_Date("02/01/2020", fromDate, user.Macn);
             var tonQuy = tonQuies.OrderByDescending(x => x.NgayCT).FirstOrDefault();
             //IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinByDate(searchFromDate, searchToDate, user.Macn); // loaitien == "VND"
-            IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinBy_TonQuy_Date(tonQuy.NgayCT.Value.AddDays(1).ToShortDateString(), searchToDate, user.Macn); // loaitien == "VND"
+            IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.FinBy_TonQuy_Date(tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn); // loaitien == "VND"
 
             List<KVCTPCT_Model_GroupBy_SoCT> kVCTPCT_Model_GroupBy_SoCTs = new List<KVCTPCT_Model_GroupBy_SoCT>();
             if (kVCTPTCs.Count() > 0)
@@ -543,7 +543,7 @@ namespace KTTM.Controllers
                 if (tonQuy != null)
                 {
                     IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService.FinBy_TonQuy_Date(
-                    tonQuy.NgayCT.Value.AddDays(1).ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
+                    tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
 
                     tonQuy_LoaiTien_KVCTPTC.Add(new TonQuy_LoaiTien_KVCTPTC()
                     {
@@ -970,7 +970,7 @@ namespace KTTM.Controllers
                 if (tonQuy != null)
                 {
                     IEnumerable<KVCTPTC> kVCTPTCs1 = await _kVCTPTCService.FinBy_TonQuy_Date(
-                    tonQuy.NgayCT.Value.AddDays(1).ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
+                    tonQuy.NgayCT.Value.ToShortDateString(), searchToDate, user.Macn, ngoaiTe.MaNt); // loaitien != "VND"
 
                     tonQuy_LoaiTien_KVCTPCT_GroupBy_SoCT = new TonQuy_LoaiTien_KVCTPCT_GroupBy_SoCTs()
                     {
@@ -1388,7 +1388,7 @@ namespace KTTM.Controllers
             {
                 phongBan = _baoCaoService.GetPhongBanById(id_BoPhan);
             }
-            IEnumerable<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.TenBoPhan, user.Macn);
+            IEnumerable<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan, user.Macn);
             List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
             if (tamUngs.Count() > 0)
             {
@@ -1630,7 +1630,7 @@ namespace KTTM.Controllers
 
             foreach (var phongBan in phongBans)
             {
-                List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.TenBoPhan, user.Macn).ToList();
+                List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan, user.Macn).ToList();
 
                 List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
                 if (tamUngs.Count() > 0)
