@@ -1338,8 +1338,12 @@ namespace KTTM.Controllers
         }
 
         // InChungTuGhiSo_Partial
-        public IActionResult TheoDoiTUNoiBoTk141_Partial(string searchFromDate, string searchToDate)
+        public IActionResult TheoDoiTUNoiBoTk141_Partial(string searchFromDate, string searchToDate, string errorMessage)
         {
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ModelState.AddModelError("", errorMessage);
+            }
             searchFromDate = DateTime.Now.ToString("dd/MM/yyyy");
             searchToDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
             BaoCaoVM.PhongBans = GetPhongBans_Where();
@@ -1388,7 +1392,18 @@ namespace KTTM.Controllers
             List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
             if (tamUngs.Count() > 0)
             {
+                var abc = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn);
+                if (abc == null)
+                {
+                    ViewBag.errorMessage = "Không tìm thấy MaKh";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
                 tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
+                if (tamUngModel_GroupBy_Names.Count() == 0 || tamUngModel_GroupBy_Names == null)
+                {
+                    SetAlert("Không tìm thấy MaKh", "warning");
+                    return NoContent();
+                }
             }
 
             ExcelPackage ExcelApp = new ExcelPackage();
@@ -1615,11 +1630,17 @@ namespace KTTM.Controllers
 
             foreach (var phongBan in phongBans)
             {
-                List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.BoPhan, user.Macn).ToList();
+                List<TamUng> tamUngs = _tamUngService.FindTamUngs_IncludeTwice_By_Phong(phongBan.TenBoPhan, user.Macn).ToList();
 
                 List<TamUngModel_GroupBy_Name> tamUngModel_GroupBy_Names = new List<TamUngModel_GroupBy_Name>();
                 if (tamUngs.Count() > 0)
                 {
+                    var abc = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn);
+                    if (abc == null)
+                    {
+                        ViewBag.errorMessage = "Không tìm thấy MaKh";
+                        return View("~/Views/Shared/Error.cshtml");
+                    }
                     tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
 
                     ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add(phongBan.TenBoPhan.Trim());
@@ -1805,6 +1826,12 @@ namespace KTTM.Controllers
             List<TamUngModel_GroupBy_Name_Phong> tamUngModel_GroupBy_Name_Phongs = new List<TamUngModel_GroupBy_Name_Phong>();
             if (tamUngs.Count() > 0)
             {
+                var abc = _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs.OrderBy(x => x.NgayCT), user.Macn);
+                if (abc == null)
+                {
+                    ViewBag.errorMessage = "Không tìm thấy MaKh";
+                    return View("~/Views/Shared/Error.cshtml");
+                }
                 var tamUngModel_GroupBy_Name_Phongs1 = await _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs.OrderBy(x => x.NgayCT), user.Macn); // groupby name (makh)
                 tamUngModel_GroupBy_Name_Phongs = tamUngModel_GroupBy_Name_Phongs1.ToList();
             }

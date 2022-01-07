@@ -78,6 +78,10 @@ namespace KTTM.Services
             {
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 var supplier = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(item.MaKhNo).FirstOrDefault();
+                if (supplier == null)
+                {
+                    return null;
+                }
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
@@ -116,21 +120,39 @@ namespace KTTM.Services
             {
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 var supplier = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(item.MaKhNo).FirstOrDefault();
+                if (supplier == null)
+                    return null;
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
-                tamUngModels.Add(new TamUngModel()
+
+                try
                 {
-                    NgayCT = item.NgayCT,
-                    SoCT = item.KVCTPTC.SoCT,// item.SoCT,
-                    DienGiai = item.DienGiai,
-                    SoTienNT = item.SoTienNT,
-                    LT = item.LoaiTien,
-                    TyGia = item.TyGia,
-                    VND = item.SoTien,
-                    Name = item.MaKhNo + " " + supplier.TenThuongMai ?? "",
-                    //Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
-                    Name_Phong = item.Phong,
-                    Id = item.Id
-                });
+                    tamUngModels.Add(new TamUngModel()
+                    {
+                        NgayCT = item.NgayCT,
+                        SoCT = item.KVCTPTC.SoCT,// item.SoCT,
+                        DienGiai = item.DienGiai,
+                        SoTienNT = item.SoTienNT,
+                        LT = item.LoaiTien,
+                        TyGia = item.TyGia,
+                        VND = item.SoTien,
+                        Name = item.MaKhNo + " " + supplier.TenThuongMai ?? "",
+                        //Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
+                        Name_Phong = item.Phong,
+                        Id = item.Id
+                    });
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog errorLog = new ErrorLog()
+                    {
+                        Message = ex.Message,
+                        InnerMessage = ex.InnerException.ToString(),
+                        MaCn = maCn,
+                        LogFile = "TamUngService " + "TamUngModels_GroupBy_Name_TwoKey_Phong " + DateTime.Now,
+                        NgayTao = DateTime.Now
+                    };
+                    await _unitOfWork.errorLogRepository.CreateAsync(errorLog);
+                }
             }
 
             var result1 = (from p in tamUngModels

@@ -122,17 +122,20 @@
 
                         <div class="col-md-4">
                             <label asp-for="KVCTPTC.TKCo" class="control-label"></label>
-                            @if (Model.KVCTPTC.TKCo == "1411")
-                            {
+                            @*@if (Model.KVCTPTC.TKCo == "1411")
+                                {
                                 <input asp-for="KVCTPTC.TKCo" class="form-control form-control-sm " readonly />
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <!--select2-->
                                 <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
-                                    asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
+                                asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
                                 </select>
-                            }
+                                }*@
+                            <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.DmTks_TkCo, "Tkhoan", "TenTk"))" id="ddlTkCo">
+                            </select>
 
                             <span asp-validation-for="KVCTPTC.TKCo" class="text-danger"></span>
                         </div>
@@ -292,18 +295,18 @@
                         @if (Model.KVPTC.NgoaiTe == "VN")
                         {
                             <div class="col-md-2">
-                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
-                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" />
-                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                                <label asp-for="KVCTPTC.Number" class="control-label"></label>
+                                <input asp-for="KVCTPTC.Number" class="form-control form-control-sm" id="txtNumber" />
+                                <span asp-validation-for="KVCTPTC.Number" class="text-danger"></span>
                             </div>
 
                         }
                         else
                         {
                             <div class="col-md-2">
-                                <label asp-for="KVCTPTC.SoVe" class="control-label"></label>
-                                <input asp-for="KVCTPTC.SoVe" class="form-control form-control-sm" id="txtSoVe" disabled />
-                                <span asp-validation-for="KVCTPTC.SoVe" class="text-danger"></span>
+                                <label asp-for="KVCTPTC.Number" class="control-label"></label>
+                                <input asp-for="KVCTPTC.Number" class="form-control form-control-sm" id="txtNumber" disabled />
+                                <span asp-validation-for="KVCTPTC.Number" class="text-danger"></span>
                             </div>
 
                         }
@@ -546,7 +549,7 @@
         }
 
     });
-    
+
     var validSubmitSave = true;
     // check loaiHD VAT
     $('#ddlLoaiHDGoc').off('change').on('change', function(){

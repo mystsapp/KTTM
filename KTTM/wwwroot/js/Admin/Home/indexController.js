@@ -48,10 +48,13 @@ var indexController = {
             $('#btnTT141').attr('disabled', true); // whien click onother row ==> off btnTT141
             $('#btnTamUng').attr('disabled', true); // whien click onother row ==> off btnTamUng
 
+            var userTao = $(this).data('usertao');
+            var userLogon = $('#hidUserLogon').val();
+
             id = $(this).data('id'); // KVPTC id
             loaiPhieu = $(this).data('loaiphieu');
 
-            indexController.TdVal_Click(id, loaiPhieu);
+            indexController.TdVal_Click(id, loaiPhieu, userTao, userLogon);
         });
         // phieu click --> load kvctpct
 
@@ -201,7 +204,7 @@ var indexController = {
             $('#KVCTPCT_Tbl').show(500);
         });
     },
-    TdVal_Click: function (id, loaiPhieu) { // KVPTC id
+    TdVal_Click: function (id, loaiPhieu, userTao, userLogon) { // KVPTC id
         // gang' soCT cho btnCashier
         $('.btnCashier').attr('disabled', false);
 
@@ -237,6 +240,16 @@ var indexController = {
 
         $('#KVCTPCT_Create_Partial').hide(500);
         $('#KVCTPCT_Edit_Partial').hide(500);
+
+        ///// (usertao !== userLogon)
+        if (userTao !== userLogon) {
+            $('#btnThemDong').attr('disabled', true);
+            $('.btnQlXe').attr('disabled', true);
+            $('.btnCashier').attr('disabled', true);
+            $('#btnTamUng').attr('disabled', true);
+            $('#attachExcel').attr('disabled', true);
+            $('#btnTT141').attr('disabled', true);
+        }
 
         indexController.Load_KVCTPCTPartial(id, page); // KVPTC id
     },

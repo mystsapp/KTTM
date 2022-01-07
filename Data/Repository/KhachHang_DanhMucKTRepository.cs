@@ -48,7 +48,8 @@ namespace Data.Repository
         public IEnumerable<KhachHang> GetKhachHangsByCodeName(string code)
         {
             return _context.KhachHangs.Where(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) ||
-                                             (!string.IsNullOrEmpty(x.TenThuongMai) && x.TenThuongMai.Trim().ToLower().Contains(code.Trim().ToLower())));
+                                             (!string.IsNullOrEmpty(x.TenThuongMai) && x.TenThuongMai.Trim().ToLower().Contains(code.Trim().ToLower())) ||
+                                             (!string.IsNullOrEmpty(x.TenGiaoDich) && x.TenGiaoDich.Trim().ToLower().Contains(code.Trim().ToLower())));
         }
 
         //public async Task<KhachHang> GetKhachHangById(string id)

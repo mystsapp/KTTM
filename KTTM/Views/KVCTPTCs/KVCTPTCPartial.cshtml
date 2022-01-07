@@ -55,6 +55,7 @@
                 <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().LoaiThe)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().CardNumber)</th>
                 <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().Id)</th>
+                <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().NguoiTao)</th>
                 @if (user.Username == "hongvt")
                 {
                     <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTU_DaTT)</th>
@@ -77,7 +78,15 @@
 
                                     @if (string.IsNullOrEmpty(item.TamUng)) // chua them vao tamung
                                     {
-                                        <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPTC" asp-controller="KVCTPTCs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
+                                        if(user.Username == item.NguoiTao)
+                                        {
+                                            <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPTC" asp-controller="KVCTPTCs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-edit"></i></button>
+                                        }
+
                                         @*<span class="text-dark"> | </span>*@
 
                                         <!--<a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="item.Id"><i class="fas fa-list"></i></a>-->
@@ -90,8 +99,15 @@
                                             <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                         </span>
                                         <span id="deleteSpan_@item.Id">
+                                            @if(user.Username == item.NguoiTao)
+                                            {
+                                                <button type="button" data-id="@item.Id" class="text-danger border-0 bg-transparent btnXoa" title="Xoá" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-trash-alt"></i></button>
+                                            }
 
-                                            <button type="button" data-id="@item.Id" class="text-danger border-0 bg-transparent btnXoa" title="Xoá" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                         </span>
 
                                     }
@@ -150,6 +166,7 @@
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiThe)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
                             @if (user.Username == "hongvt")
                             {
                                 <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>

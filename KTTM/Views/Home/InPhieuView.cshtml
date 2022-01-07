@@ -74,12 +74,12 @@
                                         switch (Model.KVPTC.NgoaiTe)
                                         {
                                             case "VN":
-                                                                    <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
+                                                <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
                                                 // thu VND
                                                 break;
 
                                             default:
-                                                                    <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
+                                                <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
                                                 // thu NgoaiTe
                                                 break;
                                         }
@@ -89,12 +89,12 @@
                                         switch (Model.KVPTC.NgoaiTe)
                                         {
                                             case "VN":
-                                                                    <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                                                <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
                                                 // chi VND
                                                 break;
 
                                             default:
-                                                                    <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
+                                                <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
                                                 // chi NgoaiTe
                                                 break;
                                         }
@@ -138,14 +138,14 @@
                                 <!--thao: max 4 nhưng tongcong full-->
                                 @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4))
                                 {
-                                        <tr>
-                                            <td></td>
+                                    <tr>
+                                        <td></td>
 
-                                            <td>@item.TkNo</td>
-                                            <td>@item.TkCo</td>
-                                            <td>@item.SoTien.ToString("N0") </td>
-                                            <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
-                                        </tr>
+                                        <td>@item.TkNo</td>
+                                        <td>@item.TkCo</td>
+                                        <td>@item.SoTien.ToString("N0") </td>
+                                        <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
+                                    </tr>
                                 }
 
                                 <tr>
@@ -164,7 +164,11 @@
                                                         sgtcodes += item.Sgtcode + " + ";
                                                     }
                                                     //sgtcodes += item.Sgtcode + " + ";
-                                                    soCTGocs += item.SoCTGoc + ", ";
+                                                    if (!string.IsNullOrEmpty(item.SoCTGoc))
+                                                    {
+                                                        soCTGocs += item.SoCTGoc + ", ";
+                                                    }
+
                                                 }
                                                 else
                                                 {
@@ -172,6 +176,7 @@
                                                     soCTGocs += item.SoCTGoc;
                                                 }
                                             }
+
                                         }
                                         @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
                                     </td>
@@ -247,11 +252,11 @@
                         <div class="col-3 text-center">
                             @if (Model.KVPTC.MFieu == "C")
                             {
-                                            <span>Người nhận tiền</span>
+                                <span>Người nhận tiền</span>
                             }
                             else
                             {
-                                            <span>Người nộp tiền</span>
+                                <span>Người nộp tiền</span>
                             }
                         </div>
                         <!-- /.col -->

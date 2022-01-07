@@ -116,6 +116,10 @@
     </div>
     <!-- ThemDong modal-->*@
 <!-- Main content -->
+
+<input type="hidden" id="hidUserLogon" value="@user.Username" />
+<input type="hidden" id="hidUserTao" />
+
 <section class="content" style="padding: 15px 0.5rem">
 
     <!-- Default box -->
@@ -148,8 +152,8 @@
 
                                 <a class="btn btn-outline-success btn-sm" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm phiếu"><i class="fas fa-plus"></i> Thêm phiếu</a>
                                 <button type="button" class="btn btn-outline-primary btn-sm " disabled id="btnThemDong" title="Thêm dòng"><i class="fas fa-plus"></i> Thêm dòng</button>
-
                                 <button type="button" class="btn btn-outline-danger btn-sm" id="btnTamUng" disabled title="Tạm ứng">Tạm ứng</button>
+
                                 <input type="hidden" id="hidTamUng" />
 
                                 <input type="hidden" id="hidKVCTPCTId" name="kvctptcId" />
@@ -228,13 +232,19 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-
-                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            @if (user.Username == item.LapPhieu)
+                                            {
+                                                <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" disabled="" class="border-0 bg-transparent"><i class="fas fa-edit"></i></button>
+                                            }
                                             @*<span class="text-dark"> | </span>
 
                                                 <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <!-- ko cho xóa -->
-                                    <span class="text-dark"> | </span>
+                                    
                                             <span SoCT="confirmDeleteSpan_@item.Id" style="display: none">
                                                 <!--ajax check invoices-->
                                         <span class="text-dark ">Xoá?</span>
@@ -244,6 +254,7 @@
 
                                             @if (user.Username == "hongvt")
                                             {
+                                                <span class="text-dark"> | </span>
                                                 <span id="deleteSpan_@item.Id">
 
                                                     <button type="button" data-id="@item.Id" class="text-danger border-0 bg-transparent btnHuy" title="Xoá" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
@@ -254,17 +265,16 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.SoCT)</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.MFieu)</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.NgoaiTe)</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.HoTen)</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.Phong)</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.DonVi)</td>
-                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu">@Html.DisplayFor(m => item.LapPhieu)</td>
-                                </tr>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.MFieu)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.NgoaiTe)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.HoTen)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.Phong)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.DonVi)</td>
+                                    <td class="tdVal" data-id="@item.Id" data-loaiphieu="@item.MFieu" data-usertao="@item.LapPhieu">@Html.DisplayFor(m => item.LapPhieu)</td>
 
-                                @* } *@
+                                </tr>
 
                             }
                         }
@@ -465,7 +475,9 @@
             //    }
             //});
 
+
         })
+
 </script>
 
 }

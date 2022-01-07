@@ -33,6 +33,7 @@ namespace Data.Repository
         ITamUngRepository tamUngRepository { get; }
         ITT621Repository tT621Repository { get; }
         ITonQuyRepository tonQuyRepository { get; }
+        IErrorLogRepository errorLogRepository { get; }
 
         // DanhMucKT
         IDmTkRepository dmTkRepository { get; }
@@ -112,6 +113,7 @@ namespace Data.Repository
             phongBan_DanhMucKT_Repository = new PhongBan_DanhMucKT_Repository(_danhMucKTContext);
             ngoaiTe_DanhMucKT_Repository = new NgoaiTe_DanhMucKT_Repository(_danhMucKTContext);
             khachHang_DanhMucKTRepository = new KhachHang_DanhMucKTRepository(_danhMucKTContext);
+            errorLogRepository = new ErrorLogRepository(_kTTMDbContext);
 
             // Cashier
             nopTienRepository = new NopTienRepository(_qlcashierContext);
@@ -176,6 +178,8 @@ namespace Data.Repository
         public IXeRepository xeRepository { get; }
 
         public IKhachHang_DanhMucKTRepository khachHang_DanhMucKTRepository { get; }
+
+        public IErrorLogRepository errorLogRepository { get; }
 
         public async Task<int> Complete()
         {
