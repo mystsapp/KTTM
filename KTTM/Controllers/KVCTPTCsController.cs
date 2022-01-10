@@ -262,6 +262,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
             KVCTPCTVM.KVCTPTC.SoTien = KVCTPCTVM.KVCTPTC.SoTienNT * KVCTPCTVM.KVCTPTC.TyGia;
             KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.SoTienNT;
+            KVCTPCTVM.KVCTPTC.DSKhongVAT ??= 0;
             //KVCTPCTVM.KVCTPTC.SoTienNT : "co roi: tren view"
 
             // ghi log
