@@ -1527,8 +1527,21 @@ namespace KTTM.Controllers
                     xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                     xlSheet.Cells[dong, 5].Value = "VNĐ";
                     xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
-                    xlSheet.Cells[dong, 7].Value = tamUngModel_GroupBy_Name.TongCong;
+                    xlSheet.Cells[dong, 7].Value = tamUngModel_GroupBy_Name.TongCong; // VND
                     xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+
+                    // NgoaiTe
+                    var results = (from p in tamUngModel_GroupBy_Name.TamUngModels
+                                   group p by p.LT into g
+                                   select new TamUngModel_GroupByLoaiTien { LoaiTien = g.Key, TamUngModels = g.ToList() }).ToList();
+
+                    foreach (var item in results)
+                    {
+                        if (item.LoaiTien != "VND")
+                        {
+                            xlSheet.Cells[dong++, 7].Value = item.TamUngModels.Sum(x => x.SoTienNT);
+                        }
+                    }
 
                     setBorder(dong, 1, dong, 7, xlSheet);
                     dong++;

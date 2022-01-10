@@ -11,5 +11,6 @@ namespace KTTM.Models
         public string Name { get; set; }
         public string Name_Phong { get; set; }
         public decimal TongCong { get; set; }
+        public decimal TongCongNT { get; set; }
     }
 }

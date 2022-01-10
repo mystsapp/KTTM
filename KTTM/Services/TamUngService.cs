@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Repository;
 using Data.Utilities;
 using KTTM.Models;
@@ -107,9 +108,19 @@ namespace KTTM.Services
                            }).ToList();
             foreach (var item in result1)
             {
-                item.TongCong = item.TamUngModels.Sum(x => x.VND.Value);
+                item.TongCong = item.TamUngModels.Where(x => x.LT == "VND").Sum(x => x.VND.Value);
+
+                //IEnumerable<NgoaiTe> ngoaiTes = GetAllNgoaiTe().Where(x => x.MaNt != "VND");
+                //foreach (var ngoaiTe in ngoaiTes.OrderByDescending(x => x.MaNt))
+                //{
+                //}
             }
             return result1;
+        }
+
+        private IEnumerable<NgoaiTe> GetAllNgoaiTe()
+        {
+            return _unitOfWork.ngoaiTe_DanhMucKT_Repository.GetAll();
         }
 
         public async Task<IEnumerable<TamUngModel_GroupBy_Name_Phong>> TamUngModels_GroupBy_Name_TwoKey_Phong(IEnumerable<TamUng> tamUngs, string maCn)
