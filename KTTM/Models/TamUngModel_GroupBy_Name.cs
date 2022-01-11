@@ -12,5 +12,10 @@ namespace KTTM.Models
         public string Name_Phong { get; set; }
         public decimal TongCong { get; set; }
         public decimal TongCongNT { get; set; }
+
+        // for MaKh null
+        public bool Status { get; set; } = true;
+
+        public string MaKh { get; set; }
     }
 }

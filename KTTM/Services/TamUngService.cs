@@ -81,8 +81,9 @@ namespace KTTM.Services
                 var supplier = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(item.MaKhNo).FirstOrDefault();
                 if (supplier == null)
                 {
-                    return null;
+                    return new List<TamUngModel_GroupBy_Name>() { new TamUngModel_GroupBy_Name() { Status = false, MaKh = item.MaKhNo } };
                 }
+
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 tamUngModels.Add(new TamUngModel()
                 {
@@ -132,7 +133,10 @@ namespace KTTM.Services
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
                 var supplier = _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangsByCodeName(item.MaKhNo).FirstOrDefault();
                 if (supplier == null)
-                    return null;
+                {
+                    return new List<TamUngModel_GroupBy_Name_Phong>() { new TamUngModel_GroupBy_Name_Phong() { Status = false, MaKh = item.MaKhNo } };
+                }
+
                 //var supplier = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code == item.MaKhNo && x.Chinhanh == maCn).FirstOrDefault();
 
                 try

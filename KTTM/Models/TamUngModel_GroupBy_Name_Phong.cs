@@ -9,5 +9,10 @@ namespace KTTM.Models
     {
         public IEnumerable<TamUngModel_GroupBy_Name> TamUngModel_GroupBy_Names { get; set; }
         public string Name_Phong { get; set; }
+
+        // for null MaKh
+        public bool Status { get; set; } = true;
+
+        public string MaKh { get; set; }
     }
 }

@@ -1529,24 +1529,31 @@ namespace KTTM.Controllers
                     xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                     xlSheet.Cells[dong, 7].Value = tamUngModel_GroupBy_Name.TongCong; // VND
                     xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                    setBorder(dong, 1, dong, 7, xlSheet);
 
                     // NgoaiTe
                     var results = (from p in tamUngModel_GroupBy_Name.TamUngModels
                                    group p by p.LT into g
                                    select new TamUngModel_GroupByLoaiTien { LoaiTien = g.Key, TamUngModels = g.ToList() }).ToList();
 
+                    //List<ViewModel> tongTienNT = new List<ViewModel>();
                     foreach (var item in results)
                     {
                         if (item.LoaiTien != "VND")
                         {
-                            xlSheet.Cells[dong++, 7].Value = item.TamUngModels.Sum(x => x.SoTienNT);
+                            //tongTienNT.Add(new ViewModel() { LoaiTien = item.LoaiTien, TongTienNT = item.TamUngModels.Sum(x => x.SoTienNT).Value});
+                            dong++;
+                            xlSheet.Cells[dong, 4].Value = item.TamUngModels.Sum(x => x.SoTienNT).Value;
+                            xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                            xlSheet.Cells[dong, 5].Value = item.LoaiTien;
+                            xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                         }
                     }
 
                     setBorder(dong, 1, dong, 7, xlSheet);
                     dong++;
-                    setBorder(dong, 1, dong, 7, xlSheet);
-                    dong++;
+                    //setBorder(dong, 1, dong, 7, xlSheet);
+                    //dong++;
                 }
 
                 xlSheet.Cells[dong, 1].Value = "Đề nghị các thành viên trên thanh toán chậm nhất là ngày: " + denNgay;
@@ -1649,9 +1656,9 @@ namespace KTTM.Controllers
                 if (tamUngs.Count() > 0)
                 {
                     var abc = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn);
-                    if (abc == null)
+                    if (abc.FirstOrDefault().Status == false)
                     {
-                        ViewBag.errorMessage = "Không tìm thấy MaKh";
+                        ViewBag.errorMessage = "Không tìm thấy MaKh: " + abc.FirstOrDefault().MaKh;
                         return View("~/Views/Shared/Error.cshtml");
                     }
                     tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
@@ -1774,13 +1781,33 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 3].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                         xlSheet.Cells[dong, 5].Value = "VNĐ";
                         xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
-                        xlSheet.Cells[dong, 7].Value = tamUngModel_GroupBy_Name.TongCong;
+                        xlSheet.Cells[dong, 7].Value = tamUngModel_GroupBy_Name.TongCong; // VND
                         xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                        setBorder(dong, 1, dong, 7, xlSheet);
+
+                        // NgoaiTe
+                        var results = (from p in tamUngModel_GroupBy_Name.TamUngModels
+                                       group p by p.LT into g
+                                       select new TamUngModel_GroupByLoaiTien { LoaiTien = g.Key, TamUngModels = g.ToList() }).ToList();
+
+                        //List<ViewModel> tongTienNT = new List<ViewModel>();
+                        foreach (var item in results)
+                        {
+                            if (item.LoaiTien != "VND")
+                            {
+                                //tongTienNT.Add(new ViewModel() { LoaiTien = item.LoaiTien, TongTienNT = item.TamUngModels.Sum(x => x.SoTienNT).Value});
+                                dong++;
+                                xlSheet.Cells[dong, 4].Value = item.TamUngModels.Sum(x => x.SoTienNT).Value;
+                                xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                                xlSheet.Cells[dong, 5].Value = item.LoaiTien;
+                                xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                            }
+                        }
 
                         setBorder(dong, 1, dong, 7, xlSheet);
                         dong++;
-                        setBorder(dong, 1, dong, 7, xlSheet);
-                        dong++;
+                        //setBorder(dong, 1, dong, 7, xlSheet);
+                        //dong++;
                     }
 
                     xlSheet.Cells[dong, 1].Value = "Đề nghị các thành viên trên thanh toán chậm nhất là ngày: " + denNgay;
@@ -1839,10 +1866,10 @@ namespace KTTM.Controllers
             List<TamUngModel_GroupBy_Name_Phong> tamUngModel_GroupBy_Name_Phongs = new List<TamUngModel_GroupBy_Name_Phong>();
             if (tamUngs.Count() > 0)
             {
-                var abc = _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs.OrderBy(x => x.NgayCT), user.Macn);
-                if (abc == null)
+                var abc = await _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs.OrderBy(x => x.NgayCT), user.Macn);
+                if (abc.FirstOrDefault().Status == false)
                 {
-                    ViewBag.errorMessage = "Không tìm thấy MaKh";
+                    ViewBag.errorMessage = "Không tìm thấy MaKh: " + abc.FirstOrDefault().MaKh;
                     return View("~/Views/Shared/Error.cshtml");
                 }
                 var tamUngModel_GroupBy_Name_Phongs1 = await _tamUngService.TamUngModels_GroupBy_Name_TwoKey_Phong(tamUngs.OrderBy(x => x.NgayCT), user.Macn); // groupby name (makh)
@@ -1980,11 +2007,32 @@ namespace KTTM.Controllers
                         xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                         xlSheet.Cells[dong, 7].Value = tamUngModel_GroupBy_Name.TongCong;
                         xlSheet.Cells[dong, 7].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                        setBorder(dong, 1, dong, 7, xlSheet);
+
+                        // NgoaiTe
+                        var results = (from p in tamUngModel_GroupBy_Name.TamUngModels
+                                       group p by p.LT into g
+                                       select new TamUngModel_GroupByLoaiTien { LoaiTien = g.Key, TamUngModels = g.ToList() }).ToList();
+
+                        //List<ViewModel> tongTienNT = new List<ViewModel>();
+                        foreach (var item in results)
+                        {
+                            if (item.LoaiTien != "VND")
+                            {
+                                //tongTienNT.Add(new ViewModel() { LoaiTien = item.LoaiTien, TongTienNT = item.TamUngModels.Sum(x => x.SoTienNT).Value});
+                                dong++;
+                                xlSheet.Cells[dong, 4].Value = item.TamUngModels.Sum(x => x.SoTienNT).Value;
+                                xlSheet.Cells[dong, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                                xlSheet.Cells[dong, 5].Value = item.LoaiTien;
+                                xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+                            }
+                        }
 
                         setBorder(dong, 1, dong, 7, xlSheet);
                         dong++;
-                        setBorder(dong, 1, dong, 7, xlSheet);
-                        dong++;
+
+                        //setBorder(dong, 1, dong, 7, xlSheet);
+                        //dong++;
                     }
                 }
 
