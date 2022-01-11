@@ -25,5 +25,7 @@ namespace KTTM.Models
         public int Page { get; set; }
 
         public List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_TkNo_TkCos { get; set; }
+
+        public string ChiNhanh { get; set; }
     }
 }

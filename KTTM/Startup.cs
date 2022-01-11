@@ -51,6 +51,7 @@ namespace KTTM
             services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
             services.AddTransient<ISupplier_QLTaiKhoan_Repository, Supplier_QLTaiKhoan_Repository>();
+            services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
 
             // qltour
             services.AddTransient<INgoaiTeRepository, NgoaiTeRepository>();

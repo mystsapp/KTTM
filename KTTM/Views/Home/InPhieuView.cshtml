@@ -1,8 +1,13 @@
 ﻿@model HomeViewModel
 
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "InPhieuView";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
 }
 
 <style>
@@ -52,8 +57,19 @@
                     <!-- title row -->
                     <div class="row">
                         <div class="col-7 text-center">
-                            <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span><br />
-                            <span><b>SAIGONTOURIST</b></span>
+                            @if (user.Macn == "STS")
+                            {
+                                <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span>
+
+                                <br />
+                                <span><b>SAIGONTOURIST</b></span>
+                            }
+                            else
+                            {
+                                <span><b>@Model.ChiNhanh </b></span><br />
+                            }
+                            
+
                         </div>
                         <div class="col-5 text-center">
                             CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />

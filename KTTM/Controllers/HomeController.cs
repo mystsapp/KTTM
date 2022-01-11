@@ -585,6 +585,10 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> InPhieuView(Guid id, int page)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+            HomeVM.ChiNhanh = await _kVPTCService.GetChiNhanhByMaCn(user.Macn);
+
             HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
             HomeVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
             HomeVM.Page = page;
@@ -696,6 +700,10 @@ namespace KTTM.Controllers
 
         public async Task<IActionResult> InPhieuPrint(Guid id, int page)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+            HomeVM.ChiNhanh = await _kVPTCService.GetChiNhanhByMaCn(user.Macn);
+
             HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
             HomeVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
             HomeVM.Page = page;

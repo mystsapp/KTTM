@@ -54,6 +54,8 @@ namespace KTTM.Services
         List<InPhieuView_Groupby_TkNo_TkCo> InPhieuView_Groupby_LoaiTiens(IEnumerable<KVCTPTC> kVCTPTCs);
 
         List<KVPTC> FindByMaCN(string maCn);
+
+        Task<string> GetChiNhanhByMaCn(string macn);
     }
 
     public class KVPTCService : IKVPTCService
@@ -475,6 +477,12 @@ namespace KTTM.Services
         public List<KVPTC> FindByMaCN(string maCn)
         {
             return _unitOfWork.kVPCTRepository.Find(x => x.MaCn == maCn).ToList();
+        }
+
+        public async Task<string> GetChiNhanhByMaCn(string macn)
+        {
+            var dmchinhanh = await _unitOfWork.chiNhanhRepository.GetByMaCn(macn);
+            return dmchinhanh.Tencn;
         }
     }
 }

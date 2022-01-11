@@ -20,6 +20,7 @@ namespace Data.Repository
         IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
         IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
         ISupplier_QLTaiKhoan_Repository supplier_QLTaiKhoan_Repository { get; }
+        IChiNhanhRepository chiNhanhRepository { get; }
 
         // qltour
         INgoaiTeRepository ngoaiTeRepository { get; }
@@ -90,6 +91,7 @@ namespace Data.Repository
             applicationUserQLTaiKhoanRepository = new ApplicationUserQLTaiKhoanRepository(_qltaikhoanContext);
             applicationQLTaiKhoanRepository = new ApplicationQLTaiKhoanRepository(_qltaikhoanContext);
             supplier_QLTaiKhoan_Repository = new Supplier_QLTaiKhoan_Repository(_qltaikhoanContext);
+            chiNhanhRepository = new ChiNhanhRepository(_qltaikhoanContext);
 
             // qltour
             ngoaiTeRepository = new NgoaiTeRepository(_qltourContext);
@@ -180,6 +182,8 @@ namespace Data.Repository
         public IKhachHang_DanhMucKTRepository khachHang_DanhMucKTRepository { get; }
 
         public IErrorLogRepository errorLogRepository { get; }
+
+        public IChiNhanhRepository chiNhanhRepository { get; }
 
         public async Task<int> Complete()
         {
