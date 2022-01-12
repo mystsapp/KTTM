@@ -1,0 +1,193 @@
+﻿@model KVCTPCTViewModel
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="row form-group">
+    <div class="col-xs-12 col-md-6">
+        <div class="input-group">
+            <input type="text" value="@Model.MaKhText" class="form-control form-control-sm text-uppercase" id="txtTimkh" placeholder="Tìm thông tin code, tên khách hàng">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm" id="btSearch_Edit"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div style="overflow-x:auto; overflow-y:auto; height: 300px">
+    <table class="table mytable text-nowrap text-sm" id="khachHangTbl">
+        <thead>
+            <tr class="table-info">
+
+                <th>Mã KH</th>
+                <th>Ms Thuế</th>
+                <th>Tên KH</th>
+                <th>Thành phố</th>
+                <th>Địa chỉ</th>
+                <th>Điện thoại</th>
+                <th>Email</th>
+
+                <th>Ký hiệu </th>
+                <th>Mẫu số</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.KhachHangs_HDVATOB != null)
+            {
+                @foreach (var item in Model.KhachHangs_HDVATOB)
+                {
+
+                    <tr class="khachhangs-cursor-pointer ">
+
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.MaSoThue)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.TenThuongMai)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.ThanhPho)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.DiaChi)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.DienThoai)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Email)</td>
+
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.KyHieuHd)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.MauSoHd)</td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+<div class="p-2" style="background-color: aliceblue;">
+    @if (Model.KhachHangs_HDVATOB != null)
+    {
+        @Html.PagedListPager((IPagedList)Model.KhachHangs_HDVATOB, page => Url.Action("GetKhachHangs_By_Code_Edit", new
+   {
+       page = page,
+       option = Context.Request.Query["option"],
+       code = Model.MaKhText
+       //searchFromDate = ViewBag.searchFromDate,
+       //searchToDate = ViewBag.searchToDate,
+       //boolSgtcode = ViewBag.boolSgtcode,
+       //boolTkNo1311 = ViewBag.boolTkNo1311
+   }),
+             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+             {
+                 LiElementClasses = new string[] { "page-item" },
+                 PageClasses = new string[] { "page-link" },
+                 MaximumPageNumbersToDisplay = 5,
+                 UlElementClasses = new[] { "pagination pagination-sm m-0" }, // ul class
+                 ContainerDivClasses = new[] { "pagination-container" }
+             }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, HttpMethod = "GET", UpdateTargetId = "khachHang_Modal_Body" }))
+
+        @*@Html.PagedListPager(Model.KhachHangs_HDVATOB, page => Url.Action("GetKhachHangs_HDVATOB_By_Code", "KVCTPTCs",
+               new
+               {
+                   page,
+                   pageSize = ViewBag.PageSize,
+                   teamId = ViewBag.TeamId
+               }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+            {
+                //Display = PagedListDisplayMode.IfNeeded,
+                MaximumPageNumbersToDisplay = 5
+            },
+            new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "GET",
+                UpdateTargetId = "PlayerContainer"
+            }))*@
+
+    }
+</div>
+@*<script src="~/lib/AdminLTE-3.1.0/plugins/jquery/jquery.js"></script>*@
+
+<script>
+    //$('#btSearch').click(function () {
+
+    //    var maKhText = $('#txtTimkh').val();
+
+    //    KhachHangSearch(maKhText); // ben Edit_KVCTPCT KhachHangSearch
+    //})
+    $('.khachhangs-cursor-pointer').click(function () {
+
+        // giu trang thai
+        if ($(this).hasClass("hoverClass"))
+            $(this).removeClass("hoverClass");
+        else {
+            $('.khachhangs-cursor-pointer').removeClass("hoverClass");
+            $(this).addClass("hoverClass");
+        }
+        debugger
+        var code = $(this).children().eq(0).html();
+        var taxCode = $(this).children().eq(1).html();
+        var name = $(this).children().eq(2).html();
+        var city = $(this).children().eq(3).html();
+        var address = $(this).children().eq(4).html();
+        var telephone = $(this).children().eq(5).html();
+        var email = $(this).children().eq(6).html();
+
+        var taxSign = $(this).children().eq(7).html();
+        var taxForm = $(this).children().eq(8).html();
+
+        if ($('#hidTxtMaKh').val() === 'maKhNo') { // search off no
+            $('#txtMaKhNo').val(code);
+            console.log($('#txtMaKhNo').val() + " - " + code);
+            $('#txtTenKhNo').val(name);
+        }
+        if ($('#hidTxtMaKh').val() === 'maKhCo') { // search off co
+            $('#txtMaKhCo').val(code);
+            $('#txtTenKhCo').val(name);
+        }
+
+        $('#txtKyHieu').val(taxSign);
+        $('#txtMauSoHD').val(taxForm);
+        $('#txtMsThue').val(taxCode);
+        $('#txtTenKH').val(name);
+        $('#txtDiaChi').val(address);
+
+        //var code = $(this).find("td").eq(0).html();
+        //var name = $(this).find("td").eq(1).html();
+        //var city = $(this).find("td").eq(2).html();
+        //var address = $(this).find("td").eq(3).html();
+        //var telephone = $(this).find("td").eq(4).html();
+        //var email = $(this).find("td").eq(5).html();
+        //var taxCode = $(this).find("td").eq(6).html();
+        //var taxSign = $(this).find("td").eq(7).html();
+        //var taxForm = $(this).find("td").eq(8).html();
+
+        //console.log(text);
+    })
+</script>
+<script type="text/javascript">
+
+    //This mehtod is used to call when Page Size list is changed
+    $(function () {
+        $("#btSearch_Edit").click(function (event) {
+            var maKhText = $('#txtTimkh').val();
+            
+            $.ajax({
+                url: '/KVCTPTCs/GetKhachHangs_By_Code_Edit', //"/Player/GetPlayersByTeam",
+                //url: '@Url.Action("GetKhachHangs_By_Code_Edit", "KVCTPTCs")', //"/Player/GetPlayersByTeam",
+                dataType: "html",
+                data: {
+                    code: maKhText
+                },
+                type: "GET",
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    toastr.error(err.message);
+                },
+                success: function (data) {
+
+                    $('.khachHang_Modal_Body').html(data);
+                }
+            });
+        });
+    });
+</script>  

@@ -627,13 +627,12 @@
         }
     });
 
-    //$('#txtSgtcode').rules('add', {
-    //    required: true,
-    //    minlength: 17,
-    //    messages: {
-    //        //required: "Chủ đề không được để trống"
-    //    }
-    //});
+    $('#ddlDienGiai').rules('add', {
+        required: true,
+        messages: {
+            //required: "Chủ đề không được để trống"
+        }
+    });
 
     // sotien
     $('#txtSoTienNT').blur(function () {

@@ -954,6 +954,17 @@ namespace KTTM.Controllers
             return PartialView(KVCTPCTVM);
         }
 
+        public IActionResult GetKhachHangs_By_Code_Edit(string code, int page = 1)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            code ??= "";
+            KVCTPCTVM.KhachHangs_HDVATOB = _kVCTPTCService.GetSuppliersByCodeName_PagedList(code, user.Macn, page);
+            KVCTPCTVM.MaKhText = code;
+            return PartialView(KVCTPCTVM);
+        }
+
         public JsonResult Get_TenTk_By_Tk(string tk)
         {
             tk ??= "";

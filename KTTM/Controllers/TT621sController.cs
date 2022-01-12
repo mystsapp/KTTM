@@ -171,7 +171,7 @@ namespace KTTM.Controllers
             else
             {
                 TT621VM.TamUngs = await _tamUngService.Find_TamUngs_By_MaKh_Include(kVCTPCT.MaKh,
-                user.Macn, kVCTPCT.TKCo); // MaKh == MaKhNo && theo TK (ung VND or NgoaiTe)
+                user.Macn, kVCTPCT.TKCo); // MaKh == MaKhCo && theo TK (ung VND or NgoaiTe)
             }
 
             TT621VM.TamUngs = TT621VM.TamUngs.OrderByDescending(x => x.NgayCT);

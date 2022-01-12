@@ -652,13 +652,13 @@
             $(element).removeClass('is-invalid');
         }
     });
-
-    //$('#ddlTkNo').rules('add', {
-    //    required: true,
-    //    messages: {
-    //        //required: "Tài khoãn không được để trống"
-    //    }
-    //});
+    
+    $('#ddlDienGiai').rules('add', {
+        required: true,
+        messages: {
+            //required: "Chủ đề không được để trống"
+        }
+    });
 
     //$('#ddlTkCo').rules('add', {
     //    required: true,
@@ -740,7 +740,7 @@
     //// Get_DienGiai_By_TkNo_TkCo forward to service
 
     function KhachHangSearch(code) {
-        $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
+        $.get('/KVCTPTCs/GetKhachHangs_By_Code_Edit', { code: code }, function (data) {
 
             $('#khachHang_Modal').modal('show');
             $('.khachHang_Modal_Body').html(data);
