@@ -1,7 +1,11 @@
 ﻿@model HomeViewModel
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     Layout = null;
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
 }
 
 <!DOCTYPE html>
@@ -73,8 +77,21 @@
                             <!-- title row -->
                             <div class="row">
                                 <div class="col-7 text-center">
-                                    <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span><br />
-                                    <span><b>SAIGONTOURIST</b></span>
+                                    @if (user.Macn == "STS")
+                                    {
+                                        <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span>
+
+                                        <br />
+                                        <span><b>SAIGONTOURIST</b></span>
+                                    }
+                                    else
+                                    {
+                                        <span><b>@Model.ChiNhanh </b></span>
+
+                                        <br />
+                                    }
+
+
                                 </div>
                                 <div class="col-5 text-center">
                                     CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />
@@ -142,7 +159,7 @@
                                     <table class="invoicetable ">
                                         <tr>
                                             <td>Họ tên:</td>
-                                            <td>@Model.KVPTC.HoTen</td>
+                                            <td><b>@Model.KVPTC.HoTen</b></td>
                                             <td class="text-right" colspan="3">C.M.T số ...............................................</td>
                                         </tr>
                                         <tr>
@@ -182,21 +199,37 @@
                                                             // this is the last item
                                                             if (!string.IsNullOrEmpty(item.Sgtcode))
                                                             {
-                                                                sgtcodes += item.Sgtcode + " + ";
+                                                                var sgtcodeArry = sgtcodes.Split('+');
+                                                                if (!sgtcodeArry.Any(x => x.Trim() == item.Sgtcode))
+                                                                {
+                                                                    sgtcodes += item.Sgtcode + " + ";
+                                                                }
+
+
                                                             }
                                                             //sgtcodes += item.Sgtcode + " + ";
                                                             if (!string.IsNullOrEmpty(item.SoCTGoc))
                                                             {
-                                                                soCTGocs += item.SoCTGoc + ", ";
+                                                                var soCTGocsArry = soCTGocs.Split(',');
+                                                                if (!soCTGocsArry.Any(x => x.Trim() == item.SoCTGoc))
+                                                                {
+                                                                    soCTGocs += item.SoCTGoc + ", ";
+                                                                }
+                                                                //soCTGocs += item.SoCTGoc + ", ";
                                                             }
 
                                                         }
+
                                                         else
                                                         {
                                                             sgtcodes += item.Sgtcode;
                                                             soCTGocs += item.SoCTGoc;
                                                         }
+
+
                                                     }
+                                                    sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
+                                                    soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
                                                 }
                                                 @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
                                             </td>
@@ -323,8 +356,21 @@
                     <!-- title row -->
                     <div class="row">
                         <div class="col-7 text-center">
-                            <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span><br />
-                            <span><b>SAIGONTOURIST</b></span>
+                            @if (user.Macn == "STS")
+                            {
+                                <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span>
+
+                                <br />
+                                <span><b>SAIGONTOURIST</b></span>
+                            }
+                            else
+                            {
+                                <span><b>@Model.ChiNhanh </b></span>
+
+                                <br />
+                            }
+
+
                         </div>
                         <div class="col-5 text-center">
                             CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />
@@ -392,7 +438,7 @@
                             <table class="invoicetable ">
                                 <tr>
                                     <td>Họ tên:</td>
-                                    <td>@Model.KVPTC.HoTen</td>
+                                    <td><b>@Model.KVPTC.HoTen</b></td>
                                     <td class="text-right" colspan="3">C.M.T số ...............................................</td>
                                 </tr>
                                 <tr>
@@ -432,21 +478,37 @@
                                                     // this is the last item
                                                     if (!string.IsNullOrEmpty(item.Sgtcode))
                                                     {
-                                                        sgtcodes += item.Sgtcode + " + ";
+                                                        var sgtcodeArry = sgtcodes.Split('+');
+                                                        if (!sgtcodeArry.Any(x => x.Trim() == item.Sgtcode))
+                                                        {
+                                                            sgtcodes += item.Sgtcode + " + ";
+                                                        }
+
+
                                                     }
                                                     //sgtcodes += item.Sgtcode + " + ";
                                                     if (!string.IsNullOrEmpty(item.SoCTGoc))
                                                     {
-                                                        soCTGocs += item.SoCTGoc + ", ";
+                                                        var soCTGocsArry = soCTGocs.Split(',');
+                                                        if (!soCTGocsArry.Any(x => x.Trim() == item.SoCTGoc))
+                                                        {
+                                                            soCTGocs += item.SoCTGoc + ", ";
+                                                        }
+                                                        //soCTGocs += item.SoCTGoc + ", ";
                                                     }
 
                                                 }
+
                                                 else
                                                 {
                                                     sgtcodes += item.Sgtcode;
                                                     soCTGocs += item.SoCTGoc;
                                                 }
+
+
                                             }
+                                            sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
+                                            soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
                                         }*@
                                         @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
                                     </td>
@@ -562,11 +624,11 @@
 
     <script>
 
-        //setInterval(function () {
-        //    window.addEventListener("load", window.print());
-        //}, 1000);
-
+        setInterval(function () {
             window.addEventListener("load", window.print());
+        }, 1000);
+
+            //window.addEventListener("load", window.print());
     </script>
 </body>
 </html>

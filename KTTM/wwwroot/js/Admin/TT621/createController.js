@@ -75,19 +75,21 @@ var createController = {
 
         // btnThemMoiCT
         $('#btnThemMoiCT').off('click').on('click', function () {
-            tamUngId = $('#hidTamUngId').val();
-            if (tamUngId == null || tamUngId == '') {
-                alert('chưa chọn tạm ứng nào để thanh toán');
-            }
-            id_Dong_Da_Click = $('#hidIdCu').val();
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
-            var url = '/TT621s/ThemMoiCT_TT_Partial';
+            //tamUngId = $('#hidTamUngId').val();
+            //if (tamUngId == null || tamUngId == '') {
+            //    alert('chưa chọn tạm ứng nào để thanh toán');
+            //}
+            //id_Dong_Da_Click = $('#hidIdCu').val();
+            //kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+            //var url = '/TT621s/ThemMoiCT_TT_Partial';
 
-            $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click }, function (data) {
-                $('.ThemMoiCT_TT_Body').html(data);
-                $('#ThemMoiCT_TT_Modal').modal('show');
-                $('#ThemMoiCT_TT_Modal').draggable();
-            })
+            //$.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click }, function (data) {
+            //    $('.ThemMoiCT_TT_Body').html(data);
+            //    $('#ThemMoiCT_TT_Modal').modal('show');
+            //    $('#ThemMoiCT_TT_Modal').draggable();
+            //})
+
+            createController.ThemMoiCT_TT_Partial();
         })
         // btnThemMoiCT
 
@@ -152,6 +154,21 @@ var createController = {
         })
     },
 
+    ThemMoiCT_TT_Partial: function (dienGiaiP, hTTC, soTienNT) {
+        tamUngId = $('#hidTamUngId').val();
+        if (tamUngId == null || tamUngId == '') {
+            alert('chưa chọn tạm ứng nào để thanh toán');
+        }
+        id_Dong_Da_Click = $('#hidIdCu').val();
+        kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+        var url = '/TT621s/ThemMoiCT_TT_Partial';
+
+        $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
+            $('.ThemMoiCT_TT_Body').html(data);
+            $('#ThemMoiCT_TT_Modal').modal('show');
+            $('#ThemMoiCT_TT_Modal').draggable();
+        })
+    },
     GetTT621s_By_TamUng: function (tamUngId) {
         $.ajax({
             url: '/TT621s/GetTT621s_By_TamUng',

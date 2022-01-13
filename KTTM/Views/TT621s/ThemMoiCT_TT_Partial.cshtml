@@ -585,7 +585,11 @@
 
     // sotien
     $('#txtSoTienNT').blur(function () {
-        serviceController.TinhSoTien();
+        // TinhSoTien();
+        var dienGiaiP = $('#txtDienGiaiP').val();
+        var hTTC = $('#ddlHttc').val();
+        var soTienNT = $('#txtSoTienNT').val();
+        createController.ThemMoiCT_TT_Partial(dienGiaiP, hTTC, soTienNT);
     })
 
     $('#txtTyGia').blur(function () {
@@ -720,4 +724,29 @@
     }
 
     //// Get_DienGiai_By_TkNo_TkCo forward to service
+
+    function TinhSoTien() {
+
+        soTienNT = $('#txtSoTienNT').val();
+        tyGia = $('#txtTyGia').val();
+
+        $.ajax({
+            type: "GET",
+            url: "/KVCTPTCs/TinhSoTien",
+            data: { soTienNT: soTienNT, tyGia: tyGia },
+            dataType: "json",
+            success: function (response) {
+                if (response.status) {
+                    soTien = response.soTien;
+                    $('#txtSoTien').val(numeral(soTien).format('0,0'));
+                    //$('#txtSoTien').val(numeral(soTien).format('0.0[0000]'));
+                }
+                else {
+                    toastr.error(response.message);
+
+                }
+            }
+        });
+
+    }
 </script>

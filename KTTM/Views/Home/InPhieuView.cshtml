@@ -139,7 +139,7 @@
                             <table class="invoicetable ">
                                 <tr>
                                     <td>Họ tên:</td>
-                                    <td>@Model.KVPTC.HoTen</td>
+                                    <td><b>@Model.KVPTC.HoTen</b></td>
                                     <td class="text-right" colspan="3">C.M.T số ...............................................</td>
                                 </tr>
                                 <tr>
@@ -176,7 +176,7 @@
                                                 int lastItem = Model.KVCTPTCs.ToList().IndexOf(item);
                                                 if (lastItem != Model.KVCTPTCs.Count() - 1)
                                                 {
-                                                // this is the last item
+                                                    // this is the last item
                                                     if (!string.IsNullOrEmpty(item.Sgtcode))
                                                     {
                                                         var sgtcodeArry = sgtcodes.Split('+');
@@ -190,7 +190,12 @@
                                                     //sgtcodes += item.Sgtcode + " + ";
                                                     if (!string.IsNullOrEmpty(item.SoCTGoc))
                                                     {
-                                                        soCTGocs += item.SoCTGoc + ", ";
+                                                        var soCTGocsArry = soCTGocs.Split(',');
+                                                        if (!soCTGocsArry.Any(x => x.Trim() == item.SoCTGoc))
+                                                        {
+                                                            soCTGocs += item.SoCTGoc + ", ";
+                                                        }
+                                                        //soCTGocs += item.SoCTGoc + ", ";
                                                     }
 
                                                 }
@@ -201,9 +206,10 @@
                                                     soCTGocs += item.SoCTGoc;
                                                 }
 
-                                                
+
                                             }
                                             sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
+                                            soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
                                         }
                                         @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
                                     </td>

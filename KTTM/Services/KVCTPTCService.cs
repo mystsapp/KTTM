@@ -324,34 +324,87 @@ namespace KTTM.Services
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
                                     case "CHK":
-                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
                                         break;
 
                                     case "TWI":
-                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000006"; //maKh;
                                         break;
 
                                     case "TND":
-                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        kVCTPTC.MaKhCo = "0310891532051"; //maKh;
                                         break;
 
                                     case "TOB":
-                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000002"; //maKh;
                                         break;
 
                                     case "TXE":
-                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     case "TIB":
-                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        break;
+
+                                    //// them
+                                    case "BHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        break;
+
+                                    case "PHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        break;
+
+                                    case "VHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        break;
+
+                                    case "BIB":
+                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        break;
+
+                                    case "PIB":
+                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        break;
+
+                                    case "PWI":
+                                        kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        break;
+
+                                    case "BWI":
+                                        kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        break;
+
+                                    case "BND":
+                                        kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        break;
+
+                                    case "PND":
+                                        kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        break;
+
+                                    case "BOB":
+                                        kVCTPTC.MaKhCo = "0000000002"; //maKh;
+                                        break;
+
+                                    case "POB":
+                                        kVCTPTC.MaKhCo = "0000000002"; //maKh;
+                                        break;
+
+                                    case "BXE":
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        break;
+
+                                    case "PXE":
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
                                 }
 
                                 kVCTPTC.MaKhCo = maKh; //maKh;
                                 if (tk == "1368000000")
                                 {
-                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                    kVCTPTC.MaKhCo = "0310891532051"; //maKh;
                                 }
                             }
                             else // phieu chi
@@ -366,27 +419,27 @@ namespace KTTM.Services
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
                                     case "HHK":
-                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000004"; //maKh;
                                         break;
 
                                     case "HWI":
-                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000006"; //maKh;
                                         break;
 
                                     case "HND":
-                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        kVCTPTC.MaKhNo = "0310891532051"; //maKh;
                                         break;
 
                                     case "HOB":
-                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000002"; //maKh;
                                         break;
 
                                     case "HXE":
-                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000001"; //maKh;
                                         break;
 
                                     case "HIB":
-                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000005"; //maKh;
                                         break;
                                 }
                             }

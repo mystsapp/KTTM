@@ -11,6 +11,7 @@ namespace Data.Models_KTTM
     {
         [Key, ForeignKey("KVCTPTC")]
         public long Id { get; set; }
+
         public virtual KVCTPTC KVCTPTC { get; set; }
 
         [DisplayName("Chi nhánh")]
@@ -18,8 +19,8 @@ namespace Data.Models_KTTM
         public string MaCn { get; set; }
 
         [DisplayName("Mã KH nợ")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
-        public string MaKhNo { get; set; } 
+        [MaxLength(25, ErrorMessage = "Chiều dài tối đa 25 ký tự"), Column(TypeName = "varchar(25)")]
+        public string MaKhNo { get; set; }
 
         [DisplayName("Số tạm ứng")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
@@ -80,7 +81,6 @@ namespace Data.Models_KTTM
         [MaxLength(80, ErrorMessage = "Chiều dài tối đa 80 ký tự"), Column(TypeName = "nvarchar(80)")]
         public string PhieuTT { get; set; }
 
-
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
 
@@ -99,6 +99,5 @@ namespace Data.Models_KTTM
         //[DisplayName("Ngày khoá")]
         [Column(TypeName = "datetime")]
         public DateTime? NgaySua { get; set; }
-
     }
 }
