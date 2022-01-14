@@ -370,6 +370,7 @@ namespace KTTM.Controllers
         [ValidateAntiForgeryToken] // ko cho submit nhieu lan
         public async Task<IActionResult> LayDataCashierPartial_Post()
         {
+            var ngayCT = KVCTPCTVM.KVPTC.NgayCT;
             var kVPTCId = KVCTPCTVM.KVPTC.Id;
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -427,7 +428,7 @@ namespace KTTM.Controllers
                     KVCTPCTVM.KVPTC.LapPhieu = user.Username;
                     KVCTPCTVM.KVPTC.MaCn = user.Macn;
                     KVCTPCTVM.KVPTC.MFieu = "C";
-                    KVCTPCTVM.KVPTC.NgayCT = DateTime.Now;
+                    KVCTPCTVM.KVPTC.NgayCT = ngayCT;// DateTime.Now;
                     KVCTPCTVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
                     KVCTPCTVM.KVPTC.NgoaiTe = kVPCT.NgoaiTe;
                     KVCTPCTVM.KVPTC.HoTen = "VCB(CHAU)"; // thao

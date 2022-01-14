@@ -1,6 +1,12 @@
 ﻿@model TT621ViewModel
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "Them CT TT Tach VAT";
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
 }
 
 <div style="overflow-x:auto; overflow-y:auto; height: 600px">
@@ -496,7 +502,15 @@
     // tongtien, chiphi ==> thue GTGT
     $('#txtSoTienNT').blur(function () {
 
-        serviceController.TinhSoTien();
+        // serviceController.TinhSoTien();
+        if('@user.Macn' === 'STN'){
+            
+            ThemMoiCT_TT_ContextMenu_Partial(); // ben TT621Create
+
+        }
+        else{
+            serviceController.TinhSoTien();
+        }
 
         soTienNT = $('#txtSoTienNT').val();
         //tyGia = $('#txtTyGia').val();

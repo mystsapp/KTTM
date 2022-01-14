@@ -289,6 +289,16 @@
         // contextmenu for themmoiTT VND btnThemMoiCT
         $('#btnThemMoiCT').contextmenu(function (e) {
             e.preventDefault();
+            
+            ThemMoiCT_TT_ContextMenu_Partial();
+        });
+
+        function ThemMoiCT_TT_ContextMenu_Partial(){
+            debugger
+            var dienGiaiP = $('#txtDienGiaiP').val();
+            var hTTC = $('#ddlHttc').val();
+            var soTienNT = $('#txtSoTienNT').val();
+
             var loaiTien = '@Model.KVPTC.NgoaiTe';
 
             if (loaiTien === 'VN') {
@@ -300,7 +310,7 @@
                 kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
                 var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
 
-                $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click }, function (data) {
+                $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
                     $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
                     $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
                     $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
@@ -311,7 +321,7 @@
                 return;
             }
 
-        });
+        }
         // contextmenu for themmoiTT VND
     </script>
 }

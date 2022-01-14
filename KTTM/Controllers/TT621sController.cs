@@ -790,7 +790,8 @@ namespace KTTM.Controllers
             }
         }
 
-        public async Task<IActionResult> ThemMoiCT_TT_ContextMenu_Partial(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> ThemMoiCT_TT_ContextMenu_Partial(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click,
+            string dienGiaiP, string hTTC, string soTienNT) // tamungid == kvctpctid // 1 <-> 1
         {
             TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
             TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuTC);
@@ -860,6 +861,14 @@ namespace KTTM.Controllers
                 var dongCu = _tT621Service.GetByIdAsNoTracking(id_Dong_Da_Click);
                 TT621VM.TT621 = dongCu;
                 TT621VM.TT621.SoTienNT = tT621.SoTienNT;
+            }
+
+            if (!string.IsNullOrEmpty(dienGiaiP))
+            {
+                TT621VM.TT621.DienGiaiP = dienGiaiP;
+                TT621VM.TT621.HTTC = hTTC;
+                TT621VM.TT621.SoTienNT = decimal.Parse(soTienNT);
+                TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * TT621VM.TT621.TyGia;
             }
 
             return PartialView(TT621VM);

@@ -169,6 +169,7 @@ var createController = {
             $('#ThemMoiCT_TT_Modal').draggable();
         })
     },
+
     GetTT621s_By_TamUng: function (tamUngId) {
         $.ajax({
             url: '/TT621s/GetTT621s_By_TamUng',
