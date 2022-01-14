@@ -143,7 +143,7 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.SoTienNT = KVCTPCTVM.KVCTPTC.SoTienNT == null ? 0 : KVCTPCTVM.KVCTPTC.SoTienNT.Value;
             KVCTPCTVM.KVCTPTC.SoTien = KVCTPCTVM.KVCTPTC.SoTien == null ? 0 : KVCTPCTVM.KVCTPTC.SoTien.Value;
             KVCTPCTVM.KVCTPTC.VAT = KVCTPCTVM.KVCTPTC.VAT ?? 0;
-            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
+            //KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.DSKhongVAT ?? 0;
             KVCTPCTVM.KVCTPTC.NguoiTao = user.Username;
             KVCTPCTVM.KVCTPTC.MaCn = user.Macn;
             KVCTPCTVM.KVCTPTC.DienGiaiP = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.DienGiaiP) ? "" : KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
@@ -261,8 +261,8 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
             KVCTPCTVM.KVCTPTC.SoTien = KVCTPCTVM.KVCTPTC.SoTienNT * KVCTPCTVM.KVCTPTC.TyGia;
-            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.SoTienNT;
-            KVCTPCTVM.KVCTPTC.DSKhongVAT ??= 0;
+            KVCTPCTVM.KVCTPTC.DSKhongVAT = KVCTPCTVM.KVCTPTC.SoTienNT.Value;
+            //KVCTPCTVM.KVCTPTC.DSKhongVAT ??= 0;
             //KVCTPCTVM.KVCTPTC.SoTienNT : "co roi: tren view"
 
             // ghi log

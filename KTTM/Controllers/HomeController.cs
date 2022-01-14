@@ -77,7 +77,7 @@ namespace KTTM.Controllers
             //        SoTien = item.Sotien.Value,
             //        SoTienNT = item.Sotiennt.Value,
             //        TyGia = item.Tygia.Value,
-            //        MaCn = "STN"
+            //        MaCn = "STC"
             //    });
             //}
             //var abc = "";
@@ -144,9 +144,9 @@ namespace KTTM.Controllers
             //await _tT621Service.CreateRangeAsync(tT621s);
 
             //var list = _kTTM_1Context.Tamungs.ToList();
-            //List<KVCTPTC> listKVCTPTC = _kVCTPTCService.FindByMaCN("STN");
+            //List<KVCTPTC> listKVCTPTC = _kVCTPTCService.FindByMaCN("STC");
             ////var listKVCTPTC = _kVCTPTCService.GetAll().ToList();
-            //var listKVPTC = _kVPTCService.FindByMaCN("STN");
+            //var listKVPTC = _kVPTCService.FindByMaCN("STC");
             ////var listKVPTC = _kVPTCService.GetAll().ToList();
 
             //List<Data.Models_KTTM.TamUng> tamUngs = new List<Data.Models_KTTM.TamUng>();
@@ -187,7 +187,7 @@ namespace KTTM.Controllers
             //await _tamUngService.CreateRangeAsync(tamUngs);
 
             ////var kvptcs = _kVPTCService.GetAll().ToList();
-            //List<KVPTC> kvptcs = _kVPTCService.FindByMaCN("STN");
+            //List<KVPTC> kvptcs = _kVPTCService.FindByMaCN("STC");
             //var kvctptcs = _kTTM_1Context.Kvctpcts.ToList();
             //List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
@@ -207,7 +207,7 @@ namespace KTTM.Controllers
             //                DienGiai = item.Diengiai.Trim(),
             //                DienGiaiP = item.Diengiaip.Trim(),
             //                DieuChinh = item.Dieuchinh.Value,
-            //                DSKhongVAT = item.Dskhongvat,
+            //                DSKhongVAT = item.Dskhongvat.Value,
             //                HoaDonDT = item.Hoadondt.Trim(),
             //                HTTC = item.Httc.Trim(),
             //                HTTT = item.Httt.Trim(),
@@ -269,7 +269,7 @@ namespace KTTM.Controllers
             //        NgoaiTe = item.Ngoaite.Trim(),
             //        Phong = item.Phong.Trim(),
             //        SoCT = item.Soct.Trim(),
-            //        MaCn = "STN"
+            //        MaCn = "STC"
             //    });
             //}
 

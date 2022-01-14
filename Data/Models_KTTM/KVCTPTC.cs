@@ -118,7 +118,7 @@ namespace Data.Models_KTTM
 
         [DisplayName("Doanh số chưa thuế")]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal? DSKhongVAT { get; set; } //
+        public decimal DSKhongVAT { get; set; } //
 
         [DisplayName("Bộ phận")]
         [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
