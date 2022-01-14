@@ -1,6 +1,12 @@
 ﻿@model TT621ViewModel
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "Them CT TT";
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
 }
 
 <div style="overflow-x:auto; overflow-y:auto; height: 600px">
@@ -585,11 +591,18 @@
 
     // sotien
     $('#txtSoTienNT').blur(function () {
+
         // TinhSoTien();
-        var dienGiaiP = $('#txtDienGiaiP').val();
+        if('@user.Macn' === 'STN'){
+             var dienGiaiP = $('#txtDienGiaiP').val();
         var hTTC = $('#ddlHttc').val();
         var soTienNT = $('#txtSoTienNT').val();
         createController.ThemMoiCT_TT_Partial(dienGiaiP, hTTC, soTienNT);
+        }
+        else{
+            TinhSoTien();
+        }
+
     })
 
     $('#txtTyGia').blur(function () {

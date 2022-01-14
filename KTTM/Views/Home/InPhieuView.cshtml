@@ -138,8 +138,8 @@
                         <div class="col-12 table-responsive">
                             <table class="invoicetable ">
                                 <tr>
-                                    <td>Họ tên:</td>
-                                    <td><b>@Model.KVPTC.HoTen</b></td>
+                                    <td> Họ tên: </td>
+                                    <td><b><span style="font-size:20px">@Model.KVPTC.HoTen </span></b></td>
                                     <td class="text-right" colspan="3">C.M.T số ...............................................</td>
                                 </tr>
                                 <tr>
@@ -176,7 +176,7 @@
                                                 int lastItem = Model.KVCTPTCs.ToList().IndexOf(item);
                                                 if (lastItem != Model.KVCTPTCs.Count() - 1)
                                                 {
-                                                    // this is the last item
+                                                // this is the last item
                                                     if (!string.IsNullOrEmpty(item.Sgtcode))
                                                     {
                                                         var sgtcodeArry = sgtcodes.Split('+');
@@ -208,8 +208,17 @@
 
 
                                             }
-                                            sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
-                                            soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
+                                            
+                                            if(sgtcodes.Contains('+') && sgtcodes.Length > 2)
+                                            {
+                                                sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);    
+                                                
+                                            }
+                                            if(soCTGocs.Contains(',') && soCTGocs.Length > 2)
+                                            {
+                                                soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
+                                            }
+
                                         }
                                         @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
                                     </td>
@@ -243,7 +252,7 @@
                                                 }
                                                 }
                                                 @tongCong*@
-                                            @ViewBag.tongCong
+                                            <span style="font-size:20px">@ViewBag.tongCong</span>
                                         </b>
                                     </td>
                                 </tr>
