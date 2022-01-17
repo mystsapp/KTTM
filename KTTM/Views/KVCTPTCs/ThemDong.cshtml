@@ -695,6 +695,12 @@
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
     })
+
+    var tkNo = $('#ddlTkNo').val();
+    var tkCo = $('#ddlTkCo').val();
+    if(tkNo !== '' && tkCo !== ''){  // truong hop copy dong
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+    }
     // get dien giai by tkno tkco
 
     // VAT ==> DSKhongVAT

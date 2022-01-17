@@ -262,22 +262,22 @@ var indexController = {
             success: function (response) {
                 if (response.status) {
                     var data = response.data;
-                    // console.log(data);
+                    console.log(data);
 
                     if (txtMaKh === 'txtMaKhNo') { // search of no
                         $('#txtMaKhNo').val(data.code);
-                        $('#txtTenKhNo').val(data.name);
+                        $('#txtTenKhNo').val(data.tenThuongMai);
                     }
                     if (txtMaKh === 'txtMaKhCo') { // search of co
                         $('#txtMaKhCo').val(data.code);
-                        $('#txtTenKhCo').val(data.name);
+                        $('#txtTenKhCo').val(data.tenThuongMai);
                     }
 
-                    $('#txtKyHieu').val(data.taxsign);
-                    $('#txtMauSoHD').val(data.taxform);
-                    $('#txtMsThue').val(data.taxcode);
-                    $('#txtTenKH').val(data.name);
-                    $('#txtDiaChi').val(data.address);
+                    $('#txtKyHieu').val(data.kyHieuHd);
+                    $('#txtMauSoHD').val(data.mauSoHd);
+                    $('#txtMsThue').val(data.maSoThue);
+                    $('#txtTenKH').val(data.tenThuongMai);
+                    $('#txtDiaChi').val(data.diaChi);
                 }
                 else {// search ko co KH nao het => ...
                     if ($('#btnKhSearch').data('name') === 'maKhNo') { // search of no

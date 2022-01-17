@@ -506,7 +506,7 @@
         if('@user.Macn' === 'STN'){
             
             ThemMoiCT_TT_ContextMenu_Partial(); // ben TT621Create
-
+            $('#txtSoTienNT').val('@ViewBag.soTienNT');
         }
         else{
             serviceController.TinhSoTien();
@@ -568,7 +568,7 @@
     })
 
     $('#txtMaKhNo_ThemMoi').blur(function () {
-
+        alert('a');
             maKhtext = $(this).val();
 
             //KhachHang_By_Code(maKhtext);
@@ -638,12 +638,12 @@
             maxlength: "Sgtcode phải là 17 ký tự"
         }
     });
-
+@*
     // sotien
     $('#txtSoTienNT').blur(function () {
         serviceController.TinhSoTien();
     })
-
+*@
     $('#txtTyGia').blur(function () {
         serviceController.TinhSoTien();
     })

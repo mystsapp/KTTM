@@ -70,7 +70,7 @@ namespace KTTM.Services
 
         IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB();
 
-        IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn);
+        IEnumerable<KhachHang> GetSuppliersByCode(string code);
 
         //IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCodeName(string code, string maCn);
         IEnumerable<VSupplierTaiKhoan> GetSuppliersByCodeName(string code, string maCn);
@@ -1239,12 +1239,12 @@ namespace KTTM.Services
             await _unitOfWork.xeRepository.UpdateAsync(thuchi);
         }
 
-        public IEnumerable<Data.Models_HDVATOB.Supplier> GetSuppliersByCode(string code, string maCn)
+        public IEnumerable<KhachHang> GetSuppliersByCode(string code)
         {
             code ??= "";
-            var suppliers = _unitOfWork.supplier_Hdvatob_Repository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower()) && x.Chinhanh == maCn).ToList();
+            var khachHangs = _unitOfWork.khachHang_DanhMucKTRepository.Find(x => x.Code.Trim().ToLower().Contains(code.Trim().ToLower())).ToList();
 
-            return suppliers;
+            return khachHangs;
         }
 
         public IPagedList<KhachHang> GetSuppliersByCodeName_PagedList(string code, string maCn, int? page)

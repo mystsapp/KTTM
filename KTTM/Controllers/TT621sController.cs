@@ -863,11 +863,12 @@ namespace KTTM.Controllers
                 TT621VM.TT621.SoTienNT = tT621.SoTienNT;
             }
 
-            if (!string.IsNullOrEmpty(dienGiaiP))
+            if (!string.IsNullOrEmpty(soTienNT))
             {
                 TT621VM.TT621.DienGiaiP = dienGiaiP;
                 TT621VM.TT621.HTTC = hTTC;
                 TT621VM.TT621.SoTienNT = decimal.Parse(soTienNT);
+                ViewBag.soTienNT = decimal.Parse(soTienNT);
                 TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * TT621VM.TT621.TyGia;
             }
 

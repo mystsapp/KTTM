@@ -170,6 +170,36 @@ var createController = {
         })
     },
 
+    //ThemMoiCT_TT_ContextMenu_Partial: function () {
+    //    debugger
+    //    var dienGiaiP = $('#txtDienGiaiP').val();
+    //    var hTTC = $('#ddlHttc').val();
+    //    var soTienNT = $('#txtSoTienNT').val();
+
+    //    var loaiTien = '@Model.KVPTC.NgoaiTe';
+
+    //    if (loaiTien === 'VN') {
+    //        tamUngId = $('#hidTamUngId').val();
+    //        if (tamUngId == null || tamUngId == '') {
+    //            alert('chưa chọn tạm ứng nào để thanh toán');
+    //        }
+    //        id_Dong_Da_Click = $('#hidIdCu').val();
+    //        kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+    //        var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
+
+    //        $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
+    //            $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
+    //            $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
+    //            $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
+    //        })
+    //    }
+    //    else {
+    //        toastr.warning("Hãy chọn phiếu TT VN.");
+    //        return;
+    //    }
+
+    //},
+
     GetTT621s_By_TamUng: function (tamUngId) {
         $.ajax({
             url: '/TT621s/GetTT621s_By_TamUng',
@@ -305,18 +335,18 @@ var createController = {
 
                     if (txtMaKh === 'txtMaKhNo') { // search of no
                         $('#txtMaKhNo_ThemMoi').val(data.code);
-                        $('#txtTenKhNo_ThemMoi').val(data.name);
+                        $('#txtTenKhNo_ThemMoi').val(data.tenThuongMai);
                     }
                     if (txtMaKh === 'txtMaKhCo') { // search of co
                         $('#txtMaKhCo_ThemMoi').val(data.code);
-                        $('#txtTenKhCo_ThemMoi').val(data.name);
+                        $('#txtTenKhCo_ThemMoi').val(data.tenThuongMai);
                     }
 
-                    $('#txtKyHieu').val(data.taxsign);
-                    $('#txtMauSoHD').val(data.taxform);
-                    $('#txtMsThue').val(data.taxcode);
-                    $('#txtTenKH').val(data.name);
-                    $('#txtDiaChi').val(data.address);
+                    $('#txtKyHieu').val(data.kyHieuHd);
+                    $('#txtMauSoHD').val(data.mauSoHd);
+                    $('#txtMsThue').val(data.maSoThue);
+                    $('#txtTenKH').val(data.tenThuongMai);
+                    $('#txtDiaChi').val(data.diaChi);
                 }
             }
         });
@@ -334,18 +364,18 @@ var createController = {
 
                     if (txtMaKh === 'txtMaKhNo') { // search of no
                         $('#txtMaKhNo_CapNhat').val(data.code);
-                        $('#txtTenKhNo').val(data.name);
+                        $('#txtTenKhNo').val(data.tenThuongMai);
                     }
                     if (txtMaKh === 'txtMaKhCo') { // search of co
                         $('#txtMaKhCo_CapNhat').val(data.code);
-                        $('#txtTenKhCo_CapNhat').val(data.name);
+                        $('#txtTenKhCo_CapNhat').val(data.tenThuongMai);
                     }
 
-                    $('#txtKyHieu').val(data.taxSign);
-                    $('#txtMauSoHD').val(data.taxForm);
-                    $('#txtMsThue').val(data.taxCode);
-                    $('#txtTenKH').val(data.name);
-                    $('#txtDiaChi').val(data.address);
+                    $('#txtKyHieu').val(data.kyHieuHd);
+                    $('#txtMauSoHD').val(data.mauSoHd);
+                    $('#txtMsThue').val(data.maSoThue);
+                    $('#txtTenKH').val(data.tenThuongMai);
+                    $('#txtDiaChi').val(data.diaChi);
                 }
             }
         });

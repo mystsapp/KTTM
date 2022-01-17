@@ -914,13 +914,13 @@ namespace KTTM.Controllers
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            var supplier = _kVCTPTCService.GetSuppliersByCode(code, user.Macn).FirstOrDefault();
-            if (supplier != null)
+            var khachHang = _kVCTPTCService.GetSuppliersByCode(code).FirstOrDefault();
+            if (khachHang != null)
             {
                 return Json(new
                 {
                     status = true,
-                    data = supplier
+                    data = khachHang
                 }); ;
             }
             else
