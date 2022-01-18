@@ -64,6 +64,23 @@ namespace KTTM.Controllers
                 {
                     var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, 0, "T");
                     TT621VM.CommentText = jsonResult.Result.Value.ToString();
+
+
+                    // get all TT621 thep tamungs -> clear het
+                    List<TT621> tT621s = new List<TT621>();
+                    foreach (var item in TT621VM.TamUngs)
+                    {
+                        var tT621s1 = await _tT621Service.GetTT621s_By_TamUng(item.Id);
+                        if (tT621s1 != null)
+                        {
+                            tT621s.AddRange(tT621s1);
+                        }
+                    }
+                    if (tT621s != null)
+                    {
+                        await _tT621Service.DeleteRangeAsync(tT621s);
+                    }
+                    // get all TT621 thep tamungs -> clear het
                 }
             }
 
@@ -867,9 +884,9 @@ namespace KTTM.Controllers
             {
                 TT621VM.TT621.DienGiaiP = dienGiaiP;
                 TT621VM.TT621.HTTC = hTTC;
-                TT621VM.TT621.SoTienNT = decimal.Parse(soTienNT);
-                ViewBag.soTienNT = decimal.Parse(soTienNT);
-                TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * TT621VM.TT621.TyGia;
+                //TT621VM.TT621.SoTienNT = decimal.Parse(soTienNT);
+                //ViewBag.soTienNT = decimal.Parse(soTienNT);
+                TT621VM.TT621.SoTien = decimal.Parse(soTienNT) * TT621VM.TT621.TyGia;
             }
 
             return PartialView(TT621VM);
