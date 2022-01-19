@@ -94,7 +94,7 @@ namespace KTTM.Services
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,
-                    Name = item.MaKhNo + " " + supplier.TenThuongMai,//item.KVCTPTC.TenKH,
+                    Name = item.MaKhNo + " " + supplier.TenGiaoDich,//.TenThuongMai,//item.KVCTPTC.TenKH, --> thao
                     Name_Phong = item.Phong,
                     Id = item.Id
                 });
@@ -150,7 +150,7 @@ namespace KTTM.Services
                         LT = item.LoaiTien,
                         TyGia = item.TyGia,
                         VND = item.SoTien,
-                        Name = item.MaKhNo + " " + supplier.TenThuongMai ?? "",
+                        Name = item.MaKhNo + " " + supplier.TenGiaoDich,//supplier.TenThuongMai ?? "",
                         //Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
                         Name_Phong = item.Phong,
                         Id = item.Id
