@@ -52,6 +52,10 @@ namespace KTTM.Services
         Task<List<TT621>> GetByPhieuTC(string soCT, string maCn);
 
         IEnumerable<TT621GroupBy_PhieuTC> GroupBy_PhieuTC(IEnumerable<TT621> tT621s);
+
+        Task<TT621> GetBySoCT(string soCT, string maCn);
+
+        Task<IEnumerable<TT621>> FindBySoCT(string soCT, string maCn);
     }
 
     public class TT621Service : ITT621Service
@@ -394,6 +398,17 @@ namespace KTTM.Services
                           }).ToList();
 
             return result;
+        }
+
+        public async Task<TT621> GetBySoCT(string soCT, string maCn)
+        {
+            var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
+            return tT621s.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<TT621>> FindBySoCT(string soCT, string maCn)
+        {
+            return await _unitOfWork.tT621Repository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
         }
     }
 }

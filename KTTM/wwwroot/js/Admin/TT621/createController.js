@@ -6,37 +6,37 @@
 
 var createController = {
     init: function () {
-        //toastr.options = { // toastr options
-        //    "closeButton": false,
-        //    "debug": false,
-        //    "newestOnTop": false,
-        //    "progressBar": true,
-        //    "positionClass": "toast-top-right",
-        //    "preventDuplicates": false,
-        //    "onclick": null,
-        //    "showDuration": "300",
-        //    "hideDuration": "2000",
-        //    "timeOut": "2000",
-        //    "extendedTimeOut": "1000",
-        //    "showEasing": "swing",
-        //    "hideEasing": "linear",
-        //    "showMethod": "fadeIn",
-        //    "hideMethod": "fadeOut"
-        //};
+        toastr.options = { // toastr options
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "2000",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
 
         createController.registerEvent();
     },
 
     registerEvent: function () {
-        //// format .numbers
-        //$('input.numbers').keyup(function (event) {
-        //    // Chỉ cho nhập số
-        //    if (event.which >= 37 && event.which <= 40) return;
+        // format .numbers
+        $('input.numbers').keyup(function (event) {
+            // Chỉ cho nhập số
+            if (event.which >= 37 && event.which <= 40) return;
 
-        //    $(this).val(function (index, value) {
-        //        return addCommas(value);
-        //    });
-        //});
+            $(this).val(function (index, value) {
+                return addCommas(value);
+            });
+        });
 
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
         $('.tamUngTr').off('click').on('click', function () {
@@ -122,9 +122,12 @@ var createController = {
                             createController.GetTT621s_By_TamUng(tamUngId);
                             createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
                             $('#btnDelete').attr('disabled', true); // disabled btnDelete
+
+                            if (response.tT621sCount === '')
+                                createController.Enabled_TU_Khong_TT();
                         }
                         else {
-                            toastr.error(response.message, 'Thêm thanh toán!')
+                            toastr.error(response.message, 'Xoá thanh toán!')
                         }
                     });
                 }
@@ -287,7 +290,25 @@ var createController = {
                     'background-color': 'grey'
                 });
             }
+            else {
+                $('#' + id).removeProp({
+                    'pointer-events': 'none',
+                    'background-color': 'grey'
+                });
+            }
         });
+    },
+    Enabled_TU_Khong_TT: function () {
+        //var idList = [];
+        //$.each($('.tamUngTr'), function (i, item) {
+        //    var id = $(item).data('id');
+
+        //    $('#' + id).removeProp("pointer-events");
+        //    $('#' + id).removeProp("background-color");
+
+        //});
+
+        $(".tamUngTr").removeClass().removeAttr('style');
     },
     Check_KetChuyenBtnStatus: function (tamUngId, soTienNT, loaiPhieu) {
         $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT, loaiPhieu: loaiPhieu }, function (status) {

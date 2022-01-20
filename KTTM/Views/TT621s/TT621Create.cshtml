@@ -157,7 +157,7 @@
                             @foreach (var item in Model.TamUngs)
                             {
 
-                                <tr class="tamUngTr" id="@item.Id" data-id="@item.Id" data-soTU_DaTT="@item.KVCTPTC.SoTU_DaTT">
+                                <tr class="tamUngTr @item.Id" id="@item.Id" data-id="@item.Id" data-soTU_DaTT="@item.KVCTPTC.SoTU_DaTT">
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
@@ -182,7 +182,8 @@
 
                     <input type="hidden" id="hidTamUngId" />
                     <input type="hidden" id="hidIdCu" value="0" />
-                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
+                    <button class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
+                    <!--<button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>-->
 
                     <input type="hidden" id="hidTT621Id" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
@@ -248,81 +249,144 @@
     </div>
 </section>
 
+<form asp-action="ThemMoiCT_TT_ContextMenu" method="get" id="frm_ThemMoiCT_TT_ContextMenu">
+    <input type="hidden" id="tamUngId" name="tamUngId" />
+    <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
+    <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
+
+    <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
+    <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
+</form>
+
 @section Scripts{
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
-    <!--mustache-->
-    <script src="~/lib/mustache.min.js"></script>
-    <script src="~/js/Admin/TT621/createController.js"></script>
-    <script id="data-template" type="x-tmpl-mustache">
+<!--mustache-->
+<script src="~/lib/mustache.min.js"></script>
+<script src="~/js/Admin/TT621/createController.js"></script>
+<script id="data-template" type="x-tmpl-mustache">
 
-        <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
+    <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
 
-            <td>{{SoCT}}</td>
-            <td>{{DienGiai}}</td>
-            <td>{{DienGiaiP}}</td>
-            <td>{{SoTienNT}}</td>
-            <td>{{LoaiTien}}</td>
-            <td>{{TyGia}}</td>
-            <td>{{SoTien}}</td>
-            <td>{{TKNo}}</td>
-            <td>{{MaKhNo}}</td>
-            <td>{{TKCo}}</td>
-            <td>{{MaKhCo}}</td>
-            <td>{{PhieuTC}}</td>
-        </tr>
-    </script>
+        <td>{{SoCT}}</td>
+        <td>{{DienGiai}}</td>
+        <td>{{DienGiaiP}}</td>
+        <td>{{SoTienNT}}</td>
+        <td>{{LoaiTien}}</td>
+        <td>{{TyGia}}</td>
+        <td>{{SoTien}}</td>
+        <td>{{TKNo}}</td>
+        <td>{{MaKhNo}}</td>
+        <td>{{TKCo}}</td>
+        <td>{{MaKhCo}}</td>
+        <td>{{PhieuTC}}</td>
+    </tr>
+</script>
 
-    <script>
-        function confirmDelete(uniqueId, isDeleteClicked) {
-            var deleteSpan = 'deleteSpan_' + uniqueId;
-            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+<script>
 
-            if (isDeleteClicked) {
-                $('#' + deleteSpan).hide();
-                $('#' + confirmDeleteSpan).show();
-            } else {
-                $('#' + deleteSpan).show();
-                $('#' + confirmDeleteSpan).hide();
-            }
+
+    var id_Redirect = '@ViewBag.tamUngId'; //Id sau khi redirect ve //////////////////////////////////////////////
+    if (id_Redirect !== '') {
+        createController.Disabled_TU_Khong_TT(id_Redirect); // Disabled row TU ko co TT
+        $('.' + id_Redirect).click();
+    }
+    if('@ViewBag.SoTT_DaTao' === ''){
+        createController.Enabled_TU_Khong_TT();
+    }
+
+    ////var tr_click = $('#phieuTbl ' + soCT);
+    //if (id_Redirect !== '') {
+
+    //    var id_Redirect_Class = $('.' + id_Redirect);
+
+    //    if (id_Redirect_Class.hasClass("hoverClass")) {
+    //        id_Redirect_Class.removeClass("hoverClass");
+    //    }
+    //    else {
+    //        id_Redirect_Class.removeClass("hoverClass");
+    //        id_Redirect_Class.addClass("hoverClass");
+    //    }
+
+    //    indexController.TdVal_Click(id_Redirect);
+    //}
+
+    function confirmDelete(uniqueId, isDeleteClicked) {
+        var deleteSpan = 'deleteSpan_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+        if (isDeleteClicked) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
         }
+    }
 
-        // contextmenu for themmoiTT VND btnThemMoiCT
-        $('#btnThemMoiCT').contextmenu(function (e) {
-            e.preventDefault();
+    // contextmenu for themmoiTT VND btnThemMoiCT
+    $('#btnThemMoiCT').contextmenu(function (e) {
+        e.preventDefault();
+
+        ////ThemMoiCT_TT_ContextMenu_Partial();
+        //var dienGiaiP = $('#txtDienGiaiP').val();
+        //var hTTC = $('#ddlHttc').val();
+        //var soTienNT = $('#txtSoTienNT').val();
+        
+        var loaiTien = '@Model.KVPTC.NgoaiTe';
+        
+        if (loaiTien === 'VN') {
+            tamUngId = $('#hidTamUngId').val();
             
-            ThemMoiCT_TT_ContextMenu_Partial();
-        });
-
-        function ThemMoiCT_TT_ContextMenu_Partial(){
-            debugger
-            var dienGiaiP = $('#txtDienGiaiP').val();
-            var hTTC = $('#ddlHttc').val();
-            var soTienNT = $('#txtSoTienNT').val();
-
-            var loaiTien = '@Model.KVPTC.NgoaiTe';
-
-            if (loaiTien === 'VN') {
-                tamUngId = $('#hidTamUngId').val();
-                if (tamUngId == null || tamUngId == '') {
-                    alert('chưa chọn tạm ứng nào để thanh toán');
-                }
-                id_Dong_Da_Click = $('#hidIdCu').val();
-                kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
-                var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
-
-                $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
-                    $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
-                    $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
-                    $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
-                    $('#txtSoTienNT').val(soTienNT);
-                })
+            if (tamUngId == null || tamUngId == '') {
+                alert('chưa chọn tạm ứng nào để thanh toán');
             }
-            else {
-                toastr.warning("Hãy chọn phiếu TT VN.");
-                return;
-            }
+            $('#tamUngId').val(tamUngId);
 
+            id_Dong_Da_Click = $('#hidIdCu').val();
+            $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
+            
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+            $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
+            
+            $('#frm_ThemMoiCT_TT_ContextMenu').submit();
         }
-        // contextmenu for themmoiTT VND
-    </script>
+        else {
+            toastr.warning("Hãy chọn phiếu TT VN.");
+            return;
+        }
+        
+    });
+
+    function ThemMoiCT_TT_ContextMenu_Partial(){
+        debugger
+        var dienGiaiP = $('#txtDienGiaiP').val();
+        var hTTC = $('#ddlHttc').val();
+        var soTienNT = $('#txtSoTienNT').val();
+
+        var loaiTien = '@Model.KVPTC.NgoaiTe';
+
+        if (loaiTien === 'VN') {
+            tamUngId = $('#hidTamUngId').val();
+            if (tamUngId == null || tamUngId == '') {
+                alert('chưa chọn tạm ứng nào để thanh toán');
+            }
+            id_Dong_Da_Click = $('#hidIdCu').val();
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+            var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
+
+            $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
+                $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
+                $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
+                $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
+                $('#txtSoTienNT').val(soTienNT);
+            })
+        }
+        else {
+            toastr.warning("Hãy chọn phiếu TT VN.");
+            return;
+        }
+
+    }
+    // contextmenu for themmoiTT VND
+</script>
 }
