@@ -27,7 +27,8 @@
 
                 <th>Mã KH</th>
                 <th>Ms Thuế</th>
-                <th>Tên KH</th>
+                <th>Tên giao dịch</th>
+                <th>Tên thương mại</th>
                 <th>Thành phố</th>
                 <th>Địa chỉ</th>
                 <th>Điện thoại</th>
@@ -47,6 +48,7 @@
                         
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.MaSoThue)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.TenGiaoDich)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.TenThuongMai)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.ThanhPho)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.DiaChi)</td>
@@ -128,28 +130,29 @@
 
         var code = $(this).children().eq(0).html();
         var taxCode = $(this).children().eq(1).html();
-        var name = $(this).children().eq(2).html();
-        var city = $(this).children().eq(3).html();
-        var address = $(this).children().eq(4).html();
-        var telephone = $(this).children().eq(5).html();
-        var email = $(this).children().eq(6).html();
+        var nameGiaoDich = $(this).children().eq(2).html();
+        var nameThuongMai = $(this).children().eq(3).html();
+        var city = $(this).children().eq(4).html();
+        var address = $(this).children().eq(5).html();
+        var telephone = $(this).children().eq(6).html();
+        var email = $(this).children().eq(7).html();
 
-        var taxSign = $(this).children().eq(7).html();
-        var taxForm = $(this).children().eq(8).html();
+        var taxSign = $(this).children().eq(8).html();
+        var taxForm = $(this).children().eq(9).html();
 
         if ($('#hidTxtMaKh').val() === 'maKhNo') { // search off no
             $('#txtMaKhNo_ThemMoi').val(code);
-            $('#txtTenKhNo_ThemMoi').val(name);
+            $('#txtTenKhNo_ThemMoi').val(nameThuongMai);
         }
         if ($('#hidTxtMaKh').val() === 'maKhCo') { // search off co
             $('#txtMaKhCo_ThemMoi').val(code);
-            $('#txtTenKhCo_ThemMoi').val(name);
+            $('#txtTenKhCo_ThemMoi').val(nameThuongMai);
         }
 
         $('#txtKyHieu').val(taxSign);
         $('#txtMauSoHD').val(taxForm);
         $('#txtMsThue').val(taxCode);
-        $('#txtTenKH').val(name);
+        $('#txtTenKH').val(nameThuongMai);
         $('#txtDiaChi').val(address);
 
         //var code = $(this).find("td").eq(0).html();
