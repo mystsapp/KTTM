@@ -183,6 +183,15 @@ namespace KTTM.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
+            if (!string.IsNullOrEmpty(kVCTPCT.HoanUngTU))
+            {
+                //ViewBag.errorMessage = "chi tiết này đã hoàn ứng: " + kVCTPCT.HoanUngTU;
+                //return View("~/Views/Shared/Error.cshtml");
+
+                SetAlert("Chi tiết này đã hoàn ứng: " + kVCTPCT.HoanUngTU, "warning");
+                return Redirect(strUrl);
+            }
+
             TT621VM.KVCTPTC = kVCTPCT;
             TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
@@ -206,6 +215,11 @@ namespace KTTM.Controllers
                 var tT621 = await _tT621Service.GetBySoCT(kVCTPCT.SoTT_DaTao, user.Macn);
                 if (tT621 != null)
                     ViewBag.tamUngId = tT621.TamUngId;
+            }
+
+            if (!string.IsNullOrEmpty(kVCTPCT.SoTT_DaTao)) // redirect
+            {
+                ViewBag.SoTT_DaTao = kVCTPCT.SoTT_DaTao;
             }
 
             // get commenttext
@@ -480,7 +494,7 @@ namespace KTTM.Controllers
                 string log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
-                log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                log += temp + " -User cập nhật: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                 t.LogFile = t.LogFile + log;
                 TT621VM.TT621.LogFile = t.LogFile;
             }
@@ -1729,6 +1743,69 @@ namespace KTTM.Controllers
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(
                 tamUngId, soTienNT_Tren_TT621Create, loaiPhieu);
             return Json(soTienNT_CanKetChuyen);
+        }
+
+        [HttpPost]
+        public JsonResult Check_ThuHoanUngBtnStatus(long tamUngId)
+        {
+            var tT621s = _tT621Service.FindByTamUngId(tamUngId);
+            if (tT621s.Count() == 0)
+            {
+                return Json(false); // btn on
+            }
+            return Json(true); // btn off
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ThuHoanUng(long tamUngId, string soTienNT, string soCTThu, long kvctptcId) // chi VND
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            string soTienNTOld = tamUng.SoTienNT.ToString();
+            string soTienOld = tamUng.SoTien.ToString();
+
+            if (tamUng == null)
+                return Json(new
+                {
+                    status = false,
+                    message = "Tạm ứng không tồn tại!"
+                });
+            else
+            {
+                tamUng.SoTienNT = tamUng.SoTienNT - decimal.Parse(soTienNT);
+                tamUng.SoTien = tamUng.SoTien - decimal.Parse(soTienNT);
+                tamUng.ConLaiNT = tamUng.SoTienNT;
+                tamUng.ConLai = tamUng.SoTien;
+
+                string temp = "";
+                temp += String.Format("- SoTienNT thay đổi: {0}->{1}", soTienNTOld, soTienNT);
+                temp += String.Format("- SoTien thay đổi: {0}->{1}", soTienOld, soTienNT);
+
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+                    string log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User thu hoàn ứng: " + user.Username + ", KVCTPTC thu: " + soCTThu + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    tamUng.LogFile = tamUng.LogFile + log;
+                }
+
+                await _tamUngService.UpdateAsync(tamUng);
+
+                // cap nhat lai kvctptc
+                KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // tamUngId == kvctptcId
+                kVCTPTC.HoanUngTU = tamUng.SoCT;
+                kVCTPTC.LogFile += " -User thu hoàn ứng: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                await _kVCTPTCService.UpdateAsync(kVCTPTC);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
         }
     }
 }

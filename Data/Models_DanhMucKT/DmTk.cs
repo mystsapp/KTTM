@@ -12,7 +12,7 @@ namespace Data.Models_DanhMucKT
         public string Tkhoan2 { get; set; }
         public string TenTk { get; set; }
         public string TkhoanCu { get; set; }
-        public bool? SuDung { get; set; }
+        public bool SuDung { get; set; }
         public string GhiChu { get; set; }
         public int Id { get; set; }
     }

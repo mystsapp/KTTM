@@ -78,13 +78,14 @@
 
                                     @if (string.IsNullOrEmpty(item.TamUng)) // chua them vao tamung
                                     {
-                                        if(user.Username == item.NguoiTao)
+                                        
+                                        if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao) // da hoan ung
                                         {
-                                            <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPTC" asp-controller="KVCTPTCs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
+                                            <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-edit"></i></button>
                                         }
                                         else
                                         {
-                                            <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-edit"></i></button>
+                                            <a class="text-primary btnEditKVCTPCT" asp-action="Edit_KVCTPTC" asp-controller="KVCTPTCs" title="Cập nhật" asp-route-id="@item.Id" asp-route-page="@Model.Page"><i class="fas fa-edit"></i></a>
                                         }
 
                                         @*<span class="text-dark"> | </span>*@
@@ -99,15 +100,15 @@
                                             <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                         </span>
                                         <span id="deleteSpan_@item.Id">
-                                            @if(user.Username == item.NguoiTao)
-                                            {
-                                                <button type="button" data-id="@item.Id" class="text-danger border-0 bg-transparent btnXoa" title="Xoá" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                            }
-                                            else
+                                            
+                                            @if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao)
                                             {
                                                 <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-trash-alt"></i></button>
                                             }
-
+                                            else
+                                            {
+                                                <button type="button" data-id="@item.Id" class="text-danger border-0 bg-transparent btnXoa" title="Xoá" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                            }
                                         </span>
 
                                     }
@@ -126,47 +127,47 @@
                                 </div>
                             </td>
 
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoXe)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.HTTC)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKNo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKCo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.NoQuay)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CoQuay)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SalesSlip)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoCTGoc)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.KyHieu)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.NgayCTGoc.HasValue ? item.NgayCTGoc.Value.ToString("dd/MM/yyyy") : "")</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MauSoHD)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MsThue)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.VAT)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.BoPhan)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.STT)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TenKH)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DiaChi)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MatHang)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DieuChinh)</td>
-
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LinkHDDT)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaTraCuu)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TkTruyCap)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Password)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiThe)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiaiP)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoXe)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HTTC)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiTien)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TyGia)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKNo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhNo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKCo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiai)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhCo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Sgtcode)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.NoQuay)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CoQuay)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CardNumber)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SalesSlip)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoCTGoc)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.KyHieu)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.NgayCTGoc.HasValue ? item.NgayCTGoc.Value.ToString("dd/MM/yyyy") : "")</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MauSoHD)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MsThue)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.VAT)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.BoPhan)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.STT)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TenKH)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DiaChi)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MatHang)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DieuChinh)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LinkHDDT)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaTraCuu)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TkTruyCap)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Password)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TamUng)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiThe)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CardNumber)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Id)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.NguoiTao)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HoanUngTU)</td>
                             @if (user.Username == "hongvt")
                             {
                                 <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
@@ -219,46 +220,47 @@
                     </div>
                             </td>
 
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoXe)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.HTTC)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKNo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TKCo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.NoQuay)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CoQuay)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SalesSlip)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoCTGoc)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.KyHieu)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.NgayCTGoc.HasValue ? item.NgayCTGoc.Value.ToString("dd/MM/yyyy") : "")</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MauSoHD)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MsThue)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.VAT)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.BoPhan)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.STT)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TenKH)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DiaChi)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MatHang)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.DieuChinh)</td>
-
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LinkHDDT)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.MaTraCuu)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TkTruyCap)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Password)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.TamUng)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiThe)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.CardNumber)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiaiP)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoXe)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HTTC)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiTien)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TyGia)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKNo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhNo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKCo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiai)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhCo)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Sgtcode)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.NoQuay)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CoQuay)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CardNumber)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SalesSlip)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoCTGoc)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.KyHieu)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.NgayCTGoc.HasValue ? item.NgayCTGoc.Value.ToString("dd/MM/yyyy") : "")</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MauSoHD)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MsThue)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.VAT)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.BoPhan)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.STT)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TenKH)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DiaChi)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MatHang)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DieuChinh)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LinkHDDT)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaTraCuu)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TkTruyCap)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Password)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TamUng)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiThe)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CardNumber)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Id)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.NguoiTao)</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HoanUngTU)</td>
                             @if (user.Username == "hongvt")
                             {
                                 <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
@@ -276,6 +278,7 @@
 
 <script src="~/js/Admin/Home/indexController.js"></script>
 <script>
+
     function confirmDelete(uniqueId, isDeleteClicked) {
 
         var deleteSpan = 'deleteSpan_' + uniqueId;

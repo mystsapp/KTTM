@@ -703,6 +703,8 @@
                         createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu); // get comment text
                         createController.Check_KetChuyenBtnStatus(tamUngId, soTienNT); // check nut ketchuyen
                         createController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
+
+                        location.reload();
                     }
                     else {
                         toastr.error(response.message);

@@ -70,6 +70,9 @@ var createController = {
 
             // an nut btnCapNhatCT
             $('#btnCapNhatCT').attr('disabled', true);
+
+            // Check_ThuHoanUngBtnStatus
+            createController.Check_ThuHoanUngBtnStatus(tamUngId);
         });
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
 
@@ -122,6 +125,10 @@ var createController = {
                             createController.GetTT621s_By_TamUng(tamUngId);
                             createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
                             $('#btnDelete').attr('disabled', true); // disabled btnDelete
+                            $('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
+
+                            // Check_ThuHoanUngBtnStatus
+                            createController.Check_ThuHoanUngBtnStatus(tamUngId);
 
                             if (response.tT621sCount === '')
                                 createController.Enabled_TU_Khong_TT();
@@ -400,6 +407,12 @@ var createController = {
                 }
             }
         });
+    },
+
+    Check_ThuHoanUngBtnStatus: function (tamUngId) {
+        $.post('/TT621s/Check_ThuHoanUngBtnStatus', { tamUngId: tamUngId }, function (status) {
+            $('#btnThuHoanUng').attr('disabled', status)
+        })
     }
 };
 createController.init();

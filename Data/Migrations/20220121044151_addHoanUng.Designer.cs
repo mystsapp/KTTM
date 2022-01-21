@@ -4,14 +4,16 @@ using Data.Models_KTTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    partial class KTTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220121044151_addHoanUng")]
+    partial class addHoanUng
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,9 +100,8 @@ namespace Data.Migrations
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
-                    b.Property<string>("HoanUngTU")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                    b.Property<bool>("HoanUng")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("KC141")
                         .HasColumnType("datetime");

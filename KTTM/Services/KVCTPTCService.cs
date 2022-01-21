@@ -197,11 +197,21 @@ namespace KTTM.Services
 
         public IEnumerable<Dgiai> Get_DienGiai_By_TkNo_TkCo(string tkNo, string tkCo)
         {
-            var dgiais = _unitOfWork.dGiaiRepository.GetAll();
+            //tkNo ??= "";
+            //tkCo ??= "";
+
+            //var dgiais = _unitOfWork.dGiaiRepository.Find(x => x.Tkno == tkNo).ToList();
+
+            //var dgiais1 = dgiais.Where(x => x.Tkno.Trim() == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
+            //dgiais1 ??= null;
+            //return dgiais1;
+
+            // var dgiais = _unitOfWork.dGiaiRepository.GetAll().ToList();
             tkNo ??= "";
             tkCo ??= "";
-            var dgiais1 = dgiais.Where(x => x.Tkno.Trim() == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
-            //dgiais1 ??= null;
+
+            var dgiais1 = _unitOfWork.dGiaiRepository.Find(x => x.Tkno == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
+            dgiais1 ??= null;
             return dgiais1;
         }
 

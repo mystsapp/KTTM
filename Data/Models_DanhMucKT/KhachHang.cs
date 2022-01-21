@@ -29,5 +29,7 @@ namespace Data.Models_DanhMucKT
         public string NguoiSua { get; set; }
         public DateTime? NgaySua { get; set; }
         public string LoaiKh { get; set; }
+        public bool? DaiLyVmb { get; set; }
+        public string LinkHddt { get; set; }
     }
 }

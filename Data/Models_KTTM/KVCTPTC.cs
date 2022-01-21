@@ -218,5 +218,8 @@ namespace Data.Models_KTTM
         // [DisplayName("Số vé")]
         [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
         public string Number { get; set; } // Thao
+
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
+        public string HoanUngTU { get; set; } //
     }
 }

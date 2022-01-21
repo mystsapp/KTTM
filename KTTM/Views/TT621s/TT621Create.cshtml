@@ -191,7 +191,10 @@
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
-                    <button type="button" class="btn btn-outline-dark btn-sm" title="Thanh toán không kết chuyển"><i class="fas fa-folder text-warning"></i></button>
+                    @if(Model.KVPTC.MFieu == "T" && Model.KVPTC.NgoaiTe == "VN")
+                    {
+                        <button type="button" class="btn btn-outline-dark btn-sm" title="Thu hoàn ứng" disabled id="btnThuHoanUng"><i class="fas fa-folder text-warning"></i></button>    
+                    }                    
                     <button type="button" class="btn btn-outline-dark btn-sm" title="Kết chuyển" disabled id="btnKetChuyen"><i class="fas fa-check"></i></button>
                 </div>
             </div>
@@ -245,7 +248,7 @@
     </div>
 
     <div class=" pt-1 pb-1">
-        <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Home" asp-route-page="@Model.Page" asp-route-id="@Model.KVCTPTC.KVPTCId"><i class="fas fa-backward "></i> Back</a>
+        <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Home" asp-route-page="@Model.Page" asp-route-id="@Model.KVCTPTC.KVPTCId" id="btnBack"><i class="fas fa-backward "></i> Back</a>
     </div>
 </section>
 
@@ -331,12 +334,12 @@
         //var dienGiaiP = $('#txtDienGiaiP').val();
         //var hTTC = $('#ddlHttc').val();
         //var soTienNT = $('#txtSoTienNT').val();
-        
+
         var loaiTien = '@Model.KVPTC.NgoaiTe';
-        
+
         if (loaiTien === 'VN') {
             tamUngId = $('#hidTamUngId').val();
-            
+
             if (tamUngId == null || tamUngId == '') {
                 alert('chưa chọn tạm ứng nào để thanh toán');
             }
@@ -344,49 +347,81 @@
 
             id_Dong_Da_Click = $('#hidIdCu').val();
             $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
-            
+
             kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
             $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
-            
+
             $('#frm_ThemMoiCT_TT_ContextMenu').submit();
         }
         else {
             toastr.warning("Hãy chọn phiếu TT VN.");
             return;
         }
-        
+
     });
 
-    function ThemMoiCT_TT_ContextMenu_Partial(){
-        debugger
-        var dienGiaiP = $('#txtDienGiaiP').val();
-        var hTTC = $('#ddlHttc').val();
-        var soTienNT = $('#txtSoTienNT').val();
+    //function ThemMoiCT_TT_ContextMenu_Partial(){
+    //    debugger
+    //    var dienGiaiP = $('#txtDienGiaiP').val();
+    //    var hTTC = $('#ddlHttc').val();
+    //    var soTienNT = $('#txtSoTienNT').val();
 
-        var loaiTien = '@Model.KVPTC.NgoaiTe';
+    //    var loaiTien = '@Model.KVPTC.NgoaiTe';
 
-        if (loaiTien === 'VN') {
-            tamUngId = $('#hidTamUngId').val();
-            if (tamUngId == null || tamUngId == '') {
-                alert('chưa chọn tạm ứng nào để thanh toán');
-            }
-            id_Dong_Da_Click = $('#hidIdCu').val();
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
-            var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
+    //    if (loaiTien === 'VN') {
+    //        tamUngId = $('#hidTamUngId').val();
+    //        if (tamUngId == null || tamUngId == '') {
+    //            alert('chưa chọn tạm ứng nào để thanh toán');
+    //        }
+    //        id_Dong_Da_Click = $('#hidIdCu').val();
+    //        kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+    //        var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
 
-            $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
-                $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
-                $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
-                $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
-                $('#txtSoTienNT').val(soTienNT);
-            })
-        }
-        else {
-            toastr.warning("Hãy chọn phiếu TT VN.");
-            return;
-        }
+    //        $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
+    //            $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
+    //            $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
+    //            $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
+    //            $('#txtSoTienNT').val(soTienNT);
+    //        })
+    //    }
+    //    else {
+    //        toastr.warning("Hãy chọn phiếu TT VN.");
+    //        return;
+    //    }
 
-    }
-    // contextmenu for themmoiTT VND
+    //}
+    //// contextmenu for themmoiTT VND
+
+    $('#btnThuHoanUng').off('click').on('click', function(){
+        tamUngId = $('#hidTamUngId').val();
+        soTienNT = $('#txtSoTienNT_Create').val();
+        soCTThu = '@Model.KVCTPTC.SoCT';
+        kvctptcId = '@Model.KVCTPTC.Id';
+
+        $.post('/TT621s/ThuHoanUng', { tamUngId: tamUngId, soTienNT: soTienNT, soCTThu: soCTThu, kvctptcId: kvctptcId }, function (response) {
+                        //console.log(response);
+                        if (response.status) {
+                            toastr.success('Thu hoàn ứng thành công', 'Thu hoàn ứng!');
+
+                            //createController.GetTT621s_By_TamUng(tamUngId);
+                            //createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
+                            //$('#btnDelete').attr('disabled', true); // disabled btnDelete
+                            //$('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
+
+                            //// Check_ThuHoanUngBtnStatus
+                            //createController.Check_ThuHoanUngBtnStatus(tamUngId);
+
+                            //if (response.tT621sCount === '')
+                            //    createController.Enabled_TU_Khong_TT();
+
+                            //location.reload();
+
+                            $('#btnBack').trigger('click');
+                        }
+                        else {
+                            toastr.error(response.message, 'Thu hoàn ứng!')
+                        }
+                    });
+    })
 </script>
 }
