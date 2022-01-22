@@ -693,7 +693,7 @@ namespace KTTM.Controllers
             }
             else
             {
-                TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value - TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
+                TT621VM.TT621.SoTienNT = tamUngPhiaTren.ConLaiNT.Value - TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
             }
 
             TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
@@ -1627,33 +1627,47 @@ namespace KTTM.Controllers
 
             if (loaiPhieu == "C") // phieu C
             {
-                soTienCanKetChuyen = tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng;
+                soTienCanKetChuyen = tamUng.ConLaiNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng;
                 if (tamUng.LoaiTien == "VND") // VND
                 {
-                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
-                                                  + (tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.ConLaiNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
+                                                  + (tamUng.ConLaiNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+
+                    //commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
+                    //                              + (tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
                 }
                 else // NgoaiTe
                 {
-                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0")
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.ConLaiNT.Value.ToString("N0")
                         + tamUng.LoaiTien
                         + " số tiền cần kết chuyển 1412: "
-                                                  + (tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                                                  + (tamUng.ConLaiNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+
+                    //commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0")
+                    //    + tamUng.LoaiTien
+                    //    + " số tiền cần kết chuyển 1412: "
+                    //                              + (tamUng.SoTienNT.Value + soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
                 }
             }
-            else // phieu T
+            else // phieu T và chac chan' cho KhongTC
             {
-                soTienCanKetChuyen = tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng;
+                soTienCanKetChuyen = tamUng.ConLaiNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng;
                 if (tamUng.LoaiTien == "VND") // VND
                 {
-                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
-                                  + (tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                    commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.ConLaiNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
+                                  + (tamUng.ConLaiNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+
+                    //commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ " + tamUng.SoTienNT.Value.ToString("N0") + " số tiền cần kết chuyển 1411: "
+                    //              + (tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
                 }
                 else // NgoaiTe
                 {
                     commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ "
-                        + tamUng.SoTienNT.Value.ToString("N0") + tamUng.LoaiTien + " số tiền cần kết chuyển 1412: "
-                                  + (tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                        + tamUng.ConLaiNT.Value.ToString("N0") + tamUng.LoaiTien + " số tiền cần kết chuyển 1412: "
+                                  + (tamUng.ConLaiNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
+                    //commentText = "Tạm ứng " + tamUng.SoCT + " còn nợ "
+                    //    + tamUng.SoTienNT.Value.ToString("N0") + tamUng.LoaiTien + " số tiền cần kết chuyển 1412: "
+                    //              + (tamUng.SoTienNT.Value - soTienNT - soTienNTTrongTT621_TheoTamUng).ToString("N0");
                 }
             }
 
@@ -1763,8 +1777,8 @@ namespace KTTM.Controllers
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            string soTienNTOld = tamUng.SoTienNT.ToString();
-            string soTienOld = tamUng.SoTien.ToString();
+            string conLaiNTOld = tamUng.ConLaiNT.ToString();
+            string conLaiOld = tamUng.ConLai.ToString();
 
             if (tamUng == null)
                 return Json(new
@@ -1774,14 +1788,17 @@ namespace KTTM.Controllers
                 });
             else
             {
-                tamUng.SoTienNT = tamUng.SoTienNT - decimal.Parse(soTienNT);
-                tamUng.SoTien = tamUng.SoTien - decimal.Parse(soTienNT);
-                tamUng.ConLaiNT = tamUng.SoTienNT;
-                tamUng.ConLai = tamUng.SoTien;
+                //tamUng.SoTienNT = tamUng.SoTienNT - decimal.Parse(soTienNT);
+                //tamUng.SoTien = tamUng.SoTien - decimal.Parse(soTienNT);
+                tamUng.ConLaiNT -= decimal.Parse(soTienNT);
+                tamUng.ConLai -= decimal.Parse(soTienNT);
 
                 string temp = "";
-                temp += String.Format("- SoTienNT thay đổi: {0}->{1}", soTienNTOld, soTienNT);
-                temp += String.Format("- SoTien thay đổi: {0}->{1}", soTienOld, soTienNT);
+                //temp += String.Format("- SoTienNT thay đổi: {0}->{1}", soTienNTOld, soTienNT);
+                //temp += String.Format("- SoTien thay đổi: {0}->{1}", soTienOld, soTienNT);
+
+                temp += String.Format("- ConLaiNT thay đổi: {0}->{1}", conLaiNTOld, tamUng.ConLaiNT);
+                temp += String.Format("- ConLai thay đổi: {0}->{1}", conLaiOld, tamUng.ConLai);
 
                 // kiem tra thay doi
                 if (temp.Length > 0)

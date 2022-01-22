@@ -256,11 +256,13 @@ namespace KTTM.Services
             decimal soTienNT_CanKetChuyen;
             if (loaiPhieu == "C") // phieu C
             {
-                soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
+                soTienNT_CanKetChuyen = tamUng.ConLaiNT.Value - soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
+                //soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng + soTienNT_Tren_TT621Create;
             }
             else // phieu T
             {
-                soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
+                soTienNT_CanKetChuyen = tamUng.ConLaiNT.Value - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
+                //soTienNT_CanKetChuyen = tamUng.SoTienNT.Value - soTienNTTrongTT621_TheoTamUng - soTienNT_Tren_TT621Create;
             }
 
             return soTienNT_CanKetChuyen;

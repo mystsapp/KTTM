@@ -191,10 +191,10 @@
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
-                    @if(Model.KVPTC.MFieu == "T" && Model.KVPTC.NgoaiTe == "VN")
+                    @if (Model.KVPTC.MFieu == "T" && Model.KVPTC.NgoaiTe == "VN")
                     {
-                        <button type="button" class="btn btn-outline-dark btn-sm" title="Thu hoàn ứng" disabled id="btnThuHoanUng"><i class="fas fa-folder text-warning"></i></button>    
-                    }                    
+                        <button type="button" class="btn btn-outline-dark btn-sm" title="Thu hoàn ứng" disabled id="btnThuHoanUng"><i class="fas fa-folder text-warning"></i></button>
+                    }
                     <button type="button" class="btn btn-outline-dark btn-sm" title="Kết chuyển" disabled id="btnKetChuyen"><i class="fas fa-check"></i></button>
                 </div>
             </div>
@@ -398,30 +398,50 @@
         soCTThu = '@Model.KVCTPTC.SoCT';
         kvctptcId = '@Model.KVCTPTC.Id';
 
-        $.post('/TT621s/ThuHoanUng', { tamUngId: tamUngId, soTienNT: soTienNT, soCTThu: soCTThu, kvctptcId: kvctptcId }, function (response) {
-                        //console.log(response);
-                        if (response.status) {
-                            toastr.success('Thu hoàn ứng thành công', 'Thu hoàn ứng!');
+        bootbox.confirm({
+            message: "Bạn có chắc chắn muốn <b>hoàn ứng</b> không?",
+            buttons: {
+                confirm: {
+                    label: 'Có',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Không',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                     $.post('/TT621s/ThuHoanUng', { tamUngId: tamUngId, soTienNT: soTienNT, soCTThu: soCTThu, kvctptcId: kvctptcId }, function (response) {
+                         //console.log(response);
+                         if (response.status) {
+                             toastr.success('Thu hoàn ứng thành công', 'Thu hoàn ứng!');
 
-                            //createController.GetTT621s_By_TamUng(tamUngId);
-                            //createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
-                            //$('#btnDelete').attr('disabled', true); // disabled btnDelete
-                            //$('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
+                             //createController.GetTT621s_By_TamUng(tamUngId);
+                             //createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
+                             //$('#btnDelete').attr('disabled', true); // disabled btnDelete
+                             //$('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
 
-                            //// Check_ThuHoanUngBtnStatus
-                            //createController.Check_ThuHoanUngBtnStatus(tamUngId);
+                             //// Check_ThuHoanUngBtnStatus
+                             //createController.Check_ThuHoanUngBtnStatus(tamUngId);
 
-                            //if (response.tT621sCount === '')
-                            //    createController.Enabled_TU_Khong_TT();
+                             //if (response.tT621sCount === '')
+                             //    createController.Enabled_TU_Khong_TT();
 
-                            //location.reload();
+                             //location.reload();
 
-                            $('#btnBack').trigger('click');
-                        }
-                        else {
-                            toastr.error(response.message, 'Thu hoàn ứng!')
-                        }
-                    });
+                             $('#btnBack').trigger('click');
+                             location.reload();
+                         }
+                         else {
+                             toastr.error(response.message, 'Thu hoàn ứng!')
+                         }
+                   });
+                }
+                   
+             }
+        });
+
     })
 </script>
 }
