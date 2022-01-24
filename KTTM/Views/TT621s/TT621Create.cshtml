@@ -157,7 +157,7 @@
                             @foreach (var item in Model.TamUngs)
                             {
 
-                                <tr class="tamUngTr @item.Id" id="@item.Id" data-id="@item.Id" data-soTU_DaTT="@item.KVCTPTC.SoTU_DaTT">
+                                <tr class="tamUngTr @item.Id tamUngTr-cursor-pointer" id="@item.Id" data-id="@item.Id" data-soTU_DaTT="@item.KVCTPTC.SoTU_DaTT">
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
@@ -294,7 +294,8 @@
         $('.' + id_Redirect).click();
     }
     if('@ViewBag.SoTT_DaTao' === ''){
-        createController.Enabled_TU_Khong_TT();
+        //alert('@ViewBag.SoTT_DaTao');
+        //createController.Enabled_TU_Khong_TT();
     }
 
     ////var tr_click = $('#phieuTbl ' + soCT);
@@ -443,5 +444,40 @@
         });
 
     })
+
+    
+    //$('.tamUngTr-cursor-pointer').click(function () {
+    //    alert('a');
+    //    // giu trang thai
+    //    if ($(this).hasClass("hoverClass"))
+    //        $(this).removeClass("hoverClass");
+    //    else {
+    //        $('.tamUngTr-cursor-pointer').removeClass("hoverClass");
+    //        $(this).addClass("hoverClass");
+    //    }
+    //})
+
+
 </script>
 }
+
+<script>
+
+        //// giu trang thai phieu click
+        //$('#tamUngTble .tamUngTr-cursor-pointer').off('click').on('click', function () {
+        //    if ($(this).hasClass("hoverClass"))
+        //        $(this).removeClass("hoverClass");
+        //    else {
+                
+        //        var idList = [];
+        //        $.each($('.tamUngTr-cursor-pointer'), function (i, item) {
+                  
+        //            $(this).removeClass("hoverClass");
+
+        //        });
+        //        $(this).addClass("hoverClass");
+        //    }
+        //});
+        //// giu trang thai phieu click
+
+</script>

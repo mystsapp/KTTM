@@ -187,7 +187,16 @@ var indexController = {
                 else {
                     $.post('/Home/CheckInPhieu', { id: kvptcId }, function (response) {
                         if (!response) {
-                            bootbox.alert("Còn tồn tại 1 CT Phiếu chưa TU hoặc TT TU!");
+                            $.post('/Home/CheckPhieuHoan', { id: kvptcId }, function (response) {
+                                if (response) {
+                                    $('#frmInPhieu').submit();
+                                }
+                                else {
+                                    bootbox.alert("Còn tồn tại 1 CT Phiếu chưa TU hoặc TT TU!");
+                                }
+                            })
+
+                            //bootbox.alert("Còn tồn tại 1 CT Phiếu chưa TU hoặc TT TU!");
                         }
                         else {
                             $('#frmInPhieu').submit();

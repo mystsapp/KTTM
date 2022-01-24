@@ -565,6 +565,16 @@ namespace KTTM.Controllers
                     var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
                     if (tamUngs.Count() > 0)
                     {
+                        //var kVCTPTCs1 = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.HoanUngTU));
+                        //if (kVCTPTCs1.Count() > 0)
+                        //{
+                        //    return Json(true);
+                        //}
+                        //else
+                        //{
+                        //    return Json(false);
+                        //}
+
                         return Json(true); // ko cho inphieu
                     }
                     return Json(false);
@@ -574,6 +584,30 @@ namespace KTTM.Controllers
             //}
 
             //return Json(true); // ko cho inphieu
+        }
+
+        public async Task<JsonResult> CheckPhieuHoan(Guid id)
+        {
+            var jsonResult = await CheckInPhieu(id);
+            var boolResult = jsonResult.Value.ToString(); // false : cho in
+            if (bool.Parse(boolResult) == false) // ko cho in
+            {
+                var kVPTC = await _kVPTCService.GetByGuidIdAsync(id);
+                var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
+                kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412" || x.TKCo == "1411" || x.TKCo == "1412"); // dang tao phieu TU
+
+                var kVCTPTCs1 = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.HoanUngTU));
+                if (kVCTPTCs1.Count() > 0)
+                {
+                    return Json(false);
+                }
+                else
+                {
+                    return Json(true);
+                }
+            }
+
+            return Json(false); // cho in
         }
 
         public async Task<JsonResult> CheckSoLuongDong(Guid id)

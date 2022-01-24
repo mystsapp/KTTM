@@ -40,12 +40,24 @@ var createController = {
 
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
         $('.tamUngTr').off('click').on('click', function () {
+            //debugger
             if ($(this).hasClass("hoverClass"))
                 $(this).removeClass("hoverClass");
             else {
                 $('.tamUngTr').removeClass("hoverClass");
                 $(this).addClass("hoverClass");
             }
+
+            //if ($(this).hasClass("hoverClass"))
+            //    $(this).removeClass("hoverClass");
+            //else {
+            //    debugger
+            //    var idList = [];
+            //    $.each($('.tamUngTr'), function (i, item) {
+            //        $(this).removeClass("hoverClass");
+            //    });
+            //    $(this).addClass("hoverClass");
+            //}
 
             $('#hidIdCu').val(0); // moi lan click tro lai tamungtr -> reset hidIdCu(id dong tt621) = 0
             tamUngId = $(this).data('id');
@@ -297,12 +309,12 @@ var createController = {
                     'background-color': 'grey'
                 });
             }
-            else {
-                $('#' + id).removeProp({
-                    'pointer-events': 'none',
-                    'background-color': 'grey'
-                });
-            }
+            //else {
+            //    $('#' + id).removeProp({
+            //        'pointer-events': 'none',
+            //        'background-color': 'grey'
+            //    });
+            //}
         });
     },
     Enabled_TU_Khong_TT: function () {
@@ -315,7 +327,7 @@ var createController = {
 
         //});
 
-        $(".tamUngTr").removeClass().removeAttr('style');
+        //$(".tamUngTr").removeClass().removeAttr('style');
     },
     Check_KetChuyenBtnStatus: function (tamUngId, soTienNT, loaiPhieu) {
         $.post('/TT621s/Check_KetChuyenBtnStatus', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT, loaiPhieu: loaiPhieu }, function (status) {

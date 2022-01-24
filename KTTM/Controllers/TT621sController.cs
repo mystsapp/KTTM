@@ -1052,7 +1052,7 @@ namespace KTTM.Controllers
             var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             if (TT621VM.KVCTPTC.KVPTC.MFieu == "C")
             {
-                TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value + TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
+                TT621VM.TT621.SoTienNT = tamUngPhiaTren.ConLaiNT.Value + TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
                 TT621VM.TT621.TKNo = tT621.TKCo; // dao nguoc
                 TT621VM.TT621.TKCo = "1411"; // tT621.TKNo; // dao nguoc
                 if (TT621VM.KVCTPTC.KVPTC.NgoaiTe == "NT")
@@ -1062,7 +1062,7 @@ namespace KTTM.Controllers
             }
             else
             {
-                TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value - TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
+                TT621VM.TT621.SoTienNT = tamUngPhiaTren.ConLaiNT.Value - TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuT
             }
 
             TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
@@ -1136,13 +1136,43 @@ namespace KTTM.Controllers
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(
                 TT621VM.TT621.TamUngId, TT621VM.KVCTPTC.SoTienNT.Value, kVPTC.MFieu); // TT621VM.KVCTPCT.SoTienNT tu view qua
             // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
-            if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
+            if (TT621VM.TT621.SoTien > soTienNT_CanKetChuyen)
             {
-                return Json(new
-                {
-                    status = false,
-                    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
-                });
+                //return Json(new
+                //{
+                //    status = false,
+                //    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+                //});
+
+                TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+                TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(tamUngId);
+                TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
+                TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(TT621VM.KVCTPTC.Id);
+
+                // ddl
+                Get_TkNo_TkCo();
+                TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+
+                Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
+                ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+                ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+                var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+                viewDmHttcs.Insert(0, viewDmHttc);
+                TT621VM.DmHttcs = viewDmHttcs;
+
+                Get_TkNo_TkCo();
+
+                TT621VM.Quays = _kVCTPTCService.GetAll_Quay_View();
+                var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+                viewMatHangs.Insert(0, viewMatHang);
+                TT621VM.MatHangs = viewMatHangs;
+                TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+
+                TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+
+                SetAlert("Số tiền đã vượt quá số tiền cần kết chuyển.", "warning");
+                return View(TT621VM);
             }
 
             // dong full
