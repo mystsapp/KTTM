@@ -26,7 +26,8 @@
 
                 <th>Mã KH</th>
                 <th>Ms Thuế</th>
-                <th>Tên KH</th>
+                <th>Tên giao dịch</th>
+                <th>Tên thương mại</th>
                 <th>Thành phố</th>
                 <th>Địa chỉ</th>
                 <th>Điện thoại</th>
@@ -46,6 +47,7 @@
 
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.MaSoThue)</td>
+                        <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.TenGiaoDich)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.TenThuongMai)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.ThanhPho)</td>
                         <td class="tdVal_Supplier" data-id="@item.Code">@Html.DisplayFor(m => item.DiaChi)</td>
@@ -115,7 +117,7 @@
 </form>*@
 <script>
     $('#btSearch').click(function () {
-        debugger
+        
         var maKhText = $('#txtTimkh').val();
 
         KhachHangSearch_KhongTC(maKhText); // ben Edit_KVCTPCT
