@@ -12,5 +12,6 @@ namespace KTTM.Models
         public TamUng TamUng { get; set; }
         public IPagedList<TamUng> TamUngs { get; set; }
         public string StrUrl { get; set; }
+        public int Page { get; set; }
     }
 }

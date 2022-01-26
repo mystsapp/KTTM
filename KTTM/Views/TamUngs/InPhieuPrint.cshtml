@@ -1,0 +1,645 @@
+﻿@model HomeViewModel
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    Layout = null;
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Invoice Print</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+    <!-- Font Awesome -->
+    <link href="~/lib/AdminLTE-3.1.0/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link href="~/lib/AdminLTE-3.1.0/dist/css/adminlte.min.css" rel="stylesheet" />
+
+    <style>
+
+        .invoicetable {
+            clear: both;
+            /*border: 1px solid darkgray;*/
+            border-collapse: collapse;
+            margin: auto;
+            width: 100%;
+        }
+
+        .invoicecell {
+            background-color: white;
+            color: black;
+            border: 1px solid darkgray;
+            /*padding: 5px;*/
+        }
+
+        }
+    </style>
+</head>
+
+<body class="text-lg">
+    <div class="wrapper">
+
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                    </div>
+                    @*<div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Invoice</li>
+                        </ol>
+                        </div>*@
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        @*<div class="callout callout-info">
+                            <h5><i class="fas fa-info"></i> Note:</h5>
+                            This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+                            </div>*@
+
+                        <!-- Main content -->
+                        <div class="invoice p-3 mb-3">
+                            <!-- title row -->
+                            <div class="row">
+                                <div class="col-7 text-center">
+                                    @if (user.Macn == "STS")
+                                    {
+                                        <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span>
+
+                                        <br />
+                                        <span><b>SAIGONTOURIST</b></span>
+                                    }
+                                    else
+                                    {
+                                        <span><b>@Model.ChiNhanh </b></span>
+
+                                        <br />
+                                    }
+
+
+                                </div>
+                                <div class="col-5 text-center">
+                                    CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />
+                                    Độc Lập - Tự Do - Hạnh Phúc
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <br />
+                            <div class="row invoice-info">
+                                <div class="col-sm-3 invoice-col">
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-6 invoice-col text-center">
+                                    @{
+                                        switch (Model.KVPTC.MFieu)
+                                        {
+                                            case "T": // thu
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
+                                                        // thu VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
+                                                        // thu NgoaiTe
+                                                        break;
+                                                }
+                                                break;
+
+                                            default: // chi
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                                                        // chi VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
+                                                        // chi NgoaiTe
+                                                        break;
+                                                }
+                                                break;
+                                        }
+                                    }
+
+                                    <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Day tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-3 invoice-col text-right">
+                                    <br />
+                                    <strong>Số : @Model.KVPTC.SoCT</strong><br>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <br />
+                            <!-- / Hang -->
+                            <!-- Table row -->
+                            <div class="row">
+                                <div class="col-12 table-responsive">
+                                    <table class="invoicetable ">
+                                        <tr>
+                                            <td>Họ tên:</td>
+                                            <td><b><span style="font-size:20px">@Model.KVPTC.HoTen</span></b></td>
+                                            <td class="text-right" colspan="3">C.M.T số ...............................................</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Đơn vị: </td>
+                                            <td colspan="4">@Model.KVPTC.DonVi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Số tiền: </td>
+                                            <td>Tài khoản nợ</td>
+                                            <td>Tài khoản có</td>
+                                            <td>Số tiền</td>
+                                            <td>Số tiền NT</td>
+                                        </tr>
+                                        <!--thao: max 4 nhưng tongcong full-->
+                                        @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4))
+                                        {
+                                            <tr>
+                                                <td></td>
+
+                                                <td>@item.TkNo</td>
+                                                <td>@item.TkCo</td>
+                                                <td>@item.SoTien.ToString("N0") </td>
+                                                <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                            <td>Về khoãn : </td>
+                                            <td colspan="4">
+                                                @{
+                                                    string sgtcodes = "", soCTGocs = "";
+                                                    foreach (var item in Model.KVCTPTCs.Take(4))
+                                                    {
+                                                        int lastItem = Model.KVCTPTCs.ToList().IndexOf(item);
+                                                        if (lastItem != Model.KVCTPTCs.Count() - 1)
+                                                        {
+                                                            // this is the last item
+                                                            if (!string.IsNullOrEmpty(item.Sgtcode))
+                                                            {
+                                                                var sgtcodeArry = sgtcodes.Split('+');
+                                                                if (!sgtcodeArry.Any(x => x.Trim() == item.Sgtcode))
+                                                                {
+                                                                    sgtcodes += item.Sgtcode + " + ";
+                                                                }
+
+
+                                                            }
+                                                            //sgtcodes += item.Sgtcode + " + ";
+                                                            if (!string.IsNullOrEmpty(item.SoCTGoc))
+                                                            {
+                                                                var soCTGocsArry = soCTGocs.Split(',');
+                                                                if (!soCTGocsArry.Any(x => x.Trim() == item.SoCTGoc))
+                                                                {
+                                                                    soCTGocs += item.SoCTGoc + ", ";
+                                                                }
+                                                                //soCTGocs += item.SoCTGoc + ", ";
+                                                            }
+
+                                                        }
+
+                                                        else
+                                                        {
+                                                            sgtcodes += item.Sgtcode;
+                                                            soCTGocs += item.SoCTGoc;
+                                                        }
+
+
+                                                    }
+                                                    //sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
+                                                    //soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
+                                                    if(sgtcodes.Contains('+') && sgtcodes.Length > 2)
+                                                    {
+                                                        sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
+
+                                                    }
+                                                    if(soCTGocs.Contains(',') && soCTGocs.Length > 2)
+                                                    {
+                                                        soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
+                                                    }
+
+                                                }
+                                                @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kèm theo : </td>
+                                            <td colspan="4">Chứng từ @soCTGocs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Tổng cộng :</b></td>
+                                            <td colspan="4">
+                                                <b>
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    @* @{
+                                                        string tongCong = "";
+                                                        foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
+                                                        {
+                                                        int lastItem = Model.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+                                                        if (lastItem != Model.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                                                        {
+                                                        // this is the last item
+                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                                                        }
+                                                        else
+                                                        {
+                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+
+                                                        }
+
+
+                                                        }
+                                                        }
+                                                        @tongCong*@
+                                                    @*@ViewBag.tongCong*@
+                                                    <span style="font-size:20px">@ViewBag.tongCong</span>
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><i>Bằng chữ :</i></td>
+                                            <td colspan="4">
+                                                <i>
+                                                    @*@if (Model.KVPTC.NgoaiTe == "VN")
+                                                        {
+                                                        @ViewBag.bangChu
+                                                        }
+                                                        else
+                                                        {
+                                                        @ViewBag.SoTienNT_BangChu
+                                                        }*@
+                                                    @ViewBag.bangChu
+                                                </i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <br />
+                            <br />
+
+                            <!-- /.row -->
+                            <div class="row">
+                                <!-- accepted payments column -->
+                                <div class="col-3 text-center">
+                                    Thủ trưởng cơ quan
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-2 text-center">
+                                    Kế toán trưởng
+                                </div>
+                                <div class="col-3 text-center">
+                                    @if (Model.KVPTC.MFieu == "C")
+                                    {
+                                        <span>Người nhận tiền</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Người nộp tiền</span>
+                                    }
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-2 text-center">
+                                    Thủ quỹ
+                                </div>
+                                <div class="col-2 text-center">
+                                    Người lập phiếu
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- this row will not appear when printing -->
+                            <div class="row no-print">
+                                <div class="col-12">
+                                    <a asp-action="InPhieuPrint" asp-route-id="@Model.KVPTC.Id" asp-route-page="@Model.Page" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                    @*<button type="button" class="btn btn-success float-right">
+                                        <i class="far fa-credit-card"></i> Submit
+                                        Payment
+                                        </button>
+                                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                        <i class="fas fa-download"></i> Generate PDF
+                                        </button>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.invoice -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+            <br />
+            <br />
+            <hr /> <!----------------------------------------------------------------------------------------------------------------->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        @*<div class="callout callout-info">
+                            <h5><i class="fas fa-info"></i> Note:</h5>
+                            This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+                            </div>*@
+
+                        <!-- Main content -->
+                        <div class="invoice p-3 mb-3">
+                            <!-- title row -->
+                            <div class="row">
+                                <div class="col-7 text-center">
+                                    @if (user.Macn == "STS")
+                                    {
+                                        <span><b>CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH </b></span>
+
+                                        <br />
+                                        <span><b>SAIGONTOURIST</b></span>
+                                    }
+                                    else
+                                    {
+                                        <span><b>@Model.ChiNhanh </b></span>
+
+                                        <br />
+                                    }
+
+
+                                </div>
+                                <div class="col-5 text-center">
+                                    CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM <br />
+                                    Độc Lập - Tự Do - Hạnh Phúc
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <br />
+                            <div class="row invoice-info">
+                                <div class="col-sm-3 invoice-col">
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-6 invoice-col text-center">
+                                    @{
+                                        switch (Model.KVPTC.MFieu)
+                                        {
+                                            case "T": // thu
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU THU TIỀN ĐỒNG VN</strong></h1>
+                                                        // thu VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU THU TIỀN NGOẠI TỆ</strong></h1>
+                                                        // thu NgoaiTe
+                                                        break;
+                                                }
+                                                break;
+
+                                            default: // chi
+                                                switch (Model.KVPTC.NgoaiTe)
+                                                {
+                                                    case "VN":
+                                                        <h1><strong>PHIẾU CHI TIỀN ĐỒNG VN</strong></h1>
+                                                        // chi VND
+                                                        break;
+
+                                                    default:
+                                                        <h1><strong>PHIẾU CHI TIỀN NGOẠI TỆ</strong></h1>
+                                                        // chi NgoaiTe
+                                                        break;
+                                                }
+                                                break;
+                                        }
+                                    }
+
+                                    <span class="font-italic">Ngày @Model.KVPTC.NgayCT.Value.Day tháng @Model.KVPTC.NgayCT.Value.Month năm @Model.KVPTC.NgayCT.Value.Year </span>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-3 invoice-col text-right">
+                                    <br />
+                                    <strong>Số : @Model.KVPTC.SoCT</strong><br>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <br />
+                            <!-- / Hang -->
+                            <!-- Table row -->
+                            <div class="row">
+                                <div class="col-12 table-responsive">
+                                    <table class="invoicetable ">
+                                        <tr>
+                                            <td>Họ tên:</td>
+                                            <td><b>@Model.KVPTC.HoTen</b></td>
+                                            <td class="text-right" colspan="3">C.M.T số ...............................................</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Đơn vị: </td>
+                                            <td colspan="4">@Model.KVPTC.DonVi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Số tiền: </td>
+                                            <td>Tài khoản nợ</td>
+                                            <td>Tài khoản có</td>
+                                            <td>Số tiền</td>
+                                            <td>Số tiền NT</td>
+                                        </tr>
+                                        <!--thao: max 4 nhưng tongcong full-->
+                                        @foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos.Take(4))
+                                        {
+                                            <tr>
+                                                <td></td>
+
+                                                <td>@item.TkNo</td>
+                                                <td>@item.TkCo</td>
+                                                <td>@item.SoTien.ToString("N0") </td>
+                                                <td>@item.SoTienNT.ToString("N0") @item.LoaiTien</td>
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                            <td>Về khoãn : </td>
+                                            <td colspan="4">
+                                                @*@{
+                                                    string sgtcodes = "", soCTGocs = "";
+                                                    foreach (var item in Model.KVCTPTCs.Take(4))
+                                                    {
+                                                    int lastItem = Model.KVCTPTCs.ToList().IndexOf(item);
+                                                    if (lastItem != Model.KVCTPTCs.Count() - 1)
+                                                    {
+                                                    // this is the last item
+                                                    if (!string.IsNullOrEmpty(item.Sgtcode))
+                                                    {
+                                                    var sgtcodeArry = sgtcodes.Split('+');
+                                                    if (!sgtcodeArry.Any(x => x.Trim() == item.Sgtcode))
+                                                    {
+                                                    sgtcodes += item.Sgtcode + " + ";
+                                                    }
+
+
+                                                    }
+                                                    //sgtcodes += item.Sgtcode + " + ";
+                                                    if (!string.IsNullOrEmpty(item.SoCTGoc))
+                                                    {
+                                                    var soCTGocsArry = soCTGocs.Split(',');
+                                                    if (!soCTGocsArry.Any(x => x.Trim() == item.SoCTGoc))
+                                                    {
+                                                    soCTGocs += item.SoCTGoc + ", ";
+                                                    }
+                                                    //soCTGocs += item.SoCTGoc + ", ";
+                                                    }
+
+                                                    }
+
+                                                    else
+                                                    {
+                                                    sgtcodes += item.Sgtcode;
+                                                    soCTGocs += item.SoCTGoc;
+                                                    }
+
+
+                                                    }
+                                                    sgtcodes = sgtcodes.Remove(sgtcodes.Length - 2, 2);
+                                                    soCTGocs = soCTGocs.Remove(soCTGocs.Length - 2, 2);
+                                                    }*@
+                                                @Model.KVCTPTCs.FirstOrDefault().DienGiai @sgtcodes
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kèm theo : </td>
+                                            <td colspan="4">Chứng từ @soCTGocs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Tổng cộng :</b></td>
+                                            <td colspan="4">
+                                                <b>
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    @* @{
+                                                        string tongCong = "";
+                                                        foreach (var item in Model.InPhieuView_Groupby_TkNo_TkCos)
+                                                        {
+                                                        int lastItem = Model.InPhieuView_Groupby_TkNo_TkCos.ToList().IndexOf(item);
+                                                        if (lastItem != Model.InPhieuView_Groupby_TkNo_TkCos.Count() - 1)
+                                                        {
+                                                        // this is the last item
+                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                                                        }
+                                                        else
+                                                        {
+                                                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+
+                                                        }
+
+
+                                                        }
+                                                        }
+                                                        @tongCong*@
+                                                    @ViewBag.tongCong
+                                                </b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><i>Bằng chữ :</i></td>
+                                            <td colspan="4">
+                                                <i>
+                                                    @*@if (Model.KVPTC.NgoaiTe == "VN")
+                                                        {
+                                                        @ViewBag.bangChu
+                                                        }
+                                                        else
+                                                        {
+                                                        @ViewBag.SoTienNT_BangChu
+                                                        }*@
+                                                    @ViewBag.bangChu
+                                                </i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- /.row -->
+
+                            <br />
+                            <br />
+
+                            <!-- /.row -->
+                            <div class="row">
+                                <!-- accepted payments column -->
+                                <div class="col-3 text-center">
+                                    Thủ trưởng cơ quan
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-2 text-center">
+                                    Kế toán trưởng
+                                </div>
+                                <div class="col-3 text-center">
+                                    @if (Model.KVPTC.MFieu == "C")
+                                    {
+                                        <span>Người nhận tiền</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Người nộp tiền</span>
+                                    }
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-2 text-center">
+                                    Thủ quỹ
+                                </div>
+                                <div class="col-2 text-center">
+                                    Người lập phiếu
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!-- this row will not appear when printing -->
+                            <div class="row no-print">
+                                <div class="col-12">
+                                    <a asp-action="InPhieuPrint" asp-route-id="@Model.KVPTC.Id" asp-route-page="@Model.Page" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                    @*<button type="button" class="btn btn-success float-right">
+                                        <i class="far fa-credit-card"></i> Submit
+                                        Payment
+                                        </button>
+                                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                        <i class="fas fa-download"></i> Generate PDF
+                                        </button>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.invoice -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+    </div>
+    <!-- ./wrapper -->
+
+    <script>
+
+        setInterval(function () {
+            window.addEventListener("load", window.print());
+        }, 1000);
+
+            //window.addEventListener("load", window.print());
+    </script>
+</body>
+</html>

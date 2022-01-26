@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace KTTM.Controllers
 {
@@ -29,9 +30,34 @@ namespace KTTM.Controllers
             _kVPTCService = kVPTCService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, long id, int page = 1)
         {
-            return View();
+            if (id == 0)
+            {
+                ViewBag.id = "";
+            }
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            TamUngVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            TamUngVM.Page = page;
+
+            ViewBag.searchString = searchString;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+
+            if (id != 0) // for redirect with id
+            {
+                TamUngVM.TamUng = await _tamUngService.GetByIdAsync(id);
+                ViewBag.id = TamUngVM.TamUng.Id;
+            }
+            else
+            {
+                TamUngVM.TamUng = new TamUng();
+            }
+            TamUngVM.TamUngs = await _tamUngService.ListTamUng(searchString, searchFromDate, searchToDate, page, user.Macn);
+            return View(TamUngVM);
         }
 
         [HttpPost, ActionName("Create")]

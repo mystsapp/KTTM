@@ -1,10 +1,15 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
+}
 <ul class="navbar-nav">
     <li class="nav-item">
         <a href="/" class="nav-link">Home</a>
     </li>
     @*<li class="nav-item">
-            <a href="#" class="nav-link">Contact</a>
+        <a href="#" class="nav-link">Contact</a>
         </li>*@
     <li class="nav-item dropdown">
         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Báo cáo</a>
@@ -14,31 +19,36 @@
 
             <li class="dropdown-divider"></li>
 
-            <li><a href="#" class="dropdown-item" id="theoDoiTUNoiBoTk141" >Theo dõi tạm ứng nội bộ TK 141</a></li>
+            <li><a href="#" class="dropdown-item" id="theoDoiTUNoiBoTk141">Theo dõi tạm ứng nội bộ TK 141</a></li>
             <li><a href="#" class="dropdown-item">Thu đổi ngoại tệ</a></li>
 
             <li class="dropdown-divider"></li>
 
             <li><a href="javascript:;" class="dropdown-item" id="inChungTuGhiSo">In CTGS do thanh toán tạm ứng</a></li>
+
+            @if(user.Username == "hieuthao" || user.Username == "hongvt")
+            {
+            <li><a asp-action="Index" asp-controller="TamUngs" class="dropdown-item">Danh mục tạm ứng</a></li>    
+            }
             <!-- Level two dropdown-->
             @*<li class="dropdown-submenu dropdown-hover">
-                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
-                    <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                        <li>
-                            <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
-                        </li>
+                <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
+                <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+                <li>
+                <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
+                </li>
 
-                        <li class="dropdown-submenu">
-                            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
-                            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                <li><a href="#" class="dropdown-item">3rd level</a></li>
-                                <li><a href="#" class="dropdown-item">3rd level</a></li>
-                            </ul>
-                        </li>
+                <li class="dropdown-submenu">
+                <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
+                <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                <li><a href="#" class="dropdown-item">3rd level</a></li>
+                <li><a href="#" class="dropdown-item">3rd level</a></li>
+                </ul>
+                </li>
 
-                        <li><a href="#" class="dropdown-item">level 2</a></li>
-                        <li><a href="#" class="dropdown-item">level 2</a></li>
-                    </ul>
+                <li><a href="#" class="dropdown-item">level 2</a></li>
+                <li><a href="#" class="dropdown-item">level 2</a></li>
+                </ul>
                 </li>*@
             <!-- End Level two -->
         </ul>
@@ -60,7 +70,7 @@
 
         $('#baoCaoQuyTienVND_Modal').modal('show');
         $('#baoCaoQuyTienVND_Modal').draggable();
-        
+
     })
 
 
