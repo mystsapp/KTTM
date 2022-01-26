@@ -1219,7 +1219,7 @@ namespace KTTM.Controllers
             {
                 await _tT621Service.CreateAsync(TT621VM.TT621);
 
-                TT621VM.ThueGTGT = (TT621VM.TT621.SoTien - TT621VM.TT621.SoTienNT).ToString();
+                //TT621VM.ThueGTGT = (TT621VM.TT621.SoTien - TT621VM.TT621.SoTienNT).ToString();
                 // dong tach
                 TT621 tT621 = TT621VM.TT621;
                 tT621.Id = 0;

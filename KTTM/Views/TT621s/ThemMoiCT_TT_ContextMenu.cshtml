@@ -471,7 +471,7 @@
     <script src="~/lib/AdminLTE-3.1.0/plugins/toastr/toastr.min.js"></script>
     <script src="~/lib/AdminLTE-3.1.0/plugins/jquery-validation/jquery.validate.js"></script>
 <!--Khach hang them moi modal-->
-@*<partial name="~/Views/Shared/_KhachHangPartial_ThemMoiCTTT_ContextMenu.cshtml" />*@
+<partial name="~/Views/Shared/_KhachHangPartial_ThemMoiCTTT_ContextMenu.cshtml" />
 
 @*<script src="~/js/Admin/Home/indexController.js"></script>*@
 <script src="~/js/Admin/serviceController.js"></script>
@@ -573,7 +573,7 @@
 
         // btnKhSearch_ThemMoi_ContextMenu
         $('.btnKhSearch_ThemMoi_ContextMenu').click(function () {
-
+            
             var maKhtext = '';
             var txtMaKh = '';
 
@@ -592,7 +592,7 @@
         })
 
         $('#txtMaKhNo_ThemMoi').blur(function () {
-            alert('a');
+            
                 maKhtext = $(this).val();
 
                 //KhachHang_By_Code(maKhtext);

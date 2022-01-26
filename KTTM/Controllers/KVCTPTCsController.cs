@@ -869,20 +869,20 @@ namespace KTTM.Controllers
                     await _kVCTPTCService.UpdateAsync_NopTien(noptien);
                 }
 
-                // chi tiet nay keo ben qlxe qua
-                else if (!string.IsNullOrEmpty(kVCTPCT.KhoangMuc)) // kVCTPCT.KhoangMuc: KhoangMuc trong thuchi(qlxe) lay qua
-                {
-                    var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(kVCTPCT.KVPTCId);
-                    await _kVCTPTCService.DeleteRangeAsync(kVCTPTCs);
+                //// chi tiet nay keo ben qlxe qua
+                //else if (!string.IsNullOrEmpty(kVCTPCT.KhoangMuc)) // kVCTPCT.KhoangMuc: KhoangMuc trong thuchi(qlxe) lay qua
+                //{
+                //    var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(kVCTPCT.KVPTCId);
+                //    await _kVCTPTCService.DeleteRangeAsync(kVCTPTCs);
 
-                    // ThuChi
-                    var thuchis = _kVCTPTCService.GetThuChiXe_By_SoCT_KTTM(kVCTPCT.SoCT);
-                    foreach (var thuchi in thuchis)
-                    {
-                        thuchi.SoCtKttm = "";
-                        await _kVCTPTCService.UpdateAsync_ThuChiXe(thuchi);
-                    }
-                }
+                //    // ThuChi
+                //    var thuchis = _kVCTPTCService.GetThuChiXe_By_SoCT_KTTM(kVCTPCT.SoCT);
+                //    foreach (var thuchi in thuchis)
+                //    {
+                //        thuchi.SoCtKttm = "";
+                //        await _kVCTPTCService.UpdateAsync_ThuChiXe(thuchi);
+                //    }
+                //}
                 else
                 {
                     await _kVCTPTCService.DeleteAsync(kVCTPCT);
