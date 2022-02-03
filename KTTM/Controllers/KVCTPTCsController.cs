@@ -569,6 +569,7 @@ namespace KTTM.Controllers
                 KVCTPCTVM.KVCTPTC.NgaySua = DateTime.Now;
                 KVCTPCTVM.KVCTPTC.NguoiSua = user.Username;
                 KVCTPCTVM.KVCTPTC.DienGiaiP = KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
+                KVCTPCTVM.KVCTPTC.MaKh = (KVCTPCTVM.KVPTC.MFieu == "T") ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo; // T : láy MaKhCo, C: MaKhNo
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
 

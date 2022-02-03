@@ -281,6 +281,7 @@ namespace KTTM.Services
                 foreach (var item in ntbills)
                 {
                     string boPhan = item.Bophan;
+
                     string maKh = string.IsNullOrEmpty(item.Coquan) ? "50000" : item.Coquan;
                     var viewSupplier = GetSuppliersByCodeName(maKh, maCN).FirstOrDefault();//.Where(x => x.Code == maKh).FirstOrDefault();
                     //var viewSupplier = GetAll_KhachHangs_HDVATOB().Where(x => x.Code == maKh).FirstOrDefault();
@@ -420,6 +421,12 @@ namespace KTTM.Services
                                 {
                                     kVCTPTC.MaKhCo = "0310891532051"; //maKh;
                                 }
+
+                                // anh son kt
+                                if (maKh == "0000000003") // makh
+                                {
+                                    kVCTPTC.TKCo = "1331000010";
+                                }
                             }
                             else // phieu chi
                             {
@@ -428,6 +435,12 @@ namespace KTTM.Services
                                 kVCTPTC.TKNo = tk;
                                 kVCTPTC.TKCo = "1111000000";
                                 kVCTPTC.MaKhNo = maKh;
+                                // anh son kt
+                                if (maKh == "0000000003") // makh
+                                {
+                                    kVCTPTC.TKNo = "1331000010";
+                                }
+
                                 kVCTPTC.NoQuay = boPhan;
 
                                 switch (baoCaoSo.Substring(5, 3))
@@ -476,6 +489,7 @@ namespace KTTM.Services
                             kVCTPTC.MauSoHD = mauSo;
                             kVCTPTC.MsThue = msThue;
                             kVCTPTC.MaKh = maKh;
+
                             kVCTPTC.TenKH = tenKh;
                             kVCTPTC.DiaChi = diaChi;
 
@@ -644,6 +658,11 @@ namespace KTTM.Services
                                 {
                                     kVCTPTC.MaKhCo = "STNCN"; //maKh;
                                 }
+                                // anh son kt
+                                if (maKh == "0000000003") // makh
+                                {
+                                    kVCTPTC.TKCo = "1331000010";
+                                }
                                 kVCTPTC.CoQuay = boPhan;
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
@@ -737,6 +756,11 @@ namespace KTTM.Services
                                 kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
                                 kVCTPTC.TKNo = tk;
                                 kVCTPTC.TKCo = "1111000000";
+                                // anh son kt
+                                if (maKh == "0000000003") // makh
+                                {
+                                    kVCTPTC.TKNo = "1331000010";
+                                }
                                 kVCTPTC.MaKhNo = maKh;
                                 kVCTPTC.NoQuay = boPhan;
                                 switch (baoCaoSo.Substring(5, 3))
@@ -948,6 +972,11 @@ namespace KTTM.Services
                                 kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
                                 kVCTPTC.TKNo = "1111000000";
                                 kVCTPTC.TKCo = tk;
+                                // anh son kt
+                                if (maKh == "0000000003") // makh
+                                {
+                                    kVCTPTC.TKCo = "1331000010";
+                                }
                                 kVCTPTC.MaKhCo = maKh;
                                 if (tk == "1368000000")
                                 {
@@ -987,6 +1016,11 @@ namespace KTTM.Services
                                 kVCTPTC.DienGiai = dienGiai == null ? "" : dienGiai.DienGiai;
                                 kVCTPTC.TKNo = tk;
                                 kVCTPTC.TKCo = "1111000000";
+                                // anh son kt
+                                if (maKh == "0000000003") // makh
+                                {
+                                    kVCTPTC.TKNo = "1331000010";
+                                }
                                 kVCTPTC.MaKhNo = maKh;
                                 kVCTPTC.NoQuay = boPhan;
                                 switch (baoCaoSo.Substring(5, 3))
