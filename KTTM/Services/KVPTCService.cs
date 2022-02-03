@@ -225,7 +225,7 @@ namespace KTTM.Services
                 if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
                 {
                     List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) &&
-                    x.Sgtcode.Contains(searchString.Trim())).ToList();
+                    x.Sgtcode.Contains(searchString.ToUpper().Trim())).ToList();
 
                     if (kVCTPTCs.Count() > 0)
                     {
