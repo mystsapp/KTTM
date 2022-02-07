@@ -495,7 +495,7 @@ namespace KTTM.Controllers
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
-                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    log += temp + " -User cập nhật : " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
                     HomeVM.KVPTC.LogFile = t.LogFile;
                 }

@@ -251,7 +251,8 @@ var createController = {
                             MaKhNo: item.maKhNo,
                             TKCo: item.tkCo,
                             MaKhCo: item.maKhCo,
-                            PhieuTC: item.phieuTC
+                            Sgtcode: item.sgtcode
+                            //PhieuTC: item.phieuTC
                         });
                     });
 

@@ -93,7 +93,7 @@ namespace KTTM.Services
                     NgayCT = item.NgayCT,
                     SoCT = item.KVCTPTC.SoCT,// item.SoCT,
                     DienGiai = item.DienGiai,
-                    SoTienNT = item.SoTienNT,
+                    SoTienNT = item.ConLaiNT,// item.SoTienNT,
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
                     VND = item.SoTien,

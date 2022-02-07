@@ -1752,6 +1752,9 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC, long kVCTPCTId_PhieuTC) // kVCTPCTId_PhieuTC: tren TT621CreateView
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             KVCTPTC kVCTPCT = new KVCTPTC();
             if (kVCTPCTId_PhieuTC == 0) // trường hợp TT 141 Khong TC: khong phieu TC
             {
@@ -1768,6 +1771,13 @@ namespace KTTM.Controllers
             //if (tamUng.SoTienNT == soTienNTTrongTT621_TheoTamUng + soTienNT_PhieuTC)
             if (soTienCanKetChuyen == 0)
             {
+                string log = "";
+                log = System.Environment.NewLine;
+                log += "=============";
+                log += System.Environment.NewLine;
+                log += " -User kết chuyển: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                tamUng.LogFile = tamUng.LogFile + log;
+
                 tamUng.ConLaiNT = 0;
                 tamUng.ConLai = 0;
                 tamUng.PhieuTT = kVCTPCT.SoCT;

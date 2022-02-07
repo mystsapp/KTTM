@@ -2367,17 +2367,19 @@ namespace KTTM.Controllers
 
         private IEnumerable<Data.Models_DanhMucKT.PhongBan> GetPhongBans_Where()
         {
-            return _kVCTPTCService.GetAll_PhongBans().Where(x => x.BoPhan == "ND" ||
-                                                                               x.BoPhan == "HK" ||
-                                                                               x.BoPhan == "HC" ||
-                                                                               x.BoPhan == "HD" ||
-                                                                               x.BoPhan == "KT" ||
-                                                                               x.BoPhan == "TB" ||
-                                                                               x.BoPhan == "TH" ||
-                                                                               x.BoPhan == "VT" ||
-                                                                               x.BoPhan == "VS" ||
-                                                                               x.BoPhan == "IB" ||
-                                                                               x.BoPhan == "XE");
+            //return _kVCTPTCService.GetAll_PhongBans().Where(x => x.BoPhan == "ND" ||
+            //                                                                   x.BoPhan == "HK" ||
+            //                                                                   x.BoPhan == "HC" ||
+            //                                                                   x.BoPhan == "HD" ||
+            //                                                                   x.BoPhan == "KT" ||
+            //                                                                   x.BoPhan == "TB" ||
+            //                                                                   x.BoPhan == "TH" ||
+            //                                                                   x.BoPhan == "VT" ||
+            //                                                                   x.BoPhan == "VS" ||
+            //                                                                   x.BoPhan == "IB" ||
+            //                                                                   x.BoPhan == "XE");
+
+            return _kVCTPTCService.GetAll_PhongBans();
         }
 
         //public async Task<JsonResult> CheckNgayTonQuy_NT(string tuNgay, string denNgay, string loaiTien)
