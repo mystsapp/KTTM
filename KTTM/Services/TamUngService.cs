@@ -96,7 +96,7 @@ namespace KTTM.Services
                     SoTienNT = item.ConLaiNT,// item.SoTienNT,
                     LT = item.LoaiTien,
                     TyGia = item.TyGia,
-                    VND = item.SoTien,
+                    VND = item.ConLai,// item.SoTien,
                     Name = item.MaKhNo + " " + supplier.TenGiaoDich,//.TenThuongMai,//item.KVCTPTC.TenKH, --> thao
                     Name_Phong = item.Phong,
                     Id = item.Id
