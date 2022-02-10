@@ -56,7 +56,7 @@ namespace KTTM.Controllers
         //-----------LayDataCashierPartial------------
 
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate,
-            string boolSgtcode, string boolTkNo1311, Guid id, int page = 1)
+            string boolSgtcode, string boolTkNo1311, Guid id, int page = 1) // boolSgtcode: // search for chitiet in kvctptC
         {
             if (id == Guid.Empty)
             {

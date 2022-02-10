@@ -191,7 +191,7 @@
 
                                     <div class="col-md-4">
                                         <label class="control-label ">Tên KH có</label>
-                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@Model.TT621.TenKH" readonly />
+                                        <input type="text" class="form-control form-control-sm" id="txtTenKhCo" value="@ViewBag.tenKhCo" readonly />
                                     </div>
 
                                 }
@@ -324,7 +324,7 @@
 
                                 <div class="col-md-2">
                                     <label asp-for="TT621.NgayCTGoc" class="control-label "></label>
-                                    <input type="text" value="" asp-for="TT621.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
+                                    <input type="text" asp-for="TT621.NgayCTGoc" class="form-control form-control-sm maskInput" id="txtNgayCTGoc" />
                                     <span asp-validation-for="TT621.NgayCTGoc" class="text-danger"></span>
                                 </div>
 
@@ -426,11 +426,35 @@
                                     </select>
                                     <span asp-validation-for="TT621.MatHang" class="text-danger"></span>
                                 </div>
+                                
+                                <div class="col-md-6">
+                                    <label asp-for="TT621.MaTraCuu" class="control-label "></label>
+                                    <input asp-for="TT621.MaTraCuu" class="form-control form-control-sm" id="txtMaTraCuu" />
+                                    <span asp-validation-for="TT621.MaTraCuu" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class=" row">
 
-                                <div class="col-md-8">
-                                    <label asp-for="TT621.HoaDonDT" class="control-label "></label>
-                                    <input asp-for="TT621.HoaDonDT" class="form-control form-control-sm" id="txtHoaDonDT" />
-                                    <span asp-validation-for="TT621.HoaDonDT" class="text-danger"></span>
+                                <div class="col-md-12">
+                                    <label asp-for="KVCTPTC.LinkHDDT" class="control-label "></label>
+                                    <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                                    <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class=" row">
+
+                                <div class="col-md-6">
+                                    <label asp-for="KVCTPTC.TkTruyCap" class="control-label "></label>
+                                    <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                                    <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="KVCTPTC.Password" class="control-label "></label>
+                                    <input asp-for="KVCTPTC.Password" class="form-control form-control-sm" id="txtPassword" />
+                                    <span asp-validation-for="KVCTPTC.Password" class="text-danger"></span>
                                 </div>
                             </div>
                         </fieldset>
@@ -453,6 +477,7 @@
 <script src="~/js/Admin/serviceController.js"></script>
 <!-- select2 and multi select2 (bootstrap4)-->
 <script>
+    $(".maskInput").mask("99/99/9999");
     //$('#txtMaKH').select2()
     $('.select2').select2({
     })

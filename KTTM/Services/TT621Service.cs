@@ -1,4 +1,5 @@
 ﻿using Data.Dtos;
+using Data.Models_DanhMucKT;
 using Data.Models_HDVATOB;
 using Data.Models_KTTM;
 using Data.Repository;
@@ -56,6 +57,8 @@ namespace KTTM.Services
         Task<TT621> GetBySoCT(string soCT, string maCn);
 
         Task<IEnumerable<TT621>> FindBySoCT(string soCT, string maCn);
+
+        Task<KhachHang> GetKhachHangById(string maKhCo);
     }
 
     public class TT621Service : ITT621Service
@@ -411,6 +414,11 @@ namespace KTTM.Services
         public async Task<IEnumerable<TT621>> FindBySoCT(string soCT, string maCn)
         {
             return await _unitOfWork.tT621Repository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
+        }
+
+        public async Task<KhachHang> GetKhachHangById(string maKhCo)
+        {
+            return await _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangById(maKhCo);
         }
     }
 }

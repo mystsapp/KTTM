@@ -221,11 +221,15 @@ namespace KTTM.Services
             }
             else
             {
-                // search for sgtcode in kvctptC
+                // search for chitiet in kvctptC
                 if (!string.IsNullOrEmpty(boolSgtcode) && !string.IsNullOrEmpty(searchString))
                 {
-                    List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) &&
-                    x.Sgtcode.Contains(searchString.ToUpper().Trim())).ToList();
+                    List<KVCTPTC> kVCTPTCs = _unitOfWork.kVCTPCTRepository.Find(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString.ToUpper().Trim()) ||
+                    !string.IsNullOrEmpty(x.DienGiaiP) && x.DienGiaiP.Contains(searchString.ToUpper().Trim()) ||
+                    !string.IsNullOrEmpty(x.SoCTGoc) && x.SoCTGoc.Contains(searchString.ToUpper().Trim()) ||
+                    !string.IsNullOrEmpty(x.SoXe) && x.SoXe.Contains(searchString.ToUpper().Trim()) ||
+                    !string.IsNullOrEmpty(x.Number) && x.Number.Contains(searchString.ToUpper().Trim())
+                    ).ToList();
 
                     if (kVCTPTCs.Count() > 0)
                     {

@@ -1273,6 +1273,9 @@ namespace KTTM.Controllers
 
             TT621VM.TT621 = tT621;
 
+            // TenKHCo
+            KhachHang khachHang = await _tT621Service.GetKhachHangById(TT621VM.TT621.MaKhCo);
+            ViewBag.tenKhCo = khachHang.TenThuongMai;
             // tentk
             TT621VM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
             TT621VM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKCo).TenTk;
