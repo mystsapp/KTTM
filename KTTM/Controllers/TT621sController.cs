@@ -683,7 +683,7 @@ namespace KTTM.Controllers
             var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
             if (TT621VM.KVCTPTC.KVPTC.MFieu == "C")
             {
-                TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value + TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
+                TT621VM.TT621.SoTienNT = tamUngPhiaTren.ConLaiNT.Value + TT621VM.KVCTPTC.SoTienNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
                 TT621VM.TT621.TKNo = tT621.TKCo; // dao nguoc
                 TT621VM.TT621.TKCo = "1411"; // tT621.TKNo; // dao nguoc
                 if (TT621VM.KVCTPTC.KVPTC.NgoaiTe == "NT")
@@ -1274,7 +1274,7 @@ namespace KTTM.Controllers
             TT621VM.TT621 = tT621;
 
             // TenKHCo
-            KhachHang khachHang = await _tT621Service.GetKhachHangById(TT621VM.TT621.MaKhCo);
+            KhachHang khachHang = await _tT621Service.GetKhachHangById(TT621VM.KVCTPTC.MaKh);
             ViewBag.tenKhCo = khachHang.TenThuongMai;
             // tentk
             TT621VM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
@@ -1310,7 +1310,11 @@ namespace KTTM.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View(TT621VM);
+                return Json(new
+                {
+                    status = false,
+                    message = "ModelState is not valid"
+                });
             }
 
             KVPTC kVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
