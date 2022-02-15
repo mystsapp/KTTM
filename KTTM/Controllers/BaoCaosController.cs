@@ -1398,7 +1398,7 @@ namespace KTTM.Controllers
                     ViewBag.errorMessage = "Không tìm thấy MaKh";
                     return View("~/Views/Shared/Error.cshtml");
                 }
-                tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
+                tamUngModel_GroupBy_Names = abc.ToList();// _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
                 if (tamUngModel_GroupBy_Names.Count() == 0 || tamUngModel_GroupBy_Names == null)
                 {
                     SetAlert("Không tìm thấy MaKh", "warning");
