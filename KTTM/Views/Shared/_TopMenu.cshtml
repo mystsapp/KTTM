@@ -26,9 +26,10 @@
 
             <li><a href="javascript:;" class="dropdown-item" id="inChungTuGhiSo">In CTGS do thanh toán tạm ứng</a></li>
 
-            @if(user.Username == "hieuthao" || user.Username == "hongvt")
+            @if (user.Username == "hieuthao" || user.Username == "hongvt")
             {
-            <li><a asp-action="Index" asp-controller="TamUngs" class="dropdown-item">Danh mục tạm ứng</a></li>    
+                <li><a asp-action="Index" asp-controller="TamUngs" class="dropdown-item">Danh mục tạm ứng</a></li>
+
             }
             <!-- Level two dropdown-->
             @*<li class="dropdown-submenu dropdown-hover">
@@ -53,11 +54,25 @@
             <!-- End Level two -->
         </ul>
     </li>
+    <li class="nav-item" id="liThuHo">
+        <a href="/KVCTPTCs/ThuHo" class="nav-link">Thu hộ</a>
+    </li>
 </ul>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
 <script>
+
+    $(document).ready(function () {
+        var maCn = '@user.Macn';
+        if (maCn === 'STS' || maCn === 'STN') {
+            $('#liThuHo').show();
+        }
+        else {
+            $('#liThuHo').hide();
+        }
+    });
+
     // baoCaoQuyTienNT
     $('#baoCaoQuyTienNT').off('click').on('click', function () {
 
@@ -72,7 +87,6 @@
         $('#baoCaoQuyTienVND_Modal').draggable();
 
     })
-
 
     // theoDoiTUNoiBoTk141
     $('#theoDoiTUNoiBoTk141').off('click').on('click', function (e) {
@@ -117,5 +131,4 @@
 
         })
     }
-
 </script>

@@ -1,0 +1,246 @@
+﻿@model KVCTPCTViewModel
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Home Page";
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
+}
+
+<section class="content" style="padding: 15px 0.5rem">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> Danh sách thu hộ</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <form method="get" autocomplete="off">
+
+                <div class="pr-2 pl-2" style="padding-bottom:10px; padding-top: 6px; ">
+
+                    <div class="col-md-12">
+                        <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+
+                            @*<div class="col-md-3 text-sm">
+                                    <label>Nhập thông tin</label>
+                                    <input class="form-control form-control-sm text-uppercase" name="searchString" value="@ViewBag.searchString" id="txtSearchThongTin" />
+                                </div>*@
+
+                            <div class="col-md-2 text-sm">
+                                <label>Từ ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchFromDate" id="searchFromDate" value="@ViewBag.searchFromDate" />
+                            </div>
+
+                            <div class="col-md-2 text-sm">
+                                <label>Đến ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchToDate" id="searchToDate" value="@ViewBag.searchToDate" />
+                            </div>
+
+                            <div class="col-md-2 text-sm">
+                                <label>&nbsp;</label>
+                                <div class=" btn-block ">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
+                                        <i class="fas fa-search"></i> Tìm kiếm
+                                    </button>
+                                    <button type="submit" formaction="/KVCTPTCs/ExportThuHo" class="btn btn-success btn-sm" id="btnSubmitThuHo">
+                                        <i class="fas fa-file-excel"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            @*<br />*@
+            <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; min-height: 300px">
+                <table class="table mytable text-nowrap text-sm" id="phieuTbl">
+                    <thead>
+                        <tr class="table-info">
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().DienGiaiP)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoXe)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().HTTC)</th> <!--?-->
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTienNT)</th> <!--?-->
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().LoaiTien)</th> <!--NgoaiTe-->
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().TyGia)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().TKNo)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().MaKhNo)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().TKCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().DienGiai)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().MaKhCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().Sgtcode)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().NoQuay)</th><!--?-->
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().CoQuay)</th><!--?-->
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().CardNumber)</th><!--?-->
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SalesSlip)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().KyHieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().LoaiHDGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().NgayCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().MauSoHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().MsThue)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().VAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().DSKhongVAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().BoPhan)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().STT)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().TenKH)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().DiaChi)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().MatHang)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().DieuChinh)</th>
+
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().LinkHDDT)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().MaTraCuu)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().TkTruyCap)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().Password)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().TamUng)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().LoaiThe)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().CardNumber)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().Id)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().NguoiTao)</th>
+                            <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().HoanUngTU)</th>
+                            @if (user.Username == "hongvt")
+                            {
+                                <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTU_DaTT)</th>
+                                <th>@Html.DisplayNameFor(m => m.KVCTPTCs.FirstOrDefault().SoTT_DaTao)</th>
+
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.KVCTPTCs != null)
+                        {
+                            @foreach (var item in Model.KVCTPTCs)
+                            {
+
+                                <tr class="cursor-pointer @item.Id">
+
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiaiP)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoXe)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HTTC)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TyGia)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKNo)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhNo)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKCo)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiai)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhCo)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.NoQuay)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CoQuay)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CardNumber)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SalesSlip)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoCTGoc)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.KyHieu)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.NgayCTGoc.HasValue ? item.NgayCTGoc.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MauSoHD)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MsThue)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.VAT)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.DSKhongVAT.ToString("N0"))</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.BoPhan)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.STT)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TenKH)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DiaChi)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MatHang)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DieuChinh)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LinkHDDT)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaTraCuu)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TkTruyCap)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Password)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TamUng)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiThe)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.CardNumber)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.Id)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HoanUngTU)</td>
+                                    @if (user.Username == "hongvt")
+                                    {
+                                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
+                                        <td class="tdVal_KVCTPCT" data-id="@item.Id">@Html.DisplayFor(m => item.SoTU_DaTT)</td>
+
+                                    }
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+                <!--hiden field for status click-->
+                @*<input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />*@
+                <!--hiden field for status click-->
+            </div>
+            <div class="p-2" style="background-color: aliceblue;">
+                @if (Model.KVCTPTCs != null)
+                {
+                    @Html.PagedListPager((IPagedList)Model.KVCTPTCs, page => Url.Action("ThuHo", new
+               {
+                   page = page,
+                   option = Context.Request.Query["option"],
+                   //searchString = ViewBag.searchString,
+                   searchFromDate = ViewBag.searchFromDate,
+                   searchToDate = ViewBag.searchToDate
+
+               }),
+                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                {
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" },
+                    MaximumPageNumbersToDisplay = 5,
+                    UlElementClasses = new[] { "pagination pagination-sm m-0" }, // ul class
+                    ContainerDivClasses = new[] { "pagination-container" }
+                }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+                }
+            </div>
+            <!-- KVCTPCT-->
+        </div>
+        <!-- /.card-body -->
+        @*<div class="card-footer">
+            Footer
+            </div>*@
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+@section Scripts{
+
+    <script>
+
+    var id_Redirect = '@ViewBag.id'; //Id sau khi redirect ve //////////////////////////////////////////////
+
+    //var tr_click = $('#phieuTbl ' + soCT);
+    if (id_Redirect !== '') {
+
+        var id_Redirect_Class = $('.' + id_Redirect);
+
+        if (id_Redirect_Class.hasClass("hoverClass")) {
+            id_Redirect_Class.removeClass("hoverClass");
+        }
+        else {
+            id_Redirect_Class.removeClass("hoverClass");
+            id_Redirect_Class.addClass("hoverClass");
+        }
+
+    }
+    </script>
+
+}

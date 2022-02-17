@@ -123,6 +123,8 @@ namespace KTTM.Services
         Task<IEnumerable<KVCTPTC>> GetKVCTPTCs_QLXe(string soPhieu, Guid kVPTCId, string soCT, string username, string macn);
 
         List<KVCTPTC> FindByMaCN(string maCn);
+
+        Task<IEnumerable<KVCTPTC>> KVCTPTCs_ThuHo(string searchFromDate, string searchToDate, string macn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -2182,6 +2184,74 @@ namespace KTTM.Services
         public List<KVCTPTC> FindByMaCN(string maCn)
         {
             return _unitOfWork.kVCTPCTRepository.Find(x => x.MaCn == maCn).ToList();
+        }
+
+        public async Task<IEnumerable<KVCTPTC>> KVCTPTCs_ThuHo(string searchFromDate, string searchToDate, string macn)
+        {
+            List<KVCTPTC> list = new List<KVCTPTC>();
+            if (macn == "STS") // sts chay thuho tu noidia
+            {
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.BoPhan == "SS") ||
+                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.BoPhan == "SS"));
+                list = kVCTPTCs.ToList();
+            }
+            if (macn == "STN") // noidia chay thuho tu sts
+            {
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.BoPhan == "ND") ||
+                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.BoPhan == "ND"));
+                list = kVCTPTCs.ToList();
+            }
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                    toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                    if (fromDate > toDate)
+                    {
+                        return null; //
+                    }
+
+                    list = list.Where(x => x.NgayTao >= fromDate &&
+                                       x.NgayTao < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        list = list.Where(x => x.NgayTao >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+                if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+            }
+            // search date
+            return list;
         }
     }
 }

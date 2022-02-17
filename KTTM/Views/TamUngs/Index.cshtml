@@ -20,7 +20,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> Danh tạm ứng</h3>
+            <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> Danh mục tạm ứng</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -38,30 +38,30 @@
 
                     <div class="col-md-12">
                         <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
-                            
-                                <div class="col-md-3 text-sm">
-                                    <label>Nhập thông tin</label>
-                                    <input class="form-control form-control-sm text-uppercase" name="searchString" value="@ViewBag.searchString" id="txtSearchThongTin" />
-                                </div>
 
-                                <div class="col-md-2 text-sm">
-                                    <label>Từ ngày</label>
-                                    <input class="form-control form-control-sm maskInput" name="searchFromDate" id="searchFromDate" value="@ViewBag.searchFromDate" />
-                                </div>
+                            <div class="col-md-3 text-sm">
+                                <label>Nhập thông tin</label>
+                                <input class="form-control form-control-sm text-uppercase" name="searchString" value="@ViewBag.searchString" id="txtSearchThongTin" />
+                            </div>
 
-                                <div class="col-md-2 text-sm">
-                                    <label>Đến ngày</label>
-                                    <input class="form-control form-control-sm maskInput" name="searchToDate" id="searchToDate" value="@ViewBag.searchToDate" />
-                                </div>
+                            <div class="col-md-2 text-sm">
+                                <label>Từ ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchFromDate" id="searchFromDate" value="@ViewBag.searchFromDate" />
+                            </div>
 
-                                <div class="col-md-2 text-sm">
-                                    <label>&nbsp;</label>
-                                    <div class=" btn-block ">
-                                        <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
-                                            <i class="fas fa-search"></i> Tìm kiếm
-                                        </button>
-                                    </div>
+                            <div class="col-md-2 text-sm">
+                                <label>Đến ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchToDate" id="searchToDate" value="@ViewBag.searchToDate" />
+                            </div>
+
+                            <div class="col-md-2 text-sm">
+                                <label>&nbsp;</label>
+                                <div class=" btn-block ">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
+                                        <i class="fas fa-search"></i> Tìm kiếm
+                                    </button>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,6 @@
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().TyGia)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().MaKhNo)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().NguoiTao)</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -110,7 +109,6 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TyGia)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-
                                 </tr>
 
                             }
@@ -158,9 +156,7 @@
 <!-- /.content -->
 @section Scripts{
 
-
-<script>
-
+    <script>
 
     var id_Redirect = '@ViewBag.id'; //Id sau khi redirect ve //////////////////////////////////////////////
 
@@ -177,10 +173,7 @@
             id_Redirect_Class.addClass("hoverClass");
         }
 
-
     }
-
-
-</script>
+    </script>
 
 }

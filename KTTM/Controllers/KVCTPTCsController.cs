@@ -1084,5 +1084,14 @@ namespace KTTM.Controllers
 
             return Json(false);
         }
+
+        public async Task<IActionResult> ThuHo(string searchFromDate, string searchToDate)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.KVCTPTCs_ThuHo(searchFromDate, searchToDate, user.Macn);
+            return View(KVCTPCTVM);
+        }
     }
 }
