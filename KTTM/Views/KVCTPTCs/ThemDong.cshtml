@@ -1,6 +1,7 @@
 ﻿@model KVCTPCTViewModel
 @{
     ViewData["Title"] = "Them dong";
+    //var tkChoMaKh = (List<string>)ViewBag.tkChoMaKh;
 }
 <!-- Main content -->
 @*<section class="content">*@
@@ -188,7 +189,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
                                 <div class="input-group">
-                                    <input asp-for="KVCTPTC.MaKhNo" required class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
+                                    <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase" id="txtMaKhNo">
                                     <span class="input-group-btn">
                                         <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                     </span>
@@ -687,6 +688,7 @@
         serviceController.DdlTkNo(tkNo);
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
+        // TkChoMaKh(tkNo);
     })
     $('#ddlTkCo').change(function () {
         tkCo = $(this).val();
@@ -695,6 +697,7 @@
         serviceController.DdlTkCo(tkCo);
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
+        // TkChoMaKh(tkCo);
     })
 
     var tkNo = $('#ddlTkNo').val();
@@ -714,13 +717,37 @@
     // VAT ==> DSKhongVAT
 
     function KhachHangSearch(code) {
-        debugger
+        
         $.get('/KVCTPTCs/GetKhachHangs_HDVATOB_By_Code', { code: code }, function (data) {
 
             $('#khachHang_Modal').modal('show');
             $('.khachHang_Modal_Body').html(data);
             $('#khachHang_Modal').draggable();
         });
+    }
+
+    // TkChoMaKh
+    function TkChoMaKh(tk) {
+        var loaiPhieu = '@Model.KVPTC.MFieu';
+        if(loaiPhieu === 'C'){            
+            $.post('/KVCTPTCs/TkChoMaKh', { tk: tk }, function (response) {
+                if(response){
+                    if($('#txtMaKhNo').val() === ''){
+                        toastr.error("MaKhNo không được để trống.");
+                    }
+                }
+            });
+        }
+        if(loaiPhieu === 'T'){
+            $.post('/KVCTPTCs/TkChoMaKh', { tk: tk }, function (response) {
+                if(response){
+                    if($('#txtMaKhCo').val() === ''){
+                        toastr.error("MaKhCo không được để trống.");
+                    }
+                }
+            });
+        }
+        
     }
 </script>
 

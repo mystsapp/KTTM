@@ -1070,5 +1070,19 @@ namespace KTTM.Controllers
             }
             return Json(true);
         }
+
+        public JsonResult TkChoMaKh(string tk)
+        {
+            List<string> tkChoMaKh = new List<string>()
+            {
+                "1411", "1412", "1311110000", "1311120000", "1388110001", "1368000000", "331110", "338811"
+            };
+            if (tkChoMaKh.Exists(x => x == tk))
+            {
+                return Json(true); // ko cho makh bo trong'
+            }
+
+            return Json(false);
+        }
     }
 }
