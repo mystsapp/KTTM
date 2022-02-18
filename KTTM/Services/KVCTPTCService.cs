@@ -124,7 +124,7 @@ namespace KTTM.Services
 
         List<KVCTPTC> FindByMaCN(string maCn);
 
-        Task<IEnumerable<KVCTPTC>> KVCTPTCs_ThuHo(string searchFromDate, string searchToDate, string macn);
+        Task<IPagedList<KVCTPTC>> ListThuHo(string searchFromDate, string searchToDate, int? page, string macn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -308,7 +308,7 @@ namespace KTTM.Services
                     KVCTPTC kVCTPTC = new KVCTPTC();
                     kVCTPTC.STT = item.Stt; // ben [ntbill] cashier
 
-                    if (tienMat)
+                    if (tienMat) // if (maCN == "STN") // thao
                     {
                         if (ctbills_TienMat.Count() > 0)
                         {
@@ -323,7 +323,7 @@ namespace KTTM.Services
                             kVCTPTC.SoTien = ctbills_TienMat.Sum(x => x.Sotien);// item1.Sotien;
                                                                                 //kVCTPTC.CardNumber = ctbills_TienMat.FirstOrDefault().Cardnumber;// item1.Cardnumber;
                                                                                 //kVCTPTC.LoaiThe = ctbills_TienMat.FirstOrDefault().Loaicard;// item1.Loaicard;
-
+                            kVCTPTC.BoPhan = boPhan;
                             // THONG TIN VE CONG NO DOAN
                             if (loaiPhieu == "T") // phieu thu
                             {
@@ -342,6 +342,8 @@ namespace KTTM.Services
 
                                     case "TWI":
                                         kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "TND":
@@ -383,10 +385,14 @@ namespace KTTM.Services
 
                                     case "PWI":
                                         kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "BWI":
                                         kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "BND":
@@ -424,11 +430,59 @@ namespace KTTM.Services
                                     kVCTPTC.MaKhCo = "0310891532051"; //maKh;
                                 }
 
-                                // anh son kt
-                                if (maKh == "0000000003") // makh
+                                if (maCN == "STN") // thao
                                 {
-                                    kVCTPTC.TKCo = "1331000010";
+                                    switch (baoCaoSo.Substring(5, 3))
+                                    {
+                                        case "BND":
+                                        case "TND":
+                                        case "PND":
+                                            kVCTPTC.TKCo = "1311110000";
+                                            kVCTPTC.MaKhNo = "";
+                                            kVCTPTC.MaKhCo = "0000000003";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "ND";
+                                            break;
+
+                                        case "HND":
+                                            kVCTPTC.TKNo = "1311110000";
+                                            kVCTPTC.MaKhNo = "0000000003";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.NoQuay = "ND";
+                                            break;
+
+                                        case "BOB":
+                                        case "TOB":
+                                        case "POB":
+                                        case "CHK":
+                                        case "BHK":
+                                        case "PHK":
+                                        case "VHK":
+                                            kVCTPTC.TKCo = "1368000000";
+                                            kVCTPTC.MaKhNo = "";
+                                            kVCTPTC.MaKhCo = "0310891532";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "";
+                                            kVCTPTC.NoQuay = "";
+                                            break;
+
+                                        case "HOB":
+                                        case "HHK":
+                                            kVCTPTC.TKNo = "1368000000";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.MaKhNo = "0310891532";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "";
+                                            kVCTPTC.NoQuay = "";
+                                            break;
+                                    }
                                 }
+                                //// anh son kt
+                                //if (maKh == "0000000003") // makh
+                                //{
+                                //    kVCTPTC.TKCo = "1311110000";
+                                //}
                             }
                             else // phieu chi
                             {
@@ -437,11 +491,11 @@ namespace KTTM.Services
                                 kVCTPTC.TKNo = tk;
                                 kVCTPTC.TKCo = "1111000000";
                                 kVCTPTC.MaKhNo = maKh;
-                                // anh son kt
-                                if (maKh == "0000000003") // makh
-                                {
-                                    kVCTPTC.TKNo = "1331000010";
-                                }
+                                //// anh son kt
+                                //if (maKh == "0000000003") // makh
+                                //{
+                                //    kVCTPTC.TKNo = "1311110000";
+                                //}
 
                                 kVCTPTC.NoQuay = boPhan;
 
@@ -453,6 +507,8 @@ namespace KTTM.Services
 
                                     case "HWI":
                                         kVCTPTC.MaKhNo = "0000000006"; //maKh;
+                                        kVCTPTC.NoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "HND":
@@ -471,9 +527,32 @@ namespace KTTM.Services
                                         kVCTPTC.MaKhNo = "0000000005"; //maKh;
                                         break;
                                 }
-                            }
 
-                            kVCTPTC.BoPhan = boPhan;
+                                if (maCN == "STN") // thao
+                                {
+                                    switch (baoCaoSo.Substring(5, 3))
+                                    {
+                                        case "HND":
+                                            kVCTPTC.TKNo = "1311110000";
+                                            kVCTPTC.MaKhNo = "0000000003";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.NoQuay = "ND";
+                                            break;
+
+                                        case "HOB":
+                                        case "HHK":
+                                            kVCTPTC.TKNo = "1368000000";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.MaKhNo = "0310891532";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "";
+                                            kVCTPTC.NoQuay = "";
+                                            break;
+                                    }
+                                }
+                            }
+                            //
                             var sgtcode = ctbills_TienMat.FirstOrDefault(x => !string.IsNullOrEmpty(x.Sgtcode));
                             kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// item1.Sgtcode;
                                                                                      //kVCTPTC.CardNumber = item1.Cardnumber;
@@ -2186,19 +2265,23 @@ namespace KTTM.Services
             return _unitOfWork.kVCTPCTRepository.Find(x => x.MaCn == maCn).ToList();
         }
 
-        public async Task<IEnumerable<KVCTPTC>> KVCTPTCs_ThuHo(string searchFromDate, string searchToDate, string macn)
+        public async Task<IPagedList<KVCTPTC>> ListThuHo(string searchFromDate, string searchToDate, int? page, string macn)
         {
+            // return a 404 if user browses to before the first page
+            if (page.HasValue && page < 1)
+                return null;
+
             List<KVCTPTC> list = new List<KVCTPTC>();
-            if (macn == "STS") // sts chay thuho tu noidia
+            if (macn == "STN") // sts chay thuho tu noidia : 0310891532051
             {
-                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.BoPhan == "SS") ||
-                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.BoPhan == "SS"));
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(y => y.KVPTC, x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.MaKhCo == "0310891532051" && x.MaCn == "STS") ||
+                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.MaKhNo == "0310891532051" && x.MaCn == "STS"));
                 list = kVCTPTCs.ToList();
             }
-            if (macn == "STN") // noidia chay thuho tu sts
+            if (macn == "STS") // noidia chay thuho tu sts : 0310891532
             {
-                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.BoPhan == "ND") ||
-                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.BoPhan == "ND"));
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(y => y.KVPTC, x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.MaKhCo == "0310891532" && x.MaCn == "STN") ||
+                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.MaKhCo == "0310891532" && x.MaCn == "STN"));
                 list = kVCTPTCs.ToList();
             }
             // search date
@@ -2215,8 +2298,8 @@ namespace KTTM.Services
                         return null; //
                     }
 
-                    list = list.Where(x => x.NgayTao >= fromDate &&
-                                       x.NgayTao < toDate.AddDays(1)).ToList();
+                    list = list.Where(x => x.KVPTC.NgayCT >= fromDate &&
+                                       x.KVPTC.NgayCT < toDate.AddDays(1)).ToList();
                 }
                 catch (Exception)
                 {
@@ -2230,7 +2313,7 @@ namespace KTTM.Services
                     try
                     {
                         fromDate = DateTime.Parse(searchFromDate);
-                        list = list.Where(x => x.NgayTao >= fromDate).ToList();
+                        list = list.Where(x => x.KVPTC.NgayCT >= fromDate).ToList();
                     }
                     catch (Exception)
                     {
@@ -2242,7 +2325,7 @@ namespace KTTM.Services
                     try
                     {
                         toDate = DateTime.Parse(searchToDate);
-                        list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+                        list = list.Where(x => x.KVPTC.NgayCT < toDate.AddDays(1)).ToList();
                     }
                     catch (Exception)
                     {
@@ -2251,7 +2334,25 @@ namespace KTTM.Services
                 }
             }
             // search date
-            return list;
+            //return list;
+
+            // page the list
+            const int pageSize = 10;
+            decimal aa = (decimal)list.Count() / (decimal)pageSize;
+            var bb = Math.Ceiling(aa);
+            if (page > bb)
+            {
+                page--;
+            }
+            page = (page == 0) ? 1 : page;
+            var listPaged = list.ToPagedList(page ?? 1, pageSize);
+            //if (page > listPaged.PageCount)
+            //    page--;
+            // return a 404 if user browses to pages beyond last page. special case first page if no items exist
+            if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
+                return null;
+
+            return listPaged;
         }
     }
 }

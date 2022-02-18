@@ -1085,12 +1085,19 @@ namespace KTTM.Controllers
             return Json(false);
         }
 
-        public async Task<IActionResult> ThuHo(string searchFromDate, string searchToDate)
+        public async Task<IActionResult> ThuHo(string searchFromDate, string searchToDate, int page = 1)
         {
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.KVCTPTCs_ThuHo(searchFromDate, searchToDate, user.Macn);
+            KVCTPCTVM.ListThuHo = await _kVCTPTCService.ListThuHo(searchFromDate, searchToDate, page, user.Macn);
+
+            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+            {
+                KVCTPCTVM.KVCTPTCs = new List<KVCTPTC>();
+            }
             return View(KVCTPCTVM);
         }
     }
