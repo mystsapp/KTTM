@@ -125,6 +125,8 @@ namespace KTTM.Services
         List<KVCTPTC> FindByMaCN(string maCn);
 
         Task<IPagedList<KVCTPTC>> ListThuHo(string searchFromDate, string searchToDate, int? page, string macn);
+
+        Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchFromDate, string searchToDate, string macn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -2353,6 +2355,75 @@ namespace KTTM.Services
                 return null;
 
             return listPaged;
+        }
+
+        public async Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchFromDate, string searchToDate, string macn)
+        {
+            List<KVCTPTC> list = new List<KVCTPTC>();
+            if (macn == "STN") // sts chay thuho tu noidia : 0310891532051
+            {
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(y => y.KVPTC, x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.MaKhCo == "0310891532051" && x.MaCn == "STS") ||
+                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.MaKhNo == "0310891532051" && x.MaCn == "STS"));
+                list = kVCTPTCs.ToList();
+            }
+            if (macn == "STS") // noidia chay thuho tu sts : 0310891532
+            {
+                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(y => y.KVPTC, x => (x.TKCo == "1368000000" && x.TKNo == "1111000000" && x.MaKhCo == "0310891532" && x.MaCn == "STN") ||
+                (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.MaKhCo == "0310891532" && x.MaCn == "STN"));
+                list = kVCTPTCs.ToList();
+            }
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                    toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                    if (fromDate > toDate)
+                    {
+                        return null; //
+                    }
+
+                    list = list.Where(x => x.KVPTC.NgayCT >= fromDate &&
+                                       x.KVPTC.NgayCT < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        list = list.Where(x => x.KVPTC.NgayCT >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+                if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        list = list.Where(x => x.KVPTC.NgayCT < toDate.AddDays(1)).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+            }
+            // search date
+
+            return list;
         }
     }
 }

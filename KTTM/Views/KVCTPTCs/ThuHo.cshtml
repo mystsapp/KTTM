@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="card-body p-0">
-            <form method="get" autocomplete="off">
+            <form method="get" autocomplete="off" id="frmExport">
 
                 <div class="pr-2 pl-2" style="padding-bottom:10px; padding-top: 6px; ">
 
@@ -58,7 +58,7 @@
                                     <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
                                         <i class="fas fa-search"></i> Tìm kiếm
                                     </button>
-                                    <button type="submit" formaction="/KVCTPTCs/ExportThuHo" class="btn btn-success btn-sm" id="btnSubmitThuHo">
+                                    <button type="submit" formaction="/KVCTPTCs/ExportThuHo" formmethod="post" class="btn btn-success btn-sm" id="btnSubmitThuHo">
                                         <i class="fas fa-file-excel"></i> Export
                                     </button>
                                 </div>
@@ -75,9 +75,9 @@
                         <tr class="table-info">
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().DienGiaiP)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoXe)</th>
-                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().HTTC)</th> <!--?-->
-                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoTienNT)</th> <!--?-->
-                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().LoaiTien)</th> <!--NgoaiTe-->
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().HTTC)</th> 
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoTienNT)</th> 
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().LoaiTien)</th> 
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().TyGia)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoTien)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().TKNo)</th>
@@ -86,9 +86,9 @@
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().DienGiai)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().MaKhCo)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().Sgtcode)</th>
-                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().NoQuay)</th><!--?-->
-                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().CoQuay)</th><!--?-->
-                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().CardNumber)</th><!--?-->
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().NoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().CoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().CardNumber)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SalesSlip)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoCTGoc)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().KyHieu)</th>
@@ -241,6 +241,61 @@
         }
 
     }
+    
+    
+    $('#frmExport').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
+
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    
+    $('#searchFromDate').rules('add', {
+        required: true,
+        messages: {
+            //required: "Chủ đề không được để trống"
+        }
+    });
+    
+    $('#searchToDate').rules('add', {
+        required: true,
+        messages: {
+            //required: "Chủ đề không được để trống"
+        }
+    });
+
     </script>
 
 }
