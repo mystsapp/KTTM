@@ -1397,7 +1397,7 @@ namespace KTTM.Controllers
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 23, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 24].Value = item.BoPhan;
+                    xlSheet.Cells[dong, 24].Value = "";// item.BoPhan;
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 24, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -1405,7 +1405,7 @@ namespace KTTM.Controllers
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 25, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 26].Value = item.CoQuay;
+                    xlSheet.Cells[dong, 26].Value = "";// item.CoQuay;
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 26, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -1431,7 +1431,7 @@ namespace KTTM.Controllers
                 //ExcelTool.NumberFormat(dong, 2, dong, 4, xlSheet);
                 ////setFontBold(dong, 1, dong, 10, 12, xlSheet);
                 //ExcelTool.setBorder(dong, 1, dong, 8, xlSheet);
-                //ExcelTool.DateFormat(6, 1, dong, 1, xlSheet);
+                ExcelTool.DateFormat(5, 14, dong, 14, xlSheet);
 
                 //xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";
                 //xlSheet.Cells[dong + 2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));
