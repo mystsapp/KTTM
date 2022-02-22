@@ -37,10 +37,10 @@
                     <div class="col-md-12">
                         <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
 
-                            @*<div class="col-md-3 text-sm">
-                                    <label>Nhập thông tin</label>
-                                    <input class="form-control form-control-sm text-uppercase" name="searchString" value="@ViewBag.searchString" id="txtSearchThongTin" />
-                                </div>*@
+                            <div class="col-md-3 text-sm">
+                                    <label>Nhập thông tin </label>
+                                    <input class="form-control form-control-sm text-uppercase" name="searchString" value="@ViewBag.searchString" id="txtSearchThongTin" placeholder="Sgtcode"/>
+                                </div>
 
                             <div class="col-md-2 text-sm">
                                 <label>Từ ngày</label>
@@ -195,7 +195,7 @@
                {
                    page = page,
                    option = Context.Request.Query["option"],
-                   
+                   searchString = ViewBag.searchString,
                    searchFromDate = ViewBag.searchFromDate,
                    searchToDate = ViewBag.searchToDate
 

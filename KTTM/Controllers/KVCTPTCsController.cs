@@ -141,6 +141,54 @@ namespace KTTM.Controllers
 
                 return View(KVCTPCTVM);
             }
+            if (KVCTPCTVM.KVPTC.MFieu == "T") // check makhno required
+            {
+                var result = TkChoMaKh(KVCTPCTVM.KVCTPTC.TKCo);
+                var boolResult = result.Value.ToString();
+
+                if (bool.Parse(boolResult))
+                {
+                    ModelState.AddModelError("", "MaKhCo không được để trống.");
+                    // not valid
+                    KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
+                    KVCTPCTVM.Page = page;
+                    KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+                    KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+                    KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+                    KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+                    KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+                    //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                    KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+                    //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                    Get_TkNo_TkCo();
+
+                    return View(KVCTPCTVM);
+                }
+            }
+            else // check makhco required
+            {
+                var result = TkChoMaKh(KVCTPCTVM.KVCTPTC.TKNo);
+                var boolResult = result.Value.ToString();
+
+                if (bool.Parse(boolResult))
+                {
+                    ModelState.AddModelError("", "MaKhNo không được để trống.");
+                    // not valid
+                    KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
+                    KVCTPCTVM.Page = page;
+                    KVCTPCTVM.DmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+                    KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+                    KVCTPCTVM.MatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+                    KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+                    KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+                    //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                    KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+                    //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                    Get_TkNo_TkCo();
+
+                    return View(KVCTPCTVM);
+                }
+            }
 
             KVCTPCTVM.KVCTPTC.SoCT = KVCTPCTVM.KVPTC.SoCT;
             KVCTPCTVM.KVCTPTC.SoTienNT = KVCTPCTVM.KVCTPTC.SoTienNT == null ? 0 : KVCTPCTVM.KVCTPTC.SoTienNT.Value;
@@ -1088,8 +1136,9 @@ namespace KTTM.Controllers
             return Json(false);
         }
 
-        public async Task<IActionResult> ThuHo(string searchFromDate, string searchToDate, int page = 1)
+        public async Task<IActionResult> ThuHo(string searchString, string searchFromDate, string searchToDate, int page = 1)
         {
+            ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
             // from login session
@@ -1110,13 +1159,13 @@ namespace KTTM.Controllers
                 return View(KVCTPCTVM);
             }
 
-            KVCTPCTVM.ListThuHo = await _kVCTPTCService.ListThuHo(searchFromDate, searchToDate, page, user.Macn);
+            KVCTPCTVM.ListThuHo = await _kVCTPTCService.ListThuHo(searchString, searchFromDate, searchToDate, page, user.Macn);
 
             return View(KVCTPCTVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExportThuHo(string searchFromDate, string searchToDate)
+        public async Task<IActionResult> ExportThuHo(string searchString, string searchFromDate, string searchToDate)
         {
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
@@ -1129,7 +1178,7 @@ namespace KTTM.Controllers
             }
 
             // export
-            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.ExportThuHo(searchFromDate, searchToDate, user.Macn);
+            KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.ExportThuHo(searchString, searchFromDate, searchToDate, user.Macn);
 
             ExcelPackage ExcelApp = new ExcelPackage();
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Supplier");
@@ -1167,15 +1216,7 @@ namespace KTTM.Controllers
 
             xlSheet.Cells[2, 1].Value = "BẢNG KÊ 1368 TỪ " + (user.Macn == "STS" ? "STN" : "STS");
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 18, FontStyle.Bold));
-            xlSheet.Cells[2, 1, 2, 28].Merge = true;
-
-            //xlSheet.Cells[4, 4].Value = "Loại Kh: ";
-            //xlSheet.Cells[4, 4].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            //var loai = CommonList.LoaiKh().Where(x => x.StrId == loaiKh).FirstOrDefault();
-            //xlSheet.Cells[4, 5].Value = loai.Name;
-            //xlSheet.Cells[4, 5].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
-            //xlSheet.Cells[4, 5].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
-            //xlSheet.Cells[4, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
+            xlSheet.Cells[2, 1, 2, 8].Merge = true;
 
             ExcelTool.setCenterAligment(1, 1, 2, 1, xlSheet);
 
@@ -1215,7 +1256,9 @@ namespace KTTM.Controllers
             ExcelTool.setCenterAligment(4, 1, 6, 28, xlSheet);
             xlSheet.Cells[4, 1, 4, 28].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
             xlSheet.Cells[4, 1, 4, 28].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
-            xlSheet.Column(1).Style.WrapText = true; // WrapText for column
+            xlSheet.Cells[4, 1, 4, 28].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
+            xlSheet.Cells[4, 1, 4, 28].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            // xlSheet.Column(1).Style.WrapText = true; // WrapText for column
             xlSheet.Column(20).Style.WrapText = true;
             xlSheet.Column(21).Style.WrapText = true;
             xlSheet.Column(22).Style.WrapText = true;
@@ -1267,16 +1310,38 @@ namespace KTTM.Controllers
                     xlSheet.Cells[dong, 7].Value = item.TKNo;
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-
-                    xlSheet.Cells[dong, 8].Value = item.MaKhNo;// == true ? "Kích hoạt" : "Khoá";
+                    if (item.KVPTC.MFieu == "T")
+                    {
+                        xlSheet.Cells[dong, 7].Value = item.TKCo;
+                        ExcelTool.TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                        // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 7].Value = "1311110000";
+                        ExcelTool.TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                        // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    }
+                    xlSheet.Cells[dong, 8].Value = "";// item.MaKhNo;// == true ? "Kích hoạt" : "Khoá";
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     xlSheet.Cells[dong, 9].Value = item.TKCo;
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-
-                    xlSheet.Cells[dong, 10].Value = item.MaKhCo;
+                    if (item.KVPTC.MFieu == "T")
+                    {
+                        xlSheet.Cells[dong, 9].Value = "1311110000";// item.TKCo;
+                        ExcelTool.TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                        // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    }
+                    else
+                    {
+                        xlSheet.Cells[dong, 9].Value = "1368000000";// item.TKCo;
+                        ExcelTool.TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                        // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    }
+                    xlSheet.Cells[dong, 10].Value = "";// item.MaKhCo;
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -1353,7 +1418,7 @@ namespace KTTM.Controllers
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     //setBorder(5, 1, dong, 10, xlSheet);
-                    //ExcelTool.NumberFormat(dong, 6, dong + 1, 6, xlSheet);
+                    ExcelTool.NumberFormat(dong, 2, dong, 5, xlSheet);
 
                     dong++;
                     idem++;
@@ -1363,7 +1428,7 @@ namespace KTTM.Controllers
                 //xlSheet.Cells[dong, 5].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold | FontStyle.Italic));
                 //xlSheet.Cells[dong, 6].Formula = "SUM(F6:F" + (dong - 1) + ")";
 
-                ////NumberFormat(dong, 3, dong, 4, xlSheet);
+                //ExcelTool.NumberFormat(dong, 2, dong, 4, xlSheet);
                 ////setFontBold(dong, 1, dong, 10, 12, xlSheet);
                 //ExcelTool.setBorder(dong, 1, dong, 8, xlSheet);
                 //ExcelTool.DateFormat(6, 1, dong, 1, xlSheet);

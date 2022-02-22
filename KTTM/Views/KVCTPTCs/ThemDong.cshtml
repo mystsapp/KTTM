@@ -688,7 +688,7 @@
         serviceController.DdlTkNo(tkNo);
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
-        // TkChoMaKh(tkNo);
+        //TkChoMaKh(tkNo);
     })
     $('#ddlTkCo').change(function () {
         tkCo = $(this).val();
@@ -697,7 +697,7 @@
         serviceController.DdlTkCo(tkCo);
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
 
-        // TkChoMaKh(tkCo);
+        //TkChoMaKh(tkCo);
     })
 
     var tkNo = $('#ddlTkNo').val();
@@ -726,29 +726,29 @@
         });
     }
 
-    // TkChoMaKh
-    function TkChoMaKh(tk) {
-        var loaiPhieu = '@Model.KVPTC.MFieu';
-        if(loaiPhieu === 'C'){            
-            $.post('/KVCTPTCs/TkChoMaKh', { tk: tk }, function (response) {
-                if(response){
-                    if($('#txtMaKhNo').val() === ''){
-                        toastr.error("MaKhNo không được để trống.");
-                    }
-                }
-            });
-        }
-        if(loaiPhieu === 'T'){
-            $.post('/KVCTPTCs/TkChoMaKh', { tk: tk }, function (response) {
-                if(response){
-                    if($('#txtMaKhCo').val() === ''){
-                        toastr.error("MaKhCo không được để trống.");
-                    }
-                }
-            });
-        }
+    //// TkChoMaKh
+    //function TkChoMaKh(tk) {
+    //    var loaiPhieu = '@Model.KVPTC.MFieu';
+    //    if(loaiPhieu === 'C'){            
+    //        $.post('/KVCTPTCs/TkChoMaKh', { tk: tk }, function (response) {
+    //            if(response){
+    //                if($('#txtMaKhNo').val() === ''){
+    //                    toastr.error("MaKhNo không được để trống.");
+    //                }
+    //            }
+    //        });
+    //    }
+    //    if(loaiPhieu === 'T'){
+    //        $.post('/KVCTPTCs/TkChoMaKh', { tk: tk }, function (response) {
+    //            if(response){
+    //                if($('#txtMaKhCo').val() === ''){
+    //                    toastr.error("MaKhCo không được để trống.");
+    //                }
+    //            }
+    //        });
+    //    }
         
-    }
+    //}
 </script>
 
 }

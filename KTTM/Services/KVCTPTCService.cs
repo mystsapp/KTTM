@@ -124,9 +124,9 @@ namespace KTTM.Services
 
         List<KVCTPTC> FindByMaCN(string maCn);
 
-        Task<IPagedList<KVCTPTC>> ListThuHo(string searchFromDate, string searchToDate, int? page, string macn);
+        Task<IPagedList<KVCTPTC>> ListThuHo(string searchString, string searchFromDate, string searchToDate, int? page, string macn);
 
-        Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchFromDate, string searchToDate, string macn);
+        Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchString, string searchFromDate, string searchToDate, string macn);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -2267,7 +2267,7 @@ namespace KTTM.Services
             return _unitOfWork.kVCTPCTRepository.Find(x => x.MaCn == maCn).ToList();
         }
 
-        public async Task<IPagedList<KVCTPTC>> ListThuHo(string searchFromDate, string searchToDate, int? page, string macn)
+        public async Task<IPagedList<KVCTPTC>> ListThuHo(string searchString, string searchFromDate, string searchToDate, int? page, string macn)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -2286,6 +2286,12 @@ namespace KTTM.Services
                 (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.MaKhCo == "0310891532" && x.MaCn == "STN"));
                 list = kVCTPTCs.ToList();
             }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString)).ToList();
+            }
+
             // search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
@@ -2357,7 +2363,7 @@ namespace KTTM.Services
             return listPaged;
         }
 
-        public async Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchFromDate, string searchToDate, string macn)
+        public async Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchString, string searchFromDate, string searchToDate, string macn)
         {
             List<KVCTPTC> list = new List<KVCTPTC>();
             if (macn == "STN") // sts chay thuho tu noidia : 0310891532051
@@ -2372,6 +2378,12 @@ namespace KTTM.Services
                 (x.TKNo == "1368000000" && x.TKCo == "1111000000" && x.MaKhCo == "0310891532" && x.MaCn == "STN"));
                 list = kVCTPTCs.ToList();
             }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString)).ToList();
+            }
+
             // search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
