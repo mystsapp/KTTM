@@ -146,7 +146,7 @@ namespace KTTM.Controllers
                 var result = TkChoMaKh(KVCTPCTVM.KVCTPTC.TKCo);
                 var boolResult = result.Value.ToString();
 
-                if (bool.Parse(boolResult))
+                if (bool.Parse(boolResult) && string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhCo))
                 {
                     ModelState.AddModelError("", "MaKhCo không được để trống.");
                     // not valid
@@ -170,7 +170,7 @@ namespace KTTM.Controllers
                 var result = TkChoMaKh(KVCTPCTVM.KVCTPTC.TKNo);
                 var boolResult = result.Value.ToString();
 
-                if (bool.Parse(boolResult))
+                if (bool.Parse(boolResult) && string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo))
                 {
                     ModelState.AddModelError("", "MaKhNo không được để trống.");
                     // not valid
