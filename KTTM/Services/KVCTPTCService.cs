@@ -2289,7 +2289,8 @@ namespace KTTM.Services
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString)).ToList();
+                list = list.Where(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.ToLower().Contains(searchString.ToLower()) ||
+                !string.IsNullOrEmpty(x.SoCTGoc) && x.SoCTGoc.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             // search date
@@ -2381,7 +2382,8 @@ namespace KTTM.Services
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString)).ToList();
+                list = list.Where(x => !string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.Contains(searchString) ||
+                !string.IsNullOrEmpty(x.SoCTGoc) && x.SoCTGoc.Contains(searchString)).ToList();
             }
 
             // search date

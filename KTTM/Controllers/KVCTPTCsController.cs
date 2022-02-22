@@ -909,7 +909,7 @@ namespace KTTM.Controllers
             try
             {
                 // chi tiet nay keo ben cashier qua
-                if (!string.IsNullOrEmpty(kVCTPCT.STT)) // kVCTPCT.STT: stt trong ntbill lay qua
+                if (!string.IsNullOrEmpty(kVCTPCT.STT) && kVCTPCT.STT != "0") // kVCTPCT.STT: stt trong ntbill lay qua / "0":Xe
                 {
                     var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(kVCTPCT.KVPTCId);
                     await _kVCTPTCService.DeleteRangeAsync(kVCTPTCs);
