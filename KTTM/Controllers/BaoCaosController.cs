@@ -1661,7 +1661,7 @@ namespace KTTM.Controllers
                         ViewBag.errorMessage = "Không tìm thấy MaKh: " + abc.FirstOrDefault().MaKh;
                         return View("~/Views/Shared/Error.cshtml");
                     }
-                    tamUngModel_GroupBy_Names = _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
+                    tamUngModel_GroupBy_Names = abc.ToList();// _tamUngService.TamUngModels_GroupBy_Name(tamUngs.OrderBy(x => x.NgayCT), user.Macn).ToList();
 
                     ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add(phongBan.TenBoPhan.Trim());
                     // Định dạng chiều dài cho cột

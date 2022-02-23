@@ -1214,57 +1214,55 @@ namespace KTTM.Controllers
             xlSheet.Column(27).Width = 20;// soxe
             xlSheet.Column(28).Width = 20;// number
 
-            xlSheet.Cells[2, 1].Value = "BẢNG KÊ 1368 TỪ " + (user.Macn == "STS" ? "STN" : "STS");
-            xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 18, FontStyle.Bold));
-            xlSheet.Cells[2, 1, 2, 8].Merge = true;
+            //xlSheet.Cells[2, 1].Value = "BẢNG KÊ 1368 TỪ " + (user.Macn == "STS" ? "STN" : "STS");
+            //xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 18, FontStyle.Bold));
+            //xlSheet.Cells[2, 1, 2, 8].Merge = true;
 
-            ExcelTool.setCenterAligment(1, 1, 2, 1, xlSheet);
+            //ExcelTool.setCenterAligment(1, 1, 2, 1, xlSheet);
 
             // Tạo header
-            xlSheet.Cells[4, 1].Value = "diengiaip";
-            xlSheet.Cells[4, 2].Value = "sotiennt";
-            xlSheet.Cells[4, 3].Value = "loaitien";
-            xlSheet.Cells[4, 4].Value = "tygia";
-            xlSheet.Cells[4, 5].Value = "sotien";
-            xlSheet.Cells[4, 6].Value = "httc";
-            xlSheet.Cells[4, 7].Value = "tkno";
-            xlSheet.Cells[4, 8].Value = "makhno";
-            xlSheet.Cells[4, 9].Value = "tkco";
+            xlSheet.Cells[1, 1].Value = "diengiaip";
+            xlSheet.Cells[1, 2].Value = "sotiennt";
+            xlSheet.Cells[1, 3].Value = "loaitien";
+            xlSheet.Cells[1, 4].Value = "tygia";
+            xlSheet.Cells[1, 5].Value = "sotien";
+            xlSheet.Cells[1, 6].Value = "httc";
+            xlSheet.Cells[1, 7].Value = "tkno";
+            xlSheet.Cells[1, 8].Value = "makhno";
+            xlSheet.Cells[1, 9].Value = "tkco";
+            xlSheet.Cells[1, 10].Value = "makhco";
+            xlSheet.Cells[1, 11].Value = "vat";
+            xlSheet.Cells[1, 12].Value = "dskhongvat";
+            xlSheet.Cells[1, 13].Value = "loaihdgoc";
+            xlSheet.Cells[1, 14].Value = "ngayctgoc";
+            xlSheet.Cells[1, 15].Value = "soctgoc";
+            xlSheet.Cells[1, 16].Value = "kyhieu";
+            xlSheet.Cells[1, 17].Value = "mausohd";
+            xlSheet.Cells[1, 18].Value = "sgtcode";
+            xlSheet.Cells[1, 19].Value = "msthue";
+            xlSheet.Cells[1, 20].Value = "diengiai";
+            xlSheet.Cells[1, 21].Value = "tenkh";
+            xlSheet.Cells[1, 22].Value = "diachi";
+            xlSheet.Cells[1, 23].Value = "mathang";
+            xlSheet.Cells[1, 24].Value = "bophan";
+            xlSheet.Cells[1, 25].Value = "noquay";
+            xlSheet.Cells[1, 26].Value = "coquay";
+            xlSheet.Cells[1, 27].Value = "soxe";
+            xlSheet.Cells[1, 28].Value = "number";
 
-            xlSheet.Cells[4, 10].Value = "makhco";
-            xlSheet.Cells[4, 11].Value = "vat";
-            xlSheet.Cells[4, 12].Value = "dskhongvat";
-            xlSheet.Cells[4, 13].Value = "loaihdgoc";
-            xlSheet.Cells[4, 14].Value = "ngayctgoc";
-            xlSheet.Cells[4, 15].Value = "soctgoc";
-            xlSheet.Cells[4, 16].Value = "kyhieu";
-            xlSheet.Cells[4, 17].Value = "mausohd";
-            xlSheet.Cells[4, 18].Value = "sgtcode";
-
-            xlSheet.Cells[4, 19].Value = "msthue";
-            xlSheet.Cells[4, 20].Value = "diengiai";
-            xlSheet.Cells[4, 21].Value = "tenkh";
-            xlSheet.Cells[4, 22].Value = "diachi";
-            xlSheet.Cells[4, 23].Value = "mathang";
-            xlSheet.Cells[4, 24].Value = "bophan";
-            xlSheet.Cells[4, 25].Value = "noquay";
-            xlSheet.Cells[4, 26].Value = "coquay";
-            xlSheet.Cells[4, 27].Value = "soxe";
-            xlSheet.Cells[4, 28].Value = "number";
-
-            ExcelTool.setBorder(4, 1, 4, 28, xlSheet);
-            ExcelTool.setCenterAligment(4, 1, 6, 28, xlSheet);
-            xlSheet.Cells[4, 1, 4, 28].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[4, 1, 4, 28].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
-            xlSheet.Cells[4, 1, 4, 28].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
-            xlSheet.Cells[4, 1, 4, 28].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            ExcelTool.setBorder(1, 1, 1, 28, xlSheet);
+            ExcelTool.setCenterAligment(1, 1, 6, 28, xlSheet);
+            xlSheet.Cells[1, 1, 1, 28].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[1, 1, 1, 28].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
+            xlSheet.Cells[1, 1, 1, 28].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
+            xlSheet.Cells[1, 1, 1, 28].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
             // xlSheet.Column(1).Style.WrapText = true; // WrapText for column
             xlSheet.Column(20).Style.WrapText = true;
             xlSheet.Column(21).Style.WrapText = true;
             xlSheet.Column(22).Style.WrapText = true;
 
             // do du lieu tu table
-            int dong = 5;
+            int dong = 2;
 
             //int iRowIndex = 6;
 

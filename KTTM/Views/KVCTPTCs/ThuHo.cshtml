@@ -73,6 +73,7 @@
                 <table class="table mytable text-nowrap text-sm" id="phieuTbl">
                     <thead>
                         <tr class="table-info">
+                            <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoCT)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().DienGiaiP)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().SoXe)</th>
                             <th>@Html.DisplayNameFor(m => m.ListThuHo.FirstOrDefault().HTTC)</th> 
@@ -131,6 +132,7 @@
 
                                 <tr class="cursor-pointer @item.Id">
 
+                                    <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.DienGiaiP)</td>
                                     <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.SoXe)</td>
                                     <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.HTTC)</td>
