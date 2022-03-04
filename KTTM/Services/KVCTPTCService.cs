@@ -350,6 +350,7 @@ namespace KTTM.Services
 
                                     case "TND":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "TOB":
@@ -399,10 +400,12 @@ namespace KTTM.Services
 
                                     case "BND":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "PND":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "BOB":
@@ -515,6 +518,7 @@ namespace KTTM.Services
 
                                     case "HND":
                                         kVCTPTC.MaKhNo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKNo = "1368000000";
                                         break;
 
                                     case "HOB":
@@ -759,6 +763,7 @@ namespace KTTM.Services
 
                                     case "TND":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "TOB":
@@ -804,10 +809,12 @@ namespace KTTM.Services
 
                                     case "BND":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "PND":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "BOB":
@@ -1069,28 +1076,149 @@ namespace KTTM.Services
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
                                     case "CHK":
-                                        kVCTPTC.MaKhCo = "KLHK"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
                                         break;
 
                                     case "TWI":
-                                        kVCTPTC.MaKhCo = "KLWI"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "TND":
-                                        kVCTPTC.MaKhCo = "STNCN"; //maKh;
+                                        kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
                                         break;
 
                                     case "TOB":
-                                        kVCTPTC.MaKhCo = "VEKLO"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000002"; //maKh;
                                         break;
 
                                     case "TXE":
-                                        kVCTPTC.MaKhCo = "TX001"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     case "TIB":
-                                        kVCTPTC.MaKhCo = "KLIB"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
                                         break;
+
+                                    //// them
+                                    case "BHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        break;
+
+                                    case "PHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        break;
+
+                                    case "VHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        break;
+
+                                    case "BIB":
+                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        break;
+
+                                    case "PIB":
+                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        break;
+
+                                    case "PWI":
+                                        kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
+                                        break;
+
+                                    case "BWI":
+                                        kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
+                                        break;
+
+                                    case "BND":
+                                        kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
+                                        break;
+
+                                    case "PND":
+                                        kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKCo = "1368000000";
+                                        break;
+
+                                    case "BOB":
+                                        kVCTPTC.MaKhCo = "0000000002"; //maKh;
+                                        break;
+
+                                    case "POB":
+                                        kVCTPTC.MaKhCo = "0000000002"; //maKh;
+                                        break;
+
+                                    case "BXE":
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        break;
+
+                                    case "PXE":
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        break;
+
+                                    default:
+                                        kVCTPTC.MaKhCo = maKh; //maKh;
+                                        break;
+                                }
+
+                                //kVCTPTC.MaKhCo = maKh; //maKh;
+                                if (tk == "1368000000")
+                                {
+                                    kVCTPTC.MaKhCo = "0310891532051"; //maKh;
+                                }
+
+                                if (maCN == "STN") // thao
+                                {
+                                    switch (baoCaoSo.Substring(5, 3))
+                                    {
+                                        case "BND":
+                                        case "TND":
+                                        case "PND":
+                                            kVCTPTC.TKCo = "1311110000";
+                                            kVCTPTC.MaKhNo = "";
+                                            kVCTPTC.MaKhCo = "0000000003";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "ND";
+                                            break;
+
+                                        case "HND":
+                                            kVCTPTC.TKNo = "1311110000";
+                                            kVCTPTC.MaKhNo = "0000000003";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.NoQuay = "ND";
+                                            break;
+
+                                        case "BOB":
+                                        case "TOB":
+                                        case "POB":
+                                        case "CHK":
+                                        case "BHK":
+                                        case "PHK":
+                                        case "VHK":
+                                            kVCTPTC.TKCo = "1368000000";
+                                            kVCTPTC.MaKhNo = "";
+                                            kVCTPTC.MaKhCo = "0310891532";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "";
+                                            kVCTPTC.NoQuay = "";
+                                            break;
+
+                                        case "HOB":
+                                        case "HHK":
+                                            kVCTPTC.TKNo = "1368000000";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.MaKhNo = "0310891532";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "";
+                                            kVCTPTC.NoQuay = "";
+                                            break;
+                                    }
                                 }
                             }
                             else // phieu chi
@@ -1109,28 +1237,55 @@ namespace KTTM.Services
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
                                     case "HHK":
-                                        kVCTPTC.MaKhNo = "KLHK"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000004"; //maKh;
                                         break;
 
                                     case "HWI":
-                                        kVCTPTC.MaKhNo = "KLWI"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000006"; //maKh;
+                                        kVCTPTC.NoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "HND":
-                                        kVCTPTC.MaKhNo = "STNCN"; //maKh;
+                                        kVCTPTC.MaKhNo = "0310891532051"; //maKh;
+                                        kVCTPTC.TKNo = "1368000000";
                                         break;
 
                                     case "HOB":
-                                        kVCTPTC.MaKhNo = "VEKLO"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000002"; //maKh;
                                         break;
 
                                     case "HXE":
-                                        kVCTPTC.MaKhNo = "TX001"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000001"; //maKh;
                                         break;
 
                                     case "HIB":
-                                        kVCTPTC.MaKhNo = "KLIB"; //maKh;
+                                        kVCTPTC.MaKhNo = "0000000005"; //maKh;
                                         break;
+                                }
+
+                                if (maCN == "STN") // thao
+                                {
+                                    switch (baoCaoSo.Substring(5, 3))
+                                    {
+                                        case "HND":
+                                            kVCTPTC.TKNo = "1311110000";
+                                            kVCTPTC.MaKhNo = "0000000003";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.NoQuay = "ND";
+                                            break;
+
+                                        case "HOB":
+                                        case "HHK":
+                                            kVCTPTC.TKNo = "1368000000";
+                                            kVCTPTC.MaKhCo = "";
+                                            kVCTPTC.MaKhNo = "0310891532";
+                                            kVCTPTC.BoPhan = "ND";
+                                            kVCTPTC.CoQuay = "";
+                                            kVCTPTC.NoQuay = "";
+                                            break;
+                                    }
                                 }
                             }
 

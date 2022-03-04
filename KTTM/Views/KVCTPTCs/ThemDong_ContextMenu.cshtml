@@ -67,20 +67,20 @@
                             <label asp-for="KVCTPTC.LoaiTien" class="control-label "></label>
                             @if (Model.KVPTC.NgoaiTe == "VN")
                             {
-                                        <input asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm text-uppercase " id="txtLoaiTien" readonly />
+                                <input asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm text-uppercase " id="txtLoaiTien" readonly />
                             }
                             else
                             {
-                                        <select asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm "
+                                <select asp-for="KVCTPTC.LoaiTien" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))" id="ddlNgoaiTe">
-                                        </select>
+                                </select>
                             }
                             <span asp-validation-for="KVCTPTC.LoaiTien" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="KVCTPTC.TyGia" class="control-label "></label>
-                            <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" readonly/>
+                            <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" readonly />
                             <span asp-validation-for="KVCTPTC.TyGia" class="text-danger"></span>
                         </div>
 
@@ -95,7 +95,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Chi phí</label>
-                            <input asp-for="KVCTPTC.SoTienNT" class="form-control form-control-sm numbers" id="txtChiPhi" />
+                            <input asp-for="KVCTPTC.SoTienNT" class="form-control form-control-sm numbers" id="txtChiPhi" asp-format="{0:0,0}" />
                             <span @*asp-validation-for="KVCTPTC.SoTienNT"*@ class="text-danger"></span>
                         </div>
 
@@ -115,23 +115,23 @@
                     <div class=" row">
                         @if (Model.KVPTC.MFieu == "C")
                         {
-                                    <div class="col-md-4">
-                                        <label asp-for="KVCTPTC.TKNo" class="control-label"></label>
-                                        <!--select2-->
-                                <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2"
-                                        asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "TenTk"))" id="ddlTkNo">
-                                        </select>
-                                        <span asp-validation-for="KVCTPTC.TKNo" class="text-danger"></span>
-                                    </div>
+                            <div class="col-md-4">
+                                <label asp-for="KVCTPTC.TKNo" class="control-label"></label>
+                                <!--select2-->
+                            <select asp-for="KVCTPTC.TKNo" class="form-control form-control-sm select2"
+                                    asp-items="@(new SelectList(Model.DmTks_TkNo, "Tkhoan", "TenTk"))" id="ddlTkNo">
+                                </select>
+                                <span asp-validation-for="KVCTPTC.TKNo" class="text-danger"></span>
+                            </div>
 
-                                    <div class="col-md-8">
-                                        <label class="control-label">Tên tài khoãn</label>
-                                        <input class="form-control form-control-sm " id="txtTenTkNo" />
-                                    </div>
+                            <div class="col-md-8">
+                                <label class="control-label">Tên tài khoãn</label>
+                                <input class="form-control form-control-sm " id="txtTenTkNo" />
+                            </div>
 
                         }
                         @*else // chi cho phieu chi
-                                {
+                            {
                             <div class="col-md-2">
                             <label asp-for="KVCTPTC.TKCo" class="control-label"></label>
                             <select asp-for="KVCTPTC.TKCo" class="form-control form-control-sm select2"
@@ -145,7 +145,7 @@
                             <input class="form-control form-control-sm " id="txtTenTkNo" />
                             </div>
 
-                                }*@
+                            }*@
 
                     </div>
 
@@ -172,7 +172,7 @@
                             <label asp-for="KVCTPTC.MaKhNo" class="control-label "></label>
                             <div class="input-group">
                                 @*<input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase txtMaKhNo_ContextMenu" id="txtMaKhNo_ContextMenu">*@
-                                <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase txtMaKhNo_ContextMenu" id="txtMaKhNo_ContextMenu">                                
+                                <input asp-for="KVCTPTC.MaKhNo" class="form-control form-control-sm text-uppercase txtMaKhNo_ContextMenu" id="txtMaKhNo_ContextMenu">
                                 <span class="input-group-btn">
                                     <a href="javascript:;" class="btn btn-default btn-sm btnKhSearch" id="btnKhSearch" data-name="maKhNo" title="Tìm thông tin khách hàng"><i class="fa fa-search"></i></a>
                                 </span>
@@ -221,20 +221,20 @@
                         </div>
                         @if (Model.KVPTC.NgoaiTe == "VN")
                         {
-                                    <div class="col-md-2">
-                                        <label asp-for="KVCTPTC.Number" class="control-label"></label>
-                                        <input asp-for="KVCTPTC.Number" class="form-control form-control-sm" id="txtNumber" />
-                                        <span asp-validation-for="KVCTPTC.Number" class="text-danger"></span>
-                                    </div>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.Number" class="control-label"></label>
+                                <input asp-for="KVCTPTC.Number" class="form-control form-control-sm" id="txtNumber" />
+                                <span asp-validation-for="KVCTPTC.Number" class="text-danger"></span>
+                            </div>
 
                         }
                         else
                         {
-                                    <div class="col-md-2">
-                                        <label asp-for="KVCTPTC.Number" class="control-label"></label>
-                                        <input asp-for="KVCTPTC.Number" class="form-control form-control-sm" id="txtNumber" disabled />
-                                        <span asp-validation-for="KVCTPTC.Number" class="text-danger"></span>
-                                    </div>
+                            <div class="col-md-2">
+                                <label asp-for="KVCTPTC.Number" class="control-label"></label>
+                                <input asp-for="KVCTPTC.Number" class="form-control form-control-sm" id="txtNumber" disabled />
+                                <span asp-validation-for="KVCTPTC.Number" class="text-danger"></span>
+                            </div>
 
                         }
                     </div>
@@ -421,28 +421,36 @@
 
 @section Scripts{
 
-    <script src="~/js/Admin/Home/indexController.js"></script>
-    <script src="~/js/Admin/serviceController.js"></script>
+<script src="~/js/Admin/Home/indexController.js"></script>
+<script src="~/js/Admin/serviceController.js"></script>
 
-    <!-- select2 and multi select2 (bootstrap4)-->
-    <script>
-        //$('#txtMaKH').select2()
-        $('.select2').select2()
-        //$('#ddlMaKhNo').select2()
-        //Initialize Select2 Elements
-        $('.select2bs4').select2({
-            theme: 'bootstrap4'
-        })
-        //$('.tuyenTQ').select2({
-        //    theme: 'bootstrap4'
-        //})
+<!-- select2 and multi select2 (bootstrap4)-->
+<script>
+            $(document).ready(function() {
+                
+                tkNo = tkCo = $('#ddlTkNo').val();
+        Get_DienGiai_By_TkNo(tkNo);
+        $('#ddlDienGiai').val('@Model.KVCTPTC.DienGiai');
+        
 
-        $(".maskInput").mask("99/99/9999");
-    </script>
+    });
+            //$('#txtMaKH').select2()
+            $('.select2').select2()
+            //$('#ddlMaKhNo').select2()
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            //$('.tuyenTQ').select2({
+            //    theme: 'bootstrap4'
+            //})
 
-    <!-- Validation -->
+            $(".maskInput").mask("99/99/9999");
+</script>
 
-    <script>
+<!-- Validation -->
+
+<script>
 
         //// enter for search
         //shortcut.add("Enter", function () {
@@ -683,7 +691,7 @@
                 dataType: 'json',
                 success: function (response) {
                     var data = response.data;
-                    console.log(data);
+                    //console.log(data);
                     $.each(data, function (i, item) {
                         option = option + '<option value="' + item.dienGiai.trim() + '">' + item.dienGiai.trim() + '</option>'; //chinhanh1
 
@@ -702,6 +710,6 @@
                 $('#khachHang_Modal').draggable();
             });
         }
-    </script>
+</script>
 
 }

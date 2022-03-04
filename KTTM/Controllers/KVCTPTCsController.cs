@@ -241,7 +241,7 @@ namespace KTTM.Controllers
         }
 
         // ThemDong_ContextMenu
-        public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page)
+        public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page, long kvctptcId) // kvctptcId: copy dong dang chon
         {
             ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
@@ -274,6 +274,10 @@ namespace KTTM.Controllers
             KVCTPCTVM.Page = page;
             KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
             KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
+
+            // kvctptcId: copy dong dang chon
+            var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
+            KVCTPCTVM.KVCTPTC = kVCTPTC;
 
             return View(KVCTPCTVM);
         }

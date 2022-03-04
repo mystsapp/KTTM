@@ -88,8 +88,12 @@ var indexController = {
         $('#btnThemDong').contextmenu(function (e) {
             e.preventDefault();
             var loaiPhieu = $('#hidLoaiPhieu').val();
-            if (loaiPhieu === 'C')
+            if (loaiPhieu === 'C') {
+                kVCTPCTId = $('#hidKVCTPCTId').val();
+                $('#hidKVCTPTCId_Context').val(kVCTPCTId);
                 $('#frmThemDong_ContextMenu').submit();
+            }
+
             else
                 return;
         });
