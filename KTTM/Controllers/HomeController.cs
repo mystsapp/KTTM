@@ -729,6 +729,15 @@ namespace KTTM.Controllers
             ViewBag.tongCong = tongCong;
             ViewBag.bangChu = bangChu;
 
+            // them dong rong
+            var inPhieuViewCount = HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count();
+            if (inPhieuViewCount < 4)
+            {
+                for (int i = 1; i <= 4 - inPhieuViewCount; i++)
+                {
+                    HomeVM.InPhieuView_Groupby_TkNo_TkCos.Add(new InPhieuView_Groupby_TkNo_TkCo() { TkNo = "", TkCo = "", SoTien = 0, SoTienNT = 0 });
+                }
+            }
             return View(HomeVM);
         }
 
@@ -819,6 +828,15 @@ namespace KTTM.Controllers
             ViewBag.tongCong = tongCong;
             ViewBag.bangChu = bangChu;
 
+            // them dong rong
+            var inPhieuViewCount = HomeVM.InPhieuView_Groupby_TkNo_TkCos.Count();
+            if (inPhieuViewCount < 4)
+            {
+                for (int i = 1; i <= 4 - inPhieuViewCount; i++)
+                {
+                    HomeVM.InPhieuView_Groupby_TkNo_TkCos.Add(new InPhieuView_Groupby_TkNo_TkCo() { TkNo = "", TkCo = "", SoTien = 0, SoTienNT = 0 });
+                }
+            }
             return View(HomeVM);
 
             //HomeVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(id);
