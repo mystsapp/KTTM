@@ -86,7 +86,7 @@
 
                         <div class="col-md-4">
                             <label class="control-label">Quy ra VND</label>
-                            <input asp-for="KVCTPTC.SoTien" class="form-control form-control-sm " readonly id="txtSoTien" />
+                            <input asp-for="KVCTPTC.SoTien" class="form-control form-control-sm " readonly id="txtSoTien" asp-format="{0:0,0}"/>
                             <span asp-validation-for="KVCTPTC.SoTien" class="text-danger"></span>
                         </div>
                     </div>
@@ -152,8 +152,14 @@
                     <div class=" row">
 
                         <div class="col-md-12">
+                            @*<label asp-for="KVCTPTC.DienGiai" class="control-label"></label>
+                            <select asp-for="KVCTPTC.DienGiai" class="form-control form-control-sm" id="ddlDienGiai"
+                                    asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))">
+                            </select>*@
+
                             <label asp-for="KVCTPTC.DienGiai" class="control-label"></label>
-                            <select asp-for="KVCTPTC.DienGiai" class="form-control form-control-sm" id="ddlDienGiai">
+                            <select asp-for="KVCTPTC.DienGiai" class="form-control form-control-sm"
+                                    asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))" id="ddlDienGiai">
                             </select>
 
                             <span asp-validation-for="KVCTPTC.DienGiai" class="text-danger"></span>
@@ -426,14 +432,14 @@
 
 <!-- select2 and multi select2 (bootstrap4)-->
 <script>
-            $(document).ready(function() {
-                
-                tkNo = tkCo = $('#ddlTkNo').val();
-        Get_DienGiai_By_TkNo(tkNo);
-        $('#ddlDienGiai').val('@Model.KVCTPTC.DienGiai');
-        
+    //        $(document).ready(function() {
 
-    });
+    //            tkNo = tkCo = $('#ddlTkNo').val();
+    //    Get_DienGiai_By_TkNo(tkNo);
+    //    $('#ddlDienGiai').val('@Model.KVCTPTC.DienGiai');
+
+
+    //});
             //$('#txtMaKH').select2()
             $('.select2').select2()
             //$('#ddlMaKhNo').select2()

@@ -243,22 +243,77 @@ namespace KTTM.Controllers
         // ThemDong_ContextMenu
         public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page, long kvctptcId) // kvctptcId: copy dong dang chon
         {
-            ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+            //ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+            //ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            //ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+            ////KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            ////KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
+            //KVCTPCTVM.KVCTPTC.TyGia = 1;
+            //KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+            //KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+            //if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
+            //{
+            //    KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+            //}
+
+            //var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+            //viewDmHttcs.Insert(0, viewDmHttc);
+            //KVCTPCTVM.DmHttcs = viewDmHttcs;
+
+            //Get_TkNo_TkCo();
+
+            //KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+
+            //var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+            //viewMatHangs.Insert(0, viewMatHang);
+            //KVCTPCTVM.MatHangs = viewMatHangs;
+            //KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+            //KVCTPCTVM.Page = page;
+            //KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            //KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
+
+            //// kvctptcId: copy dong dang chon
+            //var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
+            //KVCTPCTVM.KVCTPTC = kVCTPTC;
+            //KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
+
+            KVCTPCTVM.Page = page;
+            // from session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (kvctptcId == 0)
+            {
+                ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
+            KVCTPCTVM.KVCTPTC = await _kVCTPTCService.GetById(kvctptcId);
+
+            // tentk
+            KVCTPCTVM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKNo).TenTk;
+            KVCTPCTVM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKCo).TenTk;
+            KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
+
+            if (KVCTPCTVM.KVCTPTC == null)
+            {
+                ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
             ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
             ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
             //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
             KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
             //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
-            KVCTPCTVM.KVCTPTC.TyGia = 1;
-            KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
             if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
             {
                 KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
             }
-
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
@@ -271,13 +326,7 @@ namespace KTTM.Controllers
             viewMatHangs.Insert(0, viewMatHang);
             KVCTPCTVM.MatHangs = viewMatHangs;
             KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
-            KVCTPCTVM.Page = page;
             KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-            KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
-
-            // kvctptcId: copy dong dang chon
-            var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
-            KVCTPCTVM.KVCTPTC = kVCTPTC;
 
             return View(KVCTPCTVM);
         }
