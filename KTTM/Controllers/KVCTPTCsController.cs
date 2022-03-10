@@ -243,90 +243,95 @@ namespace KTTM.Controllers
         // ThemDong_ContextMenu
         public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page, long kvctptcId) // kvctptcId: copy dong dang chon
         {
-            //ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
-            //ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
-            //ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
-
-            ////KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
-            ////KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            //KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
-            //KVCTPCTVM.KVCTPTC.TyGia = 1;
-            //KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
-            //KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
-            //if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
-            //{
-            //    KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
-            //}
-
-            //var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
-            //viewDmHttcs.Insert(0, viewDmHttc);
-            //KVCTPCTVM.DmHttcs = viewDmHttcs;
-
-            //Get_TkNo_TkCo();
-
-            //KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
-
-            //var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
-            //viewMatHangs.Insert(0, viewMatHang);
-            //KVCTPCTVM.MatHangs = viewMatHangs;
-            //KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
-            //KVCTPCTVM.Page = page;
-            //KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-            //KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
-
-            //// kvctptcId: copy dong dang chon
-            //var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
-            //KVCTPCTVM.KVCTPTC = kVCTPTC;
-            //KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
-
-            KVCTPCTVM.Page = page;
-            // from session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            if (kvctptcId == 0)
+            if (kvctptcId == 0) // ko co copy dong
             {
-                ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
-                return View("~/Views/Shared/NotFound.cshtml");
-            }
+                ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
+                ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+                ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            KVCTPCTVM.KVCTPTC = await _kVCTPTCService.GetById(kvctptcId);
-
-            // tentk
-            KVCTPCTVM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKNo).TenTk;
-            KVCTPCTVM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKCo).TenTk;
-            KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
-
-            if (KVCTPCTVM.KVCTPTC == null)
-            {
-                ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
-                return View("~/Views/Shared/NotFound.cshtml");
-            }
-
-            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
-            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
-
-            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
-            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
-            if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
-            {
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
+                KVCTPCTVM.KVCTPTC.TyGia = 1;
                 KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+                KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+                if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
+                {
+                    KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+                }
+
+                var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+                viewDmHttcs.Insert(0, viewDmHttc);
+                KVCTPCTVM.DmHttcs = viewDmHttcs;
+
+                Get_TkNo_TkCo();
+
+                KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+
+                var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+                viewMatHangs.Insert(0, viewMatHang);
+                KVCTPCTVM.MatHangs = viewMatHangs;
+                KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+                KVCTPCTVM.Page = page;
+                KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+                KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
+
+                // kvctptcId: copy dong dang chon
+                var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
+                KVCTPCTVM.KVCTPTC = kVCTPTC;
+                KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
             }
-            var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
-            viewDmHttcs.Insert(0, viewDmHttc);
-            KVCTPCTVM.DmHttcs = viewDmHttcs;
+            else
+            {
+                KVCTPCTVM.Page = page;
+                // from session
+                var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            Get_TkNo_TkCo();
+                if (kvctptcId == 0)
+                {
+                    ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
+                    return View("~/Views/Shared/NotFound.cshtml");
+                }
 
-            KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+                KVCTPCTVM.KVCTPTC = await _kVCTPTCService.GetById(kvctptcId);
 
-            var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
-            viewMatHangs.Insert(0, viewMatHang);
-            KVCTPCTVM.MatHangs = viewMatHangs;
-            KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
-            KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+                // tentk
+                KVCTPCTVM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKNo).TenTk;
+                KVCTPCTVM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKCo).TenTk;
+                KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
+
+                if (KVCTPCTVM.KVCTPTC == null)
+                {
+                    ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
+                    return View("~/Views/Shared/NotFound.cshtml");
+                }
+
+                ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+                ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+                //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+                KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVCTPCTVM.KVCTPTC.KVPTCId);
+                if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
+                {
+                    KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+                }
+                var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+                viewDmHttcs.Insert(0, viewDmHttc);
+                KVCTPCTVM.DmHttcs = viewDmHttcs;
+
+                Get_TkNo_TkCo();
+
+                KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
+
+                var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+                viewMatHangs.Insert(0, viewMatHang);
+                KVCTPCTVM.MatHangs = viewMatHangs;
+                KVCTPCTVM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+                KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            }
 
             return View(KVCTPCTVM);
         }
@@ -1266,6 +1271,8 @@ namespace KTTM.Controllers
             xlSheet.Column(26).Width = 10;// coquay
             xlSheet.Column(27).Width = 20;// soxe
             xlSheet.Column(28).Width = 20;// number
+            xlSheet.Column(29).Width = 20;// soct
+            xlSheet.Column(30).Width = 20;// ngayct
 
             //xlSheet.Cells[2, 1].Value = "BẢNG KÊ 1368 TỪ " + (user.Macn == "STS" ? "STN" : "STS");
             //xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 18, FontStyle.Bold));
@@ -1302,13 +1309,15 @@ namespace KTTM.Controllers
             xlSheet.Cells[1, 26].Value = "coquay";
             xlSheet.Cells[1, 27].Value = "soxe";
             xlSheet.Cells[1, 28].Value = "number";
+            xlSheet.Cells[1, 29].Value = "soct";
+            xlSheet.Cells[1, 30].Value = "ngayct";
 
-            ExcelTool.setBorder(1, 1, 1, 28, xlSheet);
-            ExcelTool.setCenterAligment(1, 1, 6, 28, xlSheet);
-            xlSheet.Cells[1, 1, 1, 28].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[1, 1, 1, 28].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
-            xlSheet.Cells[1, 1, 1, 28].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
-            xlSheet.Cells[1, 1, 1, 28].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            ExcelTool.setBorder(1, 1, 1, 30, xlSheet);
+            ExcelTool.setCenterAligment(1, 1, 6, 30, xlSheet);
+            xlSheet.Cells[1, 1, 1, 30].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[1, 1, 1, 30].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
+            xlSheet.Cells[1, 1, 1, 30].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
+            xlSheet.Cells[1, 1, 1, 30].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
             // xlSheet.Column(1).Style.WrapText = true; // WrapText for column
             xlSheet.Column(20).Style.WrapText = true;
             xlSheet.Column(21).Style.WrapText = true;
@@ -1468,6 +1477,14 @@ namespace KTTM.Controllers
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 28, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
+                    xlSheet.Cells[dong, 29].Value = item.SoCT;
+                    ExcelTool.TrSetCellBorder(xlSheet, dong, 29, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 30].Value = item.KVPTC.NgayCT;
+                    ExcelTool.TrSetCellBorder(xlSheet, dong, 30, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
                     //setBorder(5, 1, dong, 10, xlSheet);
                     ExcelTool.NumberFormat(dong, 2, dong, 5, xlSheet);
 
@@ -1483,6 +1500,7 @@ namespace KTTM.Controllers
                 ////setFontBold(dong, 1, dong, 10, 12, xlSheet);
                 //ExcelTool.setBorder(dong, 1, dong, 8, xlSheet);
                 ExcelTool.DateFormat(5, 14, dong, 14, xlSheet);
+                ExcelTool.DateFormat(5, 30, dong, 30, xlSheet);
 
                 //xlSheet.Cells[dong + 2, 1].Value = "Người lập bảng kê";
                 //xlSheet.Cells[dong + 2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Regular));

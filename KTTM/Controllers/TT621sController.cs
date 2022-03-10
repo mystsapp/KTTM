@@ -4,9 +4,13 @@ using Data.Models_QLTaiKhoan;
 using Data.Utilities;
 using KTTM.Models;
 using KTTM.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +22,13 @@ namespace KTTM.Controllers
         private readonly ITamUngService _tamUngService;
         private readonly ITT621Service _tT621Service;
         private readonly IKVPTCService _kVPTCService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
         public TT621ViewModel TT621VM { get; set; }
 
-        public TT621sController(IKVCTPTCService kVCTPTCService, ITamUngService tamUngService, ITT621Service tT621Service, IKVPTCService kVPTCService)
+        public TT621sController(IKVCTPTCService kVCTPTCService, ITamUngService tamUngService,
+            ITT621Service tT621Service, IKVPTCService kVPTCService, IWebHostEnvironment webHostEnvironment)
         {
             TT621VM = new TT621ViewModel()
             {
@@ -35,6 +41,7 @@ namespace KTTM.Controllers
             _tamUngService = tamUngService;
             _tT621Service = tT621Service;
             _kVPTCService = kVPTCService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, string page, string maKh, string tenKh)
@@ -1870,6 +1877,329 @@ namespace KTTM.Controllers
                 {
                     status = true
                 });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UploadExcelTT141(long tamUngId) // thao
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            var fileCheck = Request.Form.Files;
+            if (fileCheck.Count > 0)
+            {
+                //KVPTC kVPTC = await _kVPTCService.GetByGuidIdAsync(kvptcId);
+                //// tao phieuchi
+                // tao roi
+                //// tao phieuchi
+
+                #region upload excel
+
+                // var kVPTC = await _kVPTCService.GetByGuidIdAsync(kVPTCId);
+                IFormFile file = Request.Form.Files[0];
+                string folderName = "excelfolder";
+                string webRootPath = _webHostEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+
+                string folderPath = webRootPath + @"\excelfolder\";
+                FileInfo fileInfo = new FileInfo(Path.Combine(folderPath, file.FileName));
+
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+                if (file.Length > 0)
+                {
+                    string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+                    string fullPath = Path.Combine(newPath, file.FileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    using (ExcelPackage package = new ExcelPackage(fileInfo))
+                    {
+                        ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
+                        //var list = workSheet.Cells.ToList();
+                        //var table = workSheet.Tables.ToList();
+                        int totalRows = workSheet.Dimension.Rows;
+
+                        List<TT621> tT621s = new List<TT621>();
+
+                        for (int i = 2; i <= totalRows; i++)
+                        {
+                            var tT621 = new TT621();
+
+                            if (workSheet.Cells[i, 1].Value != null)
+                                tT621.DienGiai = workSheet.Cells[i, 1].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 2].Value != null)
+                                tT621.SoTien = decimal.Parse(workSheet.Cells[i, 2].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 3].Value != null)
+                                tT621.TKNo = workSheet.Cells[i, 3].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 4].Value != null)
+                                tT621.MaKhNo = workSheet.Cells[i, 4].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 5].Value != null)
+                                tT621.TKCo = workSheet.Cells[i, 5].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 6].Value != null)
+                                tT621.MaKhCo = workSheet.Cells[i, 6].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 7].Value != null)
+                                tT621.Sgtcode = workSheet.Cells[i, 7].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 8].Value != null)
+                                tT621.HTTC = workSheet.Cells[i, 8].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 9].Value != null)
+                            {
+                                DateTime ngayCT;
+                                try
+                                {
+                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 9].Value.ToString().Trim());
+                                    tT621.NgayCTGoc = ngayCT;
+                                }
+                                catch (Exception ex)
+                                {
+                                    tT621.NgayCTGoc = null;
+                                }
+                            }
+
+                            if (workSheet.Cells[i, 10].Value != null)
+                                tT621.LoaiHDGoc = workSheet.Cells[i, 10].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 11].Value != null)
+                                tT621.SoCTGoc = workSheet.Cells[i, 11].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 12].Value != null)
+                                tT621.KyHieu = workSheet.Cells[i, 12].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 13].Value != null)
+                                tT621.VAT = decimal.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 14].Value != null)
+                                tT621.DSKhongVAT = decimal.Parse(workSheet.Cells[i, 14].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 15].Value != null)
+                                tT621.BoPhan = workSheet.Cells[i, 15].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 16].Value != null)
+                                tT621.NoQuay = workSheet.Cells[i, 16].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 17].Value != null)
+                                tT621.CoQuay = workSheet.Cells[i, 17].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 18].Value != null)
+                                tT621.TenKH = workSheet.Cells[i, 18].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 19].Value != null)
+                                tT621.DiaChi = workSheet.Cells[i, 19].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 20].Value != null)
+                                tT621.KyHieu = workSheet.Cells[i, 20].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 21].Value != null)
+                                tT621.MauSoHD = workSheet.Cells[i, 21].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 22].Value != null)
+                                tT621.MatHang = workSheet.Cells[i, 22].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 23].Value != null)
+                                tT621.DienGiaiP = workSheet.Cells[i, 23].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 24].Value != null)
+                                tT621.LinkHDDT = workSheet.Cells[i, 24].Value.ToString().Trim();
+
+                            tT621.TamUngId = tamUngId;
+                            tT621.NgayTao = DateTime.Now;
+                            tT621.NguoiTao = user.Username;
+                            tT621.LoaiTien = "VND";
+                            tT621.TyGia = 1;
+
+                            if (string.IsNullOrEmpty(tT621.DienGiai) && string.IsNullOrEmpty(tT621.SoTien.ToString()) &&
+                                string.IsNullOrEmpty(tT621.TKNo) && string.IsNullOrEmpty(tT621.MaKhNo) &&
+                                string.IsNullOrEmpty(tT621.TKCo) && string.IsNullOrEmpty(tT621.MaKhCo) &&
+                                string.IsNullOrEmpty(tT621.Sgtcode) && string.IsNullOrEmpty(tT621.HTTC) &&
+                                string.IsNullOrEmpty(tT621.LoaiHDGoc) && string.IsNullOrEmpty(tT621.SoCTGoc) &&
+                                string.IsNullOrEmpty(tT621.KyHieu) && string.IsNullOrEmpty(tT621.VAT.ToString()) &&
+                                string.IsNullOrEmpty(tT621.DSKhongVAT.ToString()) && string.IsNullOrEmpty(tT621.BoPhan) &&
+                                string.IsNullOrEmpty(tT621.NoQuay.ToString()) && string.IsNullOrEmpty(tT621.CoQuay) &&
+                                string.IsNullOrEmpty(tT621.TenKH) && string.IsNullOrEmpty(tT621.DiaChi) &&
+                                string.IsNullOrEmpty(tT621.KyHieu) && string.IsNullOrEmpty(tT621.MauSoHD) &&
+                                string.IsNullOrEmpty(tT621.MatHang) && string.IsNullOrEmpty(tT621.DienGiaiP) &&
+                                string.IsNullOrEmpty(tT621.LinkHDDT))
+                            {
+                            }
+                            else
+                            {
+                                var supplier = _kVCTPTCService.GetSuppliersByCodeName(tT621.MaKhCo, user.Macn).FirstOrDefault();
+                                //var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+
+                                if (!string.IsNullOrEmpty(supplier.Code))
+                                {
+                                    tT621.TenKH = supplier.Name;
+                                    tT621.MsThue = supplier.Taxcode;
+                                    tT621.DiaChi = supplier.Address;
+                                }
+                                //tT621s.Add(tT621);
+
+                                try
+                                {
+                                    //tT621s = tT621s.ToList();
+                                    //if (tT621s.Any(x => string.IsNullOrEmpty(x.TKNo)))
+                                    //{
+                                    //    return Json(new
+                                    //    {
+                                    //        status = false,
+                                    //        message = "Tk nợ không được để trống."
+                                    //    });
+                                    //}
+                                    var viewModel = await AddTT141(tamUngId, tT621);
+
+                                    //// for redirect
+                                    //ViewBag.id = kvptcId;
+
+                                    return Json(new
+                                    {
+                                        status = true,
+                                        message = viewModel.Message
+                                    });
+                                }
+                                catch (Exception ex)
+                                {
+                                    return Json(new
+                                    {
+                                        status = false,
+                                        message = ex.Message
+                                    });
+                                }
+                            }
+                        }
+
+                        if (System.IO.File.Exists(fileInfo.ToString()))
+                            System.IO.File.Delete(fileInfo.ToString());
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Vui lòng chọn file!"
+                    });
+                }
+
+                #endregion upload excel
+            }
+            return Json(new
+            {
+                status = false,
+                message = "Vui lòng chọn file!"
+            });
+        }
+
+        public async Task<ViewModel> AddTT141(long tamUngId, TT621 tT621) // tamungid phia tren khi click
+        {
+            TT621VM.TT621 = tT621;
+            //if (tamUngId == 0)
+            //    return NotFound();
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            //if (tamUng == null)
+            //    return NotFound();
+
+            TT621VM.TT621.TamUngId = tamUngId;
+            KVPTC kVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(TT621VM);
+            //}
+
+            //
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(
+                TT621VM.TT621.TamUngId, TT621VM.KVCTPTC.SoTienNT.Value, kVPTC.MFieu); // TT621VM.KVCTPCT.SoTienNT tu view qua
+            // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
+            if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
+            {
+                return new ViewModel()
+                {
+                    Status = false,
+                    Message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+                };
+                //return Json(new
+                //{
+                //    status = false,
+                //    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+                //});
+            }
+
+            TT621VM.TT621.MaCn = user.Macn;
+            TT621VM.TT621.NgayCT = DateTime.Now;
+            TT621VM.TT621.NguoiTao = user.Username;
+            TT621VM.TT621.DienGiaiP = string.IsNullOrEmpty(TT621VM.TT621.DienGiaiP) ? "" : TT621VM.TT621.DienGiaiP.Trim().ToUpper();// TT621VM.TT621.DienGiaiP.Trim().ToUpper();
+            TT621VM.TT621.NgayTao = DateTime.Now;
+            TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
+            TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
+            TT621VM.TT621.DSKhongVAT = TT621VM.TT621.DSKhongVAT ?? 0;
+            TT621VM.TT621.VAT = TT621VM.TT621.VAT ?? 0;
+            IEnumerable<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetTT621s_By_TamUng(tamUngId);//.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
+            if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
+            {
+                TT621VM.TT621.SoCT = tt621_Theo_PhieuTC.FirstOrDefault().SoCT;
+            }
+            else
+            {
+                // lay soct cua tt621
+                if (TT621VM.TT621.LoaiTien == "VND")
+                {
+                    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
+                }
+                else
+                {
+                    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN", user.Macn);
+                }
+            }
+
+            // PhieuTC: tuy vao loai phieu lam TT
+            TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.SoCT; // SoCT ben KVPCT or KVCTPTC.SoCT
+
+            // phieuTU
+            TT621VM.TT621.PhieuTU = tamUng.SoCT;
+
+            // Lapphieu
+            TT621VM.TT621.LapPhieu = user.Username;
+            // ghi log
+            TT621VM.TT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+
+            try
+            {
+                await _tT621Service.CreateAsync(TT621VM.TT621);
+
+                // capnhat SoTU_DaTT vào kvctptc
+                KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(TT621VM.KVCTPTC.Id); // kVCTPCTId_PhieuTC
+                kVCTPTC.SoTT_DaTao = TT621VM.TT621.SoCT;
+                await _kVCTPTCService.UpdateAsync(kVCTPTC);
+
+                return new ViewModel() { Status = true };
+                //return Json(new
+                //{
+                //    status = true
+                //});
+            }
+            catch (Exception ex)
+            {
+                return new ViewModel()
+                {
+                    Status = false,
+                    Message = ex.Message
+                };
             }
         }
     }

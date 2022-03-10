@@ -1050,14 +1050,14 @@ namespace KTTM.Controllers
                             }
                             else
                             {
-                                var supplier = _kVCTPTCService.GetSuppliersByCodeName(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
-                                //var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
+                                var khachHang = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh).FirstOrDefault();
+                                //var supplier = _kVCTPTCService.GetSuppliersByCodeName(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
 
-                                if (!string.IsNullOrEmpty(supplier.Code))
+                                if (!string.IsNullOrEmpty(khachHang.Code))
                                 {
-                                    kVCTPTC.TenKH = supplier.Name;
-                                    kVCTPTC.MsThue = supplier.Taxcode;
-                                    kVCTPTC.DiaChi = supplier.Address;
+                                    kVCTPTC.TenKH = khachHang.TenThuongMai;
+                                    kVCTPTC.MsThue = khachHang.MaSoThue;
+                                    kVCTPTC.DiaChi = khachHang.DiaChi;
                                 }
                                 kVCTPTCs.Add(kVCTPTC);
                             }
