@@ -1719,7 +1719,12 @@ namespace KTTM.Services
                 {
                     var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
                     var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
-                    kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
+                    kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs_ThuDoiNgoaiTe.Where(x => x.MaCn == maCn);
+                    if (kVCTPTCs_ThuDoiNgoaiTe.Count() > 0)
+                    {
+                        kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
+                    }
+                    kVCTPTCs = kVCTPTCs_VND;
                 }
 
                 //list = kVCTPTCs.Where(x => x.TKNo.StartsWith("11120000") && x.TKCo == "1111000000").ToList();
