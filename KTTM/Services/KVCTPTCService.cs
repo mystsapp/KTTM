@@ -1709,20 +1709,23 @@ namespace KTTM.Services
                     return null; //
                 }
 
-                var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT > fromDate &&
+                var kVCTPTCs1 = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.KVPTC.NgayCT > fromDate &&
                                                                                                      y.KVPTC.NgayCT < toDate.AddDays(1));
+                var kVCTPTCs = kVCTPTCs1.ToList();
                 if (!string.IsNullOrEmpty(loaiTien)) // NT
                 {
-                    kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == loaiTien && x.MaCn == maCn);
+                    kVCTPTCs = kVCTPTCs.Where(x => x.LoaiTien == loaiTien && x.MaCn == maCn).ToList();
                 }
                 else // VND
                 {
-                    var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn);
-                    var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000");
-                    kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs_ThuDoiNgoaiTe.Where(x => x.MaCn == maCn);
+                    var kVCTPTCs_VND = kVCTPTCs.Where(x => x.LoaiTien == "VND" && x.MaCn == maCn).ToList();
+                    var kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs.Where(y => y.TKNo.StartsWith("11120000") && y.TKCo == "1111000000").ToList();
+                    kVCTPTCs_ThuDoiNgoaiTe = kVCTPTCs_ThuDoiNgoaiTe.Where(x => x.MaCn == maCn).ToList();
+
+                    //kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
                     if (kVCTPTCs_ThuDoiNgoaiTe.Count() > 0)
                     {
-                        kVCTPTCs = kVCTPTCs_VND.Concat(kVCTPTCs_ThuDoiNgoaiTe);
+                        kVCTPTCs_VND.AddRange(kVCTPTCs_ThuDoiNgoaiTe);
                     }
                     kVCTPTCs = kVCTPTCs_VND;
                 }

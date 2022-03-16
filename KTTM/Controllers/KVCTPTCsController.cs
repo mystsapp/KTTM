@@ -241,10 +241,14 @@ namespace KTTM.Controllers
         }
 
         // ThemDong_ContextMenu
-        public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page, long kvctptcId) // kvctptcId: copy dong dang chon
+        public async Task<IActionResult> ThemDong_ContextMenu(Guid KVPTCId, int page, long? kvctptcId) // kvctptcId: copy dong dang chon
         {
-            if (kvctptcId == 0) // ko co copy dong
+            if (kvctptcId == 0 || kvctptcId == null) // ko co copy dong
             {
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
                 ViewSupplierCode viewSupplierCode = new Data.Models_DanhMucKT.ViewSupplierCode() { Code = "" };
                 ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
                 ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
@@ -277,10 +281,10 @@ namespace KTTM.Controllers
                 KVCTPCTVM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
                 KVCTPCTVM.KVCTPTC.NgayCTGoc = DateTime.Now; // Thao
 
-                // kvctptcId: copy dong dang chon
-                var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
-                KVCTPCTVM.KVCTPTC = kVCTPTC;
-                KVCTPCTVM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
+                //// kvctptcId: copy dong dang chon
+                //var kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // dong cu
+                //KVCTPCTVM.KVCTPTC = kVCTPTC;
+                KVCTPCTVM.Dgiais = _kVCTPTCService.GetAll_DienGiai();//.Get_DienGiai_By_TkNo_TkCo(KVCTPCTVM.KVCTPTC.TKNo, KVCTPCTVM.KVCTPTC.TKCo);
             }
             else
             {
@@ -293,8 +297,10 @@ namespace KTTM.Controllers
                     ViewBag.ErrorMessage = "Chi tiết phiếu này không tồn tại.";
                     return View("~/Views/Shared/NotFound.cshtml");
                 }
-
-                KVCTPCTVM.KVCTPTC = await _kVCTPTCService.GetById(kvctptcId);
+                else
+                {
+                    KVCTPCTVM.KVCTPTC = await _kVCTPTCService.GetById(kvctptcId.Value);
+                }
 
                 // tentk
                 KVCTPCTVM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(KVCTPCTVM.KVCTPTC.TKNo).TenTk;
