@@ -324,6 +324,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost, ActionName("Create")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost(string strUrl)
         {
             // from login session

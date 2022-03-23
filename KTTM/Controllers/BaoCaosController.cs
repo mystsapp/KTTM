@@ -1586,7 +1586,7 @@ namespace KTTM.Controllers
             }
             else
             {
-                //SetAlert("Phiếu này không có chi tiết nào.", "warning");
+                SetAlert("Phiếu này không có chi tiết nào.", "warning");
                 return NoContent();
             }
 
