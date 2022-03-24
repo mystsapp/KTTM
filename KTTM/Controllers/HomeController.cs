@@ -1,4 +1,5 @@
-﻿using Data.Models_KTTM;
+﻿using Data.Models_DanhMucKT;
+using Data.Models_KTTM;
 using Data.Models_KTTM_1;
 using Data.Models_QLTaiKhoan;
 using Data.Utilities;
@@ -1030,6 +1031,34 @@ namespace KTTM.Controllers
                             if (workSheet.Cells[i, 13].Value != null)
                                 kVCTPTC.MatHang = workSheet.Cells[i, 13].Value.ToString().Trim();
 
+                            // phan them
+                            if (workSheet.Cells[i, 14].Value != null)
+                                kVCTPTC.VAT = decimal.Parse(workSheet.Cells[i, 14].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 15].Value != null)
+                                kVCTPTC.DSKhongVAT = decimal.Parse(workSheet.Cells[i, 15].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 16].Value != null)
+                                kVCTPTC.LinkHDDT = workSheet.Cells[i, 16].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 17].Value != null)
+                                kVCTPTC.MaTraCuu = workSheet.Cells[i, 17].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 18].Value != null)
+                                kVCTPTC.NoQuay = workSheet.Cells[i, 18].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 19].Value != null)
+                                kVCTPTC.CoQuay = workSheet.Cells[i, 19].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 20].Value != null)
+                                kVCTPTC.BoPhan = workSheet.Cells[i, 20].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 21].Value != null)
+                                kVCTPTC.Number = workSheet.Cells[i, 21].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 22].Value != null)
+                                kVCTPTC.SoXe = workSheet.Cells[i, 22].Value.ToString().Trim();
+
                             //if (workSheet.Cells[i, 20].Value != null)
                             kVCTPTC.KVPTCId = kvptcId;
                             kVCTPTC.DSKhongVAT = 0;
@@ -1046,19 +1075,26 @@ namespace KTTM.Controllers
                                 string.IsNullOrEmpty(kVCTPTC.BoPhan) && string.IsNullOrEmpty(kVCTPTC.LoaiHDGoc) &&
                                 string.IsNullOrEmpty(kVCTPTC.SoCTGoc) && string.IsNullOrEmpty(kVCTPTC.KyHieu) &&
                                 string.IsNullOrEmpty(kVCTPTC.MauSoHD) && string.IsNullOrEmpty(kVCTPTC.NgayCTGoc.ToString()) &&
-                                string.IsNullOrEmpty(kVCTPTC.MatHang))
+                                string.IsNullOrEmpty(kVCTPTC.MatHang) && string.IsNullOrEmpty(kVCTPTC.VAT.ToString()) &&
+                                string.IsNullOrEmpty(kVCTPTC.DSKhongVAT.ToString()) && string.IsNullOrEmpty(kVCTPTC.LinkHDDT) &&
+                                string.IsNullOrEmpty(kVCTPTC.MaTraCuu) && string.IsNullOrEmpty(kVCTPTC.NoQuay) &&
+                                string.IsNullOrEmpty(kVCTPTC.CoQuay) && string.IsNullOrEmpty(kVCTPTC.BoPhan) &&
+                                string.IsNullOrEmpty(kVCTPTC.Number) && string.IsNullOrEmpty(kVCTPTC.SoXe))
                             {
                             }
                             else
                             {
+                                // thong tin khach hang
                                 var khachHang = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh).FirstOrDefault();
                                 //var supplier = _kVCTPTCService.GetSuppliersByCodeName(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
 
                                 if (!string.IsNullOrEmpty(khachHang.Code))
                                 {
                                     kVCTPTC.TenKH = khachHang.TenThuongMai;
-                                    kVCTPTC.MsThue = khachHang.MaSoThue;
                                     kVCTPTC.DiaChi = khachHang.DiaChi;
+                                    kVCTPTC.KyHieu = khachHang.KyHieuHd;
+                                    kVCTPTC.MauSoHD = khachHang.MauSoHd;
+                                    kVCTPTC.MsThue = khachHang.MaSoThue;
                                 }
                                 kVCTPTCs.Add(kVCTPTC);
                             }
