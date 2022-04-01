@@ -736,6 +736,7 @@ namespace KTTM.Controllers
                 var dongCu = _tT621Service.GetByIdAsNoTracking(id_Dong_Da_Click);
                 TT621VM.TT621 = dongCu;
                 TT621VM.TT621.SoTienNT = tT621.SoTienNT;
+                TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(dongCu.TKNo, dongCu.TKCo);
             }
 
             if (!string.IsNullOrEmpty(dienGiaiP))

@@ -382,7 +382,7 @@ namespace KTTM.Controllers
             // next SoCT
 
             HomeVM.KVPTC.LapPhieu = user.Username;
-            HomeVM.KVPTC.HoTen = HomeVM.KVPTC.HoTen.ToUpper();
+            HomeVM.KVPTC.HoTen = String.IsNullOrEmpty(HomeVM.KVPTC.HoTen) ? "" : HomeVM.KVPTC.HoTen.ToUpper();
 
             //// May tinh
             //var computerName = Environment.MachineName;

@@ -402,24 +402,24 @@
                             <div class=" row">
 
                                 <div class="col-md-12">
-                                    <label asp-for="KVCTPTC.LinkHDDT" class="control-label "></label>
-                                    <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
-                                    <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
+                                    <label asp-for="TT621.LinkHDDT" class="control-label "></label>
+                                    <input asp-for="TT621.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
+                                    <span asp-validation-for="TT621.LinkHDDT" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class=" row">
 
                                 <div class="col-md-6">
-                                    <label asp-for="KVCTPTC.TkTruyCap" class="control-label "></label>
-                                    <input asp-for="KVCTPTC.LinkHDDT" class="form-control form-control-sm" id="txtLinkHDDT" />
-                                    <span asp-validation-for="KVCTPTC.LinkHDDT" class="text-danger"></span>
+                                    <label asp-for="TT621.TkTruyCap" class="control-label "></label>
+                                    <input asp-for="TT621.TkTruyCap" class="form-control form-control-sm" id="txtTkTruyCap" />
+                                    <span asp-validation-for="TT621.TkTruyCap" class="text-danger"></span>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label asp-for="KVCTPTC.Password" class="control-label "></label>
-                                    <input asp-for="KVCTPTC.Password" class="form-control form-control-sm" id="txtPassword" />
-                                    <span asp-validation-for="KVCTPTC.Password" class="text-danger"></span>
+                                    <label asp-for="TT621.Password" class="control-label "></label>
+                                    <input asp-for="TT621.Password" class="form-control form-control-sm" id="txtPassword" />
+                                    <span asp-validation-for="TT621.Password" class="text-danger"></span>
                                 </div>
                             </div>
                         </fieldset>
@@ -456,6 +456,28 @@
     //$('.tuyenTQ').select2({
     //    theme: 'bootstrap4'
     //})
+
+    $( document ).ready(function() {
+
+    tkNo = $('#ddlTkNo').val();
+        tkCo = $('#ddlTkCo').val();
+
+        $.ajax({
+            url: '/KVCTPTCs/Get_TenTk_By_Tk',
+            type: 'GET',
+            data: {
+                tk: tkNo
+            },
+            dataType: 'json',
+            success: function (response) {
+                //var data = JSON.parse(response.data);
+                // console.log(data);
+                $('#txtTenTkNo').val(response.data);
+            }
+        });
+
+        serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
+});
 </script>
 
 <!-- Validation -->

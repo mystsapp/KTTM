@@ -99,9 +99,10 @@
                         <div class="col-md-3">
                             <!-- qltour -->
                             <label asp-for="KVPTC.Phong" class="control-label"></label>
-                            <select asp-for="KVPTC.Phong" class="form-control form-control-sm input-sm select2"
+                            @*<select asp-for="KVPTC.Phong" class="form-control form-control-sm input-sm select2"
                                     asp-items="@(new SelectList(Model.Phongbans, "BoPhan", "TenBoPhan"))" id="ddlPhongBan">
-                            </select>
+                            </select>*@
+                            <input asp-for="KVPTC.Phong" class="form-control form-control-sm " id="txtPhong" readonly/>
                             <span asp-validation-for="KVPTC.Phong" class="text-danger"></span>
                         </div>
 
