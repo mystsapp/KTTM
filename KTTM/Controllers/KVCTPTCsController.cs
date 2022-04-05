@@ -1279,6 +1279,7 @@ namespace KTTM.Controllers
             xlSheet.Column(28).Width = 20;// number
             xlSheet.Column(29).Width = 20;// soct
             xlSheet.Column(30).Width = 20;// ngayct
+            xlSheet.Column(31).Width = 20;// tenphieu
 
             //xlSheet.Cells[2, 1].Value = "BẢNG KÊ 1368 TỪ " + (user.Macn == "STS" ? "STN" : "STS");
             //xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 18, FontStyle.Bold));
@@ -1317,13 +1318,14 @@ namespace KTTM.Controllers
             xlSheet.Cells[1, 28].Value = "number";
             xlSheet.Cells[1, 29].Value = "soct";
             xlSheet.Cells[1, 30].Value = "ngayct";
+            xlSheet.Cells[1, 31].Value = "tenphieu";
 
-            ExcelTool.setBorder(1, 1, 1, 30, xlSheet);
-            ExcelTool.setCenterAligment(1, 1, 6, 30, xlSheet);
-            xlSheet.Cells[1, 1, 1, 30].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
-            xlSheet.Cells[1, 1, 1, 30].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
-            xlSheet.Cells[1, 1, 1, 30].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
-            xlSheet.Cells[1, 1, 1, 30].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            ExcelTool.setBorder(1, 1, 1, 31, xlSheet);
+            ExcelTool.setCenterAligment(1, 1, 6, 31, xlSheet);
+            xlSheet.Cells[1, 1, 1, 31].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
+            xlSheet.Cells[1, 1, 1, 31].Style.VerticalAlignment = ExcelVerticalAlignment.Center; // canh giữa cột
+            xlSheet.Cells[1, 1, 1, 31].Style.Fill.PatternType = ExcelFillStyle.DarkHorizontal;
+            xlSheet.Cells[1, 1, 1, 31].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
             // xlSheet.Column(1).Style.WrapText = true; // WrapText for column
             xlSheet.Column(20).Style.WrapText = true;
             xlSheet.Column(21).Style.WrapText = true;
@@ -1489,6 +1491,10 @@ namespace KTTM.Controllers
 
                     xlSheet.Cells[dong, 30].Value = item.KVPTC.NgayCT;
                     ExcelTool.TrSetCellBorder(xlSheet, dong, 30, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    xlSheet.Cells[dong, 31].Value = item.KVPTC.HoTen;
+                    ExcelTool.TrSetCellBorder(xlSheet, dong, 31, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     //setBorder(5, 1, dong, 10, xlSheet);
