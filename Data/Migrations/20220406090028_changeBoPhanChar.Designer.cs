@@ -4,14 +4,16 @@ using Data.Models_KTTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(KTTMDbContext))]
-    partial class KTTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220406090028_changeBoPhanChar")]
+    partial class changeBoPhanChar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,8 +67,8 @@ namespace Data.Migrations
                         .HasColumnType("varchar(20)");
 
                     b.Property<string>("CoQuay")
-                        .HasMaxLength(4)
-                        .HasColumnType("varchar(4)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<decimal>("DSKhongVAT")
                         .HasColumnType("decimal(18,2)");
@@ -185,8 +187,8 @@ namespace Data.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("NoQuay")
-                        .HasMaxLength(4)
-                        .HasColumnType("varchar(4)");
+                        .HasMaxLength(3)
+                        .HasColumnType("varchar(3)");
 
                     b.Property<string>("Number")
                         .HasMaxLength(50)

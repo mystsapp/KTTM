@@ -121,18 +121,18 @@ namespace Data.Models_KTTM
         public decimal DSKhongVAT { get; set; } //
 
         [DisplayName("Bộ phận")]
-        [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
+        [MaxLength(4, ErrorMessage = "Chiều dài tối đa 4 ký tự"), Column(TypeName = "varchar(4)")]
         public string BoPhan { get; set; } // phongban ?
 
         [MaxLength(13, ErrorMessage = "Chiều dài tối đa 13 ký tự"), Column(TypeName = "varchar(13)")]
         public string STT { get; set; } // HD ?
 
         [DisplayName("Nợ quầy")]
-        [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
+        [MaxLength(4, ErrorMessage = "Chiều dài tối đa 4 ký tự"), Column(TypeName = "varchar(4)")]
         public string NoQuay { get; set; } //
 
         [DisplayName("Có quầy")]
-        [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
+        [MaxLength(4, ErrorMessage = "Chiều dài tối đa 4 ký tự"), Column(TypeName = "varchar(4)")]
         public string CoQuay { get; set; } //
 
         [DisplayName("Tên KH")]
