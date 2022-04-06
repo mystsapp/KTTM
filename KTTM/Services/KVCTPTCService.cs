@@ -216,7 +216,10 @@ namespace KTTM.Services
             tkNo ??= "";
             tkCo ??= "";
 
-            var dgiais1 = _unitOfWork.dGiaiRepository.Find(x => x.Tkno == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
+            var dgiais1 = _unitOfWork.dGiaiRepository.GetAll().Where(x => x.Tkno.Trim() == tkNo.Trim() && x.Tkco.Trim() == tkCo.Trim());
+
+            //var dgiais = _unitOfWork.dGiaiRepository.GetAll();
+            //dgiais.Where(x => x.Tkno)
             dgiais1 ??= null;
             return dgiais1;
         }
