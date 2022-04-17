@@ -406,6 +406,7 @@ namespace KTTM.Services
                                         break;
 
                                     case "BND":
+                                    case "BDN":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
                                         kVCTPTC.TKCo = "1368000000";
                                         break;
@@ -417,6 +418,12 @@ namespace KTTM.Services
 
                                     case "BOB":
                                         kVCTPTC.MaKhCo = "0000000002"; //maKh;
+                                        break;
+
+                                    case "BDO":
+                                        kVCTPTC.MaKhCo = "0000000007"; //maKh;
+                                        kVCTPTC.CoQuay = "OB";
+                                        kVCTPTC.BoPhan = "OB";
                                         break;
 
                                     case "POB":
@@ -451,6 +458,7 @@ namespace KTTM.Services
                                     switch (baoCaoSo.Substring(5, 3))
                                     {
                                         case "BND":
+                                        case "BDN":
                                         case "TND":
                                         case "PND":
                                             kVCTPTC.TKCo = "1311110000";
@@ -475,6 +483,8 @@ namespace KTTM.Services
                                         case "BHK":
                                         case "PHK":
                                         case "VHK":
+                                        case "BDO":
+                                        case "BXK":
                                             kVCTPTC.TKCo = "1368000000";
                                             kVCTPTC.MaKhNo = "";
                                             kVCTPTC.MaKhCo = "0310891532";
@@ -825,15 +835,7 @@ namespace KTTM.Services
                                 kVCTPTC.TKNo = "1111000000";
                                 kVCTPTC.TKCo = tk;
                                 kVCTPTC.MaKhCo = maKh;
-                                if (tk == "1368000000")
-                                {
-                                    kVCTPTC.MaKhCo = "STNCN"; //maKh;
-                                }
-                                // anh son kt
-                                if (maKh == "0000000003") // makh
-                                {
-                                    kVCTPTC.TKCo = "1331000010";
-                                }
+
                                 kVCTPTC.CoQuay = boPhan;
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
@@ -843,6 +845,8 @@ namespace KTTM.Services
 
                                     case "TWI":
                                         kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "TND":
@@ -862,6 +866,8 @@ namespace KTTM.Services
 
                                     case "TIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        kVCTPTC.CoQuay = "IB";
+                                        kVCTPTC.BoPhan = "IB";
                                         break;
 
                                     //// them
@@ -879,6 +885,8 @@ namespace KTTM.Services
 
                                     case "BIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                        kVCTPTC.CoQuay = "IB";
+                                        kVCTPTC.BoPhan = "IB";
                                         break;
 
                                     case "PIB":
@@ -891,9 +899,12 @@ namespace KTTM.Services
 
                                     case "BWI":
                                         kVCTPTC.MaKhCo = "0000000006"; //maKh;
+                                        kVCTPTC.CoQuay = "TF";
+                                        kVCTPTC.BoPhan = "TF";
                                         break;
 
                                     case "BND":
+                                    case "BDN":
                                         kVCTPTC.MaKhCo = "0310891532051"; //maKh;
                                         kVCTPTC.TKCo = "1368000000";
                                         break;
@@ -907,6 +918,12 @@ namespace KTTM.Services
                                         kVCTPTC.MaKhCo = "0000000002"; //maKh;
                                         break;
 
+                                    case "BDO":
+                                        kVCTPTC.MaKhCo = "0000000007"; //maKh;
+                                        kVCTPTC.CoQuay = "OB";
+                                        kVCTPTC.BoPhan = "OB";
+                                        break;
+
                                     case "POB":
                                         kVCTPTC.MaKhCo = "0000000002"; //maKh;
                                         break;
@@ -914,13 +931,13 @@ namespace KTTM.Services
                                     case "BXE":
                                         kVCTPTC.CoQuay = "XE";
                                         kVCTPTC.BoPhan = "XE";
-                                        //kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     case "PXE":
                                         kVCTPTC.CoQuay = "XE";
                                         kVCTPTC.BoPhan = "XE";
-                                        //kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     default:

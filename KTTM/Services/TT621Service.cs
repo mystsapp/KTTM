@@ -59,6 +59,8 @@ namespace KTTM.Services
         Task<IEnumerable<TT621>> FindBySoCT(string soCT, string maCn);
 
         Task<KhachHang> GetKhachHangById(string maKhCo);
+
+        Task CreateRange(List<TT621> tT621s);
     }
 
     public class TT621Service : ITT621Service
@@ -419,6 +421,12 @@ namespace KTTM.Services
         public async Task<KhachHang> GetKhachHangById(string maKhCo)
         {
             return await _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangById(maKhCo);
+        }
+
+        public async Task CreateRange(List<TT621> tT621s)
+        {
+            await _unitOfWork.tT621Repository.CreateRange(tT621s);
+            await _unitOfWork.Complete();
         }
     }
 }

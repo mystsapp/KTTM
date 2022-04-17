@@ -1064,7 +1064,7 @@ namespace KTTM.Controllers
                             kVCTPTC.DSKhongVAT = 0;
                             kVCTPTC.NgayTao = DateTime.Now;
                             kVCTPTC.NguoiTao = user.Username;
-                            kVCTPTC.KVPTCId = kvptcId;
+                            //kVCTPTC.KVPTCId = kvptcId;
                             kVCTPTC.SoCT = kVPTC.SoCT;
                             kVCTPTC.LoaiTien = "VND";
                             kVCTPTC.TyGia = 1;

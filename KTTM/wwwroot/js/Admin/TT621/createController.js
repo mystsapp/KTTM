@@ -70,6 +70,8 @@ var createController = {
             //// check btnThemMoiCTTT status
             //createController.Check_SoTienNTCanKetChuyen_For_BtnThemMoiCTTT_Status(tamUngId, soTienNT)//////////////////
             $('#btnThemMoiCT').attr('disabled', false); // ko can check lun
+            $('#btnDeleteAll').attr('disabled', false);
+            $('#btnImportExcell').attr('disabled', false);
 
             // gang' commentText khi lick tamung
             createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
@@ -153,6 +155,46 @@ var createController = {
             });
         })
         // btnDelete
+        // btnDeleteAll
+        $('#btnDeleteAll').off('click').on('click', function () {
+            $('#btnThemMoiCT').attr('disabled', true);
+            $('#btnCapNhatCT').attr('disabled', true);
+
+            kVCTPTCId_PhieuTC = $('#hidKVCTPCTId').val();
+            tt621Id = $('#hidTT621Id').val();
+            tamUngId = $('#hidTamUngId').val();
+            if (tamUngId === '') {
+                alert('Bạn chưa chọn TU!');
+            }
+            soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            loaiPhieu = $('#hidLoaiPhieu').val();
+
+            bootbox.confirm("Bạn có muốn <strong> xoá tất cả TT</strong> không?", function (result) {
+                if (result) {
+                    $.post('/TT621s/btnDeleteAll', { tamUngId: tamUngId, kVCTPTCId_PhieuTC: kVCTPTCId_PhieuTC }, function (response) {
+                        //console.log(response);
+                        if (response.status) {
+                            toastr.success('Xoá thành công', 'Xoá!');
+
+                            createController.GetTT621s_By_TamUng(tamUngId);
+                            createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
+                            $('#btnDeleteAll').attr('disabled', true); // disabled btnDeleteAll
+                            $('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
+
+                            // Check_ThuHoanUngBtnStatus
+                            createController.Check_ThuHoanUngBtnStatus(tamUngId);
+
+                            if (response.tT621sCount === '')
+                                createController.Enabled_TU_Khong_TT();
+                        }
+                        else {
+                            toastr.error(response.message, 'Xoá thanh toán!')
+                        }
+                    });
+                }
+            });
+        })
+        // btnDeleteAll
 
         // btnKetChuyen
         $('#btnKetChuyen').off('click').on('click', function () {

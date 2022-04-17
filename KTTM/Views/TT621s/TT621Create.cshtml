@@ -79,7 +79,46 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+<!-- attachExcelModal modal-->
+<div class="modal fade" id="importExcelModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
 
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title">Upload 1411</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body importExcelModal_Body p-0">
+                <form asp-action="ImportExcell" method="post" autocomplete="off" id="frmImportExcell" enctype="multipart/form-data">
+
+                    <div class=" row text-sm container pb-2">
+                        <div class="col-md-6">
+                            <label class="control-label">Chọn file excell</label>
+                            <input type="file" class="form-control-file form-control-sm" id="fUpload" name="files">
+                            <div id="dvData"></div><!-- error response -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label">Download file mẫu</label>
+                            <br />
+                            <a title="File mẫu" class="btn btn-success btn-sm" asp-controller="TT621s" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer p-0">
+                        <button type="button" id="importExcel_Submit" class="btn btn-outline-primary"><i class="fas fa-upload"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- attachExcelModal modal-->
 <!-- Main content -->
 <section class="content">
 
@@ -188,9 +227,14 @@
                     <input type="hidden" id="hidTT621Id" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
                     <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnDelete" disabled><i class="fas fa-trash-alt text-blue"></i></button>
+
+
+                    <button type="button" class="btn btn-outline-danger btn-sm float-right" title="Xoá tất cả" id="btnDeleteAll" disabled><i class="fas fa-trash "></i></button>
+
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
+                    <button type="button" class="btn btn-outline-success btn-sm " title="Import từ excell" id="btnImportExcell" data-toggle="modal" data-target="#importExcelModal" disabled><i class="fas fa-file-import"></i></button>
                     @if (Model.KVPTC.MFieu == "T" && Model.KVPTC.NgoaiTe == "VN")
                     {
                         <button type="button" class="btn btn-outline-dark btn-sm" title="Thu hoàn ứng" disabled id="btnThuHoanUng"><i class="fas fa-folder text-warning"></i></button>
@@ -238,7 +282,7 @@
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
                                 <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
                             <th>Sgtcode</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody id="ctThanhToanBody">
@@ -440,13 +484,13 @@
                          }
                    });
                 }
-                   
+
              }
         });
 
     })
 
-    
+
     //$('.tamUngTr-cursor-pointer').click(function () {
     //    alert('a');
     //    // giu trang thai
@@ -464,21 +508,95 @@
 
 <script>
 
-        //// giu trang thai phieu click
-        //$('#tamUngTble .tamUngTr-cursor-pointer').off('click').on('click', function () {
-        //    if ($(this).hasClass("hoverClass"))
-        //        $(this).removeClass("hoverClass");
-        //    else {
-                
-        //        var idList = [];
-        //        $.each($('.tamUngTr-cursor-pointer'), function (i, item) {
-                  
-        //            $(this).removeClass("hoverClass");
+    //// giu trang thai phieu click
+    //$('#tamUngTble .tamUngTr-cursor-pointer').off('click').on('click', function () {
+    //    if ($(this).hasClass("hoverClass"))
+    //        $(this).removeClass("hoverClass");
+    //    else {
 
-        //        });
-        //        $(this).addClass("hoverClass");
-        //    }
-        //});
-        //// giu trang thai phieu click
+    //        var idList = [];
+    //        $.each($('.tamUngTr-cursor-pointer'), function (i, item) {
+
+    //            $(this).removeClass("hoverClass");
+
+    //        });
+    //        $(this).addClass("hoverClass");
+    //    }
+    //});
+    //// giu trang thai phieu click
+
+    // importexcel
+
+        $('#importExcel_Submit').click(function () {
+            var tamUngId = $('#hidTamUngId').val();
+            if(tamUngId === ''){
+                alert('Bạn chưa chọn TU nào.');
+                return false;
+            }
+            var loaiPhieu = '@Model.KVPTC.MFieu';
+
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#fUpload').val();
+            if (filename.length !== 0) {
+                var extension = filename.replace(/^.*\./, '');
+                // kiem tra dinh dang
+                if ($.inArray(extension, fileExtension) === -1) {
+                    bootbox.alert({
+                        size: "small",
+                        title: "Infomation",
+                        message: "Chọn chưa đúng định dạng <b> Excel! </b>"
+                    });
+
+                    return false;
+                }
+            }
+
+            if ($('#frmImportExcell').valid()) {
+
+            var input = $('#fUpload');
+            var files = input[0].files;
+            if (files.length == 0) {
+                toastr.warning("Vui lòng chọn file excel.");
+                return;
+            }
+
+            var formData = new FormData();
+
+            formData.append("tamUngId", tamUngId);
+            formData.append("loaiPhieu", loaiPhieu);
+            for (var i = 0; i <= files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/TT621s/ImportExcell",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+
+                    if (response.status) {
+                        toastr.success('Import data thành công!');
+                        $('#importExcelModal').modal('hide');
+                        //// load lai TT621Create
+                        $('#' + tamUngId).click();
+
+                    } else {
+                        $('#importExcelModal').modal('hide');
+                        toastr.error(response.message);
+
+                    }
+                }
+                , error: function (xhr, status, error) {
+                    $('.modal').modal('hide');
+                    alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
+                }
+            });
+            }
+            else{
+                alert('Not valid')
+            }
+        })
+        // importexcel
 
 </script>
