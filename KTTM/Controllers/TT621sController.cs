@@ -2378,30 +2378,16 @@ namespace KTTM.Controllers
 
                             // thong tin khachhang
                             KhachHang khachHang = new KhachHang();
-                            if (loaiPhieu == "T") // lay theo MaKhCo
+                            if (string.IsNullOrEmpty(tT621.MaKhNo)) // MaKhNo: mã của đối tác
                             {
-                                if (string.IsNullOrEmpty(tT621.MaKhCo))
+                                return Json(new
                                 {
-                                    return Json(new
-                                    {
-                                        status = false,
-                                        message = "Vui lòng điền MaKhCo cho phiếu T!"
-                                    });
-                                }
-                                khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhCo);
+                                    status = false,
+                                    message = "Vui lòng điền MaKhNo !"
+                                });
                             }
-                            else // C: lay theo MaKhCo
-                            {
-                                if (string.IsNullOrEmpty(tT621.MaKhNo))
-                                {
-                                    return Json(new
-                                    {
-                                        status = false,
-                                        message = "Vui lòng điền MaKhNo cho phiếu C!"
-                                    });
-                                }
-                                khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhNo);
-                            }
+                            khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhNo);
+
                             tT621.TenKH = khachHang.TenThuongMai;
                             tT621.DiaChi = khachHang.DiaChi;
                             tT621.KyHieu = khachHang.KyHieuHd;
@@ -2416,6 +2402,12 @@ namespace KTTM.Controllers
 
                             if (workSheet.Cells[i, 20].Value != null)
                                 tT621.LinkHDDT = workSheet.Cells[i, 20].Value.ToString().Trim();
+                            
+                            if (workSheet.Cells[i, 21].Value != null)
+                                tT621.MaTraCuu = workSheet.Cells[i, 21].Value.ToString().Trim();
+                            
+                            if (workSheet.Cells[i, 22].Value != null)
+                                tT621.MauSoHD = workSheet.Cells[i, 22].Value.ToString().Trim();
 
                             tT621.TamUngId = tamUngId;
                             tT621.NgayTao = DateTime.Now;

@@ -437,6 +437,12 @@ namespace KTTM.Controllers
             // data tu qlxe
             IEnumerable<KVCTPTC> kVCTPTCs = await _kVCTPTCService.GetKVCTPTCs_QLXe(soPhieu.Trim(),
                                             kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn);
+
+            if (!kVCTPTCs.Any())
+            {
+                SetAlert("Số phiếu này đã kéo rồi!", "warning");
+                return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id
+            }
             // ghi log ben service
 
             if (kVCTPTCs == null) //545 ben kvctptcService

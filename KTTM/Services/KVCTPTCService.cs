@@ -2244,6 +2244,10 @@ namespace KTTM.Services
         {
             var thuchis = _unitOfWork.xeRepository
                 .Find(x => x.SoPhieu == soPhieu.ToUpper() && x.ChiNhanh.Trim() == maCn.Trim());
+            if (thuchis.Any(x => !string.IsNullOrEmpty(x.SoCtKttm)))
+            {
+                return new List<KVCTPTC>();
+            }
             Vandoanh vandoanh = new Vandoanh();
             try
             {
