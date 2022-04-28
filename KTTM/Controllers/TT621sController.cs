@@ -1779,7 +1779,7 @@ namespace KTTM.Controllers
                 return Json(new
                 {
                     status = true,
-                    data = tT621s
+                    data = tT621s.OrderBy(x => x.NgayTao)
                 });
             }
             return Json(new
@@ -1980,35 +1980,47 @@ namespace KTTM.Controllers
                             var tT621 = new TT621();
 
                             if (workSheet.Cells[i, 1].Value != null)
-                                tT621.DienGiai = workSheet.Cells[i, 1].Value.ToString().Trim();
+                                tT621.MaKhNo = workSheet.Cells[i, 1].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 2].Value != null)
-                                tT621.SoTien = decimal.Parse(workSheet.Cells[i, 2].Value.ToString().Trim());
+                                tT621.DienGiai = workSheet.Cells[i, 2].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 3].Value != null)
-                                tT621.TKNo = workSheet.Cells[i, 3].Value.ToString().Trim();
+                                tT621.LoaiTien = workSheet.Cells[i, 3].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 4].Value != null)
-                                tT621.MaKhNo = workSheet.Cells[i, 4].Value.ToString().Trim();
+                                tT621.SoTien = decimal.Parse(workSheet.Cells[i, 4].Value.ToString().Trim());
 
                             if (workSheet.Cells[i, 5].Value != null)
-                                tT621.TKCo = workSheet.Cells[i, 5].Value.ToString().Trim();
+                                tT621.SoTienNT = decimal.Parse(workSheet.Cells[i, 5].Value.ToString().Trim());
 
                             if (workSheet.Cells[i, 6].Value != null)
-                                tT621.MaKhCo = workSheet.Cells[i, 6].Value.ToString().Trim();
+                                tT621.TyGia = decimal.Parse(workSheet.Cells[i, 6].Value.ToString().Trim());
 
                             if (workSheet.Cells[i, 7].Value != null)
-                                tT621.Sgtcode = workSheet.Cells[i, 7].Value.ToString().Trim();
+                                tT621.TKNo = workSheet.Cells[i, 7].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 8].Value != null)
-                                tT621.HTTC = workSheet.Cells[i, 8].Value.ToString().Trim();
+                                tT621.TKCo = workSheet.Cells[i, 8].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 9].Value != null)
+                                tT621.MaKhCo = workSheet.Cells[i, 9].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 10].Value != null)
+                                tT621.Sgtcode = workSheet.Cells[i, 10].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 11].Value != null)
+                                tT621.HTTC = workSheet.Cells[i, 11].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 12].Value != null)
+                                tT621.MsThue = workSheet.Cells[i, 12].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 13].Value != null)
                             {
                                 DateTime ngayCT;
                                 try
                                 {
-                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 9].Value.ToString().Trim());
+                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
                                     tT621.NgayCTGoc = ngayCT;
                                 }
                                 catch (Exception ex)
@@ -2017,50 +2029,59 @@ namespace KTTM.Controllers
                                 }
                             }
 
-                            if (workSheet.Cells[i, 10].Value != null)
-                                tT621.LoaiHDGoc = workSheet.Cells[i, 10].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 11].Value != null)
-                                tT621.SoCTGoc = workSheet.Cells[i, 11].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 12].Value != null)
-                                tT621.KyHieu = workSheet.Cells[i, 12].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 13].Value != null)
-                                tT621.VAT = decimal.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
-
                             if (workSheet.Cells[i, 14].Value != null)
-                                tT621.DSKhongVAT = decimal.Parse(workSheet.Cells[i, 14].Value.ToString().Trim());
+                                tT621.LoaiHDGoc = workSheet.Cells[i, 14].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 15].Value != null)
-                                tT621.BoPhan = workSheet.Cells[i, 15].Value.ToString().Trim();
+                                tT621.SoCTGoc = workSheet.Cells[i, 15].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 16].Value != null)
-                                tT621.NoQuay = workSheet.Cells[i, 16].Value.ToString().Trim();
+                                tT621.KyHieu = workSheet.Cells[i, 16].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 17].Value != null)
-                                tT621.CoQuay = workSheet.Cells[i, 17].Value.ToString().Trim();
+                                tT621.VAT = decimal.Parse(workSheet.Cells[i, 17].Value.ToString().Trim());
 
                             if (workSheet.Cells[i, 18].Value != null)
-                                tT621.TenKH = workSheet.Cells[i, 18].Value.ToString().Trim();
+                                tT621.DSKhongVAT = decimal.Parse(workSheet.Cells[i, 18].Value.ToString().Trim());
 
                             if (workSheet.Cells[i, 19].Value != null)
-                                tT621.DiaChi = workSheet.Cells[i, 19].Value.ToString().Trim();
+                                tT621.BoPhan = workSheet.Cells[i, 19].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 20].Value != null)
-                                tT621.KyHieu = workSheet.Cells[i, 20].Value.ToString().Trim();
+                                tT621.NoQuay = workSheet.Cells[i, 20].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 21].Value != null)
-                                tT621.MauSoHD = workSheet.Cells[i, 21].Value.ToString().Trim();
+                                tT621.CoQuay = workSheet.Cells[i, 21].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 22].Value != null)
-                                tT621.MatHang = workSheet.Cells[i, 22].Value.ToString().Trim();
+                                tT621.SoXe = workSheet.Cells[i, 22].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 2].Value != null)
+                                tT621.KyHieu = workSheet.Cells[i, 23].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 23].Value != null)
-                                tT621.DienGiaiP = workSheet.Cells[i, 23].Value.ToString().Trim();
+                                tT621.MauSoHD = workSheet.Cells[i, 24].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 24].Value != null)
-                                tT621.LinkHDDT = workSheet.Cells[i, 24].Value.ToString().Trim();
+                                tT621.MatHang = workSheet.Cells[i, 25].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 25].Value != null)
+                                tT621.DienGiaiP = workSheet.Cells[i, 25].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 26].Value != null)
+                                tT621.LinkHDDT = workSheet.Cells[i, 26].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 27].Value != null)
+                                tT621.MaTraCuu = workSheet.Cells[i, 27].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 28].Value != null)
+                                tT621.TkTruyCap = workSheet.Cells[i, 28].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 29].Value != null)
+                                tT621.Password = workSheet.Cells[i, 29].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 30].Value != null)
+                                tT621.SoVe = workSheet.Cells[i, 30].Value.ToString().Trim();
 
                             tT621.TamUngId = tamUngId;
                             tT621.NgayTao = DateTime.Now;
@@ -2084,14 +2105,13 @@ namespace KTTM.Controllers
                             }
                             else
                             {
-                                var supplier = _kVCTPTCService.GetSuppliersByCodeName(tT621.MaKhCo, user.Macn).FirstOrDefault();
+                                var supplier = _kVCTPTCService.GetSuppliersByCode(tT621.MaKhNo).FirstOrDefault();
                                 //var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
 
                                 if (!string.IsNullOrEmpty(supplier.Code))
                                 {
-                                    tT621.TenKH = supplier.Name;
-                                    tT621.MsThue = supplier.Taxcode;
-                                    tT621.DiaChi = supplier.Address;
+                                    tT621.TenKH = supplier.TenThuongMai;
+                                    tT621.DiaChi = supplier.DiaChi;
                                 }
                                 //tT621s.Add(tT621);
 
@@ -2314,67 +2334,7 @@ namespace KTTM.Controllers
                             var tT621 = new TT621();
 
                             if (workSheet.Cells[i, 1].Value != null)
-                                tT621.DienGiai = workSheet.Cells[i, 1].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 2].Value != null)
-                                tT621.SoTien = decimal.Parse(workSheet.Cells[i, 2].Value.ToString().Trim());
-                            tT621.SoTienNT = tT621.SoTien;
-
-                            if (workSheet.Cells[i, 3].Value != null)
-                                tT621.TKNo = workSheet.Cells[i, 3].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 4].Value != null)
-                                tT621.MaKhNo = workSheet.Cells[i, 4].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 5].Value != null)
-                                tT621.TKCo = workSheet.Cells[i, 5].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 6].Value != null)
-                                tT621.MaKhCo = workSheet.Cells[i, 6].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 7].Value != null)
-                                tT621.Sgtcode = workSheet.Cells[i, 7].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 8].Value != null)
-                                tT621.HTTC = workSheet.Cells[i, 8].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 9].Value != null)
-                            {
-                                DateTime ngayCTGoc;
-                                try
-                                {
-                                    ngayCTGoc = DateTime.Parse(workSheet.Cells[i, 9].Value.ToString().Trim());
-                                    tT621.NgayCTGoc = ngayCTGoc;
-                                }
-                                catch (Exception ex)
-                                {
-                                    tT621.NgayCTGoc = null;
-                                }
-                            }
-
-                            if (workSheet.Cells[i, 10].Value != null)
-                                tT621.LoaiHDGoc = workSheet.Cells[i, 10].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 11].Value != null)
-                                tT621.SoCTGoc = workSheet.Cells[i, 11].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 12].Value != null)
-                                tT621.KyHieu = workSheet.Cells[i, 12].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 13].Value != null)
-                                tT621.VAT = decimal.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
-
-                            if (workSheet.Cells[i, 14].Value != null)
-                                tT621.DSKhongVAT = decimal.Parse(workSheet.Cells[i, 14].Value.ToString().Trim());
-
-                            if (workSheet.Cells[i, 15].Value != null)
-                                tT621.BoPhan = workSheet.Cells[i, 15].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 16].Value != null)
-                                tT621.NoQuay = workSheet.Cells[i, 16].Value.ToString().Trim();
-
-                            if (workSheet.Cells[i, 17].Value != null)
-                                tT621.CoQuay = workSheet.Cells[i, 17].Value.ToString().Trim();
+                                tT621.MaKhNo = workSheet.Cells[i, 1].Value.ToString().Trim();
 
                             // thong tin khachhang
                             KhachHang khachHang = new KhachHang();
@@ -2383,31 +2343,114 @@ namespace KTTM.Controllers
                                 return Json(new
                                 {
                                     status = false,
-                                    message = "Vui lòng điền MaKhNo !"
+                                    message = "Vui lòng điền MaKhNo!"
                                 });
                             }
                             khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhNo);
 
                             tT621.TenKH = khachHang.TenThuongMai;
                             tT621.DiaChi = khachHang.DiaChi;
-                            tT621.KyHieu = khachHang.KyHieuHd;
-                            tT621.MauSoHD = khachHang.MauSoHd;
-                            tT621.MsThue = khachHang.MaSoThue;
+                            //tT621.KyHieu = khachHang.KyHieuHd;
+                            //tT621.MauSoHD = khachHang.MauSoHd;
+                            //tT621.MsThue = khachHang.MaSoThue;
+
+                            if (workSheet.Cells[i, 2].Value != null)
+                                tT621.DienGiai = workSheet.Cells[i, 2].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 3].Value != null)
+                                tT621.LoaiTien = workSheet.Cells[i, 3].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 4].Value != null)
+                                tT621.SoTien = decimal.Parse(workSheet.Cells[i, 4].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 5].Value != null)
+                                tT621.SoTienNT = decimal.Parse(workSheet.Cells[i, 5].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 6].Value != null)
+                                tT621.TyGia = decimal.Parse(workSheet.Cells[i, 6].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 7].Value != null)
+                                tT621.TKNo = workSheet.Cells[i, 7].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 8].Value != null)
+                                tT621.TKCo = workSheet.Cells[i, 8].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 9].Value != null)
+                                tT621.MaKhCo = workSheet.Cells[i, 9].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 10].Value != null)
+                                tT621.Sgtcode = workSheet.Cells[i, 10].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 11].Value != null)
+                                tT621.HTTC = workSheet.Cells[i, 11].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 12].Value != null)
+                                tT621.MsThue = workSheet.Cells[i, 12].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 13].Value != null)
+                            {
+                                DateTime ngayCTGoc;
+                                try
+                                {
+                                    ngayCTGoc = DateTime.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
+                                    tT621.NgayCTGoc = ngayCTGoc;
+                                }
+                                catch (Exception ex)
+                                {
+                                    tT621.NgayCTGoc = null;
+                                }
+                            }
+
+                            if (workSheet.Cells[i, 14].Value != null)
+                                tT621.LoaiHDGoc = workSheet.Cells[i, 14].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 15].Value != null)
+                                tT621.SoCTGoc = workSheet.Cells[i, 15].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 16].Value != null)
+                                tT621.VAT = decimal.Parse(workSheet.Cells[i, 16].Value.ToString().Trim());
+
+                            if (workSheet.Cells[i, 17].Value != null)
+                                tT621.DSKhongVAT = decimal.Parse(workSheet.Cells[i, 17].Value.ToString().Trim());
 
                             if (workSheet.Cells[i, 18].Value != null)
-                                tT621.MatHang = workSheet.Cells[i, 18].Value.ToString().Trim();
+                                tT621.BoPhan = workSheet.Cells[i, 18].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 19].Value != null)
-                                tT621.DienGiaiP = workSheet.Cells[i, 19].Value.ToString().Trim();
+                                tT621.NoQuay = workSheet.Cells[i, 19].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 20].Value != null)
-                                tT621.LinkHDDT = workSheet.Cells[i, 20].Value.ToString().Trim();
-                            
+                                tT621.CoQuay = workSheet.Cells[i, 20].Value.ToString().Trim();
+
                             if (workSheet.Cells[i, 21].Value != null)
-                                tT621.MaTraCuu = workSheet.Cells[i, 21].Value.ToString().Trim();
-                            
+                                tT621.SoXe = workSheet.Cells[i, 21].Value.ToString().Trim();
+
                             if (workSheet.Cells[i, 22].Value != null)
-                                tT621.MauSoHD = workSheet.Cells[i, 22].Value.ToString().Trim();
+                                tT621.KyHieu = workSheet.Cells[i, 22].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 23].Value != null)
+                                tT621.MauSoHD = workSheet.Cells[i, 23].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 24].Value != null)
+                                tT621.MatHang = workSheet.Cells[i, 24].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 25].Value != null)
+                                tT621.DienGiaiP = workSheet.Cells[i, 25].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 26].Value != null)
+                                tT621.LinkHDDT = workSheet.Cells[i, 26].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 27].Value != null)
+                                tT621.MaTraCuu = workSheet.Cells[i, 27].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 28].Value != null)
+                                tT621.TkTruyCap = workSheet.Cells[i, 28].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 29].Value != null)
+                                tT621.Password = workSheet.Cells[i, 29].Value.ToString().Trim();
+
+                            if (workSheet.Cells[i, 30].Value != null)
+                                tT621.SoVe = workSheet.Cells[i, 30].Value.ToString().Trim();
 
                             tT621.TamUngId = tamUngId;
                             tT621.NgayTao = DateTime.Now;
@@ -2426,17 +2469,27 @@ namespace KTTM.Controllers
 
                             tT621.LoaiTien = "VND";
                             tT621.TyGia = 1;
+                            tT621.NgayTao = DateTime.Now;
+                            tT621.NguoiTao = user.Username;
+                            
+                            // ghi log
+                            tT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + "(ImportExcel)"; // user.Username
 
-                            if (string.IsNullOrEmpty(tT621.DienGiai) && string.IsNullOrEmpty(tT621.SoTien.ToString()) &&
-                                string.IsNullOrEmpty(tT621.TKNo) && string.IsNullOrEmpty(tT621.MaKhNo) &&
-                                string.IsNullOrEmpty(tT621.TKCo) && string.IsNullOrEmpty(tT621.MaKhCo) &&
-                                string.IsNullOrEmpty(tT621.Sgtcode) && string.IsNullOrEmpty(tT621.HTTC) &&
-                                string.IsNullOrEmpty(tT621.NgayCTGoc.ToString()) && string.IsNullOrEmpty(tT621.LoaiHDGoc) &&
-                                string.IsNullOrEmpty(tT621.SoCTGoc) && string.IsNullOrEmpty(tT621.KyHieuHD) &&
-                                string.IsNullOrEmpty(tT621.VAT.ToString()) && string.IsNullOrEmpty(tT621.DSKhongVAT.ToString()) &&
-                                string.IsNullOrEmpty(tT621.BoPhan) && string.IsNullOrEmpty(tT621.NoQuay) &&
-                                string.IsNullOrEmpty(tT621.CoQuay) && string.IsNullOrEmpty(tT621.MatHang) &&
-                                string.IsNullOrEmpty(tT621.DienGiaiP) && string.IsNullOrEmpty(tT621.LinkHDDT))
+                            if (string.IsNullOrEmpty(tT621.MaKhNo) && string.IsNullOrEmpty(tT621.DienGiai) &&
+                                string.IsNullOrEmpty(tT621.LoaiTien) && string.IsNullOrEmpty(tT621.SoTien.ToString()) &&
+                                string.IsNullOrEmpty(tT621.SoTienNT.ToString()) && string.IsNullOrEmpty(tT621.TyGia.ToString()) &&
+                                string.IsNullOrEmpty(tT621.TKNo) && string.IsNullOrEmpty(tT621.TKCo) &&
+                                string.IsNullOrEmpty(tT621.MaKhCo) && string.IsNullOrEmpty(tT621.Sgtcode) &&
+                                string.IsNullOrEmpty(tT621.HTTC) && string.IsNullOrEmpty(tT621.MsThue) &&
+                                string.IsNullOrEmpty(tT621.NgayCT.ToString()) && string.IsNullOrEmpty(tT621.LoaiHDGoc) &&
+                                string.IsNullOrEmpty(tT621.SoCTGoc) && string.IsNullOrEmpty(tT621.VAT.ToString()) &&
+                                string.IsNullOrEmpty(tT621.DSKhongVAT.ToString()) && string.IsNullOrEmpty(tT621.BoPhan) &&
+                                string.IsNullOrEmpty(tT621.NoQuay) && string.IsNullOrEmpty(tT621.CoQuay) &&
+                                    string.IsNullOrEmpty(tT621.SoXe) && string.IsNullOrEmpty(tT621.KyHieu) &&
+                            string.IsNullOrEmpty(tT621.MauSoHD) && string.IsNullOrEmpty(tT621.MatHang) &&
+                            string.IsNullOrEmpty(tT621.DienGiaiP) && string.IsNullOrEmpty(tT621.LinkHDDT) &&
+                            string.IsNullOrEmpty(tT621.MaTraCuu) && string.IsNullOrEmpty(tT621.TkTruyCap) &&
+                            string.IsNullOrEmpty(tT621.Password) && string.IsNullOrEmpty(tT621.SoVe))
                             {
                             }
                             else
