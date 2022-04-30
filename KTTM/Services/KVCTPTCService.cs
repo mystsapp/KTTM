@@ -127,6 +127,7 @@ namespace KTTM.Services
         Task<IPagedList<KVCTPTC>> ListThuHo(string searchString, string searchFromDate, string searchToDate, int? page, string macn);
 
         Task<IEnumerable<KVCTPTC>> ExportThuHo(string searchString, string searchFromDate, string searchToDate, string macn);
+        Task<KVCTPTC> GetByIdIncludeKVPTC(long id);
 
         //Task<KhachHang> GetKhachHangById(string maKhNo);
     }
@@ -2990,6 +2991,12 @@ namespace KTTM.Services
             // search date
 
             return list;
+        }
+
+        public async Task<KVCTPTC> GetByIdIncludeKVPTC(long id)
+        {
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, y => y.Id == id);
+            return kVCTPTCs.FirstOrDefault();
         }
 
         //public async Task<KhachHang> GetKhachHangById(string maKhNo)

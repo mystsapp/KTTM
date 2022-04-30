@@ -1825,7 +1825,7 @@ namespace KTTM.Controllers
             }
             else
             {
-                kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId_PhieuTC);
+                kVCTPCT = await _kVCTPTCService.GetByIdIncludeKVPTC(kVCTPCTId_PhieuTC);
             }
 
             TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
@@ -1844,11 +1844,65 @@ namespace KTTM.Controllers
                 tamUng.ConLaiNT = 0;
                 tamUng.ConLai = 0;
                 tamUng.PhieuTT = kVCTPCT.SoCT;
+                tamUng.LogFile += " -User kết chuyển: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                 await _tamUngService.UpdateAsync(tamUng);
 
                 // capnhat SoTU_DaTT vào kvctptc
                 kVCTPCT.SoTU_DaTT = tamUng.SoCT;
                 await _kVCTPTCService.UpdateAsync(kVCTPCT);
+
+                // ngoaite                
+                if (kVCTPCT.KVPTC.NgoaiTe == "NT")
+                {
+                    decimal? tienTUDau;
+                    decimal? tienTUSau;
+                    decimal? tienTUChenhLech;
+                    if (kVCTPCT.KVPTC.MFieu == "C")
+                    {
+                        // vd: đầu: ung 1000(22) + thanhtoan C them 200(23) = 22.000.000 + 4.600.000 = 26.600.000
+                        tienTUDau = tamUng.SoTien + (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
+                        // vd: sau: (tong NT)1.200 * 23.000(ty gia hien tai) = 27.600.000
+                        tienTUSau = (tamUng.SoTienNT + kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+
+                        tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
+                    }
+                    else // T
+                    {
+                        // vd: đầu: ung 1000(22) + thanhtoan C them 200(23) = 22.000.000 + 4.600.000 = 26.600.000
+                        tienTUDau = tamUng.SoTien;
+                        // vd: sau: (tong NT)1.200 * 23.000(ty gia hien tai) = 27.600.000
+                        tienTUSau = (tamUng.SoTienNT - kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+
+                        tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
+                    }
+
+                    KVCLTG kVCLTG = new KVCLTG();
+
+                    kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
+                    kVCLTG.DienGiai = kVCTPCT.DienGiai;
+                    kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+                    kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+                    kVCLTG.NoQuay = kVCTPCT.NoQuay;
+                    kVCLTG.CoQuay = kVCTPCT.CoQuay;
+                    kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
+                    if (tienTUChenhLech > 0) // duong
+                    {
+                        kVCLTG.TKNo = "1412";
+                        kVCLTG.TKCo = "4131";
+
+                    }
+                    if (tienTUChenhLech < 0) // am
+                    {
+                        kVCLTG.TKNo = "4131";
+                        kVCLTG.TKCo = "1412";
+
+                    }
+                    if (tienTUChenhLech != 0)
+                    {
+                        await _tT621Service.CreateKVCLTGAsync(kVCLTG);
+                    }
+
+                }
 
                 return Json(true);
             }
@@ -2471,7 +2525,7 @@ namespace KTTM.Controllers
                             tT621.TyGia = 1;
                             tT621.NgayTao = DateTime.Now;
                             tT621.NguoiTao = user.Username;
-                            
+
                             // ghi log
                             tT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + "(ImportExcel)"; // user.Username
 

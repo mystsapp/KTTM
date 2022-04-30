@@ -61,6 +61,7 @@ namespace KTTM.Services
         Task<KhachHang> GetKhachHangById(string maKhCo);
 
         Task CreateRange(List<TT621> tT621s);
+        Task CreateKVCLTGAsync(KVCLTG kVCLTG);
     }
 
     public class TT621Service : ITT621Service
@@ -321,8 +322,7 @@ namespace KTTM.Services
 
                     if (!string.IsNullOrEmpty(maKhCo))
                     {
-                        list = list.Where(x => x.MaKhCo.Trim().ToUpper() == maKhCo.Trim().ToUpper()
-                        || x.MaKhNo.Trim().ToUpper() == maKhCo.Trim().ToUpper()).ToList();
+                        list = list.Where(x => x.MaKhCo.Trim() == maKhCo.Trim()).ToList();
                     }
                 }
                 catch (Exception)
@@ -426,6 +426,12 @@ namespace KTTM.Services
         public async Task CreateRange(List<TT621> tT621s)
         {
             await _unitOfWork.tT621Repository.CreateRange(tT621s);
+            await _unitOfWork.Complete();
+        }
+
+        public async Task CreateKVCLTGAsync(KVCLTG kVCLTG)
+        {
+            _unitOfWork.kVCLTGRepository.Create(kVCLTG);
             await _unitOfWork.Complete();
         }
     }

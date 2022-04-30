@@ -63,6 +63,7 @@ namespace KTTM
             services.AddTransient<ITamUngRepository, TamUngRepository>();
             services.AddTransient<ITT621Repository, TT621Repository>();
             services.AddTransient<ITonQuyRepository, TonQuyRepository>();
+            services.AddTransient<IKVCLTGRepository, KVCLTGRepository>();
             services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
 
             // DanhMucKT
