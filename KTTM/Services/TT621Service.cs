@@ -62,6 +62,7 @@ namespace KTTM.Services
 
         Task CreateRange(List<TT621> tT621s);
         Task CreateKVCLTGAsync(KVCLTG kVCLTG);
+        string GetSoCT_CLTG(string param, string maCn);
     }
 
     public class TT621Service : ITT621Service
@@ -433,6 +434,46 @@ namespace KTTM.Services
         {
             _unitOfWork.kVCLTGRepository.Create(kVCLTG);
             await _unitOfWork.Complete();
+        }
+
+        public string GetSoCT_CLTG(string param, string maCn)
+        {
+
+            //DateTime dateTime;
+            //dateTime = DateTime.Now;
+            //dateTime = TourVM.Tour.NgayKyHopDong.Value;
+
+            var currentYear = DateTime.Now.Year; // ngay hien tai
+            var subfix = param + currentYear.ToString(); // 00458/2016
+                                                         //var tT621 = _unitOfWork.tT621Repository.GetAllAsNoTracking().OrderByDescending(x => x.SoCT).ToList().FirstOrDefault();
+            var kVCLTGs = _unitOfWork.kVCLTGRepository.Find(x => x.SoCT.Contains(subfix)).ToList(); // chi lay nhung soCT cung param: TV, TN
+
+            var kVCLTG = new KVCLTG();
+            if (kVCLTGs.Count() > 0)
+            {
+                kVCLTGs = kVCLTGs.Where(x => x.MaCn == maCn).ToList();
+                kVCLTG = kVCLTGs.OrderByDescending(x => x.SoCT).FirstOrDefault();
+            }
+            if (kVCLTG == null || string.IsNullOrEmpty(kVCLTG.SoCT))
+            {
+                return GetNextId.NextID_CLTG("", "") + subfix; // 00001
+            }
+            else
+            {
+                var oldYear = kVCLTG.SoCT.Substring(6, 4);
+                // cung nam
+                if (oldYear == currentYear.ToString())
+                {
+                    var oldSoCT = kVCLTG.SoCT.Substring(0, 5);
+                    return GetNextId.NextID_CLTG(oldSoCT, "") + subfix;
+                }
+                else
+                {
+                    // sang nam khac' chay lai tu dau
+                    return GetNextId.NextID_CLTG("", "") + subfix; // 00001
+                }
+            }
+
         }
     }
 }
