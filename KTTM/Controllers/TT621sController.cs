@@ -1868,9 +1868,9 @@ namespace KTTM.Controllers
                     }
                     else // T
                     {
-                        // vd: đầu: ung 1000(22) + thanhtoan C them 200(23) = 22.000.000 + 4.600.000 = 26.600.000
-                        tienTUDau = tamUng.SoTien;
-                        // vd: sau: (tong NT)1.200 * 23.000(ty gia hien tai) = 27.600.000
+                        // vd: đầu: ung 1000(22) - thanhtoan C them 200(23) = 22.000.000 - 4.600.000 = 17,400,000
+                        tienTUDau = tamUng.SoTien - (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
+                        // vd: sau: (tong NT)(1.000 - 200)*23 = 18400000
                         tienTUSau = (tamUng.SoTienNT - kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
 
                         tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
@@ -1879,21 +1879,22 @@ namespace KTTM.Controllers
                     KVCLTG kVCLTG = new KVCLTG();
 
                     kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
+                    // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
                     kVCLTG.DienGiai = kVCTPCT.DienGiai;
                     kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
                     kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
                     kVCLTG.NoQuay = kVCTPCT.NoQuay;
                     kVCLTG.CoQuay = kVCTPCT.CoQuay;
                     kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
-                    if (tienTUChenhLech > 0) // duong
-                    {
-                        kVCLTG.TKNo = "1412";
-                        kVCLTG.TKCo = "4131";
-
-                    }
                     if (tienTUChenhLech < 0) // am
                     {
-                        kVCLTG.TKNo = "4131";
+                        kVCLTG.TKNo = "1412";
+                        kVCLTG.TKCo = "4131000001";
+
+                    }
+                    if (tienTUChenhLech > 0) // duong
+                    {
+                        kVCLTG.TKNo = "4131000001";
                         kVCLTG.TKCo = "1412";
 
                     }
