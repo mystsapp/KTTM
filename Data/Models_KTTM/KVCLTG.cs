@@ -54,5 +54,9 @@ namespace Data.Models_KTTM
         [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
         public string CoQuay { get; set; } //
 
+        [DisplayName("Số phiếu 1412")]
+        [MaxLength(10, ErrorMessage = "Chiều dài tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
+        public string SoCT1412 { get; set; }
+
     }
 }

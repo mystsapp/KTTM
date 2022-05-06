@@ -76,26 +76,56 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
             KVCTPCTVM.KVCTPTC.TyGia = 1;
 
+            Get_TkNo_TkCo();
+            IEnumerable<DmTk> dM1411 = _kVCTPTCService.Get1411();
+            IEnumerable<DmTk> dM1412 = _kVCTPTCService.Get1412();
+            IEnumerable<DmTk> dM1111000000 = _kVCTPTCService.Get1111000000();
+
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
             if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
             {
                 KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
+
+                if (KVCTPCTVM.KVPTC.MFieu == "C")
+                {
+                    KVCTPCTVM.KVCTPTC.TKCo = "1111000000";
+                    KVCTPCTVM.DmTks_TkCo = _kVCTPTCService.GetAll_DmTk_TienMat().Where(x => x.Tkhoan.Trim() == "1111000000"); // 3429: 1111000000
+                    KVCTPCTVM.DmTks_TkNo.Except(dM1412);
+                }
+                else // T
+                {
+                    KVCTPCTVM.KVCTPTC.TKNo = "1111000000";
+                    KVCTPCTVM.DmTks_TkNo = _kVCTPTCService.GetAll_DmTk_TienMat().Where(x => x.Tkhoan.Trim() == "1111000000"); // 3429: 1111000000
+                    KVCTPCTVM.DmTks_TkCo.Except(dM1412);
+                }
+            }
+            if (KVCTPCTVM.KVPTC.NgoaiTe == "NT")
+            {
+                //KVCTPCTVM.Ngoaites.Where
+                if (KVCTPCTVM.KVPTC.MFieu == "C")
+                {
+                    KVCTPCTVM.DmTks_TkCo.Except(dM1111000000);
+                    KVCTPCTVM.DmTks_TkNo.Except(dM1411);
+                    KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Where(x => x.TenTk.StartsWith("1112"));
+                    
+
+                }
+                else // T
+                {
+                    KVCTPCTVM.DmTks_TkNo.Except(dM1111000000);
+                    KVCTPCTVM.DmTks_TkCo.Except(dM1411);
+                    KVCTPCTVM.DmTks_TkNo.Where(x => x.TenTk.StartsWith("1112"));
+
+                }
             }
 
-            if (KVCTPCTVM.KVPTC.MFieu == "C")
-            {
-                KVCTPCTVM.KVCTPTC.TKCo = "1111000000";
-            }
-            else
-            {
-                KVCTPCTVM.KVCTPTC.TKNo = "1111000000";
-            }
+            
 
             var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
             viewDmHttcs.Insert(0, viewDmHttc);
             KVCTPCTVM.DmHttcs = viewDmHttcs;
 
-            Get_TkNo_TkCo();
+            //Get_TkNo_TkCo();
 
             KVCTPCTVM.Quays = _kVCTPTCService.GetAll_Quay_View();
             var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
@@ -579,7 +609,12 @@ namespace KTTM.Controllers
 
                     // tao ct phieuchi
                     List<KVCTPTC> kVCTPTCs1 = new List<KVCTPTC>();
-                    List<KVCTPTC> kVCTPTCs2 = kVCTPTCs.ToList();
+                    //List<KVCTPTC> kVCTPTCs2 = kVCTPTCs.ToList();
+                    // lay chitiet ntbill cho vcb(chau)
+                    var kVCTPTCs2 = _kVCTPTCService.GetKVCTPTCs_VCBChau(KVCTPCTVM.LayDataCashierModel.BaoCaoSo.ToUpper().Trim(),
+                kVPTCId, KVCTPCTVM.KVPTC.SoCT, user.Username, user.Macn, kVPCT.MFieu, // chi lam phieu T
+                KVCTPCTVM.LayDataCashierModel.Tk.Trim(), KVCTPCTVM.LayDataCashierModel.TienMat,
+                KVCTPCTVM.LayDataCashierModel.TTThe);
 
                     foreach (var item in kVCTPTCs2) // dao cap tk
                     {
@@ -596,13 +631,28 @@ namespace KTTM.Controllers
                         item.CoQuay = ""; // thao
                         item.Sgtcode = ""; // thao
                         item.DienGiai = "CHI NOP NGAN HANG =CC"; // thao
-                        item.DienGiaiP = "Chi nộp " + item.SalesSlip + item.CardNumber; // thao
+                        item.DienGiaiP = "Chi nộp " + item.LoaiThe + " " + item.SalesSlip + " " + item.CardNumber; // thao
                         kVCTPTCs1.Add(item);
+
+                        await _kVCTPTCService.Create(item);
                     }
-                    if (kVCTPTCs1.Count > 0)
-                    {
-                        await _kVCTPTCService.CreateRange(kVCTPTCs1);
-                    }
+                    //if (kVCTPTCs1.Count > 0)
+                    //{
+                    //    foreach(var item in kVCTPTCs1)
+                    //    {
+                    //        await _kVCTPTCService.Create(item);
+                    //    }
+                    //    //try
+                    //    //{
+                    //    //    await _kVCTPTCService.CreateRange(kVCTPTCs1);
+                    //    //}
+                    //    //catch (Exception ex)
+                    //    //{
+
+                    //    //    throw;
+                    //    //}
+                        
+                    //}
                     // tao ct phieuchi
                 }
                 // TTThe, phieu thu, cap tk(no = 1111000000, co = 1311)
