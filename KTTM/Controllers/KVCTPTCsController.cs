@@ -76,12 +76,13 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.KVPTCId = KVPTCId;
             KVCTPCTVM.KVCTPTC.TyGia = 1;
 
-            Get_TkNo_TkCo();
-            IEnumerable<DmTk> dM1411 = _kVCTPTCService.Get1411();
-            IEnumerable<DmTk> dM1412 = _kVCTPTCService.Get1412();
-            IEnumerable<DmTk> dM1111000000 = _kVCTPTCService.Get1111000000();
+            
+            //IEnumerable<DmTk> dM1411 = _kVCTPTCService.Get1411();
+            //IEnumerable<DmTk> dM1412 = _kVCTPTCService.Get1412();
+            //IEnumerable<DmTk> dM1111000000 = _kVCTPTCService.Get1111000000();
 
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCId);
+            Get_TkNo_TkCo();
             if (KVCTPCTVM.KVPTC.NgoaiTe == "VN")
             {
                 KVCTPCTVM.KVCTPTC.LoaiTien = "VND";
@@ -90,13 +91,15 @@ namespace KTTM.Controllers
                 {
                     KVCTPCTVM.KVCTPTC.TKCo = "1111000000";
                     KVCTPCTVM.DmTks_TkCo = _kVCTPTCService.GetAll_DmTk_TienMat().Where(x => x.Tkhoan.Trim() == "1111000000"); // 3429: 1111000000
-                    KVCTPCTVM.DmTks_TkNo.Except(dM1412);
+                    var dmTks_TkNoEx = KVCTPCTVM.DmTks_TkNo.Where(x => x.Tkhoan.Trim() == "1412" || x.Tkhoan.StartsWith("111"));
+                    KVCTPCTVM.DmTks_TkNo = KVCTPCTVM.DmTks_TkNo.Except(dmTks_TkNoEx);//.Except(dmTks_TkNo1112);
                 }
                 else // T
                 {
                     KVCTPCTVM.KVCTPTC.TKNo = "1111000000";
                     KVCTPCTVM.DmTks_TkNo = _kVCTPTCService.GetAll_DmTk_TienMat().Where(x => x.Tkhoan.Trim() == "1111000000"); // 3429: 1111000000
-                    KVCTPCTVM.DmTks_TkCo.Except(dM1412);
+                    var dmTks_TkCoEx = KVCTPCTVM.DmTks_TkCo.Where(x => x.Tkhoan.Trim() == "1412" || x.Tkhoan.StartsWith("111"));
+                    KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Except(dmTks_TkCoEx);
                 }
             }
             if (KVCTPCTVM.KVPTC.NgoaiTe == "NT")
@@ -104,17 +107,19 @@ namespace KTTM.Controllers
                 //KVCTPCTVM.Ngoaites.Where
                 if (KVCTPCTVM.KVPTC.MFieu == "C")
                 {
-                    KVCTPCTVM.DmTks_TkCo.Except(dM1111000000);
-                    KVCTPCTVM.DmTks_TkNo.Except(dM1411);
-                    KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Where(x => x.TenTk.StartsWith("1112"));
+                    KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Where(x => x.Tkhoan.StartsWith("1112"));
+                    var dmTks_TkNoEx = KVCTPCTVM.DmTks_TkNo.Where(x => x.Tkhoan.Trim() == "1411" || x.Tkhoan.StartsWith("111"));
+                    KVCTPCTVM.DmTks_TkNo = KVCTPCTVM.DmTks_TkNo.Except(dmTks_TkNoEx);
+                    
                     
 
                 }
                 else // T
                 {
-                    KVCTPCTVM.DmTks_TkNo.Except(dM1111000000);
-                    KVCTPCTVM.DmTks_TkCo.Except(dM1411);
-                    KVCTPCTVM.DmTks_TkNo.Where(x => x.TenTk.StartsWith("1112"));
+                    KVCTPCTVM.DmTks_TkNo = KVCTPCTVM.DmTks_TkNo.Where(x => x.Tkhoan.StartsWith("1112"));
+                    var dmTks_TkCoEx = KVCTPCTVM.DmTks_TkCo.Where(x => x.Tkhoan.Trim() == "1411" || x.Tkhoan.StartsWith("111"));
+                    KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Except(dmTks_TkCoEx);
+                    
 
                 }
             }

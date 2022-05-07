@@ -1889,6 +1889,7 @@ namespace KTTM.Controllers
                     kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
                     kVCLTG.NoQuay = kVCTPCT.NoQuay;
                     kVCLTG.CoQuay = kVCTPCT.CoQuay;
+                    kVCLTG.SoCT1412 = kVCTPCT.SoCT;
                     kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
                     if (tienTUChenhLech < 0) // am
                     {

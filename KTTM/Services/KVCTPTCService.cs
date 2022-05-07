@@ -2147,17 +2147,6 @@ namespace KTTM.Services
             return dmTks1;
         }
 
-        public IEnumerable<DmTk> GetAll_DmTk_TienMat()
-        {
-            var dmTks = GetAll_DmTk().Where(x => x.Tkhoan.StartsWith("111"));
-            List<DmTk> dmTks1 = new List<DmTk>();
-            foreach (var item in dmTks)
-            {
-                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan, TenTk = item.Tkhoan + " - " + item.TenTk });
-            }
-            return dmTks1;
-        }
-
         public async Task<KVCTPTC> GetById(long id)
         {
             return await _unitOfWork.kVCTPCTRepository.GetByLongIdAsync(id);
@@ -2184,9 +2173,24 @@ namespace KTTM.Services
             await _unitOfWork.Complete();
         }
 
+        public IEnumerable<DmTk> GetAll_DmTk_TienMat()
+        {
+            var dmTks = GetAll_DmTk().Where(x => x.Tkhoan.StartsWith("111"));
+            List<DmTk> dmTks1 = new List<DmTk>();
+            foreach (var item in dmTks)
+            {
+                dmTks1.Add(new DmTk() { Tkhoan = item.Tkhoan, TenTk = item.Tkhoan + " - " + item.TenTk });
+            }
+            return dmTks1;
+        }
+
         public IEnumerable<DmTk> GetAll_DmTk_TaiKhoan()
         {
+            //var dmtkTienMats = GetAll_DmTk_TienMat();
+            //var dmTkList = GetAll_DmTk();//
+            
             var dmTks = GetAll_DmTk();
+            
             List<DmTk> dmTks1 = new List<DmTk>();
             foreach (var item in dmTks)
             {
