@@ -567,7 +567,7 @@ namespace KTTM.Services
                                         case "BOB":
                                         case "TOB":
                                         case "POB":
-                                            kVCTPTC.TKNo = "1311110000";
+                                            kVCTPTC.TKCo = "1311110000";
                                             kVCTPTC.MaKhNo = "";
                                             kVCTPTC.MaKhCo = "0000000002";
                                             break;
@@ -576,7 +576,7 @@ namespace KTTM.Services
                                         case "BHK":
                                         case "PHK":
                                         case "VHK":
-                                            kVCTPTC.TKNo = "1311110000";
+                                            kVCTPTC.TKCo = "1311110000";
                                             kVCTPTC.MaKhNo = "";
                                             kVCTPTC.MaKhCo = "0000000004";
                                             break;
