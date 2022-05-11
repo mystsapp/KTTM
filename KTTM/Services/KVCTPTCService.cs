@@ -459,7 +459,8 @@ namespace KTTM.Services
                                     case "BXK": // xuat khau: thao
                                         kVCTPTC.CoQuay = "XK";
                                         kVCTPTC.BoPhan = "XK";
-                                        switch (kVCTPTC.Sgtcode)
+                                        //switch (kVCTPTC.Sgtcode)
+                                        switch (ctbills_TienMat.FirstOrDefault().Sgtcode.Substring(0, 6))
                                         {
                                             case "0COSTA":
                                                 kVCTPTC.MaKhCo = "0000000015";
@@ -1838,7 +1839,7 @@ namespace KTTM.Services
             }
             return kVCTPTCs;
         }
-        
+
         public IEnumerable<KVCTPTC> GetKVCTPTCs_VCBChau(string baoCaoSo, Guid kVPTCId,
             string soCT, string username, string maCN, string loaiPhieu,
             string tk, bool tienMat, bool tTThe) // noptien => two keys
@@ -1898,7 +1899,7 @@ namespace KTTM.Services
                             //kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
                             //kVCTPTC.LoaiThe = ctbills_TTThe.FirstOrDefault().Loaicard;// item1.Loaicard;
 
-                            foreach(var item1 in ctbills_TTThe)
+                            foreach (var item1 in ctbills_TTThe)
                             {
 
                                 KVCTPTC kVCTPTC = new KVCTPTC();
@@ -2188,9 +2189,9 @@ namespace KTTM.Services
         {
             //var dmtkTienMats = GetAll_DmTk_TienMat();
             //var dmTkList = GetAll_DmTk();//
-            
+
             var dmTks = GetAll_DmTk();
-            
+
             List<DmTk> dmTks1 = new List<DmTk>();
             foreach (var item in dmTks)
             {
@@ -3305,7 +3306,7 @@ namespace KTTM.Services
         {
             return _unitOfWork.dmTkRepository.GetAll().Where(x => x.Id == 3524); //3524: 1411
         }
-        
+
         public IEnumerable<DmTk> Get1412()
         {
             return _unitOfWork.dmTkRepository.GetAll().Where(x => x.Id == 3525); //3525: 1411
