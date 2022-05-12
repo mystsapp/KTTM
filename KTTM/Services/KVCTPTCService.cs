@@ -918,9 +918,10 @@ namespace KTTM.Services
                                 kVCTPTC.CoQuay = boPhan;
                                 switch (baoCaoSo.Substring(5, 3))
                                 {
-                                    //case "CHK":
-                                    //    kVCTPTC.MaKhCo = "0000000004"; //maKh;
-                                    //    break;
+                                    case "CHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        kVCTPTC.BoPhan = "HK";
+                                        break;
 
                                     case "TWI":
                                         kVCTPTC.MaKhCo = "0000000006"; //maKh;
@@ -951,17 +952,20 @@ namespace KTTM.Services
                                         break;
 
                                     //// them
-                                    //case "BHK":
-                                    //    kVCTPTC.MaKhCo = "0000000004"; //maKh;
-                                    //    break;
+                                    case "BHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        kVCTPTC.BoPhan = "HK";
+                                        break;
 
-                                    //case "PHK":
-                                    //    kVCTPTC.MaKhCo = "0000000004"; //maKh;
-                                    //    break;
+                                    case "PHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        kVCTPTC.BoPhan = "HK";
+                                        break;
 
-                                    //case "VHK":
-                                    //    kVCTPTC.MaKhCo = "0000000004"; //maKh;
-                                    //    break;
+                                    case "VHK":
+                                        kVCTPTC.MaKhCo = "0000000004"; //maKh;
+                                        kVCTPTC.BoPhan = "HK";
+                                        break;
 
                                     case "BIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
