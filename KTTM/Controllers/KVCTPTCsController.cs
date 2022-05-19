@@ -544,7 +544,7 @@ namespace KTTM.Controllers
                 KVCTPCTVM.LayDataCashierModel.TTThe);
             // ghi log ben service
 
-            if (kVCTPTCs == null) //545 ben kvctptcService
+            if (kVCTPTCs.Count() == 0) //545 ben kvctptcService
             {
                 SetAlert("Báo cáo số không có bất cứ dòng nào!", "warning");
                 return BackIndex(kVPTCId, KVCTPCTVM.Page); // redirect to Home/Index/?id

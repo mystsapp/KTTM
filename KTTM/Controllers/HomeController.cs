@@ -1159,5 +1159,35 @@ namespace KTTM.Controllers
             //}
             return Redirect(strUrl);
         }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(string strUrl, Guid id)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            if (id == Guid.Empty)
+                return NotFound();
+            var kVPTC = await _kVPTCService.GetByGuidIdAsync(id);
+            if (kVPTC == null)
+                return NotFound();
+            try
+            {
+                
+                    await _kVPTCService.DeleteAsync(kVPTC);
+
+                return Redirect("/");
+            }
+            catch (Exception)
+            {
+                //SetAlert(ex.Message, "error");
+
+                return Json(new
+                {
+                    status = false
+                });
+            }
+        }
+
     }
 }

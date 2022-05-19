@@ -290,7 +290,7 @@ namespace KTTM.Services
 
             List<KVCTPTC> kVCTPTCs = new List<KVCTPTC>();
 
-            if (ntbills != null)
+            if (ntbills.Count() > 0)
             {
                 foreach (var item in ntbills)
                 {
@@ -2102,7 +2102,7 @@ namespace KTTM.Services
                                 //kVCTPTC.Sgtcode = sgtcode == null ? "" : sgtcode.Sgtcode;// 
 
                                 //kVCTPTC.CardNumber = ctbills_TTThe.FirstOrDefault().Cardnumber;// item1.Cardnumber;
-                                //kVCTPTC.SalesSlip = ctbills_TTThe.FirstOrDefault().Saleslip;// item1.Saleslip;
+                                kVCTPTC.SalesSlip = ctbills_TTThe.FirstOrDefault().Saleslip;// item1.Saleslip;
 
                                 // THONG TIN VE THUE
                                 kVCTPTC.LoaiHDGoc = loaiHDGoc;

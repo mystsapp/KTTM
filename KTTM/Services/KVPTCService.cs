@@ -56,6 +56,7 @@ namespace KTTM.Services
         List<KVPTC> FindByMaCN(string maCn);
 
         Task<string> GetChiNhanhByMaCn(string macn);
+        Task DeleteAsync(KVPTC kVPTC);
     }
 
     public class KVPTCService : IKVPTCService
@@ -488,5 +489,13 @@ namespace KTTM.Services
             var dmchinhanh = await _unitOfWork.chiNhanhRepository.GetByMaCn(macn);
             return dmchinhanh.Tencn;
         }
+
+        public async Task DeleteAsync(KVPTC kVPTC)
+        {
+
+            _unitOfWork.kVPCTRepository.Delete(kVPTC);
+            await _unitOfWork.Complete();
+        }
+
     }
 }

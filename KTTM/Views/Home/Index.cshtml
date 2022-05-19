@@ -207,6 +207,13 @@
                 <input type="hidden" value="@Model.Page" name="page" />
             </form>
 
+            
+            <form id="frmDelete" asp-action="Delete" asp-controller="Home" method="post">
+                <input type="hidden" id="hidId" name="id" />
+                <input type="hidden" id="hidStrUrl" value="@Model.StrUrl" name="strUrl" />
+                <input type="hidden" value="@Model.Page" name="page" />
+                
+            </form>
             @*<br />*@
             <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; height: 300px">
                 <table class="table mytable text-nowrap text-sm" id="phieuTbl">
@@ -247,7 +254,7 @@
                                                 <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.SoCT" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <!-- ko cho xóa -->
                                     
-                                            <span SoCT="confirmDeleteSpan_@item.Id" style="display: none">
+                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                 <!--ajax check invoices-->
                                         <span class="text-dark ">Xoá?</span>
                                                 <button type="button" class="btn btn-danger btn-xs btnXoaKVPTC" data-id="@item.Id" data-url="@Model.StrUrl">Yes</button>
@@ -479,6 +486,32 @@
 
 
         })
+        
+    // btnXoaKVPTC
+    $('.btnXoaKVPTC').off('click').on('click',function () {
+
+        var page = @Model.Page;
+        //var kvptcId = '@Model.KVPTC.Id';
+
+        id = $(this).data('id');
+        strUrl = $(this).data('url');
+
+        $('#hidId').val(id);
+        $('#hidStrUrl').val(strUrl);
+
+        $('#frmDelete').submit();
+        //var url = '/Home/Delete';
+        //$.post(url, { strUrl: strUrl, id: id }, function (response) {
+        //   // debugger
+        //    if (response) {
+        //        toastr.success('Xoá thành công', 'Xoá!');
+        //        window.location.reload();
+        //        //indexController.Load_KVCTPCTPartial(kvptcId, page);
+        //    }
+        //});
+
+    });
+        // btnXoaKVPTC
 
 </script>
 
