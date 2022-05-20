@@ -2572,15 +2572,20 @@ namespace KTTM.Controllers
                     TrSetCellBorder(xlSheet, dong, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Justify, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    if (item.CardNumber.Length > 4)
+                    if (!string.IsNullOrEmpty(item.CardNumber) && item.CardNumber.Length > 4)
                     {
-                        var soThe = item.CardNumber.Substring(item.CardNumber.Length - 3, 4);
+
+                        var soThe = item.CardNumber.Substring(item.CardNumber.Length - 4, 4);
                         xlSheet.Cells[dong, 3].Value = soThe.ToString();
+
                     }
                     else
                     {
-                        xlSheet.Cells[dong, 3].Value = item.CardNumber.ToString();
+                        xlSheet.Cells[dong, 3].Value = string.IsNullOrEmpty(item.CardNumber) ? "" : item.CardNumber.ToString();
+                        //xlSheet.Cells[dong, 3].Value = item.CardNumber.ToString();
                     }
+                    //xlSheet.Cells[dong, 3].Value = string.IsNullOrEmpty(item.CardNumber) ? "" : item.CardNumber.ToString();
+
                     TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
