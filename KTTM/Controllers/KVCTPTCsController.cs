@@ -117,7 +117,7 @@ namespace KTTM.Controllers
                 else // T
                 {
                     KVCTPCTVM.DmTks_TkNo = KVCTPCTVM.DmTks_TkNo.Where(x => x.Tkhoan.StartsWith("1112"));
-                    var dmTks_TkCoEx = KVCTPCTVM.DmTks_TkCo.Where(x => x.Tkhoan.Trim() == "1411" || x.Tkhoan.StartsWith("111"));
+                    var dmTks_TkCoEx = KVCTPCTVM.DmTks_TkCo.Where(x => x.Tkhoan.Trim() == "1411");// || x.Tkhoan.StartsWith("111"));
                     KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Except(dmTks_TkCoEx);
                     
 

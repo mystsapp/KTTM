@@ -593,6 +593,13 @@ namespace KTTM.Services
                                             kVCTPTC.MaKhNo = "0000000004";
                                             kVCTPTC.MaKhCo = "";
                                             break;
+
+                                        case "BDN":
+                                            kVCTPTC.TKCo = "1311110000";
+                                            kVCTPTC.MaKhNo = "";
+                                            kVCTPTC.MaKhCo = "0000000008";
+                                            break;
+
                                     }
                                 }
                                 //// anh son kt
