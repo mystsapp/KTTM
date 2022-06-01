@@ -2396,24 +2396,6 @@ namespace KTTM.Controllers
                             if (workSheet.Cells[i, 1].Value != null)
                                 tT621.MaKhNo = workSheet.Cells[i, 1].Value.ToString().Trim();
 
-                            // thong tin khachhang
-                            KhachHang khachHang = new KhachHang();
-                            if (string.IsNullOrEmpty(tT621.MaKhNo)) // MaKhNo: mã của đối tác
-                            {
-                                return Json(new
-                                {
-                                    status = false,
-                                    message = "Vui lòng điền MaKhNo!"
-                                });
-                            }
-                            khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhNo);
-
-                            tT621.TenKH = khachHang.TenThuongMai;
-                            tT621.DiaChi = khachHang.DiaChi;
-                            //tT621.KyHieu = khachHang.KyHieuHd;
-                            //tT621.MauSoHD = khachHang.MauSoHd;
-                            //tT621.MsThue = khachHang.MaSoThue;
-
                             if (workSheet.Cells[i, 2].Value != null)
                                 tT621.DienGiai = workSheet.Cells[i, 2].Value.ToString().Trim();
 
@@ -2512,32 +2494,8 @@ namespace KTTM.Controllers
                             if (workSheet.Cells[i, 30].Value != null)
                                 tT621.SoVe = workSheet.Cells[i, 30].Value.ToString().Trim();
 
-                            tT621.TamUngId = tamUngId;
-                            tT621.NgayTao = DateTime.Now;
-                            tT621.NguoiTao = user.Username;
-                            // SoCT
-                            IEnumerable<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetTT621s_By_TamUng(tamUngId);//.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
-                            if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
-                            {
-                                tT621.SoCT = tt621_Theo_PhieuTC.FirstOrDefault().SoCT;
-                            }
-                            else
-                            {
-                                // lay soct cua tt621
-                                tT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
-                            }
-
-                            tT621.LoaiTien = "VND";
-                            tT621.TyGia = 1;
-                            tT621.NgayTao = DateTime.Now;
-                            tT621.NguoiTao = user.Username;
-
-                            // ghi log
-                            tT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + "(ImportExcel)"; // user.Username
-
                             if (string.IsNullOrEmpty(tT621.MaKhNo) && string.IsNullOrEmpty(tT621.DienGiai) &&
-                                string.IsNullOrEmpty(tT621.LoaiTien) && string.IsNullOrEmpty(tT621.SoTien.ToString()) &&
-                                string.IsNullOrEmpty(tT621.SoTienNT.ToString()) && string.IsNullOrEmpty(tT621.TyGia.ToString()) &&
+                                string.IsNullOrEmpty(tT621.SoTien.ToString()) && string.IsNullOrEmpty(tT621.SoTienNT.ToString()) &&
                                 string.IsNullOrEmpty(tT621.TKNo) && string.IsNullOrEmpty(tT621.TKCo) &&
                                 string.IsNullOrEmpty(tT621.MaKhCo) && string.IsNullOrEmpty(tT621.Sgtcode) &&
                                 string.IsNullOrEmpty(tT621.HTTC) && string.IsNullOrEmpty(tT621.MsThue) &&
@@ -2566,8 +2524,52 @@ namespace KTTM.Controllers
                                 //    kVCTPTC.MauSoHD = khachHang.MauSoHd;
                                 //    kVCTPTC.MsThue = khachHang.MaSoThue;
                                 //}
+
+                                tT621.TamUngId = tamUngId;
+                                tT621.NgayTao = DateTime.Now;
+                                tT621.NguoiTao = user.Username;
+                                // SoCT
+                                IEnumerable<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetTT621s_By_TamUng(tamUngId);//.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
+                                if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
+                                {
+                                    tT621.SoCT = tt621_Theo_PhieuTC.FirstOrDefault().SoCT;
+                                }
+                                else
+                                {
+                                    // lay soct cua tt621
+                                    tT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
+                                }
+
+                                tT621.LoaiTien = "VND";
+                                tT621.TyGia = 1;
+                                tT621.NgayTao = DateTime.Now;
+                                tT621.NguoiTao = user.Username;
+
+                                // ghi log
+                                tT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + "(ImportExcel)"; // user.Username
+
+
+                                // thong tin khachhang
+                                KhachHang khachHang = new KhachHang();
+                                if (string.IsNullOrEmpty(tT621.MaKhNo)) // MaKhNo: mã của đối tác
+                                {
+                                    return Json(new
+                                    {
+                                        status = false,
+                                        message = "Vui lòng điền MaKhNo!"
+                                    });
+                                }
+                                khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhNo);
+
+                                tT621.TenKH = khachHang.TenThuongMai;
+                                tT621.DiaChi = khachHang.DiaChi;
+                                //tT621.KyHieu = khachHang.KyHieuHd;
+                                //tT621.MauSoHD = khachHang.MauSoHd;
+                                //tT621.MsThue = khachHang.MaSoThue;
+
                                 tT621s.Add(tT621);
                             }
+                            
                         }
                         try
                         {
