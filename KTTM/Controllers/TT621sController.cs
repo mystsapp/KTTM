@@ -2168,7 +2168,7 @@ namespace KTTM.Controllers
                                 var supplier = _kVCTPTCService.GetSuppliersByCode(tT621.MaKhNo).FirstOrDefault();
                                 //var supplier = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
 
-                                if (!string.IsNullOrEmpty(supplier.Code))
+                                if (supplier != null && !string.IsNullOrEmpty(supplier.Code))
                                 {
                                     tT621.TenKH = supplier.TenThuongMai;
                                     tT621.DiaChi = supplier.DiaChi;

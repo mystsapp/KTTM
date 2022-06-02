@@ -99,9 +99,12 @@ namespace KTTM.Services
                     VND = item.ConLai,// item.SoTien,
                     Name = item.MaKhNo + " " + supplier.TenGiaoDich,//.TenThuongMai,//item.KVCTPTC.TenKH, --> thao
                     Name_Phong = item.Phong,
-                    Id = item.Id
+                    Id = item.Id,
+                    TenGiaoDich = supplier.TenGiaoDich
                 });
             }
+
+            tamUngModels = tamUngModels.OrderBy(x => x.TenGiaoDich).ToList();
 
             var result1 = (from p in tamUngModels
                            group p by p.Name into g
@@ -156,7 +159,8 @@ namespace KTTM.Services
                         Name = item.MaKhNo + " " + supplier.TenGiaoDich,//supplier.TenThuongMai ?? "",
                         //Name = item.MaKhNo + " " + item.KVCTPTC.KVPTC.HoTen,
                         Name_Phong = item.Phong,
-                        Id = item.Id
+                        Id = item.Id,
+                        TenGiaoDich = supplier.TenGiaoDich
                     });
                 }
                 catch (Exception ex)
@@ -172,6 +176,10 @@ namespace KTTM.Services
                     await _unitOfWork.errorLogRepository.CreateAsync(errorLog);
                 }
             }
+            
+            tamUngModels = tamUngModels.OrderBy(x => x.TenGiaoDich).ToList();
+
+            //var abc = tamUngModels.Select(x => x.TenGiaoDich);
 
             var result1 = (from p in tamUngModels
                            group p by new
@@ -198,7 +206,7 @@ namespace KTTM.Services
                                Name_Phong = gr.Key,
                                TamUngModel_GroupBy_Names = gr.ToList()
                            }).ToList();
-            return result2;
+            return result2.OrderBy(x => x.Name_Phong);
         }
 
         public async Task<IEnumerable<TamUng>> Find_TamUngs_By_MaKh_Include(string maKh, string maCn, string tk)

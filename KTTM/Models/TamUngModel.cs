@@ -18,5 +18,7 @@ namespace KTTM.Models
         public string Name { get; set; }
 
         public string Name_Phong { get; set; }
+
+        public string TenGiaoDich { get; set; }
     }
 }
