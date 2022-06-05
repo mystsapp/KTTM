@@ -534,6 +534,8 @@
                 return false;
             }
             var loaiPhieu = '@Model.KVPTC.MFieu';
+            var kvptcId = '@Model.KVPTC.Id';
+            var kvctptcId = '@Model.KVCTPTC.Id';
 
             var fileExtension = ['xls', 'xlsx'];
             var filename = $('#fUpload').val();
@@ -564,6 +566,9 @@
 
             formData.append("tamUngId", tamUngId);
             formData.append("loaiPhieu", loaiPhieu);
+            formData.append("kvptcId", kvptcId);
+            formData.append("kvctptcId", kvctptcId);
+
             for (var i = 0; i <= files.length; i++) {
                 formData.append("files", files[i]);
             }
@@ -580,6 +585,7 @@
                         $('#importExcelModal').modal('hide');
                         //// load lai TT621Create
                         $('#' + tamUngId).click();
+                        createController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
 
                     } else {
                         $('#importExcelModal').modal('hide');

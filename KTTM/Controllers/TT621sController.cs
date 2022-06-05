@@ -2148,6 +2148,9 @@ namespace KTTM.Controllers
                             tT621.NguoiTao = user.Username;
                             tT621.LoaiTien = "VND";
                             tT621.TyGia = 1;
+                            tT621.MaCn = user.Macn;
+                            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+                            tT621.NgayCT = tamUng.NgayCT;
 
                             if (string.IsNullOrEmpty(tT621.DienGiai) && string.IsNullOrEmpty(tT621.SoTien.ToString()) &&
                                 string.IsNullOrEmpty(tT621.TKNo) && string.IsNullOrEmpty(tT621.MaKhNo) &&
@@ -2269,7 +2272,7 @@ namespace KTTM.Controllers
             }
 
             TT621VM.TT621.MaCn = user.Macn;
-            TT621VM.TT621.NgayCT = DateTime.Now;
+            TT621VM.TT621.NgayCT = tamUng.NgayCT;// DateTime.Now;
             TT621VM.TT621.NguoiTao = user.Username;
             TT621VM.TT621.DienGiaiP = string.IsNullOrEmpty(TT621VM.TT621.DienGiaiP) ? "" : TT621VM.TT621.DienGiaiP.Trim().ToUpper();// TT621VM.TT621.DienGiaiP.Trim().ToUpper();
             TT621VM.TT621.NgayTao = DateTime.Now;
@@ -2347,7 +2350,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ImportExcell(long tamUngId, string loaiPhieu) // Ngọc
+        public async Task<JsonResult> ImportExcell(long tamUngId, string loaiPhieu, Guid kvptcId, long kvctptcId) // Ngọc
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -2356,6 +2359,7 @@ namespace KTTM.Controllers
             if (fileCheck.Count > 0)
             {
                 TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+                var kvptc = await _kVPTCService.GetByGuidIdAsync(kvptcId);
 
                 #region upload excel
 
@@ -2528,6 +2532,12 @@ namespace KTTM.Controllers
                                 tT621.TamUngId = tamUngId;
                                 tT621.NgayTao = DateTime.Now;
                                 tT621.NguoiTao = user.Username;
+                                tT621.MaCn = user.Macn;
+                                
+                                tT621.NgayCT = kvptc.NgayCT;
+                                tT621.PhieuTC = kvptc.SoCT;
+                                tT621.PhieuTU = tamUng.SoCT;
+                                tT621.LapPhieu = user.Username;
                                 // SoCT
                                 IEnumerable<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetTT621s_By_TamUng(tamUngId);//.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
                                 if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
@@ -2582,6 +2592,11 @@ namespace KTTM.Controllers
                             //    });
                             //}
                             await _tT621Service.CreateRange(tT621s);
+
+                            // capnhat SoTU_DaTT vào kvctptc
+                            KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // kVCTPCTId_PhieuTC
+                            kVCTPTC.SoTT_DaTao = tT621s.FirstOrDefault().SoCT;
+                            await _kVCTPTCService.UpdateAsync(kVCTPTC);
 
                             if (System.IO.File.Exists(fileInfo.ToString()))
                                 System.IO.File.Delete(fileInfo.ToString());

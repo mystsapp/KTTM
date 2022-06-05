@@ -1065,6 +1065,13 @@ namespace KTTM.Controllers
                 else
                 {
                     await _kVCTPTCService.DeleteAsync(kVCTPCT);
+
+                    //// xoa chitiet xoa lun TT141 neu' co' : đã ràng trong khi them TT ( khi them TT --> add lun SoTT_DaTao ) -> ko xoa dc chitiet
+                    //var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.PhieuTC == kVCTPCT.SoCT);
+                    //if(tT621s.Count() > 0)
+                    //{
+                    //    await _unitOfWork.tT621Repository.DeleteRangeAsync(tT621s);
+                    //}
                 }
 
                 return Json(new

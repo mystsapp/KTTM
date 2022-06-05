@@ -1068,6 +1068,8 @@ namespace KTTM.Controllers
                             kVCTPTC.SoCT = kVPTC.SoCT;
                             kVCTPTC.LoaiTien = "VND";
                             kVCTPTC.TyGia = 1;
+                            kVCTPTC.MaCn = user.Macn;
+                            
 
                             if (string.IsNullOrEmpty(kVCTPTC.DienGiaiP) && string.IsNullOrEmpty(kVCTPTC.Sgtcode) &&
                                 string.IsNullOrEmpty(kVCTPTC.HTTC) && string.IsNullOrEmpty(kVCTPTC.SoTienNT.ToString()) &&
@@ -1076,7 +1078,7 @@ namespace KTTM.Controllers
                                 string.IsNullOrEmpty(kVCTPTC.SoCTGoc) && string.IsNullOrEmpty(kVCTPTC.KyHieu) &&
                                 string.IsNullOrEmpty(kVCTPTC.MauSoHD) && string.IsNullOrEmpty(kVCTPTC.NgayCTGoc.ToString()) &&
                                 string.IsNullOrEmpty(kVCTPTC.MatHang) && string.IsNullOrEmpty(kVCTPTC.VAT.ToString()) &&
-                                string.IsNullOrEmpty(kVCTPTC.DSKhongVAT.ToString()) && string.IsNullOrEmpty(kVCTPTC.LinkHDDT) &&
+                                (kVCTPTC.DSKhongVAT == 0) && string.IsNullOrEmpty(kVCTPTC.LinkHDDT) &&
                                 string.IsNullOrEmpty(kVCTPTC.MaTraCuu) && string.IsNullOrEmpty(kVCTPTC.NoQuay) &&
                                 string.IsNullOrEmpty(kVCTPTC.CoQuay) && string.IsNullOrEmpty(kVCTPTC.BoPhan) &&
                                 string.IsNullOrEmpty(kVCTPTC.Number) && string.IsNullOrEmpty(kVCTPTC.SoXe))
