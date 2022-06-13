@@ -240,6 +240,7 @@ namespace KTTM.Services
             if (tT621s.Count() > 0)
             {
                 soTienNT_TrongTT621_TheoTamUng = tT621s.Sum(x => x.SoTienNT.Value);
+                soTienNT_TrongTT621_TheoTamUng = Math.Round(soTienNT_TrongTT621_TheoTamUng, 0); // làm tron`
             }
 
             return soTienNT_TrongTT621_TheoTamUng;
@@ -259,7 +260,7 @@ namespace KTTM.Services
         public decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create, string loaiPhieu)
         {
             var tamUng = _unitOfWork.tamUngRepository.GetByIdAsNoTracking(x => x.Id == tamUngId);
-            decimal soTienNTTrongTT621_TheoTamUng = GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = GetSoTienNT_TrongTT621_TheoTamUng(tamUngId); // da làm tròn
             decimal soTienNT_CanKetChuyen;
             if (loaiPhieu == "C") // phieu C
             {

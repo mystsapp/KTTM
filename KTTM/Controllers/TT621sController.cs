@@ -771,10 +771,11 @@ namespace KTTM.Controllers
             }
 
             //
-            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(
+            decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen( // da lam tron`
                 TT621VM.TT621.TamUngId, TT621VM.KVCTPTC.SoTienNT.Value, kVPTC.MFieu); // TT621VM.KVCTPCT.SoTienNT tu view qua
             // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
-            if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
+            TT621VM.TT621.SoTienNT = Math.Round(TT621VM.TT621.SoTienNT.Value, 0); // lam tron` tu ngoai view
+            if (TT621VM.TT621.SoTienNT.Value > soTienNT_CanKetChuyen)
             {
                 return Json(new
                 {
@@ -1895,12 +1896,28 @@ namespace KTTM.Controllers
                     {
                         kVCLTG.TKNo = "1412";
                         kVCLTG.TKCo = "4131000001";
+                        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                        {
+                            kVCLTG.MaKhNo = kVCTPCT.MaKhCo;
+                        }
+                        else // Chi
+                        {
+                            kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+                        }
 
                     }
                     if (tienTUChenhLech > 0) // duong
                     {
                         kVCLTG.TKNo = "4131000001";
                         kVCLTG.TKCo = "1412";
+                        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                        {
+                            kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+                        }
+                        else // Chi
+                        {
+                            kVCLTG.MaKhCo = kVCTPCT.MaKhNo;
+                        }
 
                     }
                     if (tienTUChenhLech != 0)
@@ -2407,10 +2424,18 @@ namespace KTTM.Controllers
                                 tT621.LoaiTien = workSheet.Cells[i, 3].Value.ToString().Trim();
 
                             if (workSheet.Cells[i, 4].Value != null)
+                            {
                                 tT621.SoTien = decimal.Parse(workSheet.Cells[i, 4].Value.ToString().Trim());
+                                tT621.SoTien = Math.Round(tT621.SoTien.Value, 0);
+                            }
+                                
 
                             if (workSheet.Cells[i, 5].Value != null)
+                            {
                                 tT621.SoTienNT = decimal.Parse(workSheet.Cells[i, 5].Value.ToString().Trim());
+                                tT621.SoTienNT = Math.Round(tT621.SoTienNT.Value, 0);
+                            }
+                                
 
                             if (workSheet.Cells[i, 6].Value != null)
                                 tT621.TyGia = decimal.Parse(workSheet.Cells[i, 6].Value.ToString().Trim());
