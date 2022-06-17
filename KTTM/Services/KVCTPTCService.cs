@@ -132,6 +132,7 @@ namespace KTTM.Services
         Task<KVCTPTC> GetByIdIncludeKVPTC(long id);
 
         //Task<KhachHang> GetKhachHangById(string maKhNo);
+        Task<List<KVCTPTC>> FinBy_KVPTCId(Guid kvptcId);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -147,7 +148,8 @@ namespace KTTM.Services
 
         public async Task<IEnumerable<KVCTPTC>> List_KVCTPCT_By_KVPTCid(Guid KVPTCid)
         {
-            return await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.KVPTCId == KVPTCid);
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(x => x.KVPTC, x => x.KVPTCId == KVPTCid);
+            return kVCTPTCs.OrderBy(x => x.NgayTao);
         }
 
         public async Task<List<KVCTPTC>> List_KVCTPCT_By_SoCT(string soCT, string maCn)
@@ -2673,6 +2675,12 @@ namespace KTTM.Services
             return _unitOfWork.kVCTPCTRepository.GetAll();
         }
 
+        public async Task<List<KVCTPTC>> FinBy_KVPTCId(Guid kvptcId)
+        {
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => x.KVPTCId == kvptcId);
+            return kVCTPTCs.ToList();
+        }
+        
         public async Task<List<KVCTPTC>> FinBy_SoCT(string soCT, string maCn)
         {
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
@@ -3332,5 +3340,7 @@ namespace KTTM.Services
         //{
         //    return await _unitOfWork.khachHang_DanhMucKTRepository.GetKhachHangById(maKhNo);
         //}
+
+
     }
 }

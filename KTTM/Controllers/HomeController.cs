@@ -437,6 +437,7 @@ namespace KTTM.Controllers
                 ViewBag.ErrorMessage = "Phiếu này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");
             }
+            HomeVM.KVCTPTCs = await _kVCTPTCService.FinBy_KVPTCId(id);
 
             HomeVM.LoaiTiens = _kVPTCService.ListLoaiTien();
             HomeVM.LoaiPhieus = _kVPTCService.ListLoaiPhieu();
@@ -1058,10 +1059,13 @@ namespace KTTM.Controllers
 
                             if (workSheet.Cells[i, 22].Value != null)
                                 kVCTPTC.SoXe = workSheet.Cells[i, 22].Value.ToString().Trim();
+                            
+                            if (workSheet.Cells[i, 23].Value != null)
+                                kVCTPTC.DienGiai = workSheet.Cells[i, 23].Value.ToString().Trim();
 
                             //if (workSheet.Cells[i, 20].Value != null)
                             kVCTPTC.KVPTCId = kvptcId;
-                            kVCTPTC.DSKhongVAT = 0;
+                            //kVCTPTC.DSKhongVAT = 0;
                             kVCTPTC.NgayTao = DateTime.Now;
                             kVCTPTC.NguoiTao = user.Username;
                             //kVCTPTC.KVPTCId = kvptcId;
@@ -1086,11 +1090,12 @@ namespace KTTM.Controllers
                             }
                             else
                             {
+                                
                                 // thong tin khach hang
                                 var khachHang = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh).FirstOrDefault();
                                 //var supplier = _kVCTPTCService.GetSuppliersByCodeName(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
 
-                                if (!string.IsNullOrEmpty(khachHang.Code))
+                                if (khachHang != null && !string.IsNullOrEmpty(khachHang.Code))
                                 {
                                     kVCTPTC.TenKH = khachHang.TenThuongMai;
                                     kVCTPTC.DiaChi = khachHang.DiaChi;
