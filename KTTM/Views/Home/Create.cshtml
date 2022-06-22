@@ -50,7 +50,7 @@
             <form method="post" autocomplete="off" id="frmHomeCreate" enctype="multipart/form-data">
                 <div class="pr-4 pl-4 text-sm">
 
-                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div asp-validation-summary="None" class="text-danger"></div>
 
                     <div class="form-group row">
 
@@ -65,7 +65,6 @@
                             <label asp-for="KVPTC.MFieu" class="control-label"></label>
                             <select asp-for="KVPTC.MFieu" class="form-control form-control-sm "
                                     asp-items="@(new SelectList(Model.LoaiPhieus, "Name", "Name"))" id="ddlMFieu">
-
                             </select>
                             <span asp-validation-for="KVPTC.MFieu" class="text-danger"></span>
                         </div>
@@ -96,7 +95,7 @@
 
                     </div>
 
-                   
+
                     <div class="form-group row">
 
                         <div class="col-md-9">
@@ -112,35 +111,35 @@
                         </div>
 
                         @*
-        <div class="col-md-2 ">
-            <label asp-for="Tour.TyGia" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
-            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia" />
-            <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
-        </div>
+                        <div class="col-md-2 ">
+                        <label asp-for="Tour.TyGia" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                        <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia" />
+                        <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
+                        </div>
                         *@
                     </div>
 
-        @*<div class="form-group row">
+                    @*<div class="form-group row">
 
-            <div class="col-md-6">
-                <label class="control-label">Upload DS khách</label>
-                <input type="file" class="form-control" id="fUpload" name="files">
-                <div id="dvData"></div>
-            </div>
-
-            <div class="col-md-6">
-                <label class="control-label">Download file mẫu</label>
-                <br />
-                <a title="File mẫu" class="btn btn-success" asp-controller="Tours" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
-            </div>
-
-        </div>*@
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit"><i class="fas fa-save"></i> Save</button>
-                            <a class="btn btn-success btn-sm" asp-controller="Home" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward "></i> Back</a>
-                        </div>
+                    <div class="col-md-6">
+                    <label class="control-label">Upload DS khách</label>
+                    <input type="file" class="form-control" id="fUpload" name="files">
+                    <div id="dvData"></div>
                     </div>
+
+                    <div class="col-md-6">
+                    <label class="control-label">Download file mẫu</label>
+                    <br />
+                    <a title="File mẫu" class="btn btn-success" asp-controller="Tours" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
+                    </div>
+
+                    </div>*@
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-sm" id="btnSubmit"><i class="fas fa-save"></i> Save <i class='fa fa-spinner fa-spin submitSpin' style="display: none"></i></button>
+                        <a class="btn btn-success btn-sm" asp-controller="Home" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward "></i> Back</a>
+                    </div>
+                </div>
             </form>
 
 
@@ -153,7 +152,6 @@
 
 </section>
 <!-- /.content -->
-
 @section Scripts{
     @*<script>
 
@@ -185,59 +183,67 @@
     <!-- Validation -->
     <script>
 
-        $('#frmHomeCreate').validate({
-            //rules: {
-            //    email: {
-            //        required: true,
-            //        email: true,
-            //    },
-            //    NgayDen: {
-            //        required: true
-            //    },
-            //    chuDetour1: {
-            //        required: true
-            //    },
-            //},
-            //messages: {
-            //    email: {
-            //        required: "Please enter a email address",
-            //        email: "Please enter a vaild email address"
-            //    },
-            //    NgayDen: {
-            //        required: "Please provide a date"
-            //    },
-            //    chuDetour1: "Please enter value"
-            //},
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                // add error text
+        //$('#frmHomeCreate').validate({
+        //    //rules: {
+        //    //    email: {
+        //    //        required: true,
+        //    //        email: true,
+        //    //    },
+        //    //    NgayDen: {
+        //    //        required: true
+        //    //    },
+        //    //    chuDetour1: {
+        //    //        required: true
+        //    //    },
+        //    //},
+        //    //messages: {
+        //    //    email: {
+        //    //        required: "Please enter a email address",
+        //    //        email: "Please enter a vaild email address"
+        //    //    },
+        //    //    NgayDen: {
+        //    //        required: "Please provide a date"
+        //    //    },
+        //    //    chuDetour1: "Please enter value"
+        //    //},
+        //    errorElement: 'span',
+        //    errorPlacement: function(error, element) {
+        //        // add error text
 
-                //error.addClass('invalid-feedback').removeClass('error');
-                //element.closest('.chuDeTourGroup').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
-
-        //$('#txtChuDeTour').rules('add', {
-        //    required: true,
-        //    messages: {
-        //        //required: "Chủ đề không được để trống"
+        //        //error.addClass('invalid-feedback').removeClass('error');
+        //        //element.closest('.chuDeTourGroup').append(error);
+        //    },
+        //    highlight: function(element, errorClass, validClass) {
+        //        $(element).addClass('is-invalid');
+        //    },
+        //    unhighlight: function(element, errorClass, validClass) {
+        //        $(element).removeClass('is-invalid');
         //    }
         //});
 
-        $('#txtNgayCT').rules('add', {
-            required: true,
-            dateFormat: true,
-            messages: {
-                // required: "Ngày đến không được để trống"
-            }
-        });
+        ////$('#txtChuDeTour').rules('add', {
+        ////    required: true,
+        ////    messages: {
+        ////        //required: "Chủ đề không được để trống"
+        ////    }
+        ////});
 
+        //$('#txtNgayCT').rules('add', {
+        //    required: true,
+        //    dateFormat: true,
+        //    messages: {
+        //        // required: "Ngày đến không được để trống"
+        //    }
+        //});
+
+        $('#btnSubmit').click(function() {
+            if ($('#frmHomeCreate').valid()) {
+                $('#btnSubmit').attr('disabled', true);
+                $('.submitSpin').show();
+                $('#frmHomeCreate').submit();
+            }
+
+        })
     </script>
 
 }

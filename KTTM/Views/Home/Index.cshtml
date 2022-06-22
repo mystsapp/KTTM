@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="modal-footer p-0">
-                        <button type="button" id="uploadExcelAttach_Submit" class="btn btn-outline-primary"><i class="fas fa-upload"></i></button>
+                        <button type="button" id="uploadExcelAttach_Submit" class="btn btn-outline-primary"><i class="fas fa-upload"></i> <i class='fa fa-spinner fa-spin submitSpin' style="display: none"></i></button>
                         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
                     </div>
                 </form>
@@ -373,6 +373,10 @@
     // attach excel
 
         $('#uploadExcelAttach_Submit').click(function () {
+            
+            $(this).attr('disabled', true);
+            $('.submitSpin').show();
+
             var kvptcId = $('#hidId_InPhieu').val();
 
             var fileExtension = ['xls', 'xlsx'];

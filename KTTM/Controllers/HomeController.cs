@@ -331,7 +331,7 @@ namespace KTTM.Controllers
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || HomeVM.KVPTC.NgayCT == null)
             {
                 HomeVM = new HomeViewModel()
                 {
@@ -342,7 +342,7 @@ namespace KTTM.Controllers
                     Phongbans = _kVCTPTCService.GetAll_PhongBans(),
                     StrUrl = strUrl
                 };
-
+                ModelState.AddModelError("", "NgayCT không được để trống.");
                 return View(HomeVM);
             }
 

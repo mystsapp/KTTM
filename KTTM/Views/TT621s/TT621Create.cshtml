@@ -108,7 +108,7 @@
                     </div>
 
                     <div class="modal-footer p-0">
-                        <button type="button" id="importExcel_Submit" class="btn btn-outline-primary"><i class="fas fa-upload"></i></button>
+                        <button type="button" id="importExcel_Submit" class="btn btn-outline-primary"><i class="fas fa-upload"></i><i class='fa fa-spinner fa-spin submitSpin' style="display: none"></i></button>
                         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
                     </div>
                 </form>
@@ -562,8 +562,10 @@
                 return;
             }
 
-            var formData = new FormData();
+            $('#importExcel_Submit').attr('disabled', true);
+            $('.submitSpin').show();
 
+            var formData = new FormData();
             formData.append("tamUngId", tamUngId);
             formData.append("loaiPhieu", loaiPhieu);
             formData.append("kvptcId", kvptcId);
