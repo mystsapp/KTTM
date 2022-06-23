@@ -18,7 +18,7 @@
             <input asp-for="LayDataCashierModel.BaoCaoSo" class="form-control form-control-sm text-uppercase" id="txtBaoCaoSo" />
         </div>
     </div>
-    
+
     <div class=" row text-sm pt-2">
 
         <div class="col-md-4 ">
@@ -26,19 +26,19 @@
             <input asp-for="LayDataCashierModel.TienMat" type="checkbox" id="ckTienMat" checked />
             <label class="control-labels" for="ckTienMat">tiền mặt</label>
         </div>
-    
+
         <div class="col-md-3 ">
 
             <input asp-for="LayDataCashierModel.TTThe" type="checkbox" id="ckTTThe" />
             <label class="control-labels" for="ckTTThe">TT thẻ</label>
         </div>
-    
+
         <div class="col-md-5 ">
 
-            <input asp-for="LayDataCashierModel.NganHang" type="checkbox" id="ckNganHang" disabled/>
+            <input asp-for="LayDataCashierModel.NganHang" type="checkbox" id="ckNganHang" disabled />
             <label class="control-labels" for="ckNganHang">Ngân hàng</label>
         </div>
-    
+
     </div>
 
     <div class=" row text-sm">
@@ -52,7 +52,7 @@
             {
                 <label class="control-label">Tk nợ</label>
             }
-            
+
             <select asp-for="LayDataCashierModel.Tk" class="form-control form-control-sm select2"
                     asp-items="@(new SelectList(Model.DmTks_Cashier, "Tkhoan", "TenTk"))" id="ddlTk">
             </select>
@@ -62,11 +62,10 @@
     </div>
     <div class="modal-footer p-0">
         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
-        <button type="button" id="LayDataCashier_Submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+        <button type="button" id="LayDataCashier_Submit" class="btn btn-outline-primary"><i class="fas fa-save"></i> <i class='fa fa-spinner fa-spin submitSpin' style="display: none"></i></button>
     </div>
 </form>
 <!-- /.modal-content -->
-
 <!-- Validation -->
 <script>
     $('.select2').select2();
@@ -94,16 +93,16 @@
         //    chuDetour1: "Please enter value"
         //},
         errorElement: 'span',
-        errorPlacement: function (error, element) {
+        errorPlacement: function(error, element) {
             // add error text
 
             //error.addClass('invalid-feedback').removeClass('error');
             //element.closest('.chuDeTourGroup').append(error);
         },
-        highlight: function (element, errorClass, validClass) {
+        highlight: function(element, errorClass, validClass) {
             $(element).addClass('is-invalid');
         },
-        unhighlight: function (element, errorClass, validClass) {
+        unhighlight: function(element, errorClass, validClass) {
             $(element).removeClass('is-invalid');
         }
     });
@@ -115,37 +114,40 @@
         }
     });
 
-    
-        $('#ckTienMat').change(function () {
-            $('#ckTTThe').prop('checked', false);
-            $('#ckNganHang').prop('checked', false);
-        });
-        
-        $('#ckTTThe').change(function () {
-            $('#ckTienMat').prop('checked', false);
-            $('#ckNganHang').prop('checked', false);
-        });
-        
-        $('#ckNganHang').change(function () {
-            $('#ckTTThe').prop('checked', false);
-            $('#ckTienMat').prop('checked', false);
-        });
 
-      
+    $('#ckTienMat').change(function() {
+        $('#ckTTThe').prop('checked', false);
+        $('#ckNganHang').prop('checked', false);
+    });
+
+    $('#ckTTThe').change(function() {
+        $('#ckTienMat').prop('checked', false);
+        $('#ckNganHang').prop('checked', false);
+    });
+
+    $('#ckNganHang').change(function() {
+        $('#ckTTThe').prop('checked', false);
+        $('#ckTienMat').prop('checked', false);
+    });
+
+
 </script>
 <script>
-      
-    $('#LayDataCashier_Submit').off('click').on('click', function () {
-        
+
+    $('#LayDataCashier_Submit').off('click').on('click', function() {
+
+        $(this).attr('disabled', true);
+        $('.submitSpin').show();
+
         var baoCaoSo = $('#txtBaoCaoSo').val();
         var loaiPhieu = '@Model.KVPTC.MFieu';
 
-        if(loaiPhieu === 'T'){ // phieu T
-            $.get('/KVCTPTCs/CheckBaoCaoSo_Hoan', {baoCaoSo: baoCaoSo}, function(response){
-                if(!response){ // sobaocao Hoan --> H
+        if (loaiPhieu === 'T') { // phieu T
+            $.get('/KVCTPTCs/CheckBaoCaoSo_Hoan', { baoCaoSo: baoCaoSo }, function(response) {
+                if (!response) { // sobaocao Hoan --> H
                     bootbox.alert(baoCaoSo + " đây là <b>phiếu hoàn</b> nên không kéo phiếu T được!");
                 }
-                else{
+                else {
                     if ($('#frmLayDataCashierPartial').valid()) {
                         $('#frmLayDataCashierPartial').submit();
                     }
@@ -153,13 +155,13 @@
             })
 
         }
-        else{
+        else {
             if ($('#frmLayDataCashierPartial').valid()) {
                 $('#frmLayDataCashierPartial').submit();
             }
 
         }
-        
+
     });
 
 </script>

@@ -82,7 +82,10 @@
 
     //// btnHidIn
     $('#btnPrintSelect').click(function () {// _TheoDoiTUNoiBo_Modal
-        debugger
+        
+        $(this).attr('disabled', true);
+        $('.submitSpin_btnPrintSelect').show();
+
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
 
@@ -93,6 +96,10 @@
     })
     //// btnHidInTatCa
     $('#btnPrintSelect_InTatCa').click(function () {// _TheoDoiTUNoiBo_Modal
+
+        $(this).attr('disabled', true);
+        $('.submitSpin_btnPrintSelect_InTatCa').show();
+
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
 
@@ -102,6 +109,10 @@
         $('#btnHidInTatCa').click();
     })//// btnPrintSelect_TatCa1Sheet
     $('#btnPrintSelect_TatCa1Sheet').click(function () {// _TheoDoiTUNoiBo_Modal
+
+        $(this).attr('disabled', true);
+        $('.submitSpin_btnPrintSelect_TatCa1Sheet').show();
+
         tuNgay = $('#txtTuNgay').val();
         denNgay = $('#txtDenNgay').val();
 

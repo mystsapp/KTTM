@@ -21,7 +21,7 @@
 
     <div class="modal-footer p-0">
         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
-        <button type="button" id="LayDataQLXe_Submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+        <button type="button" id="LayDataQLXe_Submit" class="btn btn-outline-primary"><i class="fas fa-save"></i> <i class='fa fa-spinner fa-spin submitSpin' style="display: none"></i></button>
     </div>
 </form>
 <!-- /.modal-content -->
@@ -95,6 +95,9 @@
 
     $('#LayDataQLXe_Submit').off('click').on('click', function () {
         
+        $(this).attr('disabled', true);
+        $('.submitSpin').show();
+
         if ($('#frmLayDataQLXePartial').valid()) {
             $('#frmLayDataQLXePartial').submit();
         }
