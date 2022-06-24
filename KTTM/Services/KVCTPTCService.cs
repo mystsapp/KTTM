@@ -176,7 +176,13 @@ namespace KTTM.Services
 
         public IEnumerable<ViewDmHttc> GetAll_DmHttc_View()
         {
-            return _unitOfWork.dmHttcRepository.GetAll_View();
+            var httcs = _unitOfWork.dmHttcRepository.GetAll_View();
+            List<ViewDmHttc> httcs1 = new List<ViewDmHttc>();
+            foreach (var item in httcs)
+            {
+                httcs1.Add(new ViewDmHttc() { Httc = item.Httc, DienGiai = item.Httc + " - " + item.DienGiai });
+            }
+            return httcs1;
         }
 
         public DmTk Get_DmTk_By_TaiKhoan(string tk)
@@ -238,7 +244,13 @@ namespace KTTM.Services
 
         public IEnumerable<ViewQuay> GetAll_Quay_View()
         {
-            return _unitOfWork.quayRepository.GetAll_View();
+            var viewQuays = _unitOfWork.quayRepository.GetAll_View();
+            List<ViewQuay> quays = new List<ViewQuay>();
+            foreach (var item in viewQuays)
+            {
+                quays.Add(new ViewQuay() { Quay = item.Quay, TenQuay = item.Quay + " - " + item.TenQuay });
+            }
+            return quays;
         }
 
         public IEnumerable<MatHang> GetAll_MatHangs()
@@ -258,7 +270,13 @@ namespace KTTM.Services
 
         public IEnumerable<ViewPhongBan> GetAll_PhongBans_View()
         {
-            return _unitOfWork.phongBan_DanhMucKT_Repository.GetAll_View();
+            var phongBans = _unitOfWork.phongBan_DanhMucKT_Repository.GetAll_View();
+            List<ViewPhongBan> phongBans1 = new List<ViewPhongBan>();
+            foreach (var item in phongBans)
+            {
+                phongBans1.Add(new ViewPhongBan() { BoPhan = item.BoPhan, TenBoPhan = item.BoPhan + " - " + item.TenBoPhan });
+            }
+            return phongBans1;
         }
 
         public IEnumerable<DmTk> GetAll_DmTk()

@@ -40,16 +40,16 @@
 
                             <div class=" row">
 
-                                <div class="col-md-11">
+                                <div class="col-md-8">
                                     <label asp-for="TT621.DienGiaiP" class="control-label"></label>
                                     <input asp-for="TT621.DienGiaiP" class="form-control form-control-sm text-uppercase " id="txtDienGiaiP" />
                                     <span asp-validation-for="TT621.DienGiaiP" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-1">
+                                <div class="col-md-4">
                                     <label asp-for="TT621.HTTC" class="control-label"></label>
                                     <select asp-for="TT621.HTTC" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.DmHttcs, "Httc", "Httc"))" id="ddlHttc">
+                                            asp-items="@(new SelectList(Model.DmHttcs, "Httc", "DienGiai"))" id="ddlHttc">
                                     </select>
                                     <span asp-validation-for="TT621.HTTC" class="text-danger"></span>
                                 </div>
@@ -236,7 +236,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "TenQuay"))" id="ddlNoQuay">
                                         </select>
                                         @*<input asp-for="TT621.NoQuay" class="form-control form-control-sm " readonly />*@
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
@@ -245,7 +245,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.CoQuay" class="control-label "></label>
                                         <select asp-for="TT621.CoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "TenQuay"))" id="ddlCoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.CoQuay" class="text-danger"></span>
                                     </div>
@@ -256,7 +256,7 @@
                                     <div class="col-md-2">
                                         <label asp-for="TT621.NoQuay" class="control-label "></label>
                                         <select asp-for="TT621.NoQuay" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                            asp-items="@(new SelectList(Model.Quays, "Quay", "TenQuay"))" id="ddlNoQuay">
                                         </select>
                                         <span asp-validation-for="TT621.NoQuay" class="text-danger"></span>
                                     </div>
@@ -274,7 +274,7 @@
                                 <div class="col-md-2">
                                     <label asp-for="TT621.BoPhan" class="control-label "></label>
                                     <select asp-for="TT621.BoPhan" class="form-control form-control-sm "
-                                            asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "BoPhan"))" id="ddlBoPhan">
+                                            asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "TenBoPhan"))" id="ddlBoPhan">
                                     </select>
                                     <span asp-validation-for="TT621.BoPhan" class="text-danger"></span>
                                 </div>

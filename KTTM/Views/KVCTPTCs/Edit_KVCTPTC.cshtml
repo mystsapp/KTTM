@@ -41,19 +41,19 @@
                 <!--Thông tin về tài chánh-->
                 <fieldset class="groupbox-border ">
                     <legend class="groupbox-border">Thông tin về tài chánh </legend>
-
+                    
                     <div class=" row">
 
-                        <div class="col-md-11">
+                        <div class="col-md-8">
                             <label asp-for="KVCTPTC.DienGiaiP" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
-                            <input asp-for="KVCTPTC.DienGiaiP" class="form-control form-control-sm text-uppercase" id="txtDienGiaiP" />
+                            <input asp-for="KVCTPTC.DienGiaiP" class="form-control form-control-sm text-uppercase " id="txtDienGiaiP" />
                             <span asp-validation-for="KVCTPTC.DienGiaiP" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                             <label asp-for="KVCTPTC.HTTC" class="control-label"></label>
                             <select asp-for="KVCTPTC.HTTC" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.DmHttcs, "Httc", "Httc"))" id="ddlHttc">
+                                    asp-items="@(new SelectList(Model.DmHttcs, "Httc", "DienGiai"))" id="ddlHttc">
                             </select>
                             <span asp-validation-for="KVCTPTC.HTTC" class="text-danger"></span>
                         </div>
@@ -255,7 +255,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.CoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.CoQuay" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlCoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "TenQuay"))" id="ddlCoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.CoQuay" class="text-danger"></span>
                             </div>
@@ -266,7 +266,7 @@
                             <div class="col-md-2">
                                 <label asp-for="KVCTPTC.NoQuay" class="control-label "></label>
                                 <select asp-for="KVCTPTC.NoQuay" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.Quays, "Quay", "Quay"))" id="ddlNoQuay">
+                                    asp-items="@(new SelectList(Model.Quays, "Quay", "TenQuay"))" id="ddlNoQuay">
                                 </select>
                                 <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                             </div>
@@ -284,7 +284,7 @@
                         <div class="col-md-3">
                             <label asp-for="KVCTPTC.BoPhan" class="control-label "></label>
                             <select asp-for="KVCTPTC.BoPhan" class="form-control form-control-sm "
-                                    asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "BoPhan"))" id="ddlBoPhan">
+                                    asp-items="@(new SelectList(Model.PhongBans, "BoPhan", "TenBoPhan"))" id="ddlBoPhan">
                             </select>
                             <span asp-validation-for="KVCTPTC.MaKhNo" class="text-danger"></span>
                         </div>
