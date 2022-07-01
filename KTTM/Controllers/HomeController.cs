@@ -1020,7 +1020,7 @@ namespace KTTM.Controllers
                                 DateTime ngayCT;
                                 try
                                 {
-                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 13].Value.ToString().Trim());
+                                    ngayCT = DateTime.Parse(workSheet.Cells[i, 12].Value.ToString().Trim());
                                     kVCTPTC.NgayCTGoc = ngayCT;
                                 }
                                 catch (Exception ex)
@@ -1099,7 +1099,7 @@ namespace KTTM.Controllers
                                 {
                                     kVCTPTC.TenKH = khachHang.TenThuongMai;
                                     kVCTPTC.DiaChi = khachHang.DiaChi;
-                                    kVCTPTC.KyHieu = khachHang.KyHieuHd;
+                                    //kVCTPTC.KyHieu = khachHang.KyHieuHd;  -> lay theo file excel
                                     kVCTPTC.MauSoHD = khachHang.MauSoHd;
                                     kVCTPTC.MsThue = khachHang.MaSoThue;
                                 }
