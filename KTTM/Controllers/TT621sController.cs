@@ -1515,6 +1515,11 @@ namespace KTTM.Controllers
             {
                 temp += String.Format("- NgaySua thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgaySua, TT621VM.TT621.NgaySua);
             }
+            
+            if (t.NgayCT != TT621VM.TT621.NgayCT)  // test datetime (ngayCT: date --> sometime datetime)
+            {
+                temp += String.Format("- NgaySua thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgaySua, TT621VM.TT621.NgaySua);
+            }
 
             // kiem tra thay doi
             if (temp.Length > 0)

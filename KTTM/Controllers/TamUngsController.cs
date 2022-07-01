@@ -173,8 +173,15 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<JsonResult> CheckTamUng(long kVCTPCTId)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             // de hien btnTamUng -> phieuC, TKNo == 1411 or 1412, chưa ketchuyen
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
+            if(kVCTPCT.NguoiTao != user.Username)
+            {
+                return Json(false);
+            }
             var kVPCT = await _kVPTCService.GetByGuidIdAsync(kVCTPCT.KVPTCId);
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
             if (tamUng == null) // chưa them TU
@@ -198,9 +205,16 @@ namespace KTTM.Controllers
         [HttpPost]
         public async Task<JsonResult> CheckTT141(long kVCTPCTId)
         {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
             // de hiện btnTT141 TKNo, TKCo == 1411 or 1412, chua TU, chưa Ketchuyen
 
             var kVCTPCT = await _kVCTPTCService.GetById(kVCTPCTId);
+            if (kVCTPCT.NguoiTao != user.Username)
+            {
+                return Json(false);
+            }
             //var result = await CheckTamUng(kVCTPCTId);
             //var checkTU = (bool)result.Value;
             var tamUng = await _tamUngService.GetByIdAsync(kVCTPCTId);
