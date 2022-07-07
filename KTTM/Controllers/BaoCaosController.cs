@@ -549,7 +549,8 @@ namespace KTTM.Controllers
                     {
                         NgoaiTe = ngoaiTe,
                         TonQuy = tonQuy,
-                        KVCTPTCs = kVCTPTCs1
+                        KVCTPTCs = kVCTPTCs1,
+                        KVCTPTC_NT_GroupBy_SoCTs = _kVCTPTCService.KVCTPTC_NT_GroupBy_SoCTs(kVCTPTCs1)
                     });
                 }
                 else
@@ -558,7 +559,7 @@ namespace KTTM.Controllers
                     {
                         NgoaiTe = ngoaiTe,
                         TonQuy = new TonQuy() /*{ SoTienNT = 0, SoTien = 0 }*/,
-                        KVCTPTCs = new List<KVCTPTC>()
+                        KVCTPTC_NT_GroupBy_SoCTs = new List<KVCTPTC_NT_GroupBy_SoCTs>()
                     });
                 }
             } // group by theo ngoaite
@@ -569,11 +570,11 @@ namespace KTTM.Controllers
             {
                 try
                 {
-                    item.CongPhatSinh_Thu_NT = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTienNT).Value;
-                    item.CongPhatSinh_Thu = item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTien).Value;
+                    item.CongPhatSinh_Thu_NT = item.KVCTPTCs == null ? 0 : item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTienNT).Value;
+                    item.CongPhatSinh_Thu = item.KVCTPTCs == null ? 0 : item.KVCTPTCs.Where(x => x.SoCT.Contains("NT")).Sum(x => x.SoTien).Value;
 
-                    item.CongPhatSinh_Chi_NC = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTienNT).Value;
-                    item.CongPhatSinh_Chi = item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTien).Value;
+                    item.CongPhatSinh_Chi_NC = item.KVCTPTCs == null ? 0 : item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTienNT).Value;
+                    item.CongPhatSinh_Chi = item.KVCTPTCs == null ? 0 : item.KVCTPTCs.Where(x => x.SoCT.Contains("NC")).Sum(x => x.SoTien).Value;
                 }
                 catch (Exception ex)
                 {
@@ -707,66 +708,78 @@ namespace KTTM.Controllers
                     }
                     TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                    foreach (var kvctpct in item.KVCTPTCs)
+                    //foreach (var kvctpct in item.KVCTPTCs)
+                    foreach (var kvctpctG in item.KVCTPTC_NT_GroupBy_SoCTs)
                     {
+
                         dong++;
-                        if (kvctpct.SoCT.Contains("NT"))
+                        if (kvctpctG.SoCT.Contains("NT"))
                         {
-                            xlSheet.Cells[dong, 1].Value = kvctpct.SoCT;
+                            xlSheet.Cells[dong, 1].Value = kvctpctG.SoCT;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 3].Value = kvctpct.KVPTC.NgayCT;
+                            xlSheet.Cells[dong, 3].Value = kvctpctG.KVCTPTCs.FirstOrDefault().KVPTC.NgayCT;
                             DateFormat(dong, 3, dong, 3, xlSheet);
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
+                            xlSheet.Cells[dong, 4].Value = kvctpctG.KVCTPTCs.FirstOrDefault().KVPTC.HoTen;//.TenKH;
                             TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 6].Value = kvctpct.SoTienNT;//.SoTienNT;
+                            xlSheet.Cells[dong, 6].Value = kvctpctG.KVCTPTCs.Sum(x => x.SoTienNT);// kvctpct.SoTienNT;//.SoTienNT;
                             TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 8].Value = kvctpct.SoTien;//.SoTien;
+                            xlSheet.Cells[dong, 8].Value = kvctpctG.KVCTPTCs.Sum(x => x.SoTien);// kvctpct.SoTien;//.SoTien;
                             TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             dong++;
+                            foreach (var kvctptc in kvctpctG.KVCTPTCs)
+                            {
+                                xlSheet.Cells[dong, 3].Value = kvctptc.DienGiai;
+                                TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 5].Value = kvctptc.TKNo; // TK doi ung
+                                TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 6].Value = kvctptc.SoTienNT;//.SoTienNT;
+                                TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 8].Value = kvctptc.SoTien;//.SoTien;
+                                TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                dong++;
+                            }
 
-                            xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
-                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 5].Value = kvctpct.TKCo;
-                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 6].Value = kvctpct.SoTienNT;//.SoTienNT;
-                            TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 8].Value = kvctpct.SoTien;//.SoTien;
-                            TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+
                         }
                         else
                         {
-                            xlSheet.Cells[dong, 2].Value = kvctpct.SoCT;
+
+                            xlSheet.Cells[dong, 2].Value = kvctpctG.SoCT;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 3].Value = kvctpct.KVPTC.NgayCT;
+                            xlSheet.Cells[dong, 3].Value = kvctpctG.NgayCT;
                             DateFormat(dong, 3, dong, 3, xlSheet);
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 4].Value = kvctpct.KVPTC.HoTen;//.TenKH;
+                            xlSheet.Cells[dong, 4].Value = kvctpctG.HoTen;//.TenKH;
                             TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 7].Value = kvctpct.SoTienNT;//.SoTienNT;
+                            xlSheet.Cells[dong, 7].Value = kvctpctG.KVCTPTCs.Sum(x => x.SoTienNT);// kvctpct.SoTienNT;//.SoTienNT;
                             TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 9].Value = kvctpct.SoTien;//.SoTien;
+                            xlSheet.Cells[dong, 9].Value = kvctpctG.KVCTPTCs.Sum(x => x.SoTien);// kvctpct.SoTien;//.SoTien;
                             TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
 
                             dong++;
-
-                            xlSheet.Cells[dong, 3].Value = kvctpct.DienGiai;
-                            TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 5].Value = kvctpct.TKCo;
-                            TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 7].Value = kvctpct.SoTienNT;//.SoTienNT;
-                            TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
-                            xlSheet.Cells[dong, 9].Value = kvctpct.SoTien;//.SoTien;
-                            TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                            foreach (var kvctptc in kvctpctG.KVCTPTCs)
+                            {
+                                xlSheet.Cells[dong, 3].Value = kvctptc.DienGiai;
+                                TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 5].Value = kvctptc.TKCo;
+                                TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 7].Value = kvctptc.SoTienNT;//.SoTienNT;
+                                TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                xlSheet.Cells[dong, 9].Value = kvctptc.SoTien;//.SoTien;
+                                TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
+                                dong++;
+                            }
+                            
                         }
 
                         //dong++;
@@ -1131,6 +1144,7 @@ namespace KTTM.Controllers
                         }
 
                         dong++;
+
                         foreach (var item1 in item.KVCTPTCs)
                         {
                             if (item1.KVPTC.SoCT.Contains("NT"))

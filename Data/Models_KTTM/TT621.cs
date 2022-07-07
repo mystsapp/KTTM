@@ -189,7 +189,7 @@ namespace Data.Models_KTTM
         public string LinkHDDT { get; set; }
 
         [DisplayName("Mã tra cứu")]
-        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
+        [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "nvarchar(150)")]
         public string MaTraCuu { get; set; }
 
         [DisplayName("Tk truy cập")]

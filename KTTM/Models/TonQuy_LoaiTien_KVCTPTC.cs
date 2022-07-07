@@ -12,6 +12,7 @@ namespace KTTM.Models
         public NgoaiTe NgoaiTe { get; set; }
         public TonQuy TonQuy { get; set; }
         public IEnumerable<KVCTPTC> KVCTPTCs { get; set; }
+        public IEnumerable<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCTs { get; set; }
 
         public decimal CongPhatSinh_Thu { get; set; }
         public decimal CongPhatSinh_Chi { get; set; }

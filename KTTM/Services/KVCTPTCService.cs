@@ -133,6 +133,7 @@ namespace KTTM.Services
 
         //Task<KhachHang> GetKhachHangById(string maKhNo);
         Task<List<KVCTPTC>> FinBy_KVPTCId(Guid kvptcId);
+        //List<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCT_NgayCT_HoTens(IEnumerable<KVCTPTC> kVCTPTCs);
     }
 
     public class KVCTPTCService : IKVCTPTCService
@@ -395,7 +396,7 @@ namespace KTTM.Services
 
                                     case "TIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -415,7 +416,7 @@ namespace KTTM.Services
 
                                     case "BIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -474,6 +475,12 @@ namespace KTTM.Services
                                         kVCTPTC.CoQuay = "XE";
                                         kVCTPTC.BoPhan = "XE";
                                         kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        break;
+                                        
+                                    case "VXE":
+                                        kVCTPTC.CoQuay = "XE";
+                                        kVCTPTC.BoPhan = "XE";
+                                        //kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     case "BXK": // xuat khau: thao
@@ -548,6 +555,8 @@ namespace KTTM.Services
                                         case "VHK":
                                         case "BDO":
                                         case "BXK":
+                                        case "VXE":
+                                        case "BXE":
                                             kVCTPTC.TKCo = "1368000000";
                                             kVCTPTC.MaKhNo = "";
                                             kVCTPTC.MaKhCo = "0310891532";
@@ -672,7 +681,7 @@ namespace KTTM.Services
 
                                     case "HIB":
                                         kVCTPTC.MaKhNo = "0000000005"; //maKh;
-                                        kVCTPTC.TKNo = "1311120000";
+                                        kVCTPTC.TKNo = "1311110000";
                                         kVCTPTC.NoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -973,7 +982,7 @@ namespace KTTM.Services
 
                                     case "TIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -996,7 +1005,7 @@ namespace KTTM.Services
 
                                     case "BIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -1027,6 +1036,12 @@ namespace KTTM.Services
                                         kVCTPTC.CoQuay = "XE";
                                         kVCTPTC.BoPhan = "XE";
                                         kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        break;
+
+                                    case "VXE":
+                                        kVCTPTC.CoQuay = "XE";
+                                        kVCTPTC.BoPhan = "XE";
+                                        //kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     case "BXK": // xuat khau: thao
@@ -1375,7 +1390,7 @@ namespace KTTM.Services
 
                                     case "TIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -1395,14 +1410,14 @@ namespace KTTM.Services
 
                                     case "BIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
 
                                     case "PIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311120000";
+                                        kVCTPTC.TKCo = "1311110000";
                                         kVCTPTC.CoQuay = "IB";
                                         kVCTPTC.BoPhan = "IB";
                                         break;
@@ -1454,6 +1469,12 @@ namespace KTTM.Services
                                         kVCTPTC.CoQuay = "XE";
                                         kVCTPTC.BoPhan = "XE";
                                         kVCTPTC.MaKhCo = "0000000001"; //maKh;
+                                        break;
+
+                                    case "VXE":
+                                        kVCTPTC.CoQuay = "XE";
+                                        kVCTPTC.BoPhan = "XE";
+                                        //kVCTPTC.MaKhCo = "0000000001"; //maKh;
                                         break;
 
                                     case "BXK": // xuat khau: thao
@@ -1524,6 +1545,8 @@ namespace KTTM.Services
                                         case "BHK":
                                         case "PHK":
                                         case "VHK":
+                                        case "VXE":
+                                        case "BXE":
                                             kVCTPTC.TKCo = "1368000000";
                                             kVCTPTC.MaKhNo = "";
                                             kVCTPTC.MaKhCo = "0310891532";
@@ -2620,6 +2643,40 @@ namespace KTTM.Services
             return result1;
         }
 
+        //public List<KVCTPTC_NT_GroupBy_SoCTs> KVCTPTC_NT_GroupBy_SoCT_NgayCT_HoTens(IEnumerable<KVCTPTC> kVCTPTCs)
+        //{
+        //    var result1 = (from p in kVCTPTCs
+        //                   group p by new
+        //                   {
+        //                       p.SoCT,
+        //                       p.KVPTC.NgayCT,
+        //                       p.KVPTC.HoTen
+        //                   } into g
+        //                   select new KVCTPTC_NT_GroupBy_SoCTs()
+        //                   {
+        //                       SoCT = g.Key.SoCT,
+        //                       NgayCT = g.Key.NgayCT.Value,
+        //                       HoTen = g.Key.HoTen,
+        //                       KVCTPTCs = g.ToList()
+        //                   }).ToList();
+        //    //foreach (var item in result1)
+        //    //{
+        //    //    if (item.SoCT.Contains("NT"))
+        //    //    {
+        //    //        item.TongCong_Thu = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+        //    //        item.TongCong_Thu_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        item.TongCong_Chi = item.KVCTPTCs.Sum(x => x.SoTien.Value);
+        //    //        item.TongCong_Chi_NT = item.KVCTPTCs.Sum(x => x.SoTienNT.Value);
+        //    //    }
+        //    //}
+          
+
+        //    return result1;
+        //}
+
         public List<KVCTPCT_Model_GroupBy_LoaiTien> KVCTPTC_Model_GroupBy_LoaiTiens(IEnumerable<KVCTPTC> kVCTPTCs)
         {
             var result1 = (from p in kVCTPTCs
@@ -2698,7 +2755,7 @@ namespace KTTM.Services
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => x.KVPTCId == kvptcId);
             return kVCTPTCs.ToList();
         }
-        
+
         public async Task<List<KVCTPTC>> FinBy_SoCT(string soCT, string maCn)
         {
             var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindAsync(x => x.SoCT == soCT && x.MaCn == maCn);
