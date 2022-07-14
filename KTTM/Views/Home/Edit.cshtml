@@ -48,7 +48,7 @@
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <input type="hidden" asp-for="KVPTC.Id" />
                     <input type="hidden" asp-for="KVPTC.SoCT" />
-                    <input type="hidden" asp-for="KVPTC.NgayCT" />
+                    
                     <input type="hidden" asp-for="KVPTC.Create" />
                     <input type="hidden" asp-for="KVPTC.LapPhieu" />
                     <input type="hidden" asp-for="KVPTC.MaCn" />
@@ -67,8 +67,8 @@
                         {
                             <div class="col-md-3">
                                 <label asp-for="KVPTC.NgayCT" class="control-label"></label>@*(<strong class="text-red">*</strong>)*@
-                                <input type="text" asp-for="KVPTC.NgayCT" class="form-control form-control-sm maskInput" asp-format="{0:dd/MM/yyyy}" id="txtNgayCT" readonly />
-
+                                <input type="text" value="@Model.KVPTC.NgayCT" class="form-control form-control-sm maskInput" asp-format="{0:dd/MM/yyyy}" id="txtNgayCT" readonly />
+                                <input type="hidden" asp-for="KVPTC.NgayCT" />
                             </div>
 
                         }

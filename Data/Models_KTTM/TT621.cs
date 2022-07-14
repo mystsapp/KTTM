@@ -117,11 +117,11 @@ namespace Data.Models_KTTM
         public string BoPhan { get; set; } // phongban ?
 
         [DisplayName("Nợ quầy")]
-        [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
+        [MaxLength(4, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(4)")]
         public string NoQuay { get; set; } //
 
         [DisplayName("Có quầy")]
-        [MaxLength(3, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
+        [MaxLength(4, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(4)")]
         public string CoQuay { get; set; } //
 
         [DisplayName("Số xe")]
@@ -141,7 +141,7 @@ namespace Data.Models_KTTM
         public string KyHieu { get; set; }
 
         [DisplayName("Mẫu số HĐ")]
-        [MaxLength(11, ErrorMessage = "Chiều dài tối đa 11 ký tự"), Column(TypeName = "varchar(11)")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string MauSoHD { get; set; }
 
         [DisplayName("MatHang")]

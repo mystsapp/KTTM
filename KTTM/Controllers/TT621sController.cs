@@ -2600,6 +2600,14 @@ namespace KTTM.Controllers
                                     });
                                 }
                                 khachHang = await _tT621Service.GetKhachHangById(tT621.MaKhNo);
+                                if (khachHang == null)
+                                {
+                                    return Json(new
+                                    {
+                                        status = false,
+                                        message = "MaKhNo: " + tT621.MaKhNo + "không tồn tại!"
+                                    });
+                                }
 
                                 tT621.TenKH = khachHang.TenThuongMai;
                                 tT621.DiaChi = khachHang.DiaChi;
