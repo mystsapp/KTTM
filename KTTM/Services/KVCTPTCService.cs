@@ -2945,6 +2945,7 @@ namespace KTTM.Services
                     break;
 
                 case "005":
+                case "069": // bông tỷ
                     viewModel.HTTC = "CBU";
                     viewModel.TKNo = "6278348140";
                     viewModel.DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
