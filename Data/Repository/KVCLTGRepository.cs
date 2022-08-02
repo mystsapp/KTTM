@@ -9,7 +9,7 @@ namespace Data.Repository
 {
     public interface IKVCLTGRepository : IRepository<KVCLTG>
     {
-
+        Task<KVCLTG> CreateReturnAsync(KVCLTG entity);
     }
 
     public class KVCLTGRepository : Repository_KTTM<KVCLTG>, IKVCLTGRepository
@@ -18,5 +18,11 @@ namespace Data.Repository
         {
         }
 
+        public async Task<KVCLTG> CreateReturnAsync(KVCLTG entity)
+        {
+            var entityEntry = await _context.KVCLTGs.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entityEntry.Entity;
+        }
     }
 }

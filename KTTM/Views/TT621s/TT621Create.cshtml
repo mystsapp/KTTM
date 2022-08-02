@@ -235,7 +235,7 @@
 
                 <div class="col-md-6 text-sm text-right">
                     <button type="button" class="btn btn-outline-success btn-sm " title="Import từ excell" id="btnImportExcell" data-toggle="modal" data-target="#importExcelModal" disabled><i class="fas fa-file-import"></i></button>
-                    @if (Model.KVPTC.MFieu == "T" && Model.KVPTC.NgoaiTe == "VN")
+                    @if (Model.KVPTC.MFieu == "T")// && Model.KVPTC.NgoaiTe == "VN")
                     {
                         <button type="button" class="btn btn-outline-dark btn-sm" title="Thu hoàn ứng" disabled id="btnThuHoanUng"><i class="fas fa-folder text-warning"></i></button>
                     }

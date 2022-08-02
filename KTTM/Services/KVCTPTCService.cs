@@ -2204,7 +2204,9 @@ namespace KTTM.Services
 
         public async Task<KVCTPTC> GetById(long id)
         {
-            return await _unitOfWork.kVCTPCTRepository.GetByLongIdAsync(id);
+            var kVCTPTCs = await _unitOfWork.kVCTPCTRepository.FindIncludeOneAsync(y => y.KVPTC, x => x.Id == id);//.GetByLongIdAsync(id);
+
+            return kVCTPTCs.FirstOrDefault();
         }
 
         public IEnumerable<Data.Models_HDVATOB.Supplier> GetAll_KhachHangs_HDVATOB()

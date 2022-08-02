@@ -26,7 +26,8 @@ namespace Data.Repository
 
         public void Create(T entity)
         {
-            _context.Add(entity);
+           _context.Add(entity);
+            
         }
 
         public async Task CreateRange(IEnumerable<T> entities)

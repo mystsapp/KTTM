@@ -1956,14 +1956,15 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ThuHoanUng(long tamUngId, string soTienNT, string soCTThu, long kvctptcId) // chi VND
+        public async Task<JsonResult> ThuHoanUng(long tamUngId, string soTienNT, string soCTThu, long kvctptcId) // chi phieu T thoi
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            string conLaiNTOld = tamUng.ConLaiNT.ToString();
-            string conLaiOld = tamUng.ConLai.ToString();
+
+            // cap nhat lai kvctptc
+            KVCTPTC kVCTPCT = await _kVCTPTCService.GetById(kvctptcId); // tamUngId == kvctptcId
 
             if (tamUng == null)
                 return Json(new
@@ -1973,10 +1974,64 @@ namespace KTTM.Controllers
                 });
             else
             {
-                //tamUng.SoTienNT = tamUng.SoTienNT - decimal.Parse(soTienNT);
-                //tamUng.SoTien = tamUng.SoTien - decimal.Parse(soTienNT);
-                tamUng.ConLaiNT -= decimal.Parse(soTienNT);
-                tamUng.ConLai -= decimal.Parse(soTienNT);
+                string conLaiNTOld = tamUng.ConLaiNT.ToString();
+                string conLaiOld = tamUng.ConLai.ToString();
+
+                if(kVCTPCT.KVPTC.NgoaiTe == "VN")
+                {
+                    tamUng.ConLaiNT -= decimal.Parse(soTienNT);
+                    tamUng.ConLai -= decimal.Parse(soTienNT); // soTienNT: VND
+
+                }
+                else // NT : chi quan tam phieu T
+                {
+                    tamUng.ConLaiNT -= decimal.Parse(soTienNT);
+                    tamUng.ConLai = tamUng.ConLaiNT * tamUng.TyGia;// decimal.Parse(soTienNT); // soTienNT: NT
+
+                    // xy ly tren lech
+                    var tienTUChenhLech = Convert.ToDecimal(soTienNT) * tamUng.TyGia - Convert.ToDecimal(soTienNT) * kVCTPCT.TyGia; // kVCTPTC.TyGia: tygia moi // tamUng.TyGia: tygia moi
+
+                    KVCLTG kVCLTG = new KVCLTG();
+                    // soCT
+                    kVCLTG.SoCT = _tT621Service.GetSoCT_CLTG("/", user.Macn);
+
+                    kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
+                    kVCLTG.MaCn = user.Macn;
+                    // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
+                    kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + Math.Abs((tamUng.TyGia / kVCTPCT.TyGia) ?? 0);
+                    kVCLTG.MaKhNo = kVCTPCT.MaKhNo ?? "";
+                    kVCLTG.MaKhCo = kVCTPCT.MaKhCo ?? "";
+                    kVCLTG.NoQuay = kVCTPCT.NoQuay;
+                    kVCLTG.CoQuay = kVCTPCT.CoQuay;
+                    kVCLTG.SoCT1412 = kVCTPCT.SoCT;
+                    kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
+                    if (tienTUChenhLech < 0) // am
+                    {
+                        kVCLTG.TKNo = "1412";
+                        kVCLTG.TKCo = "4131000001";
+                        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                        {
+                            kVCLTG.MaKhNo = kVCTPCT.MaKhCo;
+                        }
+                        
+                    }
+                    if (tienTUChenhLech > 0) // duong
+                    {
+                        kVCLTG.TKNo = "4131000001";
+                        kVCLTG.TKCo = "1412";
+                        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                        {
+                            kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+                        }
+                        
+                    }
+                    if (tienTUChenhLech != 0)
+                    {
+                        await _tT621Service.CreateKVCLTGAsync(kVCLTG);
+                    }
+
+                    //KVCLTG kVCLTG = await XuLyCLTG(tamUng, kVCTPTC);
+                }
 
                 string temp = "";
                 //temp += String.Format("- SoTienNT thay đổi: {0}->{1}", soTienNTOld, soTienNT);
@@ -1997,11 +2052,9 @@ namespace KTTM.Controllers
 
                 await _tamUngService.UpdateAsync(tamUng);
 
-                // cap nhat lai kvctptc
-                KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(kvctptcId); // tamUngId == kvctptcId
-                kVCTPTC.HoanUngTU = tamUng.SoCT;
-                kVCTPTC.LogFile += " -User thu hoàn ứng: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
-                await _kVCTPTCService.UpdateAsync(kVCTPTC);
+                kVCTPCT.HoanUngTU = tamUng.SoCT;
+                kVCTPCT.LogFile += " -User thu hoàn ứng: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                await _kVCTPTCService.UpdateAsync(kVCTPCT);
 
                 return Json(new
                 {
@@ -2371,7 +2424,7 @@ namespace KTTM.Controllers
             return File(fileBytes, "application/force-download", "File_mau.xlsx");
         }
 
-        [HttpPost]
+        [HttpPost] // thừa
         public async Task<JsonResult> ImportExcell(long tamUngId, string loaiPhieu, Guid kvptcId, long kvctptcId) // Ngọc
         {
             // from login session
@@ -2674,5 +2727,82 @@ namespace KTTM.Controllers
                 message = "Vui lòng chọn file!"
             });
         }
+    
+        //private async Task<KVCLTG> XuLyCLTG(TamUng tamUng, KVCTPTC kVCTPCT)
+        //{
+        //    // from login session
+        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+        //    decimal? tienTUDau;
+        //    decimal? tienTUSau;
+        //    decimal? tienTUChenhLech;
+        //    if (kVCTPCT.KVPTC.MFieu == "C")
+        //    {
+        //        // vd: đầu: ung 1000(22) + thanhtoan C them 200(23) = 22.000.000 + 4.600.000 = 26.600.000
+        //        tienTUDau = tamUng.SoTien + (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
+        //        // vd: sau: (tong NT)1.200 * 23.000(ty gia hien tai) = 27.600.000
+        //        tienTUSau = (tamUng.SoTienNT + kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+
+        //        tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
+        //    }
+        //    else // T
+        //    {
+        //        // vd: đầu: ung 1000(22) - thanhtoan C them 200(23) = 22.000.000 - 4.600.000 = 17,400,000
+        //        tienTUDau = tamUng.SoTien - (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
+        //        // vd: sau: (tong NT)(1.000 - 200)*23 = 18400000
+        //        tienTUSau = (tamUng.SoTienNT - kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+
+        //        tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
+        //    }
+
+        //    KVCLTG kVCLTG = new KVCLTG();
+
+        //    // soCT
+        //    kVCLTG.SoCT = _tT621Service.GetSoCT_CLTG("/", user.Macn);
+
+        //    kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
+        //    kVCLTG.MaCn = user.Macn;
+        //    // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
+        //    kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + tamUng.TyGia / kVCTPCT.TyGia;
+        //    kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+        //    kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+        //    kVCLTG.NoQuay = kVCTPCT.NoQuay;
+        //    kVCLTG.CoQuay = kVCTPCT.CoQuay;
+        //    kVCLTG.SoCT1412 = kVCTPCT.SoCT;
+        //    kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
+        //    if (tienTUChenhLech < 0) // am
+        //    {
+        //        kVCLTG.TKNo = "1412";
+        //        kVCLTG.TKCo = "4131000001";
+        //        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+        //        {
+        //            kVCLTG.MaKhNo = kVCTPCT.MaKhCo;
+        //        }
+        //        else // Chi
+        //        {
+        //            kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+        //        }
+
+        //    }
+        //    if (tienTUChenhLech > 0) // duong
+        //    {
+        //        kVCLTG.TKNo = "4131000001";
+        //        kVCLTG.TKCo = "1412";
+        //        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+        //        {
+        //            kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+        //        }
+        //        else // Chi
+        //        {
+        //            kVCLTG.MaKhCo = kVCTPCT.MaKhNo;
+        //        }
+
+        //    }
+        //    if (tienTUChenhLech != 0)
+        //    {
+        //        await _tT621Service.CreateKVCLTGAsync(kVCLTG);
+        //    }
+
+        //}
     }
 }

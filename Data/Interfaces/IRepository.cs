@@ -21,6 +21,7 @@ namespace Data.Interfaces
         T GetSingleNoTracking(Func<T, bool> predicate);
         void Create(T entity);
         Task CreateRange(IEnumerable<T> entities);
+        
         void Update(T entity);
         void Delete(T entity);
         int Count(Func<T, bool> predicate);

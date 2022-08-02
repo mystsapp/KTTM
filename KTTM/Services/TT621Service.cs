@@ -62,6 +62,7 @@ namespace KTTM.Services
 
         Task CreateRange(List<TT621> tT621s);
         Task CreateKVCLTGAsync(KVCLTG kVCLTG);
+        Task<KVCLTG> CreateKVCLTGAsync_Return(KVCLTG kVCLTG);
         string GetSoCT_CLTG(string param, string maCn);
     }
 
@@ -475,6 +476,11 @@ namespace KTTM.Services
                 }
             }
 
+        }
+
+        public async Task<KVCLTG> CreateKVCLTGAsync_Return(KVCLTG kVCLTG)
+        {
+            return await _unitOfWork.kVCLTGRepository.CreateReturnAsync(kVCLTG);
         }
     }
 }
