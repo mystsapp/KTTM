@@ -2947,6 +2947,7 @@ namespace KTTM.Services
                     break;
 
                 case "005":
+                case "067": // bông tỷ
                 case "069": // bông tỷ
                     viewModel.HTTC = "CBU";
                     viewModel.TKNo = "6278348140";

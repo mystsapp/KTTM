@@ -1146,6 +1146,7 @@ namespace KTTM.Controllers
             decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(
                 TT621VM.TT621.TamUngId, TT621VM.KVCTPTC.SoTienNT.Value, kVPTC.MFieu); // TT621VM.KVCTPCT.SoTienNT tu view qua
             // txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
             if (TT621VM.TT621.SoTien > soTienNT_CanKetChuyen)
             {
                 //return Json(new
@@ -1154,7 +1155,7 @@ namespace KTTM.Controllers
                 //    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
                 //});
 
-                TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+                
                 TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(tamUngId);
                 TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
                 TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(TT621VM.KVCTPTC.Id);
