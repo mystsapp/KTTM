@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Data.Models_Cashier
+namespace KTTM.Models_Cashier
 {
-    public partial class VCuocHangkhong
+    public partial class VPhiDvHangkhong
     {
         public int Id { get; set; }
         public string Stt { get; set; }
         public string Hdvat { get; set; }
-        public DateTime? Ngayct { get; set; }
+        public DateTime Ngayct { get; set; }
         public string Coquan { get; set; }
         public string Tencoquan { get; set; }
         public string Tenkhach { get; set; }
@@ -18,7 +18,7 @@ namespace Data.Models_Cashier
         public string Httt { get; set; }
         public string Ghichu { get; set; }
         public string Chinhanh { get; set; }
-        public int Sk { get; set; }
-        public decimal Sotien { get; set; }
+        public int? Sk { get; set; }
+        public decimal? Sotien { get; set; }
     }
 }

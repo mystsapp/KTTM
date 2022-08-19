@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Data.Models_Cashier
+namespace KTTM.Models_Cashier
 {
     public partial class VDataVetourCashier
     {

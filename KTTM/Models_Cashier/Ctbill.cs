@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Data.Models_Cashier
+namespace KTTM.Models_Cashier
 {
-    public partial class CtbillDel
+    public partial class Ctbill
     {
         public decimal Idctbill { get; set; }
         public string Soct { get; set; }
@@ -24,12 +24,12 @@ namespace Data.Models_Cashier
         public string Saleslip { get; set; }
         public string Sgtcode { get; set; }
         public bool Hdvat { get; set; }
-        public decimal? Giamgia { get; set; }
-        public decimal? Thuevat { get; set; }
+        public decimal Giamgia { get; set; }
+        public decimal Thuevat { get; set; }
         public string Logfile { get; set; }
         public decimal? Idntbill { get; set; }
         public string Nguoithu { get; set; }
-        public bool? Thanhtoanthe { get; set; }
+        public bool Thanhtoanthe { get; set; }
         public string Httt { get; set; }
     }
 }

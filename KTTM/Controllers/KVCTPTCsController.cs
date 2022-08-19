@@ -588,7 +588,15 @@ namespace KTTM.Controllers
                     KVCTPCTVM.KVPTC.NgayCT = ngayCT;// DateTime.Now;
                     KVCTPCTVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
                     KVCTPCTVM.KVPTC.NgoaiTe = kVPCT.NgoaiTe;
-                    KVCTPCTVM.KVPTC.HoTen = "VCB(CHAU)"; // thao
+                    if(user.Macn == "STS")
+                    {
+                        KVCTPCTVM.KVPTC.HoTen = "VCB (CHAU)"; // thao
+                        
+                    }
+                    else
+                    {
+                        KVCTPCTVM.KVPTC.HoTen = "VCB (THE)"; // thao
+                    }                    
                     KVCTPCTVM.KVPTC.Phong = "KT";
 
                     // next SoCT --> bat buoc phai co'

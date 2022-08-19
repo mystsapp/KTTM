@@ -30,5 +30,6 @@ namespace Data.Models_Cashier
         public decimal? Idntbill { get; set; }
         public string Nguoithu { get; set; }
         public bool Thanhtoanthe { get; set; }
+        public string Httt { get; set; }
     }
 }

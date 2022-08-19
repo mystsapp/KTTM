@@ -1,5 +1,11 @@
 ﻿@model KVCTPCTViewModel
+@{
+    @using Microsoft.AspNetCore.Http
+    @using Data.Utilities
+    @inject IHttpContextAccessor HttpContextAccessor
 
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
+}
 
 <form id="frmLayDataCashierPartial" asp-action="LayDataCashierPartial" method="post" autocomplete="off">
 
@@ -28,8 +34,14 @@
         </div>
 
         <div class="col-md-3 ">
-
-            <input asp-for="LayDataCashierModel.TTThe" type="checkbox" id="ckTTThe" />
+            @if(user.Macn == "STN")
+            {
+                <input asp-for="LayDataCashierModel.TTThe" type="checkbox" id="ckTTThe" disabled/>
+            }
+            else
+            {
+                <input asp-for="LayDataCashierModel.TTThe" type="checkbox" id="ckTTThe" />
+            }
             <label class="control-labels" for="ckTTThe">TT thẻ</label>
         </div>
 
