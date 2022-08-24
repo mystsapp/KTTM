@@ -415,12 +415,12 @@ namespace KTTM.Services
                                         kVCTPTC.MaKhCo = "0000000004"; //maKh;
                                         break;
 
-                                    case "BIB":
-                                        kVCTPTC.MaKhCo = "0000000005"; //maKh;
-                                        kVCTPTC.TKCo = "1311110000";
-                                        kVCTPTC.CoQuay = "IB";
-                                        kVCTPTC.BoPhan = "IB";
-                                        break;
+                                    //case "BIB":
+                                    //    kVCTPTC.MaKhCo = "0000000005"; //maKh;
+                                    //    kVCTPTC.TKCo = "1311110000";
+                                    //    kVCTPTC.CoQuay = "IB";
+                                    //    kVCTPTC.BoPhan = "IB";
+                                    //    break;
 
                                     case "PIB":
                                         kVCTPTC.MaKhCo = "0000000005"; //maKh;
@@ -509,6 +509,40 @@ namespace KTTM.Services
                                             case "0STUOS":
                                                 kVCTPTC.MaKhCo = "0000000013";
                                                 break;
+
+                                        }
+                                        break;
+                                        
+                                    case "BIB": // Inbound: thao
+                                        kVCTPTC.CoQuay = "IB";
+                                        kVCTPTC.BoPhan = "IB";
+                                        //switch (kVCTPTC.Sgtcode)
+                                        switch (ctbills_TienMat.FirstOrDefault().Sgtcode.Substring(0, 6))
+                                        {
+                                            case "STS666":
+                                                kVCTPTC.MaKhCo = "0000000200";
+                                                break;
+
+                                            case "SGT084":
+                                            case "SGT000":
+                                                kVCTPTC.MaKhCo = "0000000005";
+                                                break;
+
+                                            case "SGT855":
+                                                kVCTPTC.MaKhCo = "0000000269";
+                                                kVCTPTC.TKCo = "1311120000";
+                                                break;
+
+                                            case "STS084":
+                                                kVCTPTC.MaKhCo = "0000000007";
+                                                kVCTPTC.CoQuay = "OB";
+                                                kVCTPTC.BoPhan = "OB";
+                                                break;
+
+                                            default:
+                                                kVCTPTC.MaKhCo = "0000000005";
+                                                break;
+
 
                                         }
                                         break;
@@ -2944,6 +2978,7 @@ namespace KTTM.Services
                 case "035":
                 case "058":
                 case "059":
+                case "066":
                     viewModel.HTTC = "CBU";
                     viewModel.TKNo = "6278348050";
                     var dgiais = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000");
@@ -2974,6 +3009,7 @@ namespace KTTM.Services
                 case "005":
                 case "067": // bông tỷ
                 case "069": // bông tỷ
+                case "068": // bông tỷ
                     viewModel.HTTC = "CBU";
                     viewModel.TKNo = "6278348140";
                     viewModel.DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
@@ -3000,230 +3036,230 @@ namespace KTTM.Services
 
                 default: // maCP == "" || null
 
-                    // "001""002""035""058""059"
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "001",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348050",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "VAT",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "002",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348050",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "VAT",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "035",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348050",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "VAT",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "058",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348050",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "VAT",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "059",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348050",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "VAT",
-                        BoPhan = "XE"
-                    });
+                    //// "001""002""035""058""059"
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = maCP,
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById(maCP).GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "VAT",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "002",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348050",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "VAT",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "035",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348050",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "VAT",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "058",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348050",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "VAT",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "059",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348050",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "VAT",
+                    //    BoPhan = "XE"
+                    //});
 
-                    // "003""004""009""022""031""054""056""057""060"
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "003",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "004",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "009",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "022",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "031",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "054",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "056",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "057",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "060",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348160",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
+                    //// "003""004""009""022""031""054""056""057""060"
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "003",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "004",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "009",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "022",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "031",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "054",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "056",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "057",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "060",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348160",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348050", "1111000000").FirstOrDefault().DienGiai,
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
 
-                    // "005"
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "005",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348140",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
-                        .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
+                    //// "005"
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "005",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                    //    .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
 
-                    // "007""008""020""048""049""055"
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "007",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348140",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
-                        .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "008",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348140",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
-                     .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "020",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348140",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
-                        .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "048",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348140",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
-                        .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "049",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348140",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
-                        .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
-                    viewModels.Add(new ListViewModel()
-                    {
-                        MaCP = "055",
-                        TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
-                        HTTC = "CBU",
-                        TKCo = "6278348510",
-                        DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348510", "1111000000").FirstOrDefault().DienGiai,
-                        //.Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
-                        LoaiCTU = "KHD",
-                        BoPhan = "XE"
-                    });
+                    //// "007""008""020""048""049""055"
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "007",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                    //    .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "008",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                    // .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "020",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                    //    .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "048",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                    //    .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "049",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348140",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348140", "1111000000")
+                    //    .Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
+                    //viewModels.Add(new ListViewModel()
+                    //{
+                    //    MaCP = "055",
+                    //    TenChiPhi = _unitOfWork.xeRepository.GetChiPhiXeById("001").GetAwaiter().GetResult().Tenchiphi,
+                    //    HTTC = "CBU",
+                    //    TKCo = "6278348510",
+                    //    DienGiai = Get_DienGiai_By_TkNo_TkCo("6278348510", "1111000000").FirstOrDefault().DienGiai,
+                    //    //.Where(x => x.DienGiai.Contains("PHA")).FirstOrDefault().DienGiai, // PHA
+                    //    LoaiCTU = "KHD",
+                    //    BoPhan = "XE"
+                    //});
 
                     break;
             }
