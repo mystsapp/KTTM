@@ -235,9 +235,10 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.DienGiaiP = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.DienGiaiP) ? "" : KVCTPCTVM.KVCTPTC.DienGiaiP.Trim().ToUpper();
             KVCTPCTVM.KVCTPTC.NgayTao = DateTime.Now;
             //KVCTPCTVM.KVCTPTC.MaKh = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo;
-            KVCTPCTVM.KVCTPTC.MaKh = (KVCTPCTVM.KVPTC.MFieu == "T") ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo; // T : láy MaKhCo, C: MaKhNo
+            
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
             KVCTPCTVM.KVCTPTC.MaKhCo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhCo) ? "" : KVCTPCTVM.KVCTPTC.MaKhCo.ToUpper();
+            KVCTPCTVM.KVCTPTC.MaKh = (KVCTPCTVM.KVPTC.MFieu == "T") ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo; // T : láy MaKhCo, C: MaKhNo
 
             // ghi log
             KVCTPCTVM.KVCTPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username

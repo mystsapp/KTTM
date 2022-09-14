@@ -331,8 +331,12 @@ namespace KTTM.Services
                     }
                     var ctbills = _unitOfWork.ctbillRepository.Find(x => x.Idntbill == item.Idntbill);
                     var ctbills_TienMat = ctbills.Where(x => string.IsNullOrEmpty(x.Cardnumber) &&
-                    string.IsNullOrEmpty(x.Loaicard) && x.Httt != "CP");
-                    var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
+                    string.IsNullOrEmpty(x.Loaicard) && x.Httt != "CP"); // tienmat
+
+                    var ctbills_CP = ctbills.Where(x => x.Httt == "CP"); // CP
+
+                    var ctbills_TTThe = ctbills.Except(ctbills_TienMat).Except(ctbills_CP); // loai tienmat và loai CP
+                    //var ctbills_TTThe = ctbills.Except(ctbills_TienMat);
 
                     string dienGiaiP = loaiPhieu == "T" ? "THU BILL " + (item.Bill ?? item.Stt) : "CHI BILL " + (item.Bill ?? item.Stt); // ??
                     var loaiHDGoc = "VAT";// item.Loaihd; // ??

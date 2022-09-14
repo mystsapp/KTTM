@@ -9,12 +9,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Http;
 using NumToWords;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 //using Data.Models_KTTM_1;
@@ -32,13 +35,14 @@ namespace KTTM.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ITonQuyService _tonQuyService;
         private readonly KTTM_anhsonContext _kTTM_1Context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         [BindProperty]
         public HomeViewModel HomeVM { get; set; }
 
         public HomeController(IKVPTCService kVPTCService, IKVCTPTCService kVCTPTCService,
             ITamUngService tamUngService, ITT621Service tT621Service, IWebHostEnvironment webHostEnvironment,
-            ITonQuyService tonQuyService, KTTM_anhsonContext kTTM_1Context)
+            ITonQuyService tonQuyService, KTTM_anhsonContext kTTM_1Context, IHttpContextAccessor httpContextAccessor)
         {
             //_kTTM_1Context = kTTM_1Context;
             _kVPTCService = kVPTCService;
@@ -48,6 +52,8 @@ namespace KTTM.Controllers
             _webHostEnvironment = webHostEnvironment;
             _tonQuyService = tonQuyService;
             _kTTM_1Context = kTTM_1Context;
+            _httpContextAccessor = httpContextAccessor;
+
             HomeVM = new HomeViewModel()
             {
                 KVPTC = new Data.Models_KTTM.KVPTC()
@@ -59,6 +65,12 @@ namespace KTTM.Controllers
         public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate,
             string boolSgtcode, string boolTkNo1311, Guid id, int page = 1) // boolSgtcode: // search for chitiet in kvctptC
         {
+            //var IP = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            //string compName = DetermineCompName(IP);
+            //HomeVM.KVPTC.MayTinh = compName;
+
+
+
             if (id == Guid.Empty)
             {
                 ViewBag.id = "";
@@ -404,6 +416,14 @@ namespace KTTM.Controllers
 
             try
             {
+
+
+
+                //string IP = Request.UserHostName;
+                var IP = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                string compName = DetermineCompName(IP);
+                HomeVM.KVPTC.MayTinh = compName;
+
                 KVPTC kVPTC = await _kVPTCService.CreateAsync_ReturnEntity(HomeVM.KVPTC); // save
 
                 SetAlert("Thêm mới thành công.", "success");
@@ -1194,6 +1214,14 @@ namespace KTTM.Controllers
                     status = false
                 });
             }
+        }
+
+        public string DetermineCompName(string IP)
+        {
+            IPAddress myIP = IPAddress.Parse(IP);
+            IPHostEntry GetIPHost = Dns.GetHostEntry(myIP);
+            List<string> compName = GetIPHost.HostName.ToString().Split('.').ToList();
+            return compName.First();
         }
 
     }

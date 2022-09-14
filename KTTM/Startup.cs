@@ -46,48 +46,48 @@ namespace KTTM
             services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HdVATObConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<KTTM_anhsonContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Kttm_1Connection"))/*.EnableSensitiveDataLogging()*/);
 
-            // qltaikhoan
-            services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
-            services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
-            services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
-            services.AddTransient<ISupplier_QLTaiKhoan_Repository, Supplier_QLTaiKhoan_Repository>();
-            services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
+            //// qltaikhoan
+            //services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
+            //services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
+            //services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
+            //services.AddTransient<ISupplier_QLTaiKhoan_Repository, Supplier_QLTaiKhoan_Repository>();
+            //services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
 
-            // qltour
-            services.AddTransient<INgoaiTeRepository, NgoaiTeRepository>();
-            services.AddTransient<IPhongBanRepository, PhongBanRepository>();
+            //// qltour
+            //services.AddTransient<INgoaiTeRepository, NgoaiTeRepository>();
+            //services.AddTransient<IPhongBanRepository, PhongBanRepository>();
 
-            // KTTM
-            services.AddTransient<IKVPCTRepository, KVPCTRepository>();
-            services.AddTransient<IKVCTPCTRepository, KVCTPCTRepository>();
-            services.AddTransient<ITamUngRepository, TamUngRepository>();
-            services.AddTransient<ITT621Repository, TT621Repository>();
-            services.AddTransient<ITonQuyRepository, TonQuyRepository>();
-            services.AddTransient<IKVCLTGRepository, KVCLTGRepository>();
-            services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
+            //// KTTM
+            //services.AddTransient<IKVPCTRepository, KVPCTRepository>();
+            //services.AddTransient<IKVCTPCTRepository, KVCTPCTRepository>();
+            //services.AddTransient<ITamUngRepository, TamUngRepository>();
+            //services.AddTransient<ITT621Repository, TT621Repository>();
+            //services.AddTransient<ITonQuyRepository, TonQuyRepository>();
+            //services.AddTransient<IKVCLTGRepository, KVCLTGRepository>();
+            //services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
 
-            // DanhMucKT
-            services.AddTransient<IDmTkRepository, DmTkRepository>();
-            services.AddTransient<ITkCongNoRepository, TkCongNoRepository>();
-            services.AddTransient<IDmHttcRepository, DmHttcRepository>();
-            services.AddTransient<IDGiaiRepository, DGiaiRepository>();
-            services.AddTransient<IQuayRepository, QuayRepository>();
-            services.AddTransient<ISupplier_DanhMucKT_Repository, Supplier_DanhMucKT_Repository>();
-            services.AddTransient<IMatHangRepository, MatHangRepository>();
-            services.AddTransient<IPhongBan_DanhMucKT_Repository, PhongBan_DanhMucKT_Repository>();
-            services.AddTransient<INgoaiTe_DanhMucKT_Repository, NgoaiTe_DanhMucKT_Repository>();
-            services.AddTransient<IKhachHang_DanhMucKTRepository, KhachHang_DanhMucKTRepository>();
+            //// DanhMucKT
+            //services.AddTransient<IDmTkRepository, DmTkRepository>();
+            //services.AddTransient<ITkCongNoRepository, TkCongNoRepository>();
+            //services.AddTransient<IDmHttcRepository, DmHttcRepository>();
+            //services.AddTransient<IDGiaiRepository, DGiaiRepository>();
+            //services.AddTransient<IQuayRepository, QuayRepository>();
+            //services.AddTransient<ISupplier_DanhMucKT_Repository, Supplier_DanhMucKT_Repository>();
+            //services.AddTransient<IMatHangRepository, MatHangRepository>();
+            //services.AddTransient<IPhongBan_DanhMucKT_Repository, PhongBan_DanhMucKT_Repository>();
+            //services.AddTransient<INgoaiTe_DanhMucKT_Repository, NgoaiTe_DanhMucKT_Repository>();
+            //services.AddTransient<IKhachHang_DanhMucKTRepository, KhachHang_DanhMucKTRepository>();
 
-            // Cashier
-            services.AddTransient<INopTienRepository, NopTienRepository>();
-            services.AddTransient<INtbillRepository, NtbillRepository>();
-            services.AddTransient<ICtbillRepository, CtbillRepository>();
+            //// Cashier
+            //services.AddTransient<INopTienRepository, NopTienRepository>();
+            //services.AddTransient<INtbillRepository, NtbillRepository>();
+            //services.AddTransient<ICtbillRepository, CtbillRepository>();
 
-            // hdvatob
-            services.AddTransient<ISupplier_hdvatob_Repository, Supplier_hdvatob_Repository>();
+            //// hdvatob
+            //services.AddTransient<ISupplier_hdvatob_Repository, Supplier_hdvatob_Repository>();
 
-            // quanlyxe
-            services.AddTransient<IXeRepository, XeRepository>();
+            //// quanlyxe
+            //services.AddTransient<IXeRepository, XeRepository>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
