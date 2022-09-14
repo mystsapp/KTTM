@@ -753,11 +753,11 @@ namespace KTTM.Controllers
                             xlSheet.Cells[dong, 2].Value = kvctpctG.SoCT;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 3].Value = kvctpctG.NgayCT;
+                            xlSheet.Cells[dong, 3].Value = kvctpctG.KVCTPTCs.FirstOrDefault().KVPTC.NgayCT; // kvctpctG.NgayCT;
                             DateFormat(dong, 3, dong, 3, xlSheet);
                             TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
-                            xlSheet.Cells[dong, 4].Value = kvctpctG.HoTen;//.TenKH;
+                            xlSheet.Cells[dong, 4].Value = kvctpctG.KVCTPTCs.FirstOrDefault().KVPTC.HoTen; // kvctpctG.HoTen;//.TenKH;
                             TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
 
                             xlSheet.Cells[dong, 7].Value = kvctpctG.KVCTPTCs.Sum(x => x.SoTienNT);// kvctpct.SoTienNT;//.SoTienNT;
