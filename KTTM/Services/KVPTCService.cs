@@ -57,6 +57,8 @@ namespace KTTM.Services
 
         Task<string> GetChiNhanhByMaCn(string macn);
         Task DeleteAsync(KVPTC kVPTC);
+
+        Task CreateErrorLog(ErrorLog errorLog);
     }
 
     public class KVPTCService : IKVPTCService
@@ -496,6 +498,16 @@ namespace KTTM.Services
             _unitOfWork.kVPCTRepository.Delete(kVPTC);
             await _unitOfWork.Complete();
         }
+
+        
+        public async Task CreateErrorLog(ErrorLog errorLog)
+        {
+
+            await _unitOfWork.errorLogRepository.CreateAsync(errorLog);
+            await _unitOfWork.Complete();
+        }
+
+
 
     }
 }

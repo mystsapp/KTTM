@@ -433,6 +433,23 @@ namespace KTTM.Controllers
             }
             catch (Exception ex)
             {
+                HomeVM = new HomeViewModel()
+                {
+                    KVPTC = new KVPTC(),
+                    LoaiTiens = _kVPTCService.ListLoaiTien(),
+                    LoaiPhieus = _kVPTCService.ListLoaiPhieu(),
+                    //Phongbans = _kVPTCService.GetAllPhongBan(),
+                    Phongbans = _kVCTPTCService.GetAll_PhongBans(),
+                    StrUrl = strUrl
+                };
+                ErrorLog errorLog = new ErrorLog()
+                {
+                    InnerMessage = ex.InnerException.InnerException.Message,
+                    Message = ex.Message,
+                    MaCn = user.Macn,
+                    NgayTao = DateTime.Now
+                };
+                await _kVPTCService.CreateErrorLog(errorLog);
                 SetAlert(ex.Message, "error");
                 return View(HomeVM);
             }

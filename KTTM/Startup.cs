@@ -45,7 +45,7 @@ namespace KTTM
             services.AddDbContext<quanlyxeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLXeConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HdVATObConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<KTTM_anhsonContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Kttm_1Connection"))/*.EnableSensitiveDataLogging()*/);
-
+            services.AddDbContext<KTTMDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), option => option.CommandTimeout(5000)));//));
             //// qltaikhoan
             //services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
             //services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
