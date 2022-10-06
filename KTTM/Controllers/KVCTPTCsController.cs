@@ -108,7 +108,7 @@ namespace KTTM.Controllers
                 if (KVCTPCTVM.KVPTC.MFieu == "C")
                 {
                     KVCTPCTVM.DmTks_TkCo = KVCTPCTVM.DmTks_TkCo.Where(x => x.Tkhoan.StartsWith("1112"));
-                    var dmTks_TkNoEx = KVCTPCTVM.DmTks_TkNo.Where(x => x.Tkhoan.Trim() == "1411" || x.Tkhoan.StartsWith("111"));
+                    var dmTks_TkNoEx = KVCTPCTVM.DmTks_TkNo.Where(x => x.Tkhoan.Trim() == "1411");// || x.Tkhoan.StartsWith("111"));
                     KVCTPCTVM.DmTks_TkNo = KVCTPCTVM.DmTks_TkNo.Except(dmTks_TkNoEx);
                     
                     

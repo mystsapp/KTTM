@@ -49,7 +49,7 @@
 
                         <div class="col-md-4">
                             <label asp-for="KVCTPTC.HTTC" class="control-label"></label>
-                            <select asp-for="KVCTPTC.HTTC" class="form-control form-control-sm "
+                            <select asp-for="KVCTPTC.HTTC" class="form-control form-control-sm select2"
                                     asp-items="@(new SelectList(Model.DmHttcs, "Httc", "DienGiai"))" id="ddlHttc">
                             </select>
                             <span asp-validation-for="KVCTPTC.HTTC" class="text-danger"></span>
