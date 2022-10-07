@@ -251,8 +251,8 @@ namespace KTTM.Controllers
             ExcelPackage ExcelApp = new ExcelPackage();
             ExcelWorksheet xlSheet = ExcelApp.Workbook.Worksheets.Add("Report");
             // Định dạng chiều dài cho cột
-            xlSheet.Column(1).Width = 20;
-            xlSheet.Column(2).Width = 20;
+            xlSheet.Column(1).Width = 15;
+            xlSheet.Column(2).Width = 15;
             xlSheet.Column(3).Width = 40;
             xlSheet.Column(4).Width = 30;
             xlSheet.Column(5).Width = 20;
@@ -346,7 +346,7 @@ namespace KTTM.Controllers
                 {
                     foreach (var kvctpct in item.KVCTPTCs)
                     {
-                        if (item.SoCT.Contains("QT"))
+                        if (item.SoCT.Contains("QT") || item.SoCT.Contains("NC")) // 0146NC2022: đổi từ NT sang tiền việt
                         {
                             xlSheet.Cells[dong, 1].Value = kvctpct.SoCT;
                             TrSetCellBorder(xlSheet, dong, 1, ExcelBorderStyle.None, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 11, FontStyle.Regular);
@@ -379,7 +379,7 @@ namespace KTTM.Controllers
 
                         if (item.KVCTPTCs.Count() == 1)
                         {
-                            if (item.SoCT.Contains("QT"))
+                            if (item.SoCT.Contains("QT") || item.SoCT.Contains("NC")) // 0146NC2022: đổi từ NT sang tiền việt
                             {
                                 xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Bold);
@@ -395,7 +395,7 @@ namespace KTTM.Controllers
                         }
                         else
                         {
-                            if (item.SoCT.Contains("QT"))
+                            if (item.SoCT.Contains("QT") || item.SoCT.Contains("NC")) // 0146NC2022: đổi từ NT sang tiền việt
                             {
                                 xlSheet.Cells[dong, 6].Value = kvctpct.SoTien;
                                 TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.None, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 11, FontStyle.Regular);

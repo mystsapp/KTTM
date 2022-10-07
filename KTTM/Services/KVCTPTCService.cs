@@ -2641,7 +2641,7 @@ namespace KTTM.Services
             foreach (var item in result1)
             {
                 //item.CongPhatSinh_Thu += item.KVCTPTCs.Where(x => x.KVPCT.MFieu == "T").Sum(x => x.SoTien);
-                if (item.SoCT.Contains("QT"))
+                if (item.SoCT.Contains("QT") || item.SoCT.Contains("NC")) // 0146NC2022: đổi từ NT sang tiền việt
                 {
                     congPhatSinh_Thu += item.TongCong;
                 }
