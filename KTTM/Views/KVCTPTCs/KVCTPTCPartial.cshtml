@@ -80,7 +80,7 @@
                                     @if (string.IsNullOrEmpty(item.TamUng)) // chua them vao tamung
                                     {
                                         
-                                        if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao) // da hoan ung
+                                        if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao || !string.IsNullOrEmpty(item.KVPTC.Locker)) // da hoan ung
                                         {
                                             <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-edit"></i></button>
                                         }

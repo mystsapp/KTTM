@@ -241,7 +241,7 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-                                            @if (user.Username == item.LapPhieu)
+                                            @if (user.Username == item.LapPhieu && (string.IsNullOrEmpty(item.Locker))) // string.IsNullOrEmpty(item.Locker):  chua khoa
                                             {
                                                 <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             }

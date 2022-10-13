@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Data.Models_Cashier;
 using Data.Models_DanhMucKT;
 using Data.Models_HDVATOB;
+using Data.Models_KTTH;
 using Data.Models_KTTM;
 using Data.Models_KTTM_1;
 using Data.Models_QLTaiKhoan;
@@ -46,6 +47,7 @@ namespace KTTM
             services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HdVATObConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<KTTM_anhsonContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Kttm_1Connection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<KTTMDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), option => option.CommandTimeout(5000)));//));
+            services.AddDbContext<KTTHContext>(option => option.UseSqlServer(Configuration.GetConnectionString("KTTHConnection"), option => option.CommandTimeout(5000)));//));
             //// qltaikhoan
             //services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
             //services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();

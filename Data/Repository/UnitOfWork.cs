@@ -1,10 +1,12 @@
 ﻿using Data.Models_Cashier;
 using Data.Models_DanhMucKT;
 using Data.Models_HDVATOB;
+using Data.Models_KTTH;
 using Data.Models_KTTM;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLTour;
 using Data.Models_QLXe;
+using Data.Repository.KTTH;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -62,6 +64,9 @@ namespace Data.Repository
         // xe
         IXeRepository xeRepository { get; }
 
+        // ktth
+        ILockKvctRepository lockKvctRepository { get; }
+
         Task<int> Complete();
     }
 
@@ -74,10 +79,12 @@ namespace Data.Repository
         private readonly qlcashierContext _qlcashierContext;
         private readonly hdvatobContext _hdvatobContext;
         private readonly quanlyxeContext _quanlyxeContext;
+        private readonly KTTHContext _kTTHContext;
 
         public UnitOfWork(qltaikhoanContext qltaikhoanContext, KTTMDbContext kTTMDbContext,
             qltourContext qltourContext, DanhMucKTContext danhMucKTContext,
-            qlcashierContext qlcashierContext, hdvatobContext hdvatobContext, quanlyxeContext quanlyxeContext)
+            qlcashierContext qlcashierContext, hdvatobContext hdvatobContext, quanlyxeContext quanlyxeContext,
+            KTTHContext kTTHContext)
         {
             _qltaikhoanContext = qltaikhoanContext;
             _kTTMDbContext = kTTMDbContext;
@@ -86,6 +93,7 @@ namespace Data.Repository
             _qlcashierContext = qlcashierContext;
             _hdvatobContext = hdvatobContext;
             _quanlyxeContext = quanlyxeContext;
+            _kTTHContext = kTTHContext;
 
             // qltaikhoan
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -129,6 +137,9 @@ namespace Data.Repository
 
             // xe
             xeRepository = new XeRepository(_quanlyxeContext);
+
+            // ktth
+            lockKvctRepository = new LockKvctRepository(_kTTHContext);
         }
 
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -188,6 +199,8 @@ namespace Data.Repository
         public IChiNhanhRepository chiNhanhRepository { get; }
 
         public IKVCLTGRepository kVCLTGRepository { get; }
+
+        public ILockKvctRepository lockKvctRepository { get; }
 
         public async Task<int> Complete()
         {

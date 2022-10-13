@@ -314,6 +314,14 @@ namespace KTTM.Controllers
             }
             HomeVM.KVPTCDtos = await _kVPTCService.ListKVPTC(searchString, searchFromDate,
                 searchToDate, boolSgtcode, boolTkNo1311, page, user.Macn);
+            foreach(var item in HomeVM.KVPTCDtos)
+            {
+                if(await _kVPTCService.GetLockKvct(item.NgayCT.Value.Month, item.NgayCT.Value.Year, item.MaCn) != null)
+                {
+                    item.Locker = "sonkt";
+                }
+                
+            }
             return View(HomeVM);
         }
 

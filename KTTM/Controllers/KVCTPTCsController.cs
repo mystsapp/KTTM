@@ -55,6 +55,13 @@ namespace KTTM.Controllers
             // KVCTPCT
             KVCTPCTVM.Page = page;
             KVCTPCTVM.KVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(KVPTCid);
+            foreach(var item in KVCTPCTVM.KVCTPTCs)
+            {
+                if (await _kVPTCService.GetLockKvct(item.KVPTC.NgayCT.Value.Month, item.KVPTC.NgayCT.Value.Year, item.MaCn) != null)
+                {
+                    item.KVPTC.Locker = "sonkt";
+                }
+            }
             KVCTPCTVM.KVPTC = await _kVPTCService.GetByGuidIdAsync(KVPTCid);
 
             return PartialView(KVCTPCTVM);

@@ -1,5 +1,6 @@
 ﻿using Data.Dtos;
 using Data.Models_DanhMucKT;
+using Data.Models_KTTH;
 using Data.Models_KTTM;
 using Data.Models_QLTour;
 using Data.Repository;
@@ -59,6 +60,7 @@ namespace KTTM.Services
         Task DeleteAsync(KVPTC kVPTC);
 
         Task CreateErrorLog(ErrorLog errorLog);
+        Task<Lockkvct> GetLockKvct(int thang, int nam, string maCn);
     }
 
     public class KVPTCService : IKVPTCService
@@ -506,6 +508,12 @@ namespace KTTM.Services
             await _unitOfWork.errorLogRepository.CreateAsync(errorLog);
             await _unitOfWork.Complete();
         }
+        
+        public async Task<Lockkvct> GetLockKvct(int thang, int nam, string maCn)
+        {
+            return await _unitOfWork.lockKvctRepository.GetLockKvct(thang, nam, maCn);
+        }
+
 
 
 
