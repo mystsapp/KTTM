@@ -620,16 +620,42 @@ namespace KTTM.Controllers
                 //    return Json(false);
                 //}
 
-                if (kVPTC.MFieu == "T" || (kVPTC.MFieu == "C" && kVCTPTCs.Any(x => !string.IsNullOrEmpty(x.SoTT_DaTao)))) // phieu TT
+
+                
+                if(kVPTC.MFieu == "T") // chac chắn phieu TT
                 {
                     if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT))) // ton tai 1 chitiet chua ketchuyen (SoTU_DaTT: SoTU duoc ketchuyen)
-                        return Json(false);
+                    {
+                        return Json(false); // ko cho in
+                    }
+                    return Json(true);
                 }
-                else // phieu TU
+                else // Phieu C (có the chi TU or chi TT TU)
                 {
-                    if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.TamUng)))
+                    if(kVCTPTCs.Any(x => string.IsNullOrEmpty(x.TamUng)) &&
+                        kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT)))
                         return Json(false);
                 }
+                
+
+
+
+
+
+                //if (kVPTC.MFieu == "T" && kVCTPTCs.Any(x => !string.IsNullOrEmpty(x.SoTU_DaTT))) // Phieu TT va chua ketchuyen
+                //{
+                //    //if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT))) // ton tai 1 chitiet chua ketchuyen (SoTU_DaTT: SoTU duoc ketchuyen)
+                //    return Json(true);
+                //}
+                //else if (kVPTC.MFieu == "C" && kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT)))
+                //{
+
+                //} // Phieu TT va chua ketchuyen
+                //else if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.TamUng))) // phieu TU
+                //{
+
+                //    return Json(false);
+                //}
             }
             return Json(true);
             //}
