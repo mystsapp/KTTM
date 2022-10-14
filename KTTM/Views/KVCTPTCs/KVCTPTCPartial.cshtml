@@ -80,7 +80,7 @@
                                     @if (string.IsNullOrEmpty(item.TamUng)) // chua them vao tamung
                                     {
                                         
-                                        if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao || !string.IsNullOrEmpty(item.KVPTC.Locker)) // da hoan ung
+                                        if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao || !string.IsNullOrEmpty(item.KVPTC.Locker)) // da hoan ung va khoa
                                         {
                                             <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-edit"></i></button>
                                         }
@@ -101,8 +101,8 @@
                                             <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                         </span>
                                         <span id="deleteSpan_@item.Id">
-                                            
-                                            @if(!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao)
+
+                                            @if (!string.IsNullOrEmpty(item.HoanUngTU) || user.Username != item.NguoiTao || !string.IsNullOrEmpty(item.KVPTC.Locker)) // da hoan ung va khoa
                                             {
                                                 <button type="button" disabled class="border-0 bg-transparent"><i class="fas fa-trash-alt"></i></button>
                                             }

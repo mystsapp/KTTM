@@ -316,7 +316,8 @@ namespace KTTM.Controllers
                 searchToDate, boolSgtcode, boolTkNo1311, page, user.Macn);
             foreach (var item in HomeVM.KVPTCDtos)
             {
-                if (await _kVPTCService.GetLockKvct(item.NgayCT.Value.Month, item.NgayCT.Value.Year, item.MaCn) != null)
+                var lockkvct = await _kVPTCService.GetLockKvct(item.NgayCT.Value.Month, item.NgayCT.Value.Year, item.MaCn);
+                if (lockkvct != null)
                 {
                     item.Locker = "sonkt";
                 }
@@ -603,7 +604,7 @@ namespace KTTM.Controllers
             //if (kVPTC.MFieu == "C")
             //{
             var kVCTPTCs = await _kVCTPTCService.List_KVCTPCT_By_KVPTCid(id);
-            kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412" || x.TKCo == "1411" || x.TKCo == "1412"); // dang tao phieu TU
+            kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412" || x.TKCo == "1411" || x.TKCo == "1412"); // phieu TU Or Phieu TT
             if (kVCTPTCs.Count() > 0) //
             {
                 //kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU Or đây là phieu TT (phieu T)
@@ -619,9 +620,9 @@ namespace KTTM.Controllers
                 //    return Json(false);
                 //}
 
-                if (kVPTC.MFieu == "T") // phieu TT
+                if (kVPTC.MFieu == "T" || (kVPTC.MFieu == "C" && kVCTPTCs.Any(x => !string.IsNullOrEmpty(x.SoTT_DaTao)))) // phieu TT
                 {
-                    if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT))) // ton tai 1 chitiet bat ky chua TT
+                    if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT))) // ton tai 1 chitiet chua ketchuyen (SoTU_DaTT: SoTU duoc ketchuyen)
                         return Json(false);
                 }
                 else // phieu TU
