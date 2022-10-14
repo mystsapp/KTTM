@@ -314,13 +314,13 @@ namespace KTTM.Controllers
             }
             HomeVM.KVPTCDtos = await _kVPTCService.ListKVPTC(searchString, searchFromDate,
                 searchToDate, boolSgtcode, boolTkNo1311, page, user.Macn);
-            foreach(var item in HomeVM.KVPTCDtos)
+            foreach (var item in HomeVM.KVPTCDtos)
             {
-                if(await _kVPTCService.GetLockKvct(item.NgayCT.Value.Month, item.NgayCT.Value.Year, item.MaCn) != null)
+                if (await _kVPTCService.GetLockKvct(item.NgayCT.Value.Month, item.NgayCT.Value.Year, item.MaCn) != null)
                 {
                     item.Locker = "sonkt";
                 }
-                
+
             }
             return View(HomeVM);
         }
@@ -606,26 +606,28 @@ namespace KTTM.Controllers
             kVCTPTCs = kVCTPTCs.Where(x => x.TKNo == "1411" || x.TKNo == "1412" || x.TKCo == "1411" || x.TKCo == "1412"); // dang tao phieu TU
             if (kVCTPTCs.Count() > 0) //
             {
-                kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU
-                if (kVCTPTCs.Count() > 0) // chua ketchuyen TU -> kt xem ketchuyen TT141 chua
-                {
-                    // kiem tra xem có ketchuyen TT141 chua
-                    var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
-                    if (tamUngs.Count() > 0)
-                    {
-                        //var kVCTPTCs1 = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.HoanUngTU));
-                        //if (kVCTPTCs1.Count() > 0)
-                        //{
-                        //    return Json(true);
-                        //}
-                        //else
-                        //{
-                        //    return Json(false);
-                        //}
+                //kVCTPTCs = kVCTPTCs.Where(x => string.IsNullOrEmpty(x.TamUng)); // nhung phieu chua TU Or đây là phieu TT (phieu T)
+                //if (kVCTPTCs.Count() > 0) // chua ketchuyen TU -> kt xem ketchuyen TT141 chua
+                //{
+                //    // kiem tra xem có ketchuyen TT141 chua
+                //    var tamUngs = await _tamUngService.Find_TamUngs_By_PhieuTT(kVPTC.SoCT, kVPTC.MaCn);
+                //    if (tamUngs.Count() > 0)
+                //    {
 
-                        return Json(true); // ko cho inphieu
-                    }
-                    return Json(false);
+                //        return Json(true); // cho inphieu
+                //    }
+                //    return Json(false);
+                //}
+
+                if (kVPTC.MFieu == "T") // phieu TT
+                {
+                    if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.SoTU_DaTT))) // ton tai 1 chitiet bat ky chua TT
+                        return Json(false);
+                }
+                else // phieu TU
+                {
+                    if (kVCTPTCs.Any(x => string.IsNullOrEmpty(x.TamUng)))
+                        return Json(false);
                 }
             }
             return Json(true);
@@ -1104,7 +1106,7 @@ namespace KTTM.Controllers
 
                             if (workSheet.Cells[i, 22].Value != null)
                                 kVCTPTC.SoXe = workSheet.Cells[i, 22].Value.ToString().Trim();
-                            
+
                             if (workSheet.Cells[i, 23].Value != null)
                                 kVCTPTC.DienGiai = workSheet.Cells[i, 23].Value.ToString().Trim();
 
@@ -1118,7 +1120,7 @@ namespace KTTM.Controllers
                             kVCTPTC.LoaiTien = "VND";
                             kVCTPTC.TyGia = 1;
                             kVCTPTC.MaCn = user.Macn;
-                            
+
 
                             if (string.IsNullOrEmpty(kVCTPTC.DienGiaiP) && string.IsNullOrEmpty(kVCTPTC.Sgtcode) &&
                                 string.IsNullOrEmpty(kVCTPTC.HTTC) && string.IsNullOrEmpty(kVCTPTC.SoTienNT.ToString()) &&
@@ -1135,7 +1137,7 @@ namespace KTTM.Controllers
                             }
                             else
                             {
-                                
+
                                 // thong tin khach hang
                                 var khachHang = _kVCTPTCService.GetSuppliersByCode(kVCTPTC.MaKh).FirstOrDefault();
                                 //var supplier = _kVCTPTCService.GetSuppliersByCodeName(kVCTPTC.MaKh, user.Macn).FirstOrDefault();
@@ -1225,8 +1227,8 @@ namespace KTTM.Controllers
                 return NotFound();
             try
             {
-                
-                    await _kVPTCService.DeleteAsync(kVPTC);
+
+                await _kVPTCService.DeleteAsync(kVPTC);
 
                 return Redirect("/");
             }

@@ -1891,7 +1891,7 @@ namespace KTTM.Controllers
                     kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
                     kVCLTG.MaCn = user.Macn;
                     // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
-                    kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + tamUng.TyGia / kVCTPCT.TyGia;
+                    kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + (tamUng.TyGia / kVCTPCT.TyGia).Value.ToString("N2");
                     kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
                     kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
                     kVCLTG.NoQuay = kVCTPCT.NoQuay;
