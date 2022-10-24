@@ -41,7 +41,13 @@ namespace KTTM.Controllers
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             TamUngVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            
             TamUngVM.Page = page;
+            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+            {
+                searchFromDate = "01/01/" + DateTime.Now.Year.ToString();
+                searchToDate = "31/12/" + DateTime.Now.Year.ToString();
+            }
 
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
@@ -56,7 +62,8 @@ namespace KTTM.Controllers
             {
                 TamUngVM.TamUng = new TamUng();
             }
-            TamUngVM.TamUngs = await _tamUngService.ListTamUng(searchString, searchFromDate, searchToDate, page, user.Macn);
+            var maCn = user.Username == "hongvt" ? "" : user.Macn;
+            TamUngVM.TamUngs = await _tamUngService.ListTamUng(searchString, searchFromDate, searchToDate, page, maCn);
             return View(TamUngVM);
         }
 

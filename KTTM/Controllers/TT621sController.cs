@@ -1,11 +1,13 @@
 ﻿using Data.Models_DanhMucKT;
 using Data.Models_KTTM;
+using Data.Models_KTTM_1;
 using Data.Models_QLTaiKhoan;
 using Data.Utilities;
 using KTTM.Models;
 using KTTM.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System;
@@ -44,7 +46,43 @@ namespace KTTM.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, string page, string maKh, string tenKh)
+
+        public async Task<IActionResult> Index(string searchString, string searchFromDate, string searchToDate, long id, int page = 1)
+        {
+            if (id == 0)
+            {
+                ViewBag.id = "";
+            }
+
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            TT621VM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            TT621VM.Page = page;
+            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+            {
+                searchFromDate = "01/01/" + DateTime.Now.Year.ToString();
+                searchToDate = "31/12/" + DateTime.Now.Year.ToString();
+            }
+            ViewBag.searchString = searchString;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+
+            if (id != 0) // for redirect with id
+            {
+                TT621VM.TT621 = _tT621Service.GetByIdAsync(id);
+                ViewBag.id = TT621VM.TT621.Id;
+            }
+            else
+            {
+                TT621VM.TT621 = new TT621();
+            }
+            var maCn = user.Username == "hongvt" ? "" : user.Macn;
+            TT621VM.TT621s = await _tT621Service.ListTT621(searchString, searchFromDate, searchToDate, page, maCn);
+            return View(TT621VM);
+        }
+
+        public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, int page, string maKh, string tenKh)
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -160,7 +198,7 @@ namespace KTTM.Controllers
         }
 
         ////////////////////////////////////////////// TT141 //////////////////////////////////////////////
-        public async Task<IActionResult> TT621Create(long kvctptcId, string strUrl, string page, long tamUngId)
+        public async Task<IActionResult> TT621Create(long kvctptcId, string strUrl, int page, long tamUngId)
         {
             if (tamUngId == 0)
             {
@@ -1036,7 +1074,7 @@ namespace KTTM.Controllers
         //    }
         //}
 
-        public async Task<IActionResult> ThemMoiCT_TT_ContextMenu(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click, string strUrl, string page) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> ThemMoiCT_TT_ContextMenu(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click, string strUrl, int page) // tamungid == kvctpctid // 1 <-> 1
         {
             TT621VM.StrUrl = strUrl;
             TT621VM.Page = page;

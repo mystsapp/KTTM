@@ -22,7 +22,7 @@ namespace KTTM.Models
         public IEnumerable<TT621> TT621s { get; set; }
         public string CommentText { get; set; }
         public string StrUrl { get; set; }
-        public string Page { get; set; }
+        public int Page { get; set; }
 
         public IEnumerable<ViewDmHttc> DmHttcs { get; set; }
         public IEnumerable<NgoaiTe> Ngoaites { get; set; }

@@ -1,5 +1,4 @@
-﻿@*const { Toast } = require("../../wwwroot/lib/bootstrap/dist/js/bootstrap.bundle");*@
-
+﻿
 @model TamUngViewModel
 
 @using X.PagedList;
@@ -11,7 +10,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "TamUng - KTTM";
     var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
 }
 
@@ -73,6 +72,7 @@
                     <thead>
                         <tr class="table-info">
 
+                            <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().MaCn)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().SoCT)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().NgayCT)</th>
                             <th>@Html.DisplayNameFor(m => m.TamUngs.FirstOrDefault().PhieuChi)</th>
@@ -96,6 +96,7 @@
 
                                 <tr class="cursor-pointer @item.Id">
 
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaCn)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuChi)</td>
@@ -174,6 +175,17 @@
         }
 
     }
+
+        // giu trang thai
+        $('#phieuTbl .cursor-pointer').off('click').on('click', function () {
+            if ($(this).hasClass("hoverClass"))
+                $(this).removeClass("hoverClass");
+            else {
+                $('.cursor-pointer').removeClass("hoverClass");
+                $(this).addClass("hoverClass");
+            }
+        });
+
     </script>
 
 }

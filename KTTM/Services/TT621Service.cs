@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace KTTM.Services
 {
@@ -64,6 +65,8 @@ namespace KTTM.Services
         Task CreateKVCLTGAsync(KVCLTG kVCLTG);
         Task<KVCLTG> CreateKVCLTGAsync_Return(KVCLTG kVCLTG);
         string GetSoCT_CLTG(string param, string maCn);
+        TT621 GetByIdAsync(long id);
+        Task<IPagedList<TT621>> ListTT621(string searchString, string searchFromDate, string searchToDate, int? page, string maCn);
     }
 
     public class TT621Service : ITT621Service
@@ -481,6 +484,123 @@ namespace KTTM.Services
         public async Task<KVCLTG> CreateKVCLTGAsync_Return(KVCLTG kVCLTG)
         {
             return await _unitOfWork.kVCLTGRepository.CreateReturnAsync(kVCLTG);
+        }
+
+        public TT621 GetByIdAsync(long id)
+        {
+            return _unitOfWork.tT621Repository.GetById(id);
+        }
+
+        public async Task<IPagedList<TT621>> ListTT621(string searchString, string searchFromDate, string searchToDate, int? page, string maCn)
+        {
+            // return a 404 if user browses to before the first page
+            if (page.HasValue && page < 1)
+                return null;
+
+
+            var list = new List<TT621>();
+
+            #region search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate); // NgayCT
+                    toDate = DateTime.Parse(searchToDate); // NgayCT
+
+                    if (fromDate > toDate)
+                    {
+                        return null; //
+                    }
+
+                    var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.NgayCT >= fromDate &&
+                                       x.NgayCT < toDate.AddDays(1));
+                    list = tT621s.ToList();
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate)) // NgayCT
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.NgayCT >= fromDate);
+                        list = tT621s.ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+                if (!string.IsNullOrEmpty(searchToDate)) // NgayCT
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        list = _unitOfWork.tT621Repository.Find(x => x.NgayCT < toDate.AddDays(1)).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                }
+            }
+            #endregion
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => x.SoCT.ToLower().Contains(searchString.Trim().ToLower()) ||
+                                           (!string.IsNullOrEmpty(x.PhieuTC) && x.PhieuTC.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.PhieuTU) && x.PhieuTU.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.NguoiTao) && x.NguoiTao.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.DienGiai) && x.DienGiai.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.MaKhCo) && x.MaKhCo.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.MaCn) && x.MaCn.ToLower().Contains(searchString.ToLower())) ||
+                                           (!string.IsNullOrEmpty(x.MaKhNo) && x.MaKhNo.ToLower().Contains(searchString.ToLower()))).ToList();
+            }
+            //else
+            //{
+            //    list = await _unitOfWork.tT621Repository.GetAll().ToListAsync();
+            //}
+            if (!string.IsNullOrEmpty(maCn))
+            {
+                list = list.Where(x => x.MaCn == maCn).ToList(); // search by cn
+            }
+
+            list = list.OrderByDescending(x => x.NgayCT).ToList();
+            var count = list.Count();
+
+            //// List<string> listRoleChiNhanh --> chi lay nhung tour thuộc phanKhuCN cua minh
+            //if (listRoleChiNhanh.Count > 0)
+            //{
+            //    list = list.Where(item1 => listRoleChiNhanh.Any(item2 => item1.MaCNTao == item2)).ToList();
+            //}
+            //// List<string> listRoleChiNhanh --> chi lay nhung tour thuộc phanKhuCN cua minh
+
+            // page the list
+            const int pageSize = 15;
+            decimal aa = (decimal)list.Count() / (decimal)pageSize;
+            var bb = Math.Ceiling(aa);
+            if (page > bb)
+            {
+                page--;
+            }
+            page = (page == 0) ? 1 : page;
+            var listPaged = list.ToPagedList(page ?? 1, pageSize);
+            //if (page > listPaged.PageCount)
+            //    page--;
+            // return a 404 if user browses to pages beyond last page. special case first page if no items exist
+            if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
+                return null;
+
+            return listPaged;
         }
     }
 }

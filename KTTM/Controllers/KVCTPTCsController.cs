@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using Data.Models_KTTM_1;
 
 namespace KTTM.Controllers
 {
@@ -246,6 +247,8 @@ namespace KTTM.Controllers
             KVCTPCTVM.KVCTPTC.MaKhNo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhNo) ? "" : KVCTPCTVM.KVCTPTC.MaKhNo.ToUpper();
             KVCTPCTVM.KVCTPTC.MaKhCo = string.IsNullOrEmpty(KVCTPCTVM.KVCTPTC.MaKhCo) ? "" : KVCTPCTVM.KVCTPTC.MaKhCo.ToUpper();
             KVCTPCTVM.KVCTPTC.MaKh = (KVCTPCTVM.KVPTC.MFieu == "T") ? KVCTPCTVM.KVCTPTC.MaKhCo : KVCTPCTVM.KVCTPTC.MaKhNo; // T : láy MaKhCo, C: MaKhNo
+
+            KVCTPCTVM.KVCTPTC.SoTienNT = Math.Round(KVCTPCTVM.KVCTPTC.SoTienNT.Value, 0); // lam tron` tu ngoai view
 
             // ghi log
             KVCTPCTVM.KVCTPTC.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username

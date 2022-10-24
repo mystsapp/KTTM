@@ -1,0 +1,226 @@
+﻿@model TT621ViewModel
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "TT621 - KTTM";
+    var user = HttpContextAccessor.HttpContext.Session.GetSingle<Data.Models_QLTaiKhoan.User>("loginUser");
+}
+
+<section class="content" style="padding: 15px 0.5rem">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list-alt text-info"></i> Danh mục tt621</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <form method="get" autocomplete="off">
+
+                <div class="pr-2 pl-2" style="padding-bottom:10px; padding-top: 6px; ">
+
+                    <div class="col-md-12">
+                        <div class="row rounded" style="padding-bottom:5px; background-color: aliceblue;" id="search">
+
+                            <div class="col-md-3 text-sm">
+                                <label>Nhập thông tin</label>
+                                <input class="form-control form-control-sm text-uppercase" name="searchString" value="@ViewBag.searchString" id="txtSearchThongTin" />
+                            </div>
+
+                            <div class="col-md-2 text-sm">
+                                <label>Từ ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchFromDate" id="searchFromDate" value="@ViewBag.searchFromDate" />
+                            </div>
+
+                            <div class="col-md-2 text-sm">
+                                <label>Đến ngày</label>
+                                <input class="form-control form-control-sm maskInput" name="searchToDate" id="searchToDate" value="@ViewBag.searchToDate" />
+                            </div>
+
+                            <div class="col-md-2 text-sm">
+                                <label>&nbsp;</label>
+                                <div class=" btn-block ">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
+                                        <i class="fas fa-search"></i> Tìm kiếm
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            @*<br />*@
+            <div class="pr-2 pl-2" style="overflow-x:auto; overflow-y:auto; min-height: 300px">
+                <table class="table mytable text-nowrap text-sm" id="phieuTbl">
+                    <thead>
+                        <tr class="table-info">
+
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaCn)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhNo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().PhieuTC)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().PhieuTU)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiai)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTienNT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TyGia)</th>    
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKNo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiaiP)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NguoiTao)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayTao)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.TT621s != null)
+                        {
+                            @foreach (var item in Model.TT621s)
+                            {
+
+                                <tr class="cursor-pointer @item.Id">
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaCn)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhNo)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTC)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhieuTU)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiai)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                    <td class="tdVal" data-id="@item.Id">@(item.SoTien == null ? "0" : @item.SoTien.Value.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@(item.SoTienNT == null ? "0" : @item.SoTienNT.Value.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@(item.TyGia == null ? "0" : @item.TyGia.Value.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TKNo)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TKCo)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaKhCo)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.HTTC)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MsThue)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCTGoc.HasValue ? item.NgayCTGoc.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiHDGoc)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCTGoc)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KyHieu)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.VAT)</td>
+                                    <td class="tdVal" data-id="@item.Id">@(item.DSKhongVAT == null ? "0" : @item.DSKhongVAT.Value.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.BoPhan)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoQuay)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CoQuay)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoXe)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LapPhieu)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienGiaiP)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.HasValue ? item.NgayTao.Value.ToString("dd/MM/yyyy") : "")</td>
+
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+                <!--hiden field for status click-->
+                @*<input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />*@
+                <!--hiden field for status click-->
+            </div>
+            <div class="p-2" style="background-color: aliceblue;">
+                @if (Model.TT621s != null)
+                {
+                    @Html.PagedListPager((IPagedList)Model.TT621s, page => Url.Action("Index", new
+                {
+                page = page,
+                option = Context.Request.Query["option"],
+                searchString = ViewBag.searchString,
+                searchFromDate = ViewBag.searchFromDate,
+                searchToDate = ViewBag.searchToDate
+
+                }),
+                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" },
+                MaximumPageNumbersToDisplay = 5,
+                UlElementClasses = new[] { "pagination pagination-sm m-0" }, // ul class
+                ContainerDivClasses = new[] { "pagination-container" }
+                }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+                }
+            </div>
+            <!-- KVCTPCT-->
+            <div id="KVCTPCT_Tbl">
+            </div>
+        </div>
+        <!-- /.card-body -->
+        @*<div class="card-footer">
+        Footer
+        </div>*@
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+@section Scripts{
+
+    <script>
+
+        var id_Redirect = '@ViewBag.id'; //Id sau khi redirect ve //////////////////////////////////////////////
+
+        //var tr_click = $('#phieuTbl ' + soCT);
+        if (id_Redirect !== '') {
+
+            var id_Redirect_Class = $('.' + id_Redirect);
+
+            if (id_Redirect_Class.hasClass("hoverClass")) {
+                id_Redirect_Class.removeClass("hoverClass");
+            }
+            else {
+                id_Redirect_Class.removeClass("hoverClass");
+                id_Redirect_Class.addClass("hoverClass");
+            }
+
+        }
+
+
+        // giu trang thai
+        $('#phieuTbl .cursor-pointer').off('click').on('click', function () {
+            if ($(this).hasClass("hoverClass"))
+                $(this).removeClass("hoverClass");
+            else {
+                $('.cursor-pointer').removeClass("hoverClass");
+                $(this).addClass("hoverClass");
+            }
+        });
+        
+    </script>
+
+}
