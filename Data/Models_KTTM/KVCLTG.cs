@@ -39,11 +39,11 @@ namespace Data.Models_KTTM
         public decimal SoTien { get; set; }
 
         [DisplayName("Mã KH nợ")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhNo { get; set; } //
 
         [DisplayName("Mã KH có")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa 20 ký tự"), Column(TypeName = "varchar(12)")]
         public string MaKhCo { get; set; } //
 
         [DisplayName("Nợ quầy")]
