@@ -81,14 +81,21 @@ namespace KTTM.Controllers
             TT621VM.TT621s = await _tT621Service.ListTT621(searchString, searchFromDate, searchToDate, page, maCn);
             return View(TT621VM);
         }
-
-        public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, int page, string maKh, string tenKh)
+        #region KhongTC
+        public async Task<IActionResult> KhongTC_141(Guid kvptcId, string strUrl, string maKh, string tenKh, long tamUngId)
         {
+            if (tamUngId == 0) // for redirect
+            {
+                ViewBag.tamUngId = "";
+            }
+            else
+            {
+                ViewBag.tamUngId = tamUngId;
+            }
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             TT621VM.StrUrl = strUrl;
-            TT621VM.Page = page;
 
             ViewBag.maKh = maKh;
             ViewBag.tenKh = tenKh;
@@ -154,6 +161,89 @@ namespace KTTM.Controllers
             }
         }
 
+
+        public async Task<IActionResult> ThemMoiCT_TT_KhongTC(long tamUngId, long id_Dong_Da_Click,
+            string dienGiaiP, string hTTC, string soTienNT) // tamungid == kvctpctid // 1 <-> 1
+        {
+            TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
+            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+            var kVCTPCTId_PhieuC = tamUng.Id; // tamung, kvctptc: 1 <--> 1
+            TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(kVCTPCTId_PhieuC);
+            TT621VM.TT621 = tT621;
+            
+            TT621VM.TT621.MaKhCo = tamUng.MaKhNo; // makh cua nguoi tamung
+
+            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+
+            // lay sotien can de ket chuyen
+            TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
+            TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(kVCTPCTId_PhieuC);
+            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+            if (TT621VM.KVPTC.NgoaiTe == "VN")
+            {
+                TT621VM.TT621.LoaiTien = "VND";
+            }
+
+            var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
+
+            TT621VM.TT621.SoTienNT = tamUngPhiaTren.ConLaiNT.Value - soTienNT_TrongTT621_TheoTamUng; // kVCTPCT.SoTien trong phieuC
+            //TT621VM.TT621.TKNo = tT621.TKCo; // dao nguoc
+            //TT621VM.TT621.TKCo = "1411"; // tT621.TKNo; // dao nguoc
+            //if (TT621VM.KVCTPTC.KVPTC.NgoaiTe == "NT")
+            //{
+            //    TT621VM.TT621.TKCo = "1412"; // tT621.TKNo; // dao nguoc
+            //}
+
+            TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tT621.TyGia;
+
+            // tentk
+            TT621VM.TenTkNo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKNo).TenTk;
+            TT621VM.TenTkCo = _kVCTPTCService.Get_DmTk_By_TaiKhoan(tT621.TKCo).TenTk;
+            TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
+
+            // ddl
+            Data.Models_HDVATOB.Supplier supplier = new Data.Models_HDVATOB.Supplier() { Code = "" };
+            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+
+            var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+            viewDmHttcs.Insert(0, viewDmHttc);
+            TT621VM.DmHttcs = viewDmHttcs;
+
+            Get_TkNo_TkCo();
+
+            TT621VM.Quays = _kVCTPTCService.GetAll_Quay_View();
+            var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+            viewMatHangs.Insert(0, viewMatHang);
+            TT621VM.MatHangs = viewMatHangs;
+            TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+
+            TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+            TT621VM.TT621.NgayCTGoc = DateTime.Now; // Thao
+
+            // btnThemdong + copy dong da click
+            if (id_Dong_Da_Click > 0)
+            {
+                var dongCu = _tT621Service.GetByIdAsNoTracking(id_Dong_Da_Click);
+                TT621VM.TT621 = dongCu;
+                TT621VM.TT621.SoTienNT = tT621.SoTienNT;
+                TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(dongCu.TKNo, dongCu.TKCo);
+            }
+
+            if (!string.IsNullOrEmpty(dienGiaiP))
+            {
+                TT621VM.TT621.DienGiaiP = dienGiaiP;
+                TT621VM.TT621.HTTC = hTTC;
+                TT621VM.TT621.SoTienNT = decimal.Parse(soTienNT);
+                TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * TT621VM.TT621.TyGia;
+            }
+
+            return View(TT621VM);
+        }
+
+        #endregion
         public IActionResult GetKhachHangs_HDVATOB_By_Code_KhongTC(string code, string kvpctId, string strUrl, int page = 1)
         {
             // from login session
@@ -565,143 +655,143 @@ namespace KTTM.Controllers
             }
         }
 
-        public async Task<IActionResult> ThemMoiCT_TT_KhongTC_Partial(long tamUngId) // tamungid == kvctpctid // 1 <-> 1
-        {
-            //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
-            TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
-            //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+        //public async Task<IActionResult> ThemMoiCT_TT_KhongTC_Partial(long tamUngId) // tamungid == kvctpctid // 1 <-> 1
+        //{
+        //    //TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
+        //    TT621VM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes_DanhMucKT().Where(x => x.MaNt != "VND").OrderByDescending(x => x.MaNt);
+        //    //KVCTPCTVM.Ngoaites = _kVCTPTCService.GetAll_NgoaiTes().OrderByDescending(x => x.MaNt);
 
-            TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
-            TT621VM.KVCTPTC = await _kVCTPTCService.GetById(tamUngId);
-            TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
+        //    TT621VM.TamUngId = tamUngId; //tamungId phia tren khi click
+        //    TT621VM.KVCTPTC = await _kVCTPTCService.GetById(tamUngId);
+        //    TT621VM.KVPTC = await _kVPTCService.GetByGuidIdAsync(TT621VM.KVCTPTC.KVPTCId);
 
-            // lay sotien can de ket chuyen
-            TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
-            // var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
-            TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value;// - soTienNT_TrongTT621_TheoTamUng; // soTienNT_TrongTT621_TheoTamUng = 0 vi chi có dong CTTT
-            TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tamUngPhiaTren.TyGia.Value;
-            TT621VM.TT621.TyGia = 1;
+        //    // lay sotien can de ket chuyen
+        //    TamUng tamUngPhiaTren = await _tamUngService.GetByIdAsync(tamUngId);
+        //    // var soTienNT_TrongTT621_TheoTamUng = _tT621Service.GetSoTienNT_TrongTT621_TheoTamUng(tamUngId);
+        //    TT621VM.TT621.SoTienNT = tamUngPhiaTren.SoTienNT.Value;// - soTienNT_TrongTT621_TheoTamUng; // soTienNT_TrongTT621_TheoTamUng = 0 vi chi có dong CTTT
+        //    TT621VM.TT621.SoTien = TT621VM.TT621.SoTienNT * tamUngPhiaTren.TyGia.Value;
+        //    TT621VM.TT621.TyGia = 1;
 
-            // ddl
-            ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
-            ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
+        //    // ddl
+        //    ViewMatHang viewMatHang = new ViewMatHang() { Mathang = "" };
+        //    ViewDmHttc viewDmHttc = new ViewDmHttc() { DienGiai = "" };
 
-            var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
-            viewDmHttcs.Insert(0, viewDmHttc);
-            TT621VM.DmHttcs = viewDmHttcs;
+        //    var viewDmHttcs = _kVCTPTCService.GetAll_DmHttc_View().ToList();
+        //    viewDmHttcs.Insert(0, viewDmHttc);
+        //    TT621VM.DmHttcs = viewDmHttcs;
 
-            Get_TkNo_TkCo();
+        //    Get_TkNo_TkCo();
 
-            TT621VM.Quays = _kVCTPTCService.GetAll_Quay_View();
-            var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
-            viewMatHangs.Insert(0, viewMatHang);
-            TT621VM.MatHangs = viewMatHangs;
-            TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
+        //    TT621VM.Quays = _kVCTPTCService.GetAll_Quay_View();
+        //    var viewMatHangs = _kVCTPTCService.GetAll_MatHangs_View().ToList();
+        //    viewMatHangs.Insert(0, viewMatHang);
+        //    TT621VM.MatHangs = viewMatHangs;
+        //    TT621VM.PhongBans = _kVCTPTCService.GetAll_PhongBans_View();
 
-            TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
-            TT621VM.TT621.NgayCTGoc = DateTime.Now; // Thao
+        //    TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
+        //    TT621VM.TT621.NgayCTGoc = DateTime.Now; // Thao
 
-            return PartialView(TT621VM);
-        }
+        //    return PartialView(TT621VM);
+        //}
 
-        [HttpPost, ActionName("ThemMoiCT_TT_KhongTC_Partial")]
-        public async Task<IActionResult> ThemMoiCT_TT_KhongTC_Partial_Post(long tamUngId) // tamungid phia tren khi click
-        {
-            if (tamUngId == 0)
-                return NotFound();
-            var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
-            if (tamUng == null)
-                return NotFound();
+        //[HttpPost, ActionName("ThemMoiCT_TT_KhongTC_Partial")]
+        //public async Task<IActionResult> ThemMoiCT_TT_KhongTC_Partial_Post(long tamUngId) // tamungid phia tren khi click
+        //{
+        //    if (tamUngId == 0)
+        //        return NotFound();
+        //    var tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+        //    if (tamUng == null)
+        //        return NotFound();
 
-            TT621VM.TT621.TamUngId = tamUngId;
+        //    TT621VM.TT621.TamUngId = tamUngId;
 
-            // from login session
-            var user = HttpContext.Session.GetSingle<User>("loginUser");
+        //    // from login session
+        //    var user = HttpContext.Session.GetSingle<User>("loginUser");
 
-            if (string.IsNullOrEmpty(TT621VM.TT621.TKNo))
-            {
-                return Json(new
-                {
-                    status = false,
-                    message = "<b>Tài khoãn</b> không được bỏ trống."
-                });
-            }
+        //    if (string.IsNullOrEmpty(TT621VM.TT621.TKNo))
+        //    {
+        //        return Json(new
+        //        {
+        //            status = false,
+        //            message = "<b>Tài khoãn</b> không được bỏ trống."
+        //        });
+        //    }
 
-            if (string.IsNullOrEmpty(TT621VM.TT621.MaKhNo))
-            {
-                return Json(new
-                {
-                    status = false,
-                    message = "<b>Mã KH nợ</> không được để trống."
-                });
-            }
+        //    if (string.IsNullOrEmpty(TT621VM.TT621.MaKhNo))
+        //    {
+        //        return Json(new
+        //        {
+        //            status = false,
+        //            message = "<b>Mã KH nợ</> không được để trống."
+        //        });
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                return Json(new
-                {
-                    status = false,
-                    message = "Model invalid."
-                });
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Json(new
+        //        {
+        //            status = false,
+        //            message = "Model invalid."
+        //        });
+        //    }
 
-            ////
-            //decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, 0); // TT621VM.KVCTPCT.SoTienNT tu view qua
-            //// txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
-            //if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
-            //{
-            //    return Json(new
-            //    {
-            //        status = false,
-            //        message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
-            //    });
-            //}
+        //    ////
+        //    //decimal soTienNT_CanKetChuyen = _tT621Service.Get_SoTienNT_CanKetChuyen(TT621VM.TT621.TamUngId, 0); // TT621VM.KVCTPCT.SoTienNT tu view qua
+        //    //// txtSoTienNT nhập vào không được vượt quá soTienNT_ChuaCapNhat(cũ) + soTienNT_CanKetChuyen (tt621 theo tamung, sotienNT theo phieu TC)
+        //    //if (TT621VM.TT621.SoTienNT > soTienNT_CanKetChuyen)
+        //    //{
+        //    //    return Json(new
+        //    //    {
+        //    //        status = false,
+        //    //        message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
+        //    //    });
+        //    //}
 
-            TT621VM.TT621.NgayCT = DateTime.Now;
-            TT621VM.TT621.NguoiTao = user.Username;
-            TT621VM.TT621.DienGiaiP = string.IsNullOrEmpty(TT621VM.TT621.DienGiaiP) ? "" : TT621VM.TT621.DienGiaiP.Trim().ToUpper();// TT621VM.TT621.DienGiaiP.Trim().ToUpper();
-            TT621VM.TT621.NgayTao = DateTime.Now;
-            TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
-            TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
-            //// lay soct cua tt621
-            //if (TT621VM.TT621.LoaiTien == "VND")
-            //{
-            TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
-            //}
-            //else
-            //{
-            //    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN");
-            //}
+        //    TT621VM.TT621.NgayCT = DateTime.Now;
+        //    TT621VM.TT621.NguoiTao = user.Username;
+        //    TT621VM.TT621.DienGiaiP = string.IsNullOrEmpty(TT621VM.TT621.DienGiaiP) ? "" : TT621VM.TT621.DienGiaiP.Trim().ToUpper();// TT621VM.TT621.DienGiaiP.Trim().ToUpper();
+        //    TT621VM.TT621.NgayTao = DateTime.Now;
+        //    TT621VM.TT621.MaKhNo = string.IsNullOrEmpty(TT621VM.TT621.MaKhNo) ? "" : TT621VM.TT621.MaKhNo.ToUpper();
+        //    TT621VM.TT621.MaKhCo = string.IsNullOrEmpty(TT621VM.TT621.MaKhCo) ? "" : TT621VM.TT621.MaKhCo.ToUpper();
+        //    //// lay soct cua tt621
+        //    //if (TT621VM.TT621.LoaiTien == "VND")
+        //    //{
+        //    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TV", user.Macn);
+        //    //}
+        //    //else
+        //    //{
+        //    //    TT621VM.TT621.SoCT = _tT621Service.GetSoCT("TN");
+        //    //}
 
-            TT621VM.KVCTPTC = await _kVCTPTCService.GetById(tamUngId); // tamUngId == kvctpctId 1 <-> 1
-            // PhieuTC: tuy vao loai phieu lam TT
-            TT621VM.TT621.PhieuTC = "KHONG PTC"; // anh Son: m.phieutc='KHONG PTC'
+        //    TT621VM.KVCTPTC = await _kVCTPTCService.GetById(tamUngId); // tamUngId == kvctpctId 1 <-> 1
+        //    // PhieuTC: tuy vao loai phieu lam TT
+        //    TT621VM.TT621.PhieuTC = "KHONG PTC"; // anh Son: m.phieutc='KHONG PTC'
 
-            // phieuTU
-            TT621VM.TT621.PhieuTU = tamUng.SoCT;
+        //    // phieuTU
+        //    TT621VM.TT621.PhieuTU = tamUng.SoCT;
 
-            // Lapphieu
-            TT621VM.TT621.LapPhieu = user.Username;
-            // ghi log
-            TT621VM.TT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + " từ 141 Không TC " + TT621VM.KVCTPTC.KVPTCId; // user.Username
+        //    // Lapphieu
+        //    TT621VM.TT621.LapPhieu = user.Username;
+        //    // ghi log
+        //    TT621VM.TT621.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + " từ 141 Không TC " + TT621VM.KVCTPTC.KVPTCId; // user.Username
 
-            try
-            {
-                await _tT621Service.CreateAsync(TT621VM.TT621);
+        //    try
+        //    {
+        //        await _tT621Service.CreateAsync(TT621VM.TT621);
 
-                return Json(new
-                {
-                    status = true
-                });
-            }
-            catch (Exception)
-            {
-                return Json(new
-                {
-                    status = false
-                });
-            }
-        }
+        //        return Json(new
+        //        {
+        //            status = true
+        //        });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Json(new
+        //        {
+        //            status = false
+        //        });
+        //    }
+        //}
 
         public async Task<IActionResult> ThemMoiCT_TT_Partial(long tamUngId, long kVCTPCTId_PhieuTC, long id_Dong_Da_Click,
             string dienGiaiP, string hTTC, string soTienNT) // tamungid == kvctpctid // 1 <-> 1
@@ -1193,7 +1283,7 @@ namespace KTTM.Controllers
                 //    message = "<b>Số tiền NT</b> đã vượt quá số tiền cần kết chuyển."
                 //});
 
-                
+
                 TT621 tT621 = _tT621Service.GetDummyTT621_By_KVCTPCT(tamUngId);
                 TT621VM.Dgiais = _kVCTPTCService.Get_DienGiai_By_TkNo_TkCo(tT621.TKNo, tT621.TKCo);
                 TT621VM.KVCTPTC = await _kVCTPTCService.FindByIdInclude(TT621VM.KVCTPTC.Id);
@@ -1554,7 +1644,7 @@ namespace KTTM.Controllers
             {
                 temp += String.Format("- NgaySua thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgaySua, TT621VM.TT621.NgaySua);
             }
-            
+
             if (t.NgayCT != TT621VM.TT621.NgayCT)  // test datetime (ngayCT: date --> sometime datetime)
             {
                 temp += String.Format("- NgaySua thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgaySua, TT621VM.TT621.NgaySua);
@@ -1858,7 +1948,7 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC, long kVCTPCTId_PhieuTC) // kVCTPCTId_PhieuTC: tren TT621CreateView
+        public async Task<JsonResult> KetChuyen(long tamUngId, decimal soTienNT_PhieuTC, long kVCTPCTId_PhieuTC, decimal tyGiaTT141) // kVCTPCTId_PhieuTC: tren TT621CreateView
         {
             // from login session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
@@ -1896,78 +1986,129 @@ namespace KTTM.Controllers
                 kVCTPCT.SoTU_DaTT = tamUng.SoCT;
                 await _kVCTPTCService.UpdateAsync(kVCTPCT);
 
-                // ngoaite                
+                // ngoaite
                 if (kVCTPCT.KVPTC.NgoaiTe == "NT")
                 {
-                    decimal? tienTUDau;
-                    decimal? tienTUSau;
-                    decimal? tienTUChenhLech;
-                    if (kVCTPCT.KVPTC.MFieu == "C")
+                    if (kVCTPCTId_PhieuTC == 0) // Khong PTC
                     {
-                        // vd: đầu: ung 1000(22) + thanhtoan C them 200(23) = 22.000.000 + 4.600.000 = 26.600.000
-                        tienTUDau = tamUng.SoTien + (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
-                        // vd: sau: (tong NT)1.200 * 23.000(ty gia hien tai) = 27.600.000
-                        tienTUSau = (tamUng.SoTienNT + kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+                        decimal? tienTUDau;
+                        decimal? tienTUSau;
+                        decimal? tienTUChenhLech;
+
+                        tienTUDau = tamUng.SoTien;
+
+                        tienTUSau = tamUng.SoTienNT * tyGiaTT141; // tyGiaTT141: chi co trong Khong PTC
 
                         tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
-                    }
-                    else // T
-                    {
-                        // vd: đầu: ung 1000(22) - thanhtoan C them 200(23) = 22.000.000 - 4.600.000 = 17,400,000
-                        tienTUDau = tamUng.SoTien - (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
-                        // vd: sau: (tong NT)(1.000 - 200)*23 = 18400000
-                        tienTUSau = (tamUng.SoTienNT - kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
 
-                        tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
-                    }
 
-                    KVCLTG kVCLTG = new KVCLTG();
+                        KVCLTG kVCLTG = new KVCLTG();
 
-                    // soCT
-                    kVCLTG.SoCT = _tT621Service.GetSoCT_CLTG("/", user.Macn);
+                        // soCT
+                        kVCLTG.SoCT = _tT621Service.GetSoCT_CLTG("/", user.Macn);
 
-                    kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
-                    kVCLTG.MaCn = user.Macn;
-                    // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
-                    kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + (tamUng.TyGia / kVCTPCT.TyGia).Value.ToString("N2");
-                    kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
-                    kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
-                    kVCLTG.NoQuay = kVCTPCT.NoQuay;
-                    kVCLTG.CoQuay = kVCTPCT.CoQuay;
-                    kVCLTG.SoCT1412 = kVCTPCT.SoCT;
-                    kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
-                    if (tienTUChenhLech < 0) // am
-                    {
-                        kVCLTG.TKNo = "1412";
-                        kVCLTG.TKCo = "4131000001";
-                        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                        kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
+                        kVCLTG.MaCn = user.Macn;
+                        // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
+                        kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + (tamUng.TyGia / kVCTPCT.TyGia).Value.ToString("N2");
+                        kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+                        kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+                        kVCLTG.NoQuay = kVCTPCT.NoQuay;
+                        kVCLTG.CoQuay = kVCTPCT.CoQuay;
+                        kVCLTG.SoCT1412 = kVCTPCT.SoCT;
+                        kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
+                        if (tienTUChenhLech < 0) // am
                         {
-                            kVCLTG.MaKhNo = kVCTPCT.MaKhCo;
+                            kVCLTG.TKNo = "1412";
+                            kVCLTG.TKCo = "4131000001";
+                            kVCLTG.MaKhNo = tamUng.MaKhNo;
+
                         }
-                        else // Chi
+                        if (tienTUChenhLech > 0) // duong
                         {
-                            kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+                            kVCLTG.TKNo = "4131000001";
+                            kVCLTG.TKCo = "1412";
+                            kVCLTG.MaKhCo = tamUng.MaKhNo;
+
+                        }
+                        if (tienTUChenhLech != 0)
+                        {
+                            await _tT621Service.CreateKVCLTGAsync(kVCLTG);
+                        }
+                    }
+                    else // TT bình thường
+                    {
+                        decimal? tienTUDau;
+                        decimal? tienTUSau;
+                        decimal? tienTUChenhLech;
+                        if (kVCTPCT.KVPTC.MFieu == "C")
+                        {
+                            // vd: đầu: ung 1000(22) + thanhtoan C them 200(23) = 22.000.000 + 4.600.000 = 26.600.000
+                            tienTUDau = tamUng.SoTien + (kVCTPCT.SoTienNT * kVCTPCT.TyGia); // VND
+                            // vd: sau: (tong NT)1.200 * 23.000(ty gia hien tai) = 27.600.000
+                            tienTUSau = (tamUng.SoTienNT + kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+
+                            tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
+                        }
+                        else // T
+                        {
+                            // vd: đầu: ung 1000(22) - thanhtoan C them 200(23) = 22.000.000 - 4.600.000 = 17,400,000
+                            tienTUDau = tamUng.SoTien - (kVCTPCT.SoTienNT * kVCTPCT.TyGia);
+                            // vd: sau: (tong NT)(1.000 - 200)*23 = 18400000
+                            tienTUSau = (tamUng.SoTienNT - kVCTPCT.SoTienNT) * kVCTPCT.TyGia;
+
+                            tienTUChenhLech = tienTUDau - tienTUSau; // co the âm có thể duong tuỳ vào tỷ giá
                         }
 
-                    }
-                    if (tienTUChenhLech > 0) // duong
-                    {
-                        kVCLTG.TKNo = "4131000001";
-                        kVCLTG.TKCo = "1412";
-                        if (kVCTPCT.KVPTC.MFieu == "T") // Thu
-                        {
-                            kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
-                        }
-                        else // Chi
-                        {
-                            kVCLTG.MaKhCo = kVCTPCT.MaKhNo;
-                        }
+                        KVCLTG kVCLTG = new KVCLTG();
 
+                        // soCT
+                        kVCLTG.SoCT = _tT621Service.GetSoCT_CLTG("/", user.Macn);
+
+                        kVCLTG.NgayCT = kVCTPCT.KVPTC.NgayCT;
+                        kVCLTG.MaCn = user.Macn;
+                        // CLTG 0063NT2016(PhieuTT) USD(loaitien TU) (sotienNT TU): (tygia TU)/thucchi:(tygiaTT)
+                        kVCLTG.DienGiai = "CLTG " + kVCTPCT.SoCT + " " + kVCTPCT.LoaiTien + " " + tamUng.SoTienNT + ": " + (tamUng.TyGia / kVCTPCT.TyGia).Value.ToString("N2");
+                        kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+                        kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+                        kVCLTG.NoQuay = kVCTPCT.NoQuay;
+                        kVCLTG.CoQuay = kVCTPCT.CoQuay;
+                        kVCLTG.SoCT1412 = kVCTPCT.SoCT;
+                        kVCLTG.SoTien = Math.Abs(tienTUChenhLech.Value); // Trả về giá trị tuyệt đối
+                        if (tienTUChenhLech < 0) // am
+                        {
+                            kVCLTG.TKNo = "1412";
+                            kVCLTG.TKCo = "4131000001";
+                            if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                            {
+                                kVCLTG.MaKhNo = kVCTPCT.MaKhCo;
+                            }
+                            else // Chi
+                            {
+                                kVCLTG.MaKhNo = kVCTPCT.MaKhNo;
+                            }
+
+                        }
+                        if (tienTUChenhLech > 0) // duong
+                        {
+                            kVCLTG.TKNo = "4131000001";
+                            kVCLTG.TKCo = "1412";
+                            if (kVCTPCT.KVPTC.MFieu == "T") // Thu
+                            {
+                                kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
+                            }
+                            else // Chi
+                            {
+                                kVCLTG.MaKhCo = kVCTPCT.MaKhNo;
+                            }
+
+                        }
+                        if (tienTUChenhLech != 0)
+                        {
+                            await _tT621Service.CreateKVCLTGAsync(kVCLTG);
+                        }
                     }
-                    if (tienTUChenhLech != 0)
-                    {
-                        await _tT621Service.CreateKVCLTGAsync(kVCLTG);
-                    }
+
 
                 }
 
@@ -2016,7 +2157,7 @@ namespace KTTM.Controllers
                 string conLaiNTOld = tamUng.ConLaiNT.ToString();
                 string conLaiOld = tamUng.ConLai.ToString();
 
-                if(kVCTPCT.KVPTC.NgoaiTe == "VN")
+                if (kVCTPCT.KVPTC.NgoaiTe == "VN")
                 {
                     tamUng.ConLaiNT -= decimal.Parse(soTienNT);
                     tamUng.ConLai -= decimal.Parse(soTienNT); // soTienNT: VND
@@ -2052,7 +2193,7 @@ namespace KTTM.Controllers
                         {
                             kVCLTG.MaKhNo = kVCTPCT.MaKhCo;
                         }
-                        
+
                     }
                     if (tienTUChenhLech > 0) // duong
                     {
@@ -2062,7 +2203,7 @@ namespace KTTM.Controllers
                         {
                             kVCLTG.MaKhCo = kVCTPCT.MaKhCo;
                         }
-                        
+
                     }
                     if (tienTUChenhLech != 0)
                     {
@@ -2525,14 +2666,14 @@ namespace KTTM.Controllers
                                 tT621.SoTien = decimal.Parse(workSheet.Cells[i, 4].Value.ToString().Trim());
                                 tT621.SoTien = Math.Round(tT621.SoTien.Value, 0);
                             }
-                                
+
 
                             if (workSheet.Cells[i, 5].Value != null)
                             {
                                 tT621.SoTienNT = decimal.Parse(workSheet.Cells[i, 5].Value.ToString().Trim());
                                 tT621.SoTienNT = Math.Round(tT621.SoTienNT.Value, 0);
                             }
-                                
+
 
                             if (workSheet.Cells[i, 6].Value != null)
                                 tT621.TyGia = decimal.Parse(workSheet.Cells[i, 6].Value.ToString().Trim());
@@ -2655,7 +2796,7 @@ namespace KTTM.Controllers
                                 tT621.NgayTao = DateTime.Now;
                                 tT621.NguoiTao = user.Username;
                                 tT621.MaCn = user.Macn;
-                                
+
                                 tT621.NgayCT = kvptc.NgayCT;
                                 tT621.PhieuTC = kvptc.SoCT;
                                 tT621.PhieuTU = tamUng.SoCT;
@@ -2709,7 +2850,7 @@ namespace KTTM.Controllers
 
                                 tT621s.Add(tT621);
                             }
-                            
+
                         }
                         try
                         {
@@ -2766,7 +2907,7 @@ namespace KTTM.Controllers
                 message = "Vui lòng chọn file!"
             });
         }
-    
+
         //private async Task<KVCLTG> XuLyCLTG(TamUng tamUng, KVCTPTC kVCTPCT)
         //{
         //    // from login session

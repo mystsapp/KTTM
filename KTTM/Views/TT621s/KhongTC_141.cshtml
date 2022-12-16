@@ -1,7 +1,7 @@
 ﻿@model TT621ViewModel
 
 @{
-    ViewData["Title"] = "KhongTC_141";
+    ViewData["Title"] = "KhongTC_141 - KTTM";
 }
 
 
@@ -42,7 +42,66 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- ThemMoiCT_TT modal-->
+
+<!-- ThemMoiCT_TT_ContextMenu modal-->
+<div class="modal fade" id="ThemMoiCT_TT_ContextMenu_Modal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Thêm chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ThemMoiCT_TT_ContextMenu_Body p-0">
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- importExcelModal modal-->
+<div class="modal fade" id="importExcelModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+
+        <div class="modal-content ">
+            <div class="modal-header p-0 pl-1">
+                <h4 class="modal-title">Upload 1411</h4>
+                <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body importExcelModal_Body p-0">
+                <form asp-action="ImportExcell" method="post" autocomplete="off" id="frmImportExcell" enctype="multipart/form-data">
+
+                    <div class=" row text-sm container pb-2">
+                        <div class="col-md-6">
+                            <label class="control-label">Chọn file excell</label>
+                            <input type="file" class="form-control-file form-control-sm" id="fUpload" name="files">
+                            <div id="dvData"></div><!-- error response -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label">Download file mẫu</label>
+                            <br />
+                            <a title="File mẫu" class="btn btn-success btn-sm" asp-controller="TT621s" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer p-0">
+                        <button type="button" id="importExcel_Submit" class="btn btn-outline-primary"><i class="fas fa-upload"></i><i class='fa fa-spinner fa-spin submitSpin' style="display: none"></i></button>
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <!-- Content Header (Page header) -->
 <section class="content-header p-0">
     <div class="container-fluid">
@@ -171,32 +230,42 @@
 
             </div>
 
-            <!-- Chi tiet thanh toan
+            <!-- Chi tiet thanh toan -->
             <div class=" row p-2">
 
                 <div class="col-md-6 text-sm">
                     <label class="control-label text-blue">Chi tiết thanh toán </label>
 
                     <input type="hidden" id="hidTamUngId" />
-                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
+                    <input type="hidden" id="hidIdCu" value="0" />
+                    <button class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>
+                    <!--<button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>-->
 
                     <input type="hidden" id="hidTT621Id" />
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
                     <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnDelete" disabled><i class="fas fa-trash-alt text-blue"></i></button>
+
+
+                    <button type="button" class="btn btn-outline-danger btn-sm float-right" title="Xoá tất cả" id="btnDeleteAll" disabled><i class="fas fa-trash "></i></button>
+
                 </div>
 
                 <div class="col-md-6 text-sm text-right">
-                    <button type="button" class="btn btn-outline-dark btn-sm" title="Thanh toán không kết chuyển"><i class="fas fa-folder text-warning"></i></button>
+                    <button type="button" class="btn btn-outline-success btn-sm " title="Import từ excell" id="btnImportExcell" data-toggle="modal" data-target="#importExcelModal" disabled><i class="fas fa-file-import"></i></button>
+                    @*@if (Model.KVPTC.MFieu == "T")// && Model.KVPTC.NgoaiTe == "VN")
+                    {
+                    <button type="button" class="btn btn-outline-dark btn-sm" title="Thu hoàn ứng" disabled id="btnThuHoanUng"><i class="fas fa-folder text-warning"></i></button>
+                    }*@
                     <button type="button" class="btn btn-outline-dark btn-sm" title="Kết chuyển" disabled id="btnKetChuyen"><i class="fas fa-check"></i></button>
                 </div>
-
-            </div> -->
+            </div>
 
             <div class="pr-2 pl-2" style="overflow-x:auto;">
                 <table class="table mytable text-nowrap text-sm" id="tt621Tbl">
                     <thead>
                         <tr class="table-info">
 
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCT)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiai)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiaiP)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTienNT)</th>
@@ -208,28 +277,29 @@
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
                             @*   <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
-                            <th>Phiếu TC</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
+                            <th>Sgtcode</th>
+
                         </tr>
                     </thead>
                     <tbody id="ctThanhToanBody">
@@ -264,6 +334,20 @@
     <input type="hidden" name="maKh" id="hidMaKh" />
     <input type="hidden" name="tenKh" id="hidTenKh" />
 </form>
+
+<form asp-action="ThemMoiCT_TT_KhongTC" method="get" id="frm_ThemMoiCT_TT_KhongTC">
+    <input type="hidden" id="tamUngId" name="tamUngId" />
+    <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
+
+</form>
+
+<form asp-action="ThemMoiCT_TT_ContextMenu" method="get" id="frm_ThemMoiCT_TT_KhongTC_ContextMenu">
+    <input type="hidden" id="tamUngId" name="tamUngId" />
+    <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
+    <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
+
+</form>
+
 @section Scripts{
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
     <!--mustache-->
@@ -271,15 +355,164 @@
     @*<script src="~/js/Admin/TT621/createController.js"></script>*@
     <script src="~/js/Admin/TT621/khongTCController.js"></script>
 
+    <script id="data-template" type="x-tmpl-mustache">
+
+        <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
+
+            <td>{{SoCT}}</td>
+            <td>{{DienGiai}}</td>
+            <td>{{DienGiaiP}}</td>
+            <td>{{SoTienNT}}</td>
+            <td>{{LoaiTien}}</td>
+            <td>{{TyGia}}</td>
+            <td>{{SoTien}}</td>
+            <td>{{TKNo}}</td>
+            <td>{{MaKhNo}}</td>
+            <td>{{TKCo}}</td>
+            <td>{{MaKhCo}}</td>
+            <td>{{Sgtcode}}</td>
+
+        </tr>
+    </script>
+
     <script>
 
-        //// enter for search
-        //shortcut.add("Enter", function () {
-        //    $('#btnKhSearch').click();
-        //});
+        var id_Redirect = '@ViewBag.tamUngId'; //Id sau khi redirect ve //////////////////////////////////////////////
+        if (id_Redirect !== '') {
+            createController.Disabled_TU_Khong_TT(id_Redirect); // Disabled row TU ko co TT
+            $('.' + id_Redirect).click();
+        }
 
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+
+        // contextmenu for themmoiTT VND btnThemMoiCT
+        $('#btnThemMoiCT').contextmenu(function (e) {
+            e.preventDefault();
+
+            ////ThemMoiCT_TT_ContextMenu_Partial();
+            //var dienGiaiP = $('#txtDienGiaiP').val();
+            //var hTTC = $('#ddlHttc').val();
+            //var soTienNT = $('#txtSoTienNT').val();
+
+            var loaiTien = '@Model.KVPTC.NgoaiTe';
+
+            if (loaiTien === 'VN') {
+                tamUngId = $('#hidTamUngId').val();
+
+                if (tamUngId == null || tamUngId == '') {
+                    alert('chưa chọn tạm ứng nào để thanh toán');
+                }
+                $('#tamUngId').val(tamUngId);
+
+                id_Dong_Da_Click = $('#hidIdCu').val();
+                $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
+
+                kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+                $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
+
+                $('#frm_ThemMoiCT_TT_ContextMenu').submit();
+            }
+            else {
+                toastr.warning("Hãy chọn phiếu TT VN.");
+                return;
+            }
+
+        });
+        // importexcel
+
+        $('#importExcel_Submit').click(function () {
+            var tamUngId = $('#hidTamUngId').val();
+            if(tamUngId === ''){
+                alert('Bạn chưa chọn TU nào.');
+                return false;
+            }
+            var loaiPhieu = '@Model.KVPTC.MFieu';
+            var kvptcId = '@Model.KVPTC.Id';
+            var kvctptcId = '@Model.KVCTPTC.Id';
+
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#fUpload').val();
+            if (filename.length !== 0) {
+                var extension = filename.replace(/^.*\./, '');
+                // kiem tra dinh dang
+                if ($.inArray(extension, fileExtension) === -1) {
+                    bootbox.alert({
+                        size: "small",
+                        title: "Infomation",
+                        message: "Chọn chưa đúng định dạng <b> Excel! </b>"
+                    });
+
+                    return false;
+                }
+            }
+
+            if ($('#frmImportExcell').valid()) {
+
+            var input = $('#fUpload');
+            var files = input[0].files;
+            if (files.length == 0) {
+                toastr.warning("Vui lòng chọn file excel.");
+                return;
+            }
+
+            $('#importExcel_Submit').attr('disabled', true);
+            $('.submitSpin').show();
+
+            var formData = new FormData();
+            formData.append("tamUngId", tamUngId);
+            formData.append("loaiPhieu", loaiPhieu);
+            formData.append("kvptcId", kvptcId);
+            formData.append("kvctptcId", kvctptcId);
+
+            for (var i = 0; i <= files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/TT621s/ImportExcell",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+
+                    if (response.status) {
+                        toastr.success('Import data thành công!');
+                        $('#importExcelModal').modal('hide');
+                        //// load lai TT621Create
+                        $('#' + tamUngId).click();
+                        createController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
+
+                    } else {
+                        $('#importExcelModal').modal('hide');
+                        toastr.error(response.message);
+
+                    }
+                }
+                , error: function (xhr, status, error) {
+                    $('.modal').modal('hide');
+                    alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
+                }
+            });
+            }
+            else{
+                alert('Not valid')
+            }
+        })
+
+        // btnKhSearch
         $('#btnKhSearch').click(function () { // khi click có the dinh' nut txtMaKh blur (su kien blur khi go~ dang do~ va bam' nut btnKhSearch)
-            
+
             var maKhtext = maKhtext = $('#txtMaKh').val();
             var kvpctId = '';
             if ('@Model.KVPTC.SoCT' != null) {
@@ -338,39 +571,37 @@
             });
         }
 
-    </script>
 
-    <script id="data-template" type="x-tmpl-mustache">
+        // btnThemMoiCT
+        $('#btnThemMoiCT').off('click').on('click', function () {
+            //tamUngId = $('#hidTamUngId').val();
+            //if (tamUngId == null || tamUngId == '') {
+            //    alert('chưa chọn tạm ứng nào để thanh toán');
+            //}
+            //id_Dong_Da_Click = $('#hidIdCu').val();
+            //kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+            //var url = '/TT621s/ThemMoiCT_TT_Partial';
 
-        <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
+            //$.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click }, function (data) {
+            //    $('.ThemMoiCT_TT_Body').html(data);
+            //    $('#ThemMoiCT_TT_Modal').modal('show');
+            //    $('#ThemMoiCT_TT_Modal').draggable();
+            //})
 
-            <td>{{DienGiai}}</td>
-            <td>{{DienGiaiP}}</td>
-            <td>{{SoTienNT}}</td>
-            <td>{{LoaiTien}}</td>
-            <td>{{TyGia}}</td>
-            <td>{{SoTien}}</td>
-            <td>{{TKNo}}</td>
-            <td>{{MaKhNo}}</td>
-            <td>{{TKCo}}</td>
-            <td>{{MaKhCo}}</td>
-            <td>{{PhieuTC}}</td>
-
-        </tr>
-    </script>
-
-    <script>
-        function confirmDelete(uniqueId, isDeleteClicked) {
-            var deleteSpan = 'deleteSpan_' + uniqueId;
-            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
-
-            if (isDeleteClicked) {
-                $('#' + deleteSpan).hide();
-                $('#' + confirmDeleteSpan).show();
-            } else {
-                $('#' + deleteSpan).show();
-                $('#' + confirmDeleteSpan).hide();
+            tamUngId = $('#hidTamUngId').val();
+            if (tamUngId == null || tamUngId == '') {
+                alert('chưa chọn tạm ứng nào để thanh toán');
             }
-        }
+            id_Dong_Da_Click = $('#hidIdCu').val();
+            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+            var url = '/TT621s/ThemMoiCT_TT_Partial';
+
+            $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
+                $('.ThemMoiCT_TT_Body').html(data);
+                $('#ThemMoiCT_TT_Modal').modal('show');
+                $('#ThemMoiCT_TT_Modal').draggable();
+            })
+        })
     </script>
+
 }

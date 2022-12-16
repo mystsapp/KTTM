@@ -1,7 +1,7 @@
 ﻿@model TT621ViewModel
 
 @{
-    ViewData["Title"] = "TT621Create";
+    ViewData["Title"] = "TT621Create - KTTM";
 }
 
 <!-- CapNhatCT_TT modal-->
@@ -248,7 +248,7 @@
                     <thead>
                         <tr class="table-info">
 
-                            <th>STT</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCT)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiai)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DienGiaiP)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoTienNT)</th>
