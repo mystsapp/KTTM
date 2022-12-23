@@ -245,7 +245,6 @@
                     <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
                     <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnDelete" disabled><i class="fas fa-trash-alt text-blue"></i></button>
 
-
                     <button type="button" class="btn btn-outline-danger btn-sm float-right" title="Xoá tất cả" id="btnDeleteAll" disabled><i class="fas fa-trash "></i></button>
 
                 </div>
@@ -345,7 +344,6 @@
     <input type="hidden" id="tamUngId" name="tamUngId" />
     <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
     <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
-
 </form>
 
 @section Scripts{
@@ -581,7 +579,9 @@
             }
             else{
                 $('#tamUngId').val(tamUngId);
-                $('#id_Dong_Da_Click')
+                id_Dong_Da_Click = $('#hidIdCu').val();
+                $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
+                $('#frm_ThemMoiCT_TT_KhongTC').submit();
             }
             //id_Dong_Da_Click = $('#hidIdCu').val();
             //kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view

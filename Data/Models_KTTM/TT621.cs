@@ -129,7 +129,7 @@ namespace Data.Models_KTTM
         public string SoXe { get; set; }
 
         [DisplayName("Tên KH")]
-        [MaxLength(100, ErrorMessage = "Chiều dài tối đa 100 ký tự"), Column(TypeName = "nvarchar(100)")]
+        [MaxLength(300, ErrorMessage = "Chiều dài tối đa 300 ký tự"), Column(TypeName = "nvarchar(300)")]
         public string TenKH { get; set; }
 
         [DisplayName("Địa chỉ")]

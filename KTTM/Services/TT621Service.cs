@@ -38,6 +38,7 @@ namespace KTTM.Services
         TT621 GetByIdAsNoTracking(long tt621Id);
 
         decimal Get_SoTienNT_CanKetChuyen(long tamUngId, decimal soTienNT_Tren_TT621Create, string loaiPhieu);
+        decimal Get_SoTienNT_CanKetChuyen_KhongTC(long tamUngId);
 
         Task<TT621Dto> ConvertTT621ToTT621Dto(TT621 tT621);
 
@@ -278,6 +279,15 @@ namespace KTTM.Services
             }
 
             return soTienNT_CanKetChuyen;
+        }
+        
+        public decimal Get_SoTienNT_CanKetChuyen_KhongTC(long tamUngId)
+        {
+            var tamUng = _unitOfWork.tamUngRepository.GetByIdAsNoTracking(x => x.Id == tamUngId);
+            decimal soTienNTTrongTT621_TheoTamUng = GetSoTienNT_TrongTT621_TheoTamUng(tamUngId); // da làm tròn
+            
+            return tamUng.ConLaiNT.Value - soTienNTTrongTT621_TheoTamUng;
+
         }
 
         public async Task DeleteAsync(TT621 tT621)
