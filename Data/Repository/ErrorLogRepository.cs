@@ -15,7 +15,7 @@ namespace Data.Repository
 
         Task<ErrorLog> GetById(string id);
 
-        Task CreateAsync(ErrorLog errorLog);
+        Task<ErrorLog> CreateAsync(ErrorLog errorLog);
 
         Task UpdateAsync(ErrorLog errorLog);
 
@@ -31,10 +31,11 @@ namespace Data.Repository
             _context = context;
         }
 
-        public async Task CreateAsync(ErrorLog errorLog)
+        public async Task<ErrorLog> CreateAsync(ErrorLog errorLog)
         {
-            await _context.ErrorLog.AddAsync(errorLog);
+            var entityEntry = await _context.ErrorLog.AddAsync(errorLog);
             await _context.SaveChangesAsync();
+            return entityEntry.Entity;
         }
 
         public IEnumerable<ErrorLog> Find(Func<ErrorLog, bool> predicate)

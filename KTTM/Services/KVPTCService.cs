@@ -59,7 +59,7 @@ namespace KTTM.Services
         Task<string> GetChiNhanhByMaCn(string macn);
         Task DeleteAsync(KVPTC kVPTC);
 
-        Task CreateErrorLog(ErrorLog errorLog);
+        Task<ErrorLog> CreateErrorLog(ErrorLog errorLog);
         Task<Lockkvct> GetLockKvct(int thang, int nam, string maCn);
     }
 
@@ -502,11 +502,11 @@ namespace KTTM.Services
         }
 
         
-        public async Task CreateErrorLog(ErrorLog errorLog)
+        public async Task<ErrorLog> CreateErrorLog(ErrorLog errorLog)
         {
 
-            await _unitOfWork.errorLogRepository.CreateAsync(errorLog);
-            await _unitOfWork.Complete();
+            return await _unitOfWork.errorLogRepository.CreateAsync(errorLog);
+            
         }
         
         public async Task<Lockkvct> GetLockKvct(int thang, int nam, string maCn)

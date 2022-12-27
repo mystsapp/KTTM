@@ -230,6 +230,7 @@ namespace KTTM.Services
             var tamUngs = await Find_TamUngs_By_MaKh_Include(maKh, maCn, ""); // tkNo: 1411 VND, 1412 NgoaiTe
             var tamUngs1 = tamUngs.ToList();
 
+            // loc ra nhung tamung chua co TT
             foreach (var item in tamUngs1.Reverse<TamUng>())
             {
                 var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
@@ -238,6 +239,21 @@ namespace KTTM.Services
 
                 if (tT621s.Count() == 1 && tT621s.FirstOrDefault().SoTienNT != item.SoTienNT) // tT621s.sotiennt  khac' tamung.sotiennt
                     tamUngs1.Remove(item);
+            }
+
+            // loc ra nhung tamung dang trong KhongTC
+            List<TamUng> tamUngs2 = new List<TamUng>();
+            foreach(var item in tamUngs)
+            {
+                var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
+                if(tT621s.Any(x => x.PhieuTC == item.PhieuChi))
+                {
+                    tamUngs2.Add(item);
+                }
+            }
+            if(tamUngs2.Count > 0)
+            {
+                tamUngs1.AddRange(tamUngs2);
             }
 
             return tamUngs1;

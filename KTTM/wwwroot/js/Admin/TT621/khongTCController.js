@@ -82,27 +82,19 @@ var khongTCController = {
             // gang' ds TT141 theo tamung
             khongTCController.GetTT621s_By_TamUng(tamUngId);
 
-            // an nut btnCapNhatCT
-            $('#btnCapNhatCT').attr('disabled', true);
+            // an nut btnCapNhatCT_KhongTC
+            $('#btnCapNhatCT_KhongTC').attr('disabled', true);
 
             // Check_ThuHoanUngBtnStatus
             khongTCController.Check_ThuHoanUngBtnStatus(tamUngId);
         });
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
 
-        
-        // btnCapNhatCT
-        $('#btnCapNhatCT').off('click').on('click', function () {
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
-            tt621Id = $('#hidTT621Id').val();
 
-            khongTCController.CapNhatCT_TT_Partial(tt621Id, kVCTPCTId_PhieuTC);
-        })
-        // btnCapNhatCT
         // btnDelete
         $('#btnDelete').off('click').on('click', function () {
             $('#btnThemMoiCT').attr('disabled', true);
-            $('#btnCapNhatCT').attr('disabled', true);
+            $('#btnCapNhatCT_KhongTC').attr('disabled', true);
 
             kVCTPTCId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
@@ -139,7 +131,7 @@ var khongTCController = {
         // btnDeleteAll
         $('#btnDeleteAll').off('click').on('click', function () {
             $('#btnThemMoiCT').attr('disabled', true);
-            $('#btnCapNhatCT').attr('disabled', true);
+            $('#btnCapNhatCT_KhongTC').attr('disabled', true);
 
             kVCTPTCId_PhieuTC = $('#hidKVCTPCTId').val();
             tt621Id = $('#hidTT621Id').val();
@@ -281,16 +273,16 @@ var khongTCController = {
                         var soCT_TT621CreateView = $('#kVPCTId_TT621CreateView').val();// trong TT621CreateView
 
                         if (phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) { // cung phieu T cho capnhat
-                            $('#btnCapNhatCT').attr('disabled', false);
+                            $('#btnCapNhatCT_KhongTC').attr('disabled', false);
                         }
                         if (phieuTC.includes("C") && soCT_TT621CreateView.includes("C")) { // cung phieu C cho capnhat
-                            $('#btnCapNhatCT').attr('disabled', false);
+                            $('#btnCapNhatCT_KhongTC').attr('disabled', false);
                         }
                         //if ((!phieuTC.includes("T") && soCT_TT621CreateView.includes("T")) ||
                         //    (phieuTC.includes("T") && !soCT_TT621CreateView.includes("T"))) { // khac phieu => ko cho capnhat
-                        //    $('#btnCapNhatCT').attr('disabled', true);
+                        //    $('#btnCapNhatCT_KhongTC').attr('disabled', true);
                         //}
-                        $('#btnCapNhatCT').attr('disabled', false);
+                        $('#btnCapNhatCT_KhongTC').attr('disabled', false);
                         $('#btnDelete').attr('disabled', false);
                     })
                 }
@@ -359,16 +351,8 @@ var khongTCController = {
         $.get('/TT621s/Gang_SoTienNT_CanKetChuyen', { tamUngId: tamUngId, soTienNT_Tren_TT621Create: soTienNT, loaiPhieu: loaiPhieu }, function (soTien) {
             $('#hidSoTienNT_CanKetChuyen').val(soTien);
         })
-    },
 
-    CapNhatCT_TT_Partial: function (tt621Id, kVCTPCTId_PhieuTC) {
-        var url = '/TT621s/CapNhatCT_TT_Partial';
 
-        $.get(url, { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
-            $('.CapNhatCT_TT_Body').html(data);
-            $('#CapNhatCT_TT_Modal').modal('show');
-            $('#CapNhatCT_TT_Modal').draggable();
-        })
     },
     KhachHang_By_Code: function (code, txtMaKh) {
         $.ajax({

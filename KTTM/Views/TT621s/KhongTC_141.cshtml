@@ -211,7 +211,7 @@
                             @foreach (var item in Model.TamUngs)
                             {
 
-                                <tr class="tamUngTr" data-id="@item.Id">
+                                <tr class="tamUngTr @item.Id" data-id="@item.Id">
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoCT)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayCT.HasValue ? item.NgayCT.Value.ToString("dd/MM/yyyy") : "")</td>
@@ -242,7 +242,7 @@
                     <!--<button type="button" class="btn btn-outline-secondary btn-sm" title="Thêm mới CT" id="btnThemMoiCT" disabled><i class="fas fa-plus text-blue"></i></button>-->
 
                     <input type="hidden" id="hidTT621Id" />
-                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT" disabled><i class="fas fa-edit text-blue"></i></button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" title="Cập nhật CT" id="btnCapNhatCT_KhongTC" disabled><i class="fas fa-edit text-blue"></i></button>
                     <button type="button" class="btn btn-outline-danger btn-sm" title="Xoá CT" id="btnDelete" disabled><i class="fas fa-trash-alt text-blue"></i></button>
 
                     <button type="button" class="btn btn-outline-danger btn-sm float-right" title="Xoá tất cả" id="btnDeleteAll" disabled><i class="fas fa-trash "></i></button>
@@ -340,6 +340,11 @@
 
 </form>
 
+<form asp-action="CapNhatCT_TT_KhongTC" method="get" id="frm_CapNhatCT_TT_KhongTC">
+    <input type="hidden" id="tt621Id" name="tt621Id" />
+
+</form>
+
 <form asp-action="ThemMoiCT_TT_ContextMenu" method="get" id="frm_ThemMoiCT_TT_KhongTC_ContextMenu">
     <input type="hidden" id="tamUngId" name="tamUngId" />
     <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
@@ -377,7 +382,7 @@
 
         var id_Redirect = '@ViewBag.tamUngId'; //Id sau khi redirect ve //////////////////////////////////////////////
         if (id_Redirect !== '') {
-            createController.Disabled_TU_Khong_TT(id_Redirect); // Disabled row TU ko co TT
+            khongTCController.Disabled_TU_Khong_TT(id_Redirect); // Disabled row TU ko co TT
             $('.' + id_Redirect).click();
         }
 
@@ -489,7 +494,7 @@
                         $('#importExcelModal').modal('hide');
                         //// load lai TT621Create
                         $('#' + tamUngId).click();
-                        createController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
+                        khongTCController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
 
                     } else {
                         $('#importExcelModal').modal('hide');
@@ -592,7 +597,27 @@
             //    $('#ThemMoiCT_TT_Modal').modal('show');
             //    $('#ThemMoiCT_TT_Modal').draggable();
             //})
+
+
         })
+
+        // btnCapNhatCT_KhongTC
+        $('#btnCapNhatCT_KhongTC').off('click').on('click', function () {
+            
+            tt621Id = $('#hidTT621Id').val();
+            $('#tt621Id').val(tt621Id);
+            $('#frm_CapNhatCT_TT_KhongTC').submit();
+        })
+
+
+                    //CapNhatCT_TT_Partial: function (tt621Id, kVCTPCTId_PhieuTC) {
+                    //    var url = '/TT621s/CapNhatCT_TT_Partial';
+
+                    //    $.get(url, { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
+                    //        $('.CapNhatCT_TT_Body').html(data);
+                    //        $('#CapNhatCT_TT_Modal').modal('show');
+                    //        $('#CapNhatCT_TT_Modal').draggable();
+                    //    })
     </script>
 
 }

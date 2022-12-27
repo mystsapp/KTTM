@@ -117,21 +117,21 @@ namespace KTTM.Controllers
                     var jsonResult = GetCommentText_By_TamUng(TT621VM.TamUngs.FirstOrDefault().Id, 0, "T");
                     TT621VM.CommentText = jsonResult.Result.Value.ToString();
 
-                    // get all TT621 thep tamungs -> clear het
-                    List<TT621> tT621s = new List<TT621>();
-                    foreach (var item in TT621VM.TamUngs)
-                    {
-                        var tT621s1 = await _tT621Service.GetTT621s_By_TamUng(item.Id);
-                        if (tT621s1 != null)
-                        {
-                            tT621s.AddRange(tT621s1);
-                        }
-                    }
-                    if (tT621s != null)
-                    {
-                        await _tT621Service.DeleteRangeAsync(tT621s);
-                    }
-                    // get all TT621 thep tamungs -> clear het
+                    //// get all TT621 thep tamungs -> clear het
+                    //List<TT621> tT621s = new List<TT621>();
+                    //foreach (var item in TT621VM.TamUngs)
+                    //{
+                    //    var tT621s1 = await _tT621Service.GetTT621s_By_TamUng(item.Id);
+                    //    if (tT621s1 != null)
+                    //    {
+                    //        tT621s.AddRange(tT621s1);
+                    //    }
+                    //}
+                    //if (tT621s != null)
+                    //{
+                    //    await _tT621Service.DeleteRangeAsync(tT621s);
+                    //}
+                    //// get all TT621 thep tamungs -> clear het
                 }
             }
 
@@ -298,7 +298,8 @@ namespace KTTM.Controllers
             TT621VM.TT621.DSKhongVAT = TT621VM.TT621.DSKhongVAT ?? 0;
             TT621VM.TT621.VAT = TT621VM.TT621.VAT ?? 0;
             IEnumerable<TT621> tt621_Theo_PhieuTC = await _tT621Service.GetTT621s_By_TamUng(tamUngId);//.GetByPhieuTC(TT621VM.KVCTPTC.SoCT, user.Macn);
-            if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại phieu TT nào đó rồi -> lay chung soCT Cua TT621
+            // new SoCT (TV TN)
+            if (tt621_Theo_PhieuTC.Count() > 0) // có tồn tại CT TT nào đó rồi -> lay chung soCT Cua TT621
             {
                 TT621VM.TT621.SoCT = tt621_Theo_PhieuTC.FirstOrDefault().SoCT;
             }
@@ -335,18 +336,20 @@ namespace KTTM.Controllers
                 kVCTPTC.SoTT_DaTao = TT621VM.TT621.SoCT;
                 await _kVCTPTCService.UpdateAsync(kVCTPTC);
 
-                return Json(new
-                {
-                    status = true
-                });
+                return RedirectToAction(nameof(KhongTC_141), new { kvptcId = TT621VM.KVCTPTC.KVPTCId, maKh = tamUng.MaKhNo, tamUngId = tamUngId });
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    status = false,
-                    message = ex.Message
-                });
+                ErrorLog errorLog = new ErrorLog();
+                errorLog.MaCn = user.Macn;
+                errorLog.NgayTao = DateTime.Now;
+                errorLog.Message = ex.Message;
+                errorLog.InnerMessage = ex.InnerException.ToString();
+
+                var errorLog1 = await _kVPTCService.CreateErrorLog(errorLog);
+
+                ViewBag.ErrorMessage = "Error " + "(" + errorLog1.Id + "):" + " Contact to your administrator to know detail.";
+                return View("~/Views/Shared/NotFound.cshtml");
             }
         }
 
@@ -551,7 +554,7 @@ namespace KTTM.Controllers
             return View(TT621VM);
         }
 
-        public async Task<IActionResult> CapNhatCT_TT_KhongTC_Partial(long tt621Id) // tamungid == kvctpctid // 1 <-> 1
+        public async Task<IActionResult> CapNhatCT_TT_KhongTC(long tt621Id) // tamungid == kvctpctid // 1 <-> 1
         {
             if (tt621Id == 0)
                 return NotFound();
@@ -592,7 +595,7 @@ namespace KTTM.Controllers
 
             TT621VM.LoaiHDGocs = _kVCTPTCService.LoaiHDGocs();
 
-            return PartialView(TT621VM);
+            return View(TT621VM);
         }
 
         [HttpPost, ActionName("CapNhatCT_TT_KhongTC_Partial")]
