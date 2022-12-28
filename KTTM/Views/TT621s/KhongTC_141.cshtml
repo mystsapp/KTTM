@@ -345,6 +345,11 @@
 
 </form>
 
+<form asp-action="Delete_TT_KhongTC" method="post" id="frm_Delete_TT_KhongTC">
+    <input type="hidden" id="tt621Id" name="tt621Id" />
+
+</form>
+
 <form asp-action="ThemMoiCT_TT_ContextMenu" method="get" id="frm_ThemMoiCT_TT_KhongTC_ContextMenu">
     <input type="hidden" id="tamUngId" name="tamUngId" />
     <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
@@ -618,6 +623,15 @@
                     //        $('#CapNhatCT_TT_Modal').modal('show');
                     //        $('#CapNhatCT_TT_Modal').draggable();
                     //    })
+
+
+        // btnDelete
+        $('#btnDelete').off('click').on('click', function () {
+            
+            tt621Id = $('#hidTT621Id').val();
+            $('#tt621Id').val(tt621Id);
+            $('#frm_Delete_TT_KhongTC').submit();
+        })
     </script>
 
 }
