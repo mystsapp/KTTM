@@ -260,27 +260,27 @@
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TKCo)</th>
                             <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MaKhCo)</th>
                             @*   <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().Sgtcode)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
-                                <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HTTC)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().GhiSo)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MsThue)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NgayCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LoaiHDGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoCTGoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieuHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().VAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DSKhongVAT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().BoPhan)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().NoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().CoQuay)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().SoXe)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().TenKH)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DiaChi)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().KyHieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MauSoHD)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().MatHang)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().DieuChinh)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().LapPhieu)</th>
+                            <th>@Html.DisplayNameFor(m => m.TT621s.FirstOrDefault().HoaDonDT)</th>*@
                             <th>Sgtcode</th>
 
                         </tr>
@@ -306,204 +306,210 @@
     <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
 </form>
 
+<form asp-action="Delete_TT" method="post" id="frm_Delete_TT">
+    <input type="hidden" id="tt621Id_Delete" name="tt621Id" />
+    <input type="hidden" id="kVCTPTCId_PhieuTC" name="kVCTPTCId_PhieuTC" />
+
+</form>
+
 @section Scripts{
     @*<script src="~/js/Admin/Home/indexController.js"></script>*@
-<!--mustache-->
-<script src="~/lib/mustache.min.js"></script>
-<script src="~/js/Admin/TT621/createController.js"></script>
-<script id="data-template" type="x-tmpl-mustache">
+    <!--mustache-->
+    <script src="~/lib/mustache.min.js"></script>
+    <script src="~/js/Admin/TT621/createController.js"></script>
+    <script id="data-template" type="x-tmpl-mustache">
 
-    <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
+        <tr class="trTT621" data-id="{{Id}}" data-phieutc="{{PhieuTC}}">
 
-        <td>{{SoCT}}</td>
-        <td>{{DienGiai}}</td>
-        <td>{{DienGiaiP}}</td>
-        <td>{{SoTienNT}}</td>
-        <td>{{LoaiTien}}</td>
-        <td>{{TyGia}}</td>
-        <td>{{SoTien}}</td>
-        <td>{{TKNo}}</td>
-        <td>{{MaKhNo}}</td>
-        <td>{{TKCo}}</td>
-        <td>{{MaKhCo}}</td>
-        <td>{{Sgtcode}}</td>
-    </tr>
-</script>
+            <td>{{SoCT}}</td>
+            <td>{{DienGiai}}</td>
+            <td>{{DienGiaiP}}</td>
+            <td>{{SoTienNT}}</td>
+            <td>{{LoaiTien}}</td>
+            <td>{{TyGia}}</td>
+            <td>{{SoTien}}</td>
+            <td>{{TKNo}}</td>
+            <td>{{MaKhNo}}</td>
+            <td>{{TKCo}}</td>
+            <td>{{MaKhCo}}</td>
+            <td>{{Sgtcode}}</td>
+        </tr>
+    </script>
 
-<script>
+    <script>
 
 
-    var id_Redirect = '@ViewBag.tamUngId'; //Id sau khi redirect ve //////////////////////////////////////////////
-    if (id_Redirect !== '') {
-        createController.Disabled_TU_Khong_TT(id_Redirect); // Disabled row TU ko co TT
-        $('.' + id_Redirect).click();
-    }
-    if('@ViewBag.SoTT_DaTao' === ''){
-        //alert('@ViewBag.SoTT_DaTao');
-        //createController.Enabled_TU_Khong_TT();
-    }
-
-    ////var tr_click = $('#phieuTbl ' + soCT);
-    //if (id_Redirect !== '') {
-
-    //    var id_Redirect_Class = $('.' + id_Redirect);
-
-    //    if (id_Redirect_Class.hasClass("hoverClass")) {
-    //        id_Redirect_Class.removeClass("hoverClass");
-    //    }
-    //    else {
-    //        id_Redirect_Class.removeClass("hoverClass");
-    //        id_Redirect_Class.addClass("hoverClass");
-    //    }
-
-    //    indexController.TdVal_Click(id_Redirect);
-    //}
-
-    function confirmDelete(uniqueId, isDeleteClicked) {
-        var deleteSpan = 'deleteSpan_' + uniqueId;
-        var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
-
-        if (isDeleteClicked) {
-            $('#' + deleteSpan).hide();
-            $('#' + confirmDeleteSpan).show();
-        } else {
-            $('#' + deleteSpan).show();
-            $('#' + confirmDeleteSpan).hide();
+        var id_Redirect = '@ViewBag.tamUngId'; //Id sau khi redirect ve //////////////////////////////////////////////
+        if (id_Redirect !== '') {
+            createController.Disabled_TU_Khong_TT(id_Redirect); // Disabled row TU ko co TT
+            $('.' + id_Redirect).click();
         }
-    }
+        if ('@ViewBag.SoTT_DaTao' === '') {
+            //alert('@ViewBag.SoTT_DaTao');
+            //createController.Enabled_TU_Khong_TT();
+        }
 
-    // contextmenu for themmoiTT VND btnThemMoiCT
-    $('#btnThemMoiCT').contextmenu(function (e) {
-        e.preventDefault();
+        ////var tr_click = $('#phieuTbl ' + soCT);
+        //if (id_Redirect !== '') {
 
-        ////ThemMoiCT_TT_ContextMenu_Partial();
-        //var dienGiaiP = $('#txtDienGiaiP').val();
-        //var hTTC = $('#ddlHttc').val();
-        //var soTienNT = $('#txtSoTienNT').val();
+        //    var id_Redirect_Class = $('.' + id_Redirect);
 
-        var loaiTien = '@Model.KVPTC.NgoaiTe';
+        //    if (id_Redirect_Class.hasClass("hoverClass")) {
+        //        id_Redirect_Class.removeClass("hoverClass");
+        //    }
+        //    else {
+        //        id_Redirect_Class.removeClass("hoverClass");
+        //        id_Redirect_Class.addClass("hoverClass");
+        //    }
 
-        if (loaiTien === 'VN') {
-            tamUngId = $('#hidTamUngId').val();
+        //    indexController.TdVal_Click(id_Redirect);
+        //}
 
-            if (tamUngId == null || tamUngId == '') {
-                alert('chưa chọn tạm ứng nào để thanh toán');
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
             }
-            $('#tamUngId').val(tamUngId);
-
-            id_Dong_Da_Click = $('#hidIdCu').val();
-            $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
-
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
-            $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
-
-            $('#frm_ThemMoiCT_TT_ContextMenu').submit();
-        }
-        else {
-            toastr.warning("Hãy chọn phiếu TT VN.");
-            return;
         }
 
-    });
+        // contextmenu for themmoiTT VND btnThemMoiCT
+        $('#btnThemMoiCT').contextmenu(function (e) {
+            e.preventDefault();
 
-    //function ThemMoiCT_TT_ContextMenu_Partial(){
-    //    debugger
-    //    var dienGiaiP = $('#txtDienGiaiP').val();
-    //    var hTTC = $('#ddlHttc').val();
-    //    var soTienNT = $('#txtSoTienNT').val();
+            ////ThemMoiCT_TT_ContextMenu_Partial();
+            //var dienGiaiP = $('#txtDienGiaiP').val();
+            //var hTTC = $('#ddlHttc').val();
+            //var soTienNT = $('#txtSoTienNT').val();
 
-    //    var loaiTien = '@Model.KVPTC.NgoaiTe';
+            var loaiTien = '@Model.KVPTC.NgoaiTe';
 
-    //    if (loaiTien === 'VN') {
-    //        tamUngId = $('#hidTamUngId').val();
-    //        if (tamUngId == null || tamUngId == '') {
-    //            alert('chưa chọn tạm ứng nào để thanh toán');
-    //        }
-    //        id_Dong_Da_Click = $('#hidIdCu').val();
-    //        kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
-    //        var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
+            if (loaiTien === 'VN') {
+                tamUngId = $('#hidTamUngId').val();
 
-    //        $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
-    //            $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
-    //            $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
-    //            $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
-    //            $('#txtSoTienNT').val(soTienNT);
-    //        })
-    //    }
-    //    else {
-    //        toastr.warning("Hãy chọn phiếu TT VN.");
-    //        return;
-    //    }
-
-    //}
-    //// contextmenu for themmoiTT VND
-
-    $('#btnThuHoanUng').off('click').on('click', function(){
-        tamUngId = $('#hidTamUngId').val();
-        soTienNT = $('#txtSoTienNT_Create').val();
-        soCTThu = '@Model.KVCTPTC.SoCT';
-        kvctptcId = '@Model.KVCTPTC.Id';
-
-        bootbox.confirm({
-            message: "Bạn có chắc chắn muốn <b>hoàn ứng</b> không?",
-            buttons: {
-                confirm: {
-                    label: 'Có',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'Không',
-                    className: 'btn-danger'
+                if (tamUngId == null || tamUngId == '') {
+                    alert('chưa chọn tạm ứng nào để thanh toán');
                 }
-            },
-            callback: function (result) {
-                if(result){
-                     $.post('/TT621s/ThuHoanUng', { tamUngId: tamUngId, soTienNT: soTienNT, soCTThu: soCTThu, kvctptcId: kvctptcId }, function (response) {
-                         //console.log(response);
-                         if (response.status) {
-                             toastr.success('Thu hoàn ứng thành công', 'Thu hoàn ứng!');
+                $('#tamUngId').val(tamUngId);
 
-                             //createController.GetTT621s_By_TamUng(tamUngId);
-                             //createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
-                             //$('#btnDelete').attr('disabled', true); // disabled btnDelete
-                             //$('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
+                id_Dong_Da_Click = $('#hidIdCu').val();
+                $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
 
-                             //// Check_ThuHoanUngBtnStatus
-                             //createController.Check_ThuHoanUngBtnStatus(tamUngId);
+                kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+                $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
 
-                             //if (response.tT621sCount === '')
-                             //    createController.Enabled_TU_Khong_TT();
+                $('#frm_ThemMoiCT_TT_ContextMenu').submit();
+            }
+            else {
+                toastr.warning("Hãy chọn phiếu TT VN.");
+                return;
+            }
 
-                             //location.reload();
-
-                             $('#btnBack').trigger('click');
-                             location.reload();
-                         }
-                         else {
-                             toastr.error(response.message, 'Thu hoàn ứng!')
-                         }
-                   });
-                }
-
-             }
         });
 
-    })
+        //function ThemMoiCT_TT_ContextMenu_Partial(){
+        //    debugger
+        //    var dienGiaiP = $('#txtDienGiaiP').val();
+        //    var hTTC = $('#ddlHttc').val();
+        //    var soTienNT = $('#txtSoTienNT').val();
+
+        //    var loaiTien = '@Model.KVPTC.NgoaiTe';
+
+        //    if (loaiTien === 'VN') {
+        //        tamUngId = $('#hidTamUngId').val();
+        //        if (tamUngId == null || tamUngId == '') {
+        //            alert('chưa chọn tạm ứng nào để thanh toán');
+        //        }
+        //        id_Dong_Da_Click = $('#hidIdCu').val();
+        //        kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+        //        var url = '/TT621s/ThemMoiCT_TT_ContextMenu_Partial';
+
+        //        $.get(url, { tamUngId: tamUngId, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC, id_Dong_Da_Click: id_Dong_Da_Click, dienGiaiP: dienGiaiP, hTTC: hTTC, soTienNT: soTienNT }, function (data) {
+        //            $('.ThemMoiCT_TT_ContextMenu_Body').html(data);
+        //            $('#ThemMoiCT_TT_ContextMenu_Modal').modal('show');
+        //            $('#ThemMoiCT_TT_ContextMenu_Modal').draggable();
+        //            $('#txtSoTienNT').val(soTienNT);
+        //        })
+        //    }
+        //    else {
+        //        toastr.warning("Hãy chọn phiếu TT VN.");
+        //        return;
+        //    }
+
+        //}
+        //// contextmenu for themmoiTT VND
+
+        $('#btnThuHoanUng').off('click').on('click', function () {
+            tamUngId = $('#hidTamUngId').val();
+            soTienNT = $('#txtSoTienNT_Create').val();
+            soCTThu = '@Model.KVCTPTC.SoCT';
+            kvctptcId = '@Model.KVCTPTC.Id';
+
+            bootbox.confirm({
+                message: "Bạn có chắc chắn muốn <b>hoàn ứng</b> không?",
+                buttons: {
+                    confirm: {
+                        label: 'Có',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Không',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.post('/TT621s/ThuHoanUng', { tamUngId: tamUngId, soTienNT: soTienNT, soCTThu: soCTThu, kvctptcId: kvctptcId }, function (response) {
+                            //console.log(response);
+                            if (response.status) {
+                                toastr.success('Thu hoàn ứng thành công', 'Thu hoàn ứng!');
+
+                                //createController.GetTT621s_By_TamUng(tamUngId);
+                                //createController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
+                                //$('#btnDelete').attr('disabled', true); // disabled btnDelete
+                                //$('#btnKetChuyen').attr('disabled', true) // disabled kechuyen
+
+                                //// Check_ThuHoanUngBtnStatus
+                                //createController.Check_ThuHoanUngBtnStatus(tamUngId);
+
+                                //if (response.tT621sCount === '')
+                                //    createController.Enabled_TU_Khong_TT();
+
+                                //location.reload();
+
+                                $('#btnBack').trigger('click');
+                                location.reload();
+                            }
+                            else {
+                                toastr.error(response.message, 'Thu hoàn ứng!')
+                            }
+                        });
+                    }
+
+                }
+            });
+
+        })
 
 
-    //$('.tamUngTr-cursor-pointer').click(function () {
-    //    alert('a');
-    //    // giu trang thai
-    //    if ($(this).hasClass("hoverClass"))
-    //        $(this).removeClass("hoverClass");
-    //    else {
-    //        $('.tamUngTr-cursor-pointer').removeClass("hoverClass");
-    //        $(this).addClass("hoverClass");
-    //    }
-    //})
+        //$('.tamUngTr-cursor-pointer').click(function () {
+        //    alert('a');
+        //    // giu trang thai
+        //    if ($(this).hasClass("hoverClass"))
+        //        $(this).removeClass("hoverClass");
+        //    else {
+        //        $('.tamUngTr-cursor-pointer').removeClass("hoverClass");
+        //        $(this).addClass("hoverClass");
+        //    }
+        //})
 
 
-</script>
+    </script>
 }
 
 <script>
@@ -527,33 +533,33 @@
 
     // importexcel
 
-        $('#importExcel_Submit').click(function () {
-            var tamUngId = $('#hidTamUngId').val();
-            if(tamUngId === ''){
-                alert('Bạn chưa chọn TU nào.');
+    $('#importExcel_Submit').click(function () {
+        var tamUngId = $('#hidTamUngId').val();
+        if (tamUngId === '') {
+            alert('Bạn chưa chọn TU nào.');
+            return false;
+        }
+        var loaiPhieu = '@Model.KVPTC.MFieu';
+        var kvptcId = '@Model.KVPTC.Id';
+        var kvctptcId = '@Model.KVCTPTC.Id';
+
+        var fileExtension = ['xls', 'xlsx'];
+        var filename = $('#fUpload').val();
+        if (filename.length !== 0) {
+            var extension = filename.replace(/^.*\./, '');
+            // kiem tra dinh dang
+            if ($.inArray(extension, fileExtension) === -1) {
+                bootbox.alert({
+                    size: "small",
+                    title: "Infomation",
+                    message: "Chọn chưa đúng định dạng <b> Excel! </b>"
+                });
+
                 return false;
             }
-            var loaiPhieu = '@Model.KVPTC.MFieu';
-            var kvptcId = '@Model.KVPTC.Id';
-            var kvctptcId = '@Model.KVCTPTC.Id';
+        }
 
-            var fileExtension = ['xls', 'xlsx'];
-            var filename = $('#fUpload').val();
-            if (filename.length !== 0) {
-                var extension = filename.replace(/^.*\./, '');
-                // kiem tra dinh dang
-                if ($.inArray(extension, fileExtension) === -1) {
-                    bootbox.alert({
-                        size: "small",
-                        title: "Infomation",
-                        message: "Chọn chưa đúng định dạng <b> Excel! </b>"
-                    });
-
-                    return false;
-                }
-            }
-
-            if ($('#frmImportExcell').valid()) {
+        if ($('#frmImportExcell').valid()) {
 
             var input = $('#fUpload');
             var files = input[0].files;
@@ -600,11 +606,20 @@
                     alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
                 }
             });
-            }
-            else{
-                alert('Not valid')
-            }
-        })
-        // importexcel
+        }
+        else {
+            alert('Not valid')
+        }
+    })
 
+    // btnDelete
+    $('#btnDelete').off('click').on('click', function () {
+
+        tt621Id = $('#hidTT621Id').val();
+        kVCTPTCId_PhieuTC = $('#hidKVCTPCTId').val();
+
+        $('#tt621Id_Delete').val(tt621Id);
+        $('#kVCTPTCId_PhieuTC').val(kVCTPTCId_PhieuTC);
+        $('#frm_Delete_TT').submit();
+    })
 </script>

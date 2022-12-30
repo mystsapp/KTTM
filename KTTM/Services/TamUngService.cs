@@ -246,7 +246,7 @@ namespace KTTM.Services
             foreach(var item in tamUngs)
             {
                 var tT621s = await _unitOfWork.tT621Repository.FindAsync(x => x.TamUngId == item.Id);
-                if(tT621s.Any(x => x.PhieuTC == item.PhieuChi))
+                if(tT621s.Any(x => string.IsNullOrEmpty(x.PhieuTC))) // 
                 {
                     tamUngs2.Add(item);
                 }

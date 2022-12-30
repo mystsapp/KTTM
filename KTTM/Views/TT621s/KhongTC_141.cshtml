@@ -346,7 +346,12 @@
 </form>
 
 <form asp-action="Delete_TT_KhongTC" method="post" id="frm_Delete_TT_KhongTC">
-    <input type="hidden" id="tt621Id" name="tt621Id" />
+    <input type="hidden" id="tt621Id_Delete" name="tt621Id" />
+
+</form>
+
+<form asp-action="DeleteAll_KhongTC" method="post" id="frm_DeleteAll_TT_KhongTC">
+    <input type="hidden" id="tamUngId_DeleteAll_TT" name="tamUngId" />
 
 </form>
 
@@ -441,7 +446,7 @@
 
         $('#importExcel_Submit').click(function () {
             var tamUngId = $('#hidTamUngId').val();
-            if(tamUngId === ''){
+            if (tamUngId === '') {
                 alert('Bạn chưa chọn TU nào.');
                 return false;
             }
@@ -467,53 +472,53 @@
 
             if ($('#frmImportExcell').valid()) {
 
-            var input = $('#fUpload');
-            var files = input[0].files;
-            if (files.length == 0) {
-                toastr.warning("Vui lòng chọn file excel.");
-                return;
-            }
+                var input = $('#fUpload');
+                var files = input[0].files;
+                if (files.length == 0) {
+                    toastr.warning("Vui lòng chọn file excel.");
+                    return;
+                }
 
-            $('#importExcel_Submit').attr('disabled', true);
-            $('.submitSpin').show();
+                $('#importExcel_Submit').attr('disabled', true);
+                $('.submitSpin').show();
 
-            var formData = new FormData();
-            formData.append("tamUngId", tamUngId);
-            formData.append("loaiPhieu", loaiPhieu);
-            formData.append("kvptcId", kvptcId);
-            formData.append("kvctptcId", kvctptcId);
+                var formData = new FormData();
+                formData.append("tamUngId", tamUngId);
+                formData.append("loaiPhieu", loaiPhieu);
+                formData.append("kvptcId", kvptcId);
+                formData.append("kvctptcId", kvctptcId);
 
-            for (var i = 0; i <= files.length; i++) {
-                formData.append("files", files[i]);
-            }
-            $.ajax({
-                type: "POST",
-                url: "/TT621s/ImportExcell",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
+                for (var i = 0; i <= files.length; i++) {
+                    formData.append("files", files[i]);
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/TT621s/ImportExcell",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
 
-                    if (response.status) {
-                        toastr.success('Import data thành công!');
-                        $('#importExcelModal').modal('hide');
-                        //// load lai TT621Create
-                        $('#' + tamUngId).click();
-                        khongTCController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
+                        if (response.status) {
+                            toastr.success('Import data thành công!');
+                            $('#importExcelModal').modal('hide');
+                            //// load lai TT621Create
+                            $('#' + tamUngId).click();
+                            khongTCController.Disabled_TU_Khong_TT(tamUngId); // Disabled row TU ko co TT
 
-                    } else {
-                        $('#importExcelModal').modal('hide');
-                        toastr.error(response.message);
+                        } else {
+                            $('#importExcelModal').modal('hide');
+                            toastr.error(response.message);
 
+                        }
                     }
-                }
-                , error: function (xhr, status, error) {
-                    $('.modal').modal('hide');
-                    alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
-                }
-            });
+                    , error: function (xhr, status, error) {
+                        $('.modal').modal('hide');
+                        alert("Có lỗi: " + error + " ,xin thông báo cho người quản lý biết!");
+                    }
+                });
             }
-            else{
+            else {
                 alert('Not valid')
             }
         })
@@ -582,12 +587,12 @@
 
         // btnThemMoiCT
         $('#btnThemMoiCT').off('click').on('click', function () {
-            
+
             tamUngId = $('#hidTamUngId').val();
             if (tamUngId == null || tamUngId == '') {
                 alert('chưa chọn tạm ứng nào để thanh toán');
             }
-            else{
+            else {
                 $('#tamUngId').val(tamUngId);
                 id_Dong_Da_Click = $('#hidIdCu').val();
                 $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
@@ -608,29 +613,52 @@
 
         // btnCapNhatCT_KhongTC
         $('#btnCapNhatCT_KhongTC').off('click').on('click', function () {
-            
+
             tt621Id = $('#hidTT621Id').val();
             $('#tt621Id').val(tt621Id);
             $('#frm_CapNhatCT_TT_KhongTC').submit();
         })
 
 
-                    //CapNhatCT_TT_Partial: function (tt621Id, kVCTPCTId_PhieuTC) {
-                    //    var url = '/TT621s/CapNhatCT_TT_Partial';
+        //CapNhatCT_TT_Partial: function (tt621Id, kVCTPCTId_PhieuTC) {
+        //    var url = '/TT621s/CapNhatCT_TT_Partial';
 
-                    //    $.get(url, { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
-                    //        $('.CapNhatCT_TT_Body').html(data);
-                    //        $('#CapNhatCT_TT_Modal').modal('show');
-                    //        $('#CapNhatCT_TT_Modal').draggable();
-                    //    })
+        //    $.get(url, { tt621Id: tt621Id, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (data) {
+        //        $('.CapNhatCT_TT_Body').html(data);
+        //        $('#CapNhatCT_TT_Modal').modal('show');
+        //        $('#CapNhatCT_TT_Modal').draggable();
+        //    })
 
 
         // btnDelete
         $('#btnDelete').off('click').on('click', function () {
             
-            tt621Id = $('#hidTT621Id').val();
-            $('#tt621Id').val(tt621Id);
-            $('#frm_Delete_TT_KhongTC').submit();
+            bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
+                
+                if (result) {
+                    tt621Id = $('#hidTT621Id').val();
+                    $('#tt621Id_Delete').val(tt621Id);
+                    $('#frm_Delete_TT_KhongTC').submit();
+                }
+                else {
+                    //return false;
+                }
+            });
+
+        })
+
+        // btnDeleteAll
+        $('#btnDeleteAll').off('click').on('click', function () {
+
+            bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result){
+                if (result){
+                    tamUngId = $('#hidTamUngId').val();
+                    $('#tamUngId_DeleteAll_TT').val(tamUngId);
+                    $('#frm_DeleteAll_TT_KhongTC').submit();
+                }
+            });
+
+            
         })
     </script>
 

@@ -317,7 +317,7 @@ namespace KTTM.Controllers
             }
 
             //// PhieuTC: tuy vao loai phieu lam TT
-            //TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.SoCT; // SoCT ben KVPCT or KVCTPTC.SoCT
+            //TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.SoCT; // do phieu nay KhongTC 
 
             // phieuTU
             TT621VM.TT621.PhieuTU = tamUng.SoCT;
@@ -336,6 +336,7 @@ namespace KTTM.Controllers
                 kVCTPTC.SoTT_DaTao = TT621VM.TT621.SoCT;
                 await _kVCTPTCService.UpdateAsync(kVCTPTC);
 
+                SetAlert("Thêm mới thành công.", "success");
                 return RedirectToAction(nameof(KhongTC_141), new { kvptcId = TT621VM.KVCTPTC.KVPTCId, maKh = tamUng.MaKhNo, tamUngId = tamUngId });
             }
             catch (Exception ex)
@@ -1949,6 +1950,46 @@ namespace KTTM.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> DeleteAll_KhongTC(long tamUngId)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            IEnumerable<TT621> tT621s_ByTu = _tT621Service.FindByTamUngId(tamUngId);
+            TamUng tamUng = await _tamUngService.GetByIdAsync(tamUngId);
+
+            try
+            {
+                await _tT621Service.DeleteRangeAsync(tT621s_ByTu);
+                // nếu ketchuyen roi ==> ko xoá được
+
+                // capnhat SoTU_DaTT vào kvctptc
+                KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(tamUngId); // kvctptc <-> tamung : 1 - 1
+                kVCTPTC.SoTT_DaTao = "";
+                await _kVCTPTCService.UpdateAsync(kVCTPTC);
+
+
+                SetAlert("Xoá thành công", "success");
+                return RedirectToAction(nameof(KhongTC_141), new { /*kvptcId = TT621VM.KVCTPTC.KVPTCId,*/ maKh = tamUng.MaKhNo, tamUngId = tamUng.Id });
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog();
+                errorLog.MaCn = user.Macn;
+                errorLog.NgayTao = DateTime.Now;
+                errorLog.Message = ex.Message;
+                errorLog.InnerMessage = ex.InnerException.ToString();
+
+                var errorLog1 = await _kVPTCService.CreateErrorLog(errorLog);
+
+                ViewBag.ErrorMessage = "Error " + "(" + errorLog1.Id + "):" + " Contact to your administrator to know detail.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+        }
+
+        
+        [HttpPost]
         public async Task<JsonResult> btnDeleteAll(long tamUngId, long kVCTPTCId_PhieuTC)
         {
             // from login session
@@ -1992,6 +2033,50 @@ namespace KTTM.Controllers
                     status = false,
                     message = ex.Message
                 });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete_TT(long tt621Id, long kVCTPTCId_PhieuTC)
+        {
+            // from login session
+            var user = HttpContext.Session.GetSingle<User>("loginUser");
+
+            try
+            {
+                TT621 tT621 = await _tT621Service.FindById_Include(tt621Id);
+                TamUng tamUng = await _tamUngService.GetByIdAsync(tT621.TamUngId);
+
+                await _tT621Service.DeleteAsync(tT621);
+                // nếu ketchuyen roi ==> ko xoá được
+
+                // capnhat SoTU_DaTT vào kvctptc
+                IEnumerable<TT621> tT621s = await _tT621Service.FindBySoCT(tT621.SoCT, user.Macn);
+                if (tT621s.Count() == 0)
+                {
+                    KVCTPTC kVCTPTC = await _kVCTPTCService.GetById(kVCTPTCId_PhieuTC);
+                    kVCTPTC.SoTT_DaTao = "";
+                    await _kVCTPTCService.UpdateAsync(kVCTPTC);
+
+                }
+
+                SetAlert("Xoá thành công", "success");
+                return RedirectToAction(nameof(TT621Create), new { kvctptcId = kVCTPTCId_PhieuTC, maKh = tamUng.MaKhNo, tamUngId = tamUng.Id });
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog errorLog = new ErrorLog();
+                errorLog.MaCn = user.Macn;
+                errorLog.NgayTao = DateTime.Now;
+                errorLog.Message = ex.Message;
+                errorLog.InnerMessage = ex.InnerException.ToString();
+
+                var errorLog1 = await _kVPTCService.CreateErrorLog(errorLog);
+
+                ViewBag.ErrorMessage = "Error " + "(" + errorLog1.Id + "):" + " Contact to your administrator to know detail.";
+                return View("~/Views/Shared/NotFound.cshtml");
             }
         }
 
