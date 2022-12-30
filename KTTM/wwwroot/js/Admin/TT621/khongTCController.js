@@ -48,17 +48,6 @@ var khongTCController = {
                 $(this).addClass("hoverClass");
             }
 
-            //if ($(this).hasClass("hoverClass"))
-            //    $(this).removeClass("hoverClass");
-            //else {
-            //    debugger
-            //    var idList = [];
-            //    $.each($('.tamUngTr'), function (i, item) {
-            //        $(this).removeClass("hoverClass");
-            //    });
-            //    $(this).addClass("hoverClass");
-            //}
-
             $('#hidIdCu').val(0); // moi lan click tro lai tamungtr -> reset hidIdCu(id dong tt621) = 0
             tamUngId = $(this).data('id');
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
@@ -85,8 +74,9 @@ var khongTCController = {
             // an nut btnCapNhatCT_KhongTC
             $('#btnCapNhatCT_KhongTC').attr('disabled', true);
 
-            // Check_ThuHoanUngBtnStatus
-            khongTCController.Check_ThuHoanUngBtnStatus(tamUngId);
+            //// Check_ThuHoanUngBtnStatus
+            //khongTCController.Check_ThuHoanUngBtnStatus(tamUngId);
+
         });
         // giu trang thai CT TT va lay tamungid (GetTT621s_By_TamUng)
 

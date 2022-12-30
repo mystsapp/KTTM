@@ -6,12 +6,12 @@
 
 
 <!-- CapNhatCT_TT modal-->
-<div class="modal fade" id="CapNhatCT_TT_Modal" aria-hidden="true" style="display: none;">
+@*<div class="modal fade" id="CapNhatCT_TT_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
             <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Cập nhật chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Cập nhật chi tiết thanh toán </h4>
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -19,18 +19,18 @@
             <div class="modal-body CapNhatCT_TT_Body p-0">
             </div>
         </div>
-        <!-- /.modal-content -->
+
     </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- CapNhatCT_TT modal-->
+
+</div>*@
+
 <!-- ThemMoiCT_TT modal-->
-<div class="modal fade" id="ThemMoiCT_TT_Modal" aria-hidden="true" style="display: none;">
+@*<div class="modal fade" id="ThemMoiCT_TT_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
             <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Thêm chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Thêm chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span></h4>
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -38,18 +38,18 @@
             <div class="modal-body ThemMoiCT_TT_Body p-0">
             </div>
         </div>
-        <!-- /.modal-content -->
+
     </div>
-    <!-- /.modal-dialog -->
-</div>
+
+</div>*@
 
 <!-- ThemMoiCT_TT_ContextMenu modal-->
-<div class="modal fade" id="ThemMoiCT_TT_ContextMenu_Modal" aria-hidden="true" style="display: none;">
+@*<div class="modal fade" id="ThemMoiCT_TT_ContextMenu_Modal" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-xl">
 
         <div class="modal-content ">
             <div class="modal-header p-0 pl-1">
-                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Thêm chi tiết thanh toán @*- <span id="hidLoaiPhieu"></span>*@</h4>
+                <h4 class="modal-title"><i class="fas fa-file text-info"></i> Thêm chi tiết thanh toán </h4>
                 <button type="button" class="close pr-4 pt-3" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -57,10 +57,10 @@
             <div class="modal-body ThemMoiCT_TT_ContextMenu_Body p-0">
             </div>
         </div>
-        <!-- /.modal-content -->
+
     </div>
-    <!-- /.modal-dialog -->
-</div>
+
+</div>*@
 
 <!-- importExcelModal modal-->
 <div class="modal fade" id="importExcelModal" aria-hidden="true" style="display: none;">
@@ -103,7 +103,7 @@
 </div>
 
 <!-- Content Header (Page header) -->
-<section class="content-header p-0">
+@*<section class="content-header p-0">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
@@ -127,11 +127,12 @@
                 </ol>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
-</section>
+    </div>
 
+</section>
+*@
 <!-- Main content -->
-<section class="content">
+<section class="content pt-2">
 
     <!-- Default box -->
     <div class="card">
@@ -355,7 +356,7 @@
 
 </form>
 
-<form asp-action="ThemMoiCT_TT_ContextMenu" method="get" id="frm_ThemMoiCT_TT_KhongTC_ContextMenu">
+<form asp-action="ThemMoiCT_TT_ContextMenu_KhongTC" method="get" id="frm_ThemMoiCT_TT_ContextMenu_KhongTC">
     <input type="hidden" id="tamUngId" name="tamUngId" />
     <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
     <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
@@ -413,10 +414,11 @@
         $('#btnThemMoiCT').contextmenu(function (e) {
             e.preventDefault();
 
-            ////ThemMoiCT_TT_ContextMenu_Partial();
-            //var dienGiaiP = $('#txtDienGiaiP').val();
-            //var hTTC = $('#ddlHttc').val();
-            //var soTienNT = $('#txtSoTienNT').val();
+            tamUngId = $('#hidTamUngId').val();
+            var loaiTien = '';
+            $.get('/TT621s/GetLoaiTien', { tamUngId: tamUngId }, function (response) {
+                
+            })
 
             var loaiTien = '@Model.KVPTC.NgoaiTe';
 
@@ -434,7 +436,7 @@
                 kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
                 $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
 
-                $('#frm_ThemMoiCT_TT_ContextMenu').submit();
+                $('#frm_ThemMoiCT_TT_ContextMenu_KhongTC').submit();
             }
             else {
                 toastr.warning("Hãy chọn phiếu TT VN.");
@@ -632,9 +634,9 @@
 
         // btnDelete
         $('#btnDelete').off('click').on('click', function () {
-            
+
             bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
-                
+
                 if (result) {
                     tt621Id = $('#hidTT621Id').val();
                     $('#tt621Id_Delete').val(tt621Id);
@@ -650,15 +652,15 @@
         // btnDeleteAll
         $('#btnDeleteAll').off('click').on('click', function () {
 
-            bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result){
-                if (result){
+            bootbox.confirm("Bạn có muốn <b> xoá </b> không?", function (result) {
+                if (result) {
                     tamUngId = $('#hidTamUngId').val();
                     $('#tamUngId_DeleteAll_TT').val(tamUngId);
                     $('#frm_DeleteAll_TT_KhongTC').submit();
                 }
             });
 
-            
+
         })
     </script>
 
