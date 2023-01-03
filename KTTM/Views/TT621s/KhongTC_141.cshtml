@@ -357,9 +357,8 @@
 </form>
 
 <form asp-action="ThemMoiCT_TT_ContextMenu_KhongTC" method="get" id="frm_ThemMoiCT_TT_ContextMenu_KhongTC">
-    <input type="hidden" id="tamUngId" name="tamUngId" />
-    <input type="hidden" id="kVCTPCTId_PhieuTC" name="kVCTPCTId_PhieuTC" />
-    <input type="hidden" id="id_Dong_Da_Click" name="id_Dong_Da_Click" />
+    <input type="hidden" id="tamUngId_ContextMenu" name="tamUngId" />
+    <input type="hidden" id="id_Dong_Da_Click_ContextMenu" name="id_Dong_Da_Click" />
 </form>
 
 @section Scripts{
@@ -418,31 +417,31 @@
             var loaiTien = '';
             $.get('/TT621s/GetLoaiTien', { tamUngId: tamUngId }, function (response) {
                 
-            })
+                loaiTien = response;
+                
+                if (loaiTien === 'VND') {
+                    tamUngId = $('#hidTamUngId').val();
 
-            var loaiTien = '@Model.KVPTC.NgoaiTe';
+                    if (tamUngId == null || tamUngId == '') {
+                        alert('chưa chọn tạm ứng nào để thanh toán');
+                    }
+                    $('#tamUngId_ContextMenu').val(tamUngId);
 
-            if (loaiTien === 'VN') {
-                tamUngId = $('#hidTamUngId').val();
+                    id_Dong_Da_Click = $('#hidIdCu').val();
+                    $('#id_Dong_Da_Click_ContextMenu').val(id_Dong_Da_Click);
 
-                if (tamUngId == null || tamUngId == '') {
-                    alert('chưa chọn tạm ứng nào để thanh toán');
+                    //kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
+                    //$('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
+
+                    $('#frm_ThemMoiCT_TT_ContextMenu_KhongTC').submit();
                 }
-                $('#tamUngId').val(tamUngId);
+                else {
+                    toastr.warning("Hãy chọn phiếu TT VN.");
+                    return;
+                }
 
-                id_Dong_Da_Click = $('#hidIdCu').val();
-                $('#id_Dong_Da_Click').val(id_Dong_Da_Click);
-
-                kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // dung de: GetDummyTT621_By_KVCTPCT. TT621Create view
-                $('#kVCTPCTId_PhieuTC').val(kVCTPCTId_PhieuTC);
-
-                $('#frm_ThemMoiCT_TT_ContextMenu_KhongTC').submit();
-            }
-            else {
-                toastr.warning("Hãy chọn phiếu TT VN.");
-                return;
-            }
-
+            })
+            
         });
         // importexcel
 
