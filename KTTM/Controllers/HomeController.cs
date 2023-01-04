@@ -378,11 +378,11 @@ namespace KTTM.Controllers
                     switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QT", user.Macn); // thu VND
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QT", user.Macn, HomeVM.KVPTC.NgayCT.Value.Year.ToString()); // thu VND
                             break;
 
                         default:
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NT", user.Macn); // thu NgoaiTe
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NT", user.Macn, HomeVM.KVPTC.NgayCT.Value.Year.ToString()); // thu NgoaiTe
                             break;
                     }
                     break;
@@ -391,11 +391,11 @@ namespace KTTM.Controllers
                     switch (HomeVM.KVPTC.NgoaiTe)
                     {
                         case "VN":
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn, HomeVM.KVPTC.NgayCT.Value.Year.ToString()); // chi VND
                             break;
 
                         default:
-                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NC", user.Macn); // chi NgoaiTe
+                            HomeVM.KVPTC.SoCT = _kVPTCService.GetSoCT("NC", user.Macn, HomeVM.KVPTC.NgayCT.Value.Year.ToString()); // chi NgoaiTe
                             break;
                     }
                     break;
@@ -1232,12 +1232,9 @@ namespace KTTM.Controllers
             });
         }
 
-        public IActionResult DetailsRedirect(string strUrl/*, string tabActive*/)
+        public IActionResult DetailsRedirect(string strUrl)
         {
-            //if (!string.IsNullOrEmpty(tabActive))
-            //{
-            //    strUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
-            //}
+            
             return Redirect(strUrl);
         }
 

@@ -311,15 +311,16 @@
     </div>
 
     <div class=" pt-1 pb-1">
-        @if (Model.KVPTC != null)
+        <a class="btn btn-success btn-sm" asp-controller="Home" asp-action="DetailsRedirect" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-backward "></i> Back</a>
+        @*if (Model.KVPTC.Id != Guid.Empty)
         {
             <a class="btn btn-success btn-sm" asp-action="Index" asp-controller="Home" asp-route-page="@Model.Page" asp-route-soCT="@Model.KVPTC.SoCT"><i class="fas fa-backward "></i> Back</a>
 
         }
         else
         {
-            <a class="btn btn-success btn-sm" asp-controller="Home" asp-action="DetailsRedirect"><i class="fas fa-backward "></i> Back</a>
-        }
+            <a class="btn btn-success btn-sm" asp-controller="Home" asp-action="DetailsRedirect" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-backward "></i> Back</a>
+        }*@
     </div>
 </section>
 <!-- khachhang modal-->
@@ -527,7 +528,7 @@
         // btnKhSearch
         $('#btnKhSearch').click(function () { // khi click có the dinh' nut txtMaKh blur (su kien blur khi go~ dang do~ va bam' nut btnKhSearch)
 
-            var maKhtext = maKhtext = $('#txtMaKh').val();
+            var maKhtext = $('#txtMaKh').val();
             var kvpctId = '';
             if ('@Model.KVPTC.SoCT' != null) {
                 kvpctId = '@Model.KVPTC.SoCT';
@@ -660,6 +661,27 @@
             });
 
 
+        })
+
+        // btnKetChuyen
+        $('#btnKetChuyen').off('click').on('click', function () {
+            tamUngId = $('#hidTamUngId').val();
+            //soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+            //kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // TT621Create_View
+
+            bootbox.confirm("Bạn có muốn <b> kết chuyển </b> không?", function (result) {
+                if (result) {
+                    $.post('/TT621s/KetChuyen', { tamUngId: tamUngId/*, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC*/ }, function (status) {
+                        if (status) {
+                            location.reload(); // reload lai trang
+                            toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+                        }
+                        else {
+                            toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
+                        }
+                    })
+                }
+            });
         })
     </script>
 

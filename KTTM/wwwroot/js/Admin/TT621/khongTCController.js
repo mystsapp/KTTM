@@ -51,8 +51,8 @@ var khongTCController = {
             $('#hidIdCu').val(0); // moi lan click tro lai tamungtr -> reset hidIdCu(id dong tt621) = 0
             tamUngId = $(this).data('id');
             soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
-            loaiPhieu = $('#hidLoaiPhieu').val();
+            //kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val();
+            //loaiPhieu = $('#hidLoaiPhieu').val();
 
             $('#hidTamUngId').val(tamUngId); // for TT141
 
@@ -63,10 +63,10 @@ var khongTCController = {
             $('#btnImportExcell').attr('disabled', false);
 
             // gang' commentText khi lick tamung
-            khongTCController.GetCommentText_By_TamUng(tamUngId, soTienNT, loaiPhieu);
+            khongTCController.GetCommentText_By_TamUng(tamUngId, soTienNT, 'T');// loaiPhieu);
 
             // Check_KetChuyenBtnStatus
-            khongTCController.Check_KetChuyenBtnStatus(tamUngId, soTienNT, loaiPhieu);
+            khongTCController.Check_KetChuyenBtnStatus(tamUngId, soTienNT, 'T');// loaiPhieu);
 
             // gang' ds TT141 theo tamung
             khongTCController.GetTT621s_By_TamUng(tamUngId);
@@ -159,26 +159,26 @@ var khongTCController = {
         //})
         //// btnDeleteAll
 
-        // btnKetChuyen
-        $('#btnKetChuyen').off('click').on('click', function () {
-            tamUngId = $('#hidTamUngId').val();
-            soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
-            kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // TT621Create_View
+        //// btnKetChuyen
+        //$('#btnKetChuyen').off('click').on('click', function () {
+        //    tamUngId = $('#hidTamUngId').val();
+        //    soTienNT = $('#txtSoTienNT_Create').val(); // TT621Create_View
+        //    kVCTPCTId_PhieuTC = $('#hidKVCTPCTId').val(); // TT621Create_View
 
-            bootbox.confirm("Bạn có muốn <b> kết chuyển </b> không?", function (result) {
-                if (result) {
-                    $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
-                        if (status) {
-                            location.reload(); // reload lai trang
-                            toastr.success('Kết chuyển thành công', 'Kết chuyển!');
-                        }
-                        else {
-                            toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
-                        }
-                    })
-                }
-            });
-        })
+        //    bootbox.confirm("Bạn có muốn <b> kết chuyển </b> không?", function (result) {
+        //        if (result) {
+        //            $.post('/TT621s/KetChuyen', { tamUngId: tamUngId, soTienNT_PhieuTC: soTienNT, kVCTPCTId_PhieuTC: kVCTPCTId_PhieuTC }, function (status) {
+        //                if (status) {
+        //                    location.reload(); // reload lai trang
+        //                    toastr.success('Kết chuyển thành công', 'Kết chuyển!');
+        //                }
+        //                else {
+        //                    toastr.error('Kết chuyển thất bại', 'Kết chuyển!');
+        //                }
+        //            })
+        //        }
+        //    });
+        //})
     },
 
     //ThemMoiCT_TT_ContextMenu_Partial: function () {

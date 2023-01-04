@@ -32,7 +32,7 @@ namespace KTTM.Services
 
         IEnumerable<ListViewModel> ListLoaiTien();
 
-        string GetSoCT(string param, string maCn);
+        string GetSoCT(string param, string maCn, string ngayCtYear);
 
         Task CreateAsync(KVPTC kVPCT);
 
@@ -99,13 +99,13 @@ namespace KTTM.Services
             return _unitOfWork.kVPCTRepository.GetByIdAsNoTracking(x => x.Id == id);
         }
 
-        public string GetSoCT(string param, string maCn)
+        public string GetSoCT(string param, string maCn, string ngayCtYear)
         {
             //DateTime dateTime;
             //dateTime = DateTime.Now;
             //dateTime = TourVM.Tour.NgayKyHopDong.Value;
 
-            var currentYear = DateTime.Now.Year; // ngay hien tai
+            var currentYear = ngayCtYear;// DateTime.Now.Year; // ngay hien tai
             var subfix = param + currentYear.ToString(); // QT2021? ?QC2021? ?NT2021? ?NC2021?
             var kVPCTs = _unitOfWork.kVPCTRepository
                                    .Find(x => x.SoCT.Trim().Contains(subfix)).ToList();// chi lay nhung soCT cung param: QT, TC, NT, NC và cùng CN

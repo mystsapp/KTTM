@@ -611,7 +611,7 @@ namespace KTTM.Controllers
                     KVCTPCTVM.KVPTC.Phong = "KT";
 
                     // next SoCT --> bat buoc phai co'
-                    KVCTPCTVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn); // chi VND
+                    KVCTPCTVM.KVPTC.SoCT = _kVPTCService.GetSoCT("QC", user.Macn, KVCTPCTVM.KVPTC.NgayCT.Value.Year.ToString()); // chi VND
                                                                                    // next SoCT
 
                     KVCTPCTVM.KVPTC.LapPhieu = user.Username;

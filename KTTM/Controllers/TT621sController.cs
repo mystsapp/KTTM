@@ -2356,7 +2356,8 @@ namespace KTTM.Controllers
             KVCTPTC kVCTPCT = new KVCTPTC();
             if (kVCTPCTId_PhieuTC == 0) // trường hợp TT 141 Khong TC: khong phieu TC
             {
-                kVCTPCT.SoCT = "KHONG PTC";// m.phieutc='KHONG PTC'
+                //kVCTPCT.SoCT = "KHONG PTC";// m.phieutc='KHONG PTC'
+                kVCTPCT = await _kVCTPTCService.GetByIdIncludeKVPTC(tamUngId);// kVCTPCTId_PhieuTC);
             }
             else
             {
@@ -2378,7 +2379,8 @@ namespace KTTM.Controllers
 
                 tamUng.ConLaiNT = 0;
                 tamUng.ConLai = 0;
-                tamUng.PhieuTT = kVCTPCT.SoCT;
+                // truong hop HU nhieu lan
+                tamUng.PhieuTT = string.IsNullOrEmpty(tamUng.PhieuTT) ? kVCTPCT.SoCT : (tamUng.PhieuTT + "," + kVCTPCT.SoCT);// kVCTPCT.SoCT;
                 tamUng.LogFile += " -User kết chuyển: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                 await _tamUngService.UpdateAsync(tamUng);
 
@@ -2557,6 +2559,8 @@ namespace KTTM.Controllers
                 string conLaiNTOld = tamUng.ConLaiNT.ToString();
                 string conLaiOld = tamUng.ConLai.ToString();
 
+                // truong hop HU nhieu lan
+                tamUng.PhieuTT = string.IsNullOrEmpty(tamUng.PhieuTT) ? kVCTPCT.SoCT : (tamUng.PhieuTT + "," + kVCTPCT.SoCT);
                 if (kVCTPCT.KVPTC.NgoaiTe == "VN")
                 {
                     tamUng.ConLaiNT -= decimal.Parse(soTienNT);
