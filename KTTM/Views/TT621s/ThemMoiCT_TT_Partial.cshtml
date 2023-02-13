@@ -148,7 +148,7 @@
                                     <div class="col-md-12">
                                         <label asp-for="TT621.DienGiai" class="control-label"></label>
                                         <select asp-for="TT621.DienGiai" class="form-control form-control-sm"
-                                                asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"))" id="ddlDienGiai">
+                                                asp-items="@(new SelectList(Model.Dgiais, "DienGiai", "DienGiai"@*, @Model.TT621.DienGiai*@))" id="ddlDienGiai">
                                         </select>
 
                                         <span asp-validation-for="TT621.DienGiai" class="text-danger"></span>
@@ -458,7 +458,7 @@
     //    theme: 'bootstrap4'
     //})
 
-    $( document ).ready(function() {
+    @*$( document ).ready(function() {
 
     tkNo = $('#ddlTkNo').val();
         tkCo = $('#ddlTkCo').val();
@@ -478,7 +478,7 @@
         });
 
         serviceController.Get_DienGiai_By_TkNo_TkCo(tkNo, tkCo);
-});
+});*@
 </script>
 
 <!-- Validation -->
