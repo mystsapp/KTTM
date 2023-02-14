@@ -1762,7 +1762,7 @@ namespace KTTM.Controllers
             }
 
             // PhieuTC: tuy vao loai phieu lam TT
-            //TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.SoCT; // SoCT ben KVPCT or KVCTPTC.SoCT
+            TT621VM.TT621.PhieuTC = TT621VM.KVCTPTC.SoCT; // SoCT ben KVPCT or KVCTPTC.SoCT
 
             // phieuTU
             TT621VM.TT621.PhieuTU = tamUng.SoCT;
