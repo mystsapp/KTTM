@@ -748,7 +748,7 @@ namespace KTTM.Controllers
                 string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
                 //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
                 bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
-                tongCong = decimal.Parse(tongTienNT).ToString("N0") + " VND";
+                tongCong = decimal.Parse(tongTienNT).ToString("N2") + " VND";
             }
             else
             {
@@ -793,12 +793,12 @@ namespace KTTM.Controllers
                     {
                         // this is the last item
                         soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
-                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                        tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien + " + ";
                     }
                     else
                     {
                         soTienNT_BangChu += item.SoTienNT_BangChu;
-                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+                        tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien;
                     }
                 }
                 bangChu = soTienNT_BangChu;
@@ -872,7 +872,7 @@ namespace KTTM.Controllers
                 string c = AmountToWords.changeCurrencyToWords(tongTienNT.ToLower());
                 //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
                 bangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
-                tongCong = decimal.Parse(tongTienNT).ToString("N0") + " VND";
+                tongCong = decimal.Parse(tongTienNT).ToString("N2") + " VND";
             }
             else
             {
@@ -891,12 +891,12 @@ namespace KTTM.Controllers
                     {
                         // this is the last item
                         soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
-                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                        tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien + " + ";
                     }
                     else
                     {
                         soTienNT_BangChu += item.SoTienNT_BangChu;
-                        tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+                        tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien;
                     }
                 }
                 bangChu = soTienNT_BangChu;

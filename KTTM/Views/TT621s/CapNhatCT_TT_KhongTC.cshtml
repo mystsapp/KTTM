@@ -76,13 +76,13 @@
 
                             <div class="col-md-2">
                                 <label asp-for="TT621.TyGia" class="control-label "></label>
-                                <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" readonly />
+                                <input asp-for="TT621.TyGia" class="form-control form-control-sm numbers" asp-format="{0:0,0.00}" id="txtTyGia" readonly />
                                 <span asp-validation-for="TT621.TyGia" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
                                 <label class="control-label">Quy ra VND</label>
-                                <input asp-for="TT621.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" readonly id="txtSoTien" />
+                                <input asp-for="TT621.SoTien" class="form-control form-control-sm " asp-format="{0:0,0.00}" readonly id="txtSoTien" />
                                 <span asp-validation-for="TT621.SoTien" class="text-danger"></span>
                             </div>
                         </div>

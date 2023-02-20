@@ -134,7 +134,7 @@
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiTien)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TyGia)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.HasValue ? item.SoTien.Value.ToString("N2") : "0")</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKNo)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhNo)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKCo)</td>
@@ -227,7 +227,7 @@
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTienNT.Value.ToString("N0"))</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.LoaiTien)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TyGia)</td>
-                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.Value.ToString("N0"))</td>
+                            <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.Raw(item.SoTien.HasValue ? item.SoTien.Value.ToString("N2") : "0")</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKNo)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.MaKhNo)</td>
                             <td class="tdVal_KVCTPCT" data-id="@item.Id" data-hoanungtu="@item.HoanUngTU">@Html.DisplayFor(m => item.TKCo)</td>

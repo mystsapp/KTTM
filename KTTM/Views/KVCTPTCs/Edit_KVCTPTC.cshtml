@@ -90,14 +90,14 @@
                             }
                             else
                             {
-                                <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0}" />
+                                <input asp-for="KVCTPTC.TyGia" class="form-control form-control-sm numbers" id="txtTyGia" asp-format="{0:0,0.00}" />
                             }
                             <span asp-validation-for="KVCTPTC.TyGia" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-4">
                             <label class="control-label">Quy ra VND</label>
-                            <input asp-for="KVCTPTC.SoTien" class="form-control form-control-sm " asp-format="{0:0,0}" readonly id="txtSoTien" />
+                            <input asp-for="KVCTPTC.SoTien" class="form-control form-control-sm " asp-format="{0:0,0.00}" readonly id="txtSoTien" />
                             <span asp-validation-for="KVCTPTC.SoTien" class="text-danger"></span>
                         </div>
                     </div>
