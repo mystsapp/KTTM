@@ -793,12 +793,28 @@ namespace KTTM.Controllers
                     {
                         // this is the last item
                         soTienNT_BangChu += item.SoTienNT_BangChu + " + ";
-                        tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien + " + ";
+                        if(item.LoaiTien == "VND")
+                        {
+                            tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien + " + ";
+                        }
+                        else
+                        {
+                            tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien + " + ";
+                        }
+                        
                     }
                     else
                     {
                         soTienNT_BangChu += item.SoTienNT_BangChu;
-                        tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien;
+                        if(item.LoaiTien == "VND")
+                        {
+                            tongCong += @item.SoTienNT.ToString("N0") + " " + @item.LoaiTien;
+                        }
+                        else
+                        {
+                            tongCong += @item.SoTienNT.ToString("N2") + " " + @item.LoaiTien;
+                        }
+                        
                     }
                 }
                 bangChu = soTienNT_BangChu;
