@@ -295,6 +295,7 @@ namespace KTTM.Controllers
             var user = HttpContext.Session.GetSingle<User>("loginUser");
 
             HomeVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            HttpContext.Session.SetString("HomeIndexStr", HomeVM.StrUrl);
             HomeVM.Page = page;
 
             ViewBag.searchString = searchString;
@@ -326,12 +327,12 @@ namespace KTTM.Controllers
             return View(HomeVM);
         }
 
-        public IActionResult Create(string strUrl)
+        public IActionResult Create(/*string strUrl*/)
         {
             // from session
             var user = HttpContext.Session.GetSingle<User>("loginUser");
-
-            HomeVM.StrUrl = strUrl;
+            var HomeIndexStr = HttpContext.Session.GetString("HomeIndexStr");
+            HomeVM.StrUrl = HomeIndexStr;// strUrl;
             HomeVM.KVPTC.NgayCT = DateTime.Now;
             HomeVM.KVPTC.DonVi = "CÔNG TY TNHH MỘT THÀNH VIÊN DỊCH VỤ LỮ HÀNH SAIGONTOURIST";
             HomeVM.KVPTC.Create = DateTime.Now;
