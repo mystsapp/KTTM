@@ -55,7 +55,8 @@ var serviceController = {
             success: function (response) {
                 if (response.status) {
                     soTien = response.soTien;
-                    $('#txtSoTien').val(numeral(soTien).format('0,0.00'));
+                    $('#txtSoTien').val(numeral(soTien).format('0,0')); // lam tron -> theo anh SonKT
+                    //$('#txtSoTien').val(numeral(soTien).format('0,0.00')); // so le -> theo thao, chau
                     
                     //$('#txtSoTien').val(numeral(soTien).format('0.0[0000]'));
                 }
