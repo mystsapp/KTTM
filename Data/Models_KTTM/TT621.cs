@@ -82,7 +82,7 @@ namespace Data.Models_KTTM
         public string HTTC { get; set; }
 
         [DisplayName("Ghi sổ")]
-        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 3 ký tự"), Column(TypeName = "varchar(50)")]
+        [MaxLength(50, ErrorMessage = "Chiều dài tối đa 50 ký tự"), Column(TypeName = "varchar(50)")]
         public string GhiSo { get; set; }
 
         [DisplayName("MS Thuế")]
@@ -133,7 +133,7 @@ namespace Data.Models_KTTM
         public string TenKH { get; set; }
 
         [DisplayName("Địa chỉ")]
-        [MaxLength(200, ErrorMessage = "Chiều dài tối đa 200 ký tự"), Column(TypeName = "nvarchar(200)")]
+        [MaxLength(250, ErrorMessage = "Chiều dài tối đa 250 ký tự"), Column(TypeName = "nvarchar(250)")]
         public string DiaChi { get; set; }
 
         [DisplayName("Ký hiệu")]
@@ -156,7 +156,7 @@ namespace Data.Models_KTTM
         public string LapPhieu { get; set; }
 
         [DisplayName("Diễn giải phụ")]
-        [MaxLength(150, ErrorMessage = "Chiều dài tối đa 150 ký tự"), Column(TypeName = "nvarchar(150)")]
+        [MaxLength(200, ErrorMessage = "Chiều dài tối đa 200 ký tự"), Column(TypeName = "nvarchar(200)")]
         public string DienGiaiP { get; set; } //
 
         [DisplayName("Hoá đơn DT")]
